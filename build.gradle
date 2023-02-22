@@ -17,6 +17,7 @@ subprojects {
 	group = 'oopp'
 	version = '0.0.1-SNAPSHOT'
 	sourceCompatibility = '11'
+
 	checkstyle {
 		toolVersion "9.2.1"
 
@@ -25,6 +26,7 @@ subprojects {
 		maxWarnings = 0
 		configFile = '../checkstyle.xml' as File
 	}
+	tasks.withType(Checkstyle) { classpath = files() } // Make sure only files are checkstyled, as we don't have any rules that require compiled sources and it's quicker
 
 	tasks.named('test') {
 		useJUnitPlatform()

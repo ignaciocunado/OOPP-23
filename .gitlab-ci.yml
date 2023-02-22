@@ -4,15 +4,67 @@ variables:
   # Disable the Gradle daemon to ensure isolated runs of the CI pipeline.
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
-build:
+stages:
+  - build
+  - test
+  - style
+
+# Test compilation, on fail this should obviously fail
+build_job:
+  stage: build
   script:
-    - ./gradlew build
-    - ./gradlew AggregateJacocoReport
+    - ./gradlew assemble
+  artifacts:
+    untracked: true
+    expire_in: 15 mins
+
+# Check the jacoco test coverage report, should be at least 50
+test_job:
+  stage: test
+  variables:
+    GOOD_COVERAGE: 80
+    MINIMUM_COVERAGE: 50
+  needs:
+    - build_job
+  dependencies:
+    - build_job
+  script:
+    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
     # preserve coverage information in an easy-to-reach folder
     - mv build/reports/jacoco/aggregate/html ./coverage
     - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
-    - echo `cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total/TestCoverage:/"`
+    - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
+    - coverage=${coverage::-1} # Remove %
+    - echo TestCoverage:$coverage%
+    - if [ $coverage -ge $GOOD_COVERAGE ]; then exit 0; fi # If enough tests then pass
+    - if [ $coverage -ge $MINIMUM_COVERAGE ]; then exit 1; fi # If not enough tests then semi fail
+    - exit 2 # If less than minimum tests then fail build entirely
   artifacts:
     paths:
+      - "*/build/test-results/test/TEST-*.xml"
       - ./coverage
+    reports:
+      junit: "*/build/test-results/test/TEST-*.xml"
+  allow_failure:
+    # Exit code 1 signifies a task being sufficiently tested, but it should be more.
+    # Any other exit code means it's definitely insufficient
+    exit_codes:
+      - 1
   coverage: /TestCoverage:(\d+)%/
+
+# Check the checkstyle, should be no checkstyle errors
+checkstyle_main_job:
+  stage: style
+  needs:
+    - build_job
+  dependencies: []
+  script:
+    - ./gradlew checkstyleMain
+
+checkstyle_test_job:
+  stage: style
+  needs:
+    - build_job
+  dependencies: []
+  script:
+    - ./gradlew checkstyleTest
