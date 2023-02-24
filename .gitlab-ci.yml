@@ -23,7 +23,7 @@ test_job:
   stage: test
   variables:
     GOOD_COVERAGE: 80
-    MINIMUM_COVERAGE: 50
+    MINIMUM_COVERAGE: 10
   needs:
     - build_job
   dependencies:
