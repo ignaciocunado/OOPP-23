@@ -53,13 +53,29 @@ test_job:
   coverage: /TestCoverage:(\d+)%/
 
 # Check the checkstyle, should be no checkstyle errors
-checkstyle_main_job:
+checkstyle_client_main_job:
   stage: style
   needs:
     - build_job
   dependencies: []
   script:
-    - ./gradlew checkstyleMain
+    - ./gradlew :client:checkstyleMain
+
+checkstyle_server_main_job:
+  stage: style
+  needs:
+    - build_job
+  dependencies: []
+  script:
+    - ./gradlew :server:checkstyleMain
+
+checkstyle_commons_main_job:
+  stage: style
+  needs:
+    - build_job
+  dependencies: []
+  script:
+    - ./gradlew :commons:checkstyleMain
 
 # checkstyle_test_job:
 #   stage: style
