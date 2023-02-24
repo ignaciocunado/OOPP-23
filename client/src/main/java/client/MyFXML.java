@@ -33,13 +33,25 @@ public class MyFXML {
 
     private Injector injector;
 
+    /**
+     * constructor
+     * @param injector
+     */
     public MyFXML(Injector injector) {
         this.injector = injector;
     }
 
+    /**
+     * to do
+     * @param c
+     * @param parts
+     * @return to do
+     * @param <T>
+     */
     public <T> Pair<T, Parent> load(Class<T> c, String... parts) {
         try {
-            var loader = new FXMLLoader(getLocation(parts), null, null, new MyFactory(), StandardCharsets.UTF_8);
+            var loader = new FXMLLoader(getLocation(parts), null, null,
+                new MyFactory(), StandardCharsets.UTF_8);
             Parent parent = loader.load();
             T ctrl = loader.getController();
             return new Pair<>(ctrl, parent);

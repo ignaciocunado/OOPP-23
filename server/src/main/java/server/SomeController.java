@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/")
 public class SomeController {
-
+    /**
+     * to do
+     * @return to do
+     */
     @GetMapping("/")
     @ResponseBody
     public String index() {
