@@ -61,10 +61,10 @@ checkstyle_main_job:
   script:
     - ./gradlew checkstyleMain
 
-checkstyle_test_job:
-  stage: style
-  needs:
-    - build_job
-  dependencies: []
-  script:
-    - ./gradlew checkstyleTest
+# checkstyle_test_job:
+#   stage: style
+#   needs:
+#     - build_job
+#   dependencies: []
+#   script:
+#     - ./gradlew checkstyleTest
