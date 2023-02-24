@@ -10,13 +10,8 @@ Add your own name (do not add the names for others!) to the section below.
 
 | Profile Picture | Name | Email |
 |---|---|---|
+| ![](https://secure.gravatar.com/avatar/66b73b929c725583e663ded295fb78a2?s=32&d=identicon) | Joey Li | j.w.li@student.tudelft.nl |
 | ![](https://secure.gravatar.com/avatar/fbbae4e9d83c614c4b260debebf4c9d6?s=32&d=identicon) | Oliwier Jurek | O.S.Jurek@student.tudelft.nl |
-
-<!-- Instructions (remove once assignment has been completed -->
-<!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
-<!-- - Mention your *student* email address -->
-<!-- - Preferably add a recognizable photo, otherwise add your GitLab photo -->
-<!-- - (please make sure the photos have the same size) --> 
 
 ## How to run it
 
