@@ -2,11 +2,13 @@ package commons;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Entity;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-public class Card {
+@Entity
+public final class Card {
     @Id
     @GeneratedValue
     private int id;

@@ -1,17 +1,19 @@
+
 package commons;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Board {
+@Entity
+public final class Board {
     @Id @GeneratedValue
     private int id;
     private String key;
     private String password;
+    @OneToMany
     private List<CardList> listsOnBoard;
 
     /**
@@ -63,26 +65,26 @@ public class Board {
     }
 
     /**
-     * Gets the list of Lists on this board
-     * @return the list of Lists as an ArrayList
+     * Gets the list of CardList on this board
+     * @return the list of CardList as an ArrayList
      */
     public List<CardList> getListsOnBoard() {
         return listsOnBoard;
     }
 
     /**
-     * Adds a new List on this board
-     * @param newList the new List to be added
-     * @return boolean for whether the List has been added successfully
+     * Adds a new CardList on this board
+     * @param newList the new CardList to be added
+     * @return boolean for whether the CardList has been added successfully
      */
     public boolean addList(CardList newList) {
         return listsOnBoard.add(newList);
     }
 
     /**
-     * Removes a given List from this board
-     * @param listToDelete the List to be deleted
-     * @return boolean for whether the List has been deleted successfully
+     * Removes a given CardList from this board
+     * @param listToDelete the CardList to be deleted
+     * @return boolean for whether the CardList has been deleted successfully
      */
     public boolean removeList(CardList listToDelete) {
         return listsOnBoard.remove(listToDelete);
