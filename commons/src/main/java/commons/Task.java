@@ -1,4 +1,7 @@
 package commons;
 
-public class Task {
+import javax.persistence.Entity;
+
+@Entity
+public final class Task {
 }

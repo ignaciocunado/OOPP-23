@@ -1,10 +1,11 @@
 package commons;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Objects;
-
-public class Tag {
+@Entity
+public final class Tag {
 
     @Id @GeneratedValue
     private int id;
