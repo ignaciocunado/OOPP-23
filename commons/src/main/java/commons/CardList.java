@@ -3,12 +3,14 @@ package commons;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 @Entity
 public final class CardList {
 
+    @OneToMany
     private List<Card> cards;
     private String title;
     @Id

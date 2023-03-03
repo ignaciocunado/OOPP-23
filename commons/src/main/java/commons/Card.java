@@ -3,6 +3,7 @@ package commons;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +14,9 @@ public final class Card {
     private int id;
     private String title;
     private String description;
+    @OneToMany
     private List<Task> nestedTaskList;
+    @OneToMany
     private List<Tag> tags;
 
     /**
