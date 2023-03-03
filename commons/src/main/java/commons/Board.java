@@ -1,4 +1,3 @@
-
 package commons;
 
 import javax.persistence.Entity;
@@ -16,7 +15,6 @@ public final class Board {
     private int id;
     private String key;
     private String password;
-
     @OneToMany
     private List<CardList> listsOnBoard;
 
