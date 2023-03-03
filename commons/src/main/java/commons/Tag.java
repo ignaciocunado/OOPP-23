@@ -2,6 +2,7 @@ package commons;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Objects;
 
 public class Tag {
 
@@ -36,6 +37,19 @@ public class Tag {
 
     public void setColour(int colour) {
         this.colour = colour;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tag)) return false;
+        Tag tag = (Tag) o;
+        return getId() == tag.getId() && getColour() == tag.getColour() && Objects.equals(getName(), tag.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getColour());
     }
 
 }
