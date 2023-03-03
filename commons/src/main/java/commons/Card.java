@@ -2,6 +2,7 @@ package commons;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,8 +29,8 @@ public class Card {
     public Card(String title, String description) {
         this.title = title;
         this.description = description;
-        this.nestedTaskList = new List<Task>;
-        this.tags = new List<Tag>;
+        this.nestedTaskList = new ArrayList<Task>();
+        this.tags = new ArrayList<Tag>();
     }
 
     /**
