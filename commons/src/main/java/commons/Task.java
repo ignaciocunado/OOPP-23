@@ -19,7 +19,7 @@ public class Task {
     /**
      * Constructor to initialize new task
      * @param name of the task to display
-     * @param completed, if the task is done or not it
+     * @param completed if the task is done or not it
      */
     public Task(String name, boolean completed) {
         this.name = name;
