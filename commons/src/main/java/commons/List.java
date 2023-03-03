@@ -72,7 +72,7 @@ public class List {
     /**
      * Removes a card from the list of cards
      * @param card card that needs to be removed
-     * @return
+     * @return true if removed correctly, false otherwise
      * TO DO - removeCard, id as an argument???
      */
     public boolean removeCard(Card card){
