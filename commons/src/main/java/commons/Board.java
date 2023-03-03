@@ -3,14 +3,16 @@ package commons;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Board {
     @Id @GeneratedValue
     private int id;
     private String key;
     private String password;
-    private ArrayList<List> listsOnBoard;
+    private List<CardList> listsOnBoard;
 
     /**
      * Empty constructor for JPA
@@ -64,7 +66,7 @@ public class Board {
      * Gets the list of Lists on this board
      * @return the list of Lists as an ArrayList
      */
-    public ArrayList<List> getListsOnBoard() {
+    public List<CardList> getListsOnBoard() {
         return listsOnBoard;
     }
 
@@ -73,7 +75,7 @@ public class Board {
      * @param newList the new List to be added
      * @return boolean for whether the List has been added successfully
      */
-    public boolean addList(List newList) {
+    public boolean addList(CardList newList) {
         return listsOnBoard.add(newList);
     }
 
@@ -82,7 +84,7 @@ public class Board {
      * @param listToDelete the List to be deleted
      * @return boolean for whether the List has been deleted successfully
      */
-    public boolean removeList(List listToDelete) {
+    public boolean removeList(CardList listToDelete) {
         return listsOnBoard.remove(listToDelete);
     }
 

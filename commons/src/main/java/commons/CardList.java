@@ -3,11 +3,12 @@ package commons;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class List {
+public class CardList {
 
-    private ArrayList<Card> cards;
+    private List<Card> cards;
     private String title;
     @Id
     @GeneratedValue
@@ -16,13 +17,13 @@ public class List {
     /**
      * Empty constructor for JPA
      */
-    public List(){}
+    public CardList(){}
 
     /**
      * Constructor
      * @param title title of a list
      */
-    public List(String title) {
+    public CardList(String title) {
         this.title = title;
         cards = new ArrayList<>();
     }
@@ -31,7 +32,7 @@ public class List {
      * Getter for a list of cards
      * @return list of cards
      */
-    public ArrayList<Card> getCards() {
+    public List<Card> getCards() {
         return cards;
     }
 
@@ -92,7 +93,7 @@ public class List {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        List list = (List) o;
+        CardList list = (CardList) o;
         return id == list.id && Objects.equals(cards, list.cards)
                 && Objects.equals(title, list.title);
     }
