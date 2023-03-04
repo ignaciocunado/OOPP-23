@@ -16,11 +16,8 @@
 package server.api;
 
 import commons.Board;
-import commons.Quote;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.BoardRepository;
-import server.database.QuoteRepository;
 
 import java.util.List;
 import java.util.Random;
@@ -48,6 +45,10 @@ public class BoardController {
         return repo.findAll();
     }
 
+    /**
+     * to do
+     * @return to do
+     */
     @PostMapping(path = {"", "/"})
     public String addBoard() {
         repo.save(new Board("abc", ""));
