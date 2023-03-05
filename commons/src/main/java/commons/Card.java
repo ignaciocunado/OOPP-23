@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Objects;
 @Entity
 public final class Card {
+
     @Id
     @GeneratedValue
     private int id;
@@ -22,11 +23,10 @@ public final class Card {
     /**
      * Empty constructor for JPA
      */
-    public Card() {
-    }
+    public Card() {}
 
     /**
-     * Constructor
+     * Constructor for a new card
      * @param title title of the card
      * @param description description of the card
      */
@@ -94,29 +94,6 @@ public final class Card {
     }
 
     /**
-     * Equals method
-     * @param o other object to compare this object to
-     * @return true iff o is also a Card with the same properties.
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Card card = (Card) o;
-        return id == card.id && title.equals(card.title) && description.equals(card.description) &&
-            nestedTaskList.equals(card.nestedTaskList) && tags.equals(card.tags);
-    }
-
-    /**
-     * HashCode method
-     * @return a unique code representing this card
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, description, nestedTaskList, tags);
-    }
-
-    /**
      * Method which adds a new tag to a card
      * @param tag the tag to be added to the card
      * @return true iff the tag was successfully added
@@ -152,6 +129,27 @@ public final class Card {
         return this.nestedTaskList.remove(task);
     }
 
+    /**
+     * Equals method
+     * @param o other object to compare this object to
+     * @return true iff o is also a Card with the same properties.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return id == card.id && title.equals(card.title) && description.equals(card.description) &&
+                nestedTaskList.equals(card.nestedTaskList) && tags.equals(card.tags);
+    }
 
+    /**
+     * HashCode method
+     * @return a unique code representing this card
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, nestedTaskList, tags);
+    }
 
 }

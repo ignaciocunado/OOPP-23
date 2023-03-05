@@ -9,7 +9,6 @@ public final class Tag {
 
     @Id @GeneratedValue
     private int id;
-
     private String name;
     private int colour;
 
@@ -19,7 +18,7 @@ public final class Tag {
     public Tag() {}
 
     /**
-     * Constructor to initialize new tag
+     * Constructor for a new tag
      * @param name of the tag to display
      * @param colour of the tag, encoded in decimal
      */
@@ -89,4 +88,5 @@ public final class Tag {
     public int hashCode() {
         return Objects.hash(id, name, colour);
     }
+
 }

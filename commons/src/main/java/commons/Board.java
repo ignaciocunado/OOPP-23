@@ -11,6 +11,7 @@ import java.util.Objects;
 
 @Entity
 public final class Board {
+
     @Id @GeneratedValue
     private int id;
     private String key;

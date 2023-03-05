@@ -7,6 +7,7 @@ import java.util.Objects;
 
 @Entity
 public class Task {
+
     @Id @GeneratedValue
     private int id;
     private String name;
@@ -15,11 +16,10 @@ public class Task {
     /**
      * Empty constructor for JPA
      */
-    public Task() {
-    }
+    public Task() {}
 
     /**
-     * Constructor to initialize new task
+     * Constructor for a new task
      * @param name of the task to display
      * @param completed if the task is done or not it
      */
@@ -84,4 +84,5 @@ public class Task {
     public int hashCode() {
         return Objects.hash(id, name, completed);
     }
+
 }

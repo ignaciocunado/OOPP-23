@@ -10,20 +10,19 @@ import java.util.Objects;
 @Entity
 public final class CardList {
 
-    @OneToMany
-    private List<Card> cards;
-    private String title;
     @Id
     @GeneratedValue
     private int id;
-
+    private String title;
+    @OneToMany
+    private List<Card> cards;
     /**
      * Empty constructor for JPA
      */
-    public CardList(){}
+    public CardList() {}
 
     /**
-     * Constructor
+     * Constructor for a new card list
      * @param title title of a list
      */
     public CardList(String title) {
@@ -32,11 +31,11 @@ public final class CardList {
     }
 
     /**
-     * Getter for a list of cards
-     * @return list of cards
+     * Getter for the id of a list
+     * @return an id of the list
      */
-    public List<Card> getCards() {
-        return cards;
+    public int getId() {
+        return id;
     }
 
     /**
@@ -48,11 +47,11 @@ public final class CardList {
     }
 
     /**
-     * Getter for the id of a list
-     * @return an id of the list
+     * Getter for a list of cards
+     * @return list of cards
      */
-    public int getId() {
-        return id;
+    public List<Card> getCards() {
+        return cards;
     }
 
     /**
@@ -68,9 +67,8 @@ public final class CardList {
      * @param card a card that is going to be added
      * @return true, after the card was added
      */
-    public boolean addCard(Card card){
-        cards.add(card);
-        return true;
+    public boolean addCard(Card card) {
+        return cards.add(card);
     }
 
     /**
@@ -79,12 +77,8 @@ public final class CardList {
      * @return true if removed correctly, false otherwise
      * TO DO - removeCard, id as an argument???
      */
-    public boolean removeCard(Card card){
-        if (!cards.contains(card)){
-            return false;
-        }
-        cards.remove(card);
-        return true;
+    public boolean removeCard(Card card) {
+        return cards.remove(card);
     }
 
     /**
