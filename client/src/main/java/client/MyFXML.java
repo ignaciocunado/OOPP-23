@@ -15,10 +15,13 @@
  */
 package client;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import com.google.inject.Injector;
 
@@ -34,7 +37,7 @@ public class MyFXML {
     private Injector injector;
 
     /**
-     * constructor
+     * Injector for getting singleton classes
      * @param injector
      */
     public MyFXML(Injector injector) {
@@ -42,16 +45,16 @@ public class MyFXML {
     }
 
     /**
-     * to do
-     * @param c
-     * @param parts
-     * @return to do
-     * @param <T>
+     * Load the FXML files into controllers and "parents" (scenes)
+     * @param c the class type of the controller
+     * @param parts the path parts
+     * @param <T> the class type generic
+     * @return a pair of the controller and the parent (scene)
      */
     public <T> Pair<T, Parent> load(Class<T> c, String... parts) {
         try {
             var loader = new FXMLLoader(getLocation(parts), null, null,
-                new MyFactory(), StandardCharsets.UTF_8);
+                    new MyFactory(), StandardCharsets.UTF_8);
             Parent parent = loader.load();
             T ctrl = loader.getController();
             return new Pair<>(ctrl, parent);

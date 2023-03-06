@@ -15,12 +15,8 @@
  */
 package client.scenes;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import com.google.inject.Inject;
-
 import client.utils.ServerUtils;
+import com.google.inject.Inject;
 import commons.Quote;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -30,35 +26,29 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-public class QuoteOverviewCtrl implements Initializable {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class BoardOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
-    private ObservableList<Quote> data;
-
-    @FXML
-    private TableView<Quote> table;
-    @FXML
-    private TableColumn<Quote, String> colFirstName;
-    @FXML
-    private TableColumn<Quote, String> colLastName;
-    @FXML
-    private TableColumn<Quote, String> colQuote;
+//    private ObservableList<Board> data;
 
     /**
-     * to do
+     * Constructor to inject necessary classes into the controller
      * @param server
      * @param mainCtrl
      */
     @Inject
-    public QuoteOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
 
     /**
-     * to do
+     * Initialisation method initialising FXML objects
      * @param location
      * The location used to resolve relative paths for the root object, or
      * {@code null} if the location is not known.
@@ -69,26 +59,11 @@ public class QuoteOverviewCtrl implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        colFirstName.setCellValueFactory(q ->
-            new SimpleStringProperty(q.getValue().person.firstName));
-        colLastName.setCellValueFactory(q ->
-            new SimpleStringProperty(q.getValue().person.lastName));
-        colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().quote));
+        refresh();
     }
 
     /**
-     * to do
+     * Stub method for refreshing boards
      */
-    public void addQuote() {
-        mainCtrl.showAdd();
-    }
-
-    /**
-     * to do
-     */
-    public void refresh() {
-        var quotes = server.getQuotes();
-        data = FXCollections.observableList(quotes);
-        table.setItems(data);
-    }
+    public void refresh() {}
 }
