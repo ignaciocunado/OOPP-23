@@ -152,4 +152,13 @@ public final class Card {
         return Objects.hash(id, title, description, nestedTaskList, tags);
     }
 
+    /**
+     * To string method for a card
+     * @return a human readable string representing a card
+     */
+    @Override
+    public String toString() {
+        return "ID: " + id  + " Title: " + title + " Description: " + description + " Tasks: " +
+            nestedTaskList.toString() + " Tags: " + tags.toString();
+    }
 }

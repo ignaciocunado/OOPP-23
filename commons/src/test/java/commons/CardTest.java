@@ -84,4 +84,10 @@ class CardTest {
 
         assertNotEquals(card1, card2);
     }
+
+    @Test
+    public void testToString() {
+        assertEquals(card.toString(), "ID: 0 Title: Card Description: This is a card Tasks: " +
+            "[] Tags: []");
+    }
 }
