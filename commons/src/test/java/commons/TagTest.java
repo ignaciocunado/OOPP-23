@@ -31,6 +31,11 @@ public class TagTest {
 	}
 
 	@Test
+	public void emptyConstructorTest() {
+		new Tag();
+	}
+
+	@Test
 	public void getIdTest() {
 		assertEquals(tag.getId(), 0);
 	}
@@ -68,6 +73,6 @@ public class TagTest {
 
 	@Test
 	public void hasToString() {
-		assertEquals(tag.toString(), "<Tag id=0 name=Bugfix Colour=16744576>");
+		assertEquals(tag.toString(), "<Tag id=0 name=Bugfix colour=16744576>");
 	}
 }
