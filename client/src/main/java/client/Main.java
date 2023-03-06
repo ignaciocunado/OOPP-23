@@ -35,6 +35,7 @@ public class Main extends Application {
 
     /**
      * main
+     *
      * @param args
      * @throws URISyntaxException
      * @throws IOException
@@ -44,17 +45,20 @@ public class Main extends Application {
     }
 
     /**
-     * to do
+     * Loads the controllers and initialises the main controller
+     *
      * @param primaryStage the primary stage for this application, onto which
-     * the application scene can be set.
-     * Applications may create other stages, if needed, but they will not be
-     * primary stages.
+     *                     the application scene can be set.
+     *                     Applications may create other stages, if needed, but they will not be
+     *                     primary stages.
      * @throws IOException
      */
     @Override
     public void start(Stage primaryStage) throws IOException {
-        final Pair<LandingOverviewCtrl, Parent> landingOverview = FXML.load(LandingOverviewCtrl.class, "client", "scenes", "LandingOverview.fxml");
-        final Pair<BoardOverviewCtrl, Parent> boardOverview = FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
+        final Pair<LandingOverviewCtrl, Parent> landingOverview =
+                FXML.load(LandingOverviewCtrl.class, "client", "scenes", "LandingOverview.fxml");
+        final Pair<BoardOverviewCtrl, Parent> boardOverview =
+                FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, landingOverview, boardOverview);

@@ -17,7 +17,6 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import javafx.application.Platform;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
@@ -54,10 +53,19 @@ public class LandingOverviewCtrl implements Initializable {
         refresh();
     }
 
+    /**
+     * Swaps the current view to the boards
+     * and loads it with the board's information
+     */
     public void joinBoard() {
         this.mainCtrl.showBoardOverview();
     }
 
+    /**
+     * Swaps the current view to the boards
+     * creates that board, and loads that
+     * board's information
+     */
     public void createBoard() {
         this.mainCtrl.showBoardOverview();
     }
