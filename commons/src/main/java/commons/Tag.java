@@ -89,4 +89,8 @@ public final class Tag {
         return Objects.hash(id, name, colour);
     }
 
+    @Override
+    public String toString() {
+        return String.format("<Tag id=%d name=%s colour=%d>", this.id, this.name, this.colour);
+    }
 }
