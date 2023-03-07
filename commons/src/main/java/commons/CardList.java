@@ -80,6 +80,16 @@ public final class CardList {
     public boolean removeCard(Card card) {
         return cards.remove(card);
     }
+    /**
+     * Creates a human readable string representation of list
+     * @return human readable string of list
+     */
+    @Override
+    public String toString() {
+        return "List: title - " + getTitle() + ", id - " + getId() + ".";
+    }
+
+
 
     /**
      * Checks if the o Object is equal to the list
