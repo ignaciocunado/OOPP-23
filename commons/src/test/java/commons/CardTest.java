@@ -10,11 +10,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class CardTest {
     private Card card;
     private Tag tag;
+    private Task task;
 
     @BeforeEach
     public void setup() {
         card = new Card("Card", "This is a card");
         tag = new Tag("Tag", 69);
+        task = new Task("Tag", true);
     }
 
     @Test
@@ -65,7 +67,34 @@ class CardTest {
         ArrayList<Tag> tagsList = new ArrayList<>();
         tagsList.add(tag);
         assertEquals(1, card.getTags().size());
+        assertEquals(card.getTags().get(0), tag);
         assertEquals(card.getTags(), tagsList);
+    }
+
+    @Test
+    public void addTaskTest() {
+        card.addTask(task);
+        ArrayList<Task> taskList = new ArrayList<>();
+        taskList.add(task);
+        assertEquals(1, card.getNestedTaskList().size());
+        assertEquals(card.getNestedTaskList().get(0), task);
+        assertEquals(card.getNestedTaskList(), taskList);
+    }
+
+    @Test
+    public void removeTagTest() {
+        card.addTag(tag);
+        card.removeTag(tag);
+        assertEquals(0, card.getTags().size());
+        assertEquals(card.getTags(),new ArrayList<Tag>());
+    }
+
+    @Test
+    public void removeTaskTest() {
+        card.addTask(task);
+        card.removeTask(task);
+        assertEquals(0, card.getNestedTaskList().size());
+        assertEquals(card.getNestedTaskList(),new ArrayList<Task>());
     }
 
     @Test
