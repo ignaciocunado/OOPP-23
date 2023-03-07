@@ -116,4 +116,13 @@ public final class Board {
     public int hashCode() {
         return Objects.hash(id, key, password, listsOnBoard);
     }
+
+    /**
+     * To string method for the board
+     * @return a string representing the board class
+     */
+    @Override
+    public String toString() {
+        return String.format("<Board id=%d key=%s password=%s>", this.id, this.key, this.password);
+    }
 }
