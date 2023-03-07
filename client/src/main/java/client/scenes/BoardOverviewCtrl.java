@@ -59,4 +59,8 @@ public class BoardOverviewCtrl implements Initializable {
      * Stub method for refreshing boards
      */
     public void refresh() {}
+
+    public void closeApp() {
+
+    }
 }
