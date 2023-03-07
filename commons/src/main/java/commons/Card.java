@@ -158,7 +158,8 @@ public final class Card {
      */
     @Override
     public String toString() {
-        return "ID: " + id  + " Title: " + title + " Description: " + description + " Tasks: " +
-            nestedTaskList.toString() + " Tags: " + tags.toString();
+        return String.format("<Card id=%d title=%s description=%s>", this.id, this.title,
+            this.description);
+
     }
 }
