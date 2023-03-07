@@ -90,7 +90,7 @@ public final class Tag {
     }
 
     /**
-     * To string method for the tagg
+     * To string method for the tag
      * @return a string representing the tag class
      */
     @Override
