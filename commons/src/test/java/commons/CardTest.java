@@ -18,7 +18,7 @@ class CardTest {
     }
 
     @Test
-    public void emptyContstructorTest() {
+    public void emptyConstructorTest() {
         new Card();
     }
 
