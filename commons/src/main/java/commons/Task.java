@@ -85,4 +85,9 @@ public class Task {
         return Objects.hash(id, name, completed);
     }
 
+    @Override
+    public String toString() {
+        return String.format("<Task id=%d name=%s completed=%B>", this.id, this.name, this.completed);
+    }
+
 }
