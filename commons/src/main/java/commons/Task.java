@@ -85,4 +85,13 @@ public class Task {
         return Objects.hash(id, name, completed);
     }
 
+    /** toString method for the task class
+     * @return a human-readable string representing the task class
+     */
+    @Override
+    public String toString() {
+        return String.format("<Task id=%d name=%s completed=%B>",
+            this.id, this.name, this.completed);
+    }
+
 }
