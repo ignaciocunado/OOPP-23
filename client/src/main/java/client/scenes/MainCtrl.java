@@ -24,46 +24,48 @@ public class MainCtrl {
 
     private Stage primaryStage;
 
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
+    private LandingOverviewCtrl landingOverviewCtrl;
+    private Scene landingOverview;
 
-    private AddQuoteCtrl addCtrl;
-    private Scene add;
+    private BoardOverviewCtrl boardOverviewCtrl;
+    private Scene boardOverview;
 
     /**
-     * to do
-     * @param primaryStage
-     * @param overview
-     * @param add
+     * Initialize main controller with all FXML controllers
+     * @param primaryStage main stage for FXML views
+     * @param landingOverview the landing overview
+     * @param boardOverview the main board overview
      */
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add) {
+    public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
+            Pair<BoardOverviewCtrl, Parent> boardOverview) {
         this.primaryStage = primaryStage;
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
 
-        this.addCtrl = add.getKey();
-        this.add = new Scene(add.getValue());
+        this.landingOverviewCtrl = landingOverview.getKey();
+        this.landingOverview = new Scene(landingOverview.getValue());
 
-        showOverview();
+        this.boardOverviewCtrl = boardOverview.getKey();
+        this.boardOverview = new Scene(boardOverview.getValue());
+
+        showLandingOverview();
         primaryStage.show();
     }
 
     /**
-     * to do
+     * Shows the main landing overview scene
      */
-    public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
+    public void showLandingOverview() {
+        primaryStage.setTitle("Talio: Task List Organiser");
+        primaryStage.setScene(this.landingOverview);
+        landingOverviewCtrl.refresh();
     }
 
     /**
-     * to do
+     * Shows the main board overview scene
      */
-    public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(add);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    public void showBoardOverview() {
+        primaryStage.setTitle("Talio: Task List Organiser");
+        primaryStage.setScene(this.boardOverview);
+        boardOverviewCtrl.refresh();
     }
+
 }
