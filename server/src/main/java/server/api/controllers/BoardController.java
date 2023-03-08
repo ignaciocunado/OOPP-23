@@ -17,18 +17,12 @@ package server.api.controllers;
 
 import commons.Board;
 import commons.CardList;
-import commons.Quote;
-import commons.TextUtils;
+import server.services.TextService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.BoardRepository;
 import server.database.CardListRepository;
-import server.database.QuoteRepository;
-
-import javax.websocket.server.PathParam;
-import java.util.List;
-import java.util.Random;
 
 @RestController
 @RequestMapping("/api/board")
@@ -36,19 +30,21 @@ public class BoardController {
 
     private final BoardRepository boardRepo;
     private final CardListRepository cardListRepository;
+    private final TextService textService;
 
     /**
      * RestAPI Controller for the board route
      * @param boardRepo
      */
-    public BoardController(final BoardRepository boardRepo, final CardListRepository cardListRepository) {
+    public BoardController(final BoardRepository boardRepo, final CardListRepository cardListRepository, final TextService textService) {
         this.boardRepo = boardRepo;
         this.cardListRepository = cardListRepository;
+        this.textService = textService;
     }
 
     @PostMapping(path = { "", "/" })
     public ResponseEntity<Board> createBoard(@RequestBody final Board request) {
-        final String newKey = TextUtils.randomAlphanumericalString(10);
+        final String newKey = this.textService.randomAlphanumericalString(10);
         final Board board = new Board(newKey, request.getPassword());
         return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), 200);
     }
