@@ -62,13 +62,19 @@ public class BoardController {
 
     @PostMapping("/{id}/list")
     public ResponseEntity<Board> createList(@PathVariable final Integer id) {
-        final CardList list = new CardList("New List");
-        this.cardListRepository.save(list);
+        try {
+            final Board board = this.boardRepo.getById(id);
 
-        final Board board = this.boardRepo.getById(id);
-        board.getListsOnBoard().add(list);
-        this.boardRepo.save(board);
-        return new ResponseEntity<>(this.boardRepo.getById(id), new HttpHeaders(), 200);
+            final CardList list = new CardList("New List");
+            this.cardListRepository.save(list);
+
+            board.addList(list);
+            this.boardRepo.save(board);
+            return new ResponseEntity<>(this.boardRepo.getById(id), new HttpHeaders(), 200);
+        } catch (final JpaObjectRetrievalFailureException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Board not found", e);
+        }
     }
 
     @DeleteMapping("/{id}/list/{listId}")
