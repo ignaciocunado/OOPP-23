@@ -15,7 +15,6 @@
  */
 package server.database;
 
-import commons.Board;
 import commons.CardList;
 import org.springframework.data.jpa.repository.JpaRepository;
 
