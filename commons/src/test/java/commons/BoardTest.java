@@ -72,6 +72,16 @@ class BoardTest {
     }
 
     @Test
+    public void removeListByIdTest() {
+        CardList l1 = new CardList("cardList");
+        board.addList(l1);
+        List<CardList> listsOnBoard = new ArrayList<>();
+        board.removeListById(0);
+        assertEquals(0, board.getListsOnBoard().size());
+        assertEquals(board.getListsOnBoard(), listsOnBoard);
+    }
+
+    @Test
     public void equalsHashCodeTest() {
         Board b1 = new Board("BoardEquals", "pword");
         Board b2 = new Board("BoardEquals", "pword");

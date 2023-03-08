@@ -17,12 +17,17 @@ package server.api.controllers;
 
 import commons.Board;
 import commons.CardList;
+import org.springframework.http.HttpStatus;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
+import org.springframework.web.server.ResponseStatusException;
 import server.services.TextService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.BoardRepository;
 import server.database.CardListRepository;
+
+import javax.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/api/board")
@@ -34,6 +39,7 @@ public class BoardController {
 
     /**
      * RestAPI Controller for the board route
+     *
      * @param boardRepo
      */
     public BoardController(final BoardRepository boardRepo, final CardListRepository cardListRepository, final TextService textService) {
@@ -42,7 +48,7 @@ public class BoardController {
         this.textService = textService;
     }
 
-    @PostMapping(path = { "", "/" })
+    @PostMapping(path = {"", "/"})
     public ResponseEntity<Board> createBoard(@RequestBody final Board request) {
         final String newKey = this.textService.randomAlphanumericalString(10);
         final Board board = new Board(newKey, request.getPassword());
@@ -63,6 +69,23 @@ public class BoardController {
         board.getListsOnBoard().add(list);
         this.boardRepo.save(board);
         return new ResponseEntity<>(this.boardRepo.getById(id), new HttpHeaders(), 200);
+    }
+
+    @DeleteMapping("/{id}/list/{listId}")
+    public ResponseEntity<Board> deleteList(@PathVariable final Integer id, @PathVariable final Integer listId) {
+        try {
+            final Board board = this.boardRepo.getById(id);
+            if (!board.removeListById(listId)) {
+                throw new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "List not found");
+            }
+
+            this.cardListRepository.deleteById(listId);
+            return new ResponseEntity<>(board, new HttpHeaders(), 200);
+        } catch (final JpaObjectRetrievalFailureException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Board not found", e);
+        }
     }
 
 }

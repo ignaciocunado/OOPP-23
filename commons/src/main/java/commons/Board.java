@@ -94,6 +94,15 @@ public final class Board {
     }
 
     /**
+     * Removes a given CardList from this board
+     * @param id the id of the CardList to be deleted
+     * @return boolean for whether the CardList has been deleted successfully
+     */
+    public boolean removeListById(final int id) {
+        return this.listsOnBoard.removeIf(cardList -> cardList.getId() == id);
+    }
+
+    /**
      * Equals method
      * @param o the object to compare
      * @return whether the two objects are equal
