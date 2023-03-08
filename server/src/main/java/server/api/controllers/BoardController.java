@@ -57,7 +57,12 @@ public class BoardController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Board> getBoard(@PathVariable final Integer id) {
-        return new ResponseEntity<>(this.boardRepo.getById(id), new HttpHeaders(), 200);
+        try {
+            return new ResponseEntity<>(this.boardRepo.getById(id), new HttpHeaders(), 200);
+        } catch (final JpaObjectRetrievalFailureException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Board not found", e);
+        }
     }
 
     @PostMapping("/{id}/list")
