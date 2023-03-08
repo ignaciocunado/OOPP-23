@@ -53,6 +53,7 @@ public class BoardOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh();
+
     }
 
     /**
@@ -61,6 +62,18 @@ public class BoardOverviewCtrl implements Initializable {
     public void refresh() {}
 
     public void closeApp() {
+
+    }
+
+    public void listSetTitle() {
+
+    }
+
+    public void addList() {
+
+    }
+
+    public void deleteList() {
 
     }
 }

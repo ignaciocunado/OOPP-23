@@ -68,4 +68,15 @@ public class MainCtrl {
         boardOverviewCtrl.refresh();
     }
 
+    public void listSetTitle() {
+
+    }
+
+    public void addList() {
+
+    }
+
+    public void deleteList() {
+
+    }
 }
