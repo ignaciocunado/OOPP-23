@@ -60,6 +60,13 @@ public final class Board {
     }
 
     /**
+     * Sets the id of the board
+     */
+    public void setId(final int id) {
+        this.id = id;
+    }
+
+    /**
      * Sets the password for the board
      * @param password the new password
      */
@@ -112,7 +119,7 @@ public final class Board {
         if (this == o) return true;
         if (!(o instanceof Board)) return false;
         Board board = (Board) o;
-        return id == board.id && key == board.key &&
+        return id == board.id && Objects.equals(key, board.key) &&
             Objects.equals(password, board.password) &&
             Objects.equals(listsOnBoard, board.listsOnBoard);
     }

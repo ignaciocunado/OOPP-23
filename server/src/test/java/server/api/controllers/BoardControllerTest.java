@@ -1,84 +1,102 @@
-/*
- * Copyright 2021 Delft University of Technology
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package server.api.controllers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
-import java.util.Random;
-
+import commons.Board;
+import commons.CardList;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.server.ResponseStatusException;
+import server.api.repositories.TestBoardRepository;
+import server.api.repositories.TestCardListRepository;
+import server.api.services.TestTextService;
+import server.services.TextService;
 
-import commons.Person;
-import commons.Quote;
-import server.api.repositories.TestQuoteRepository;
+public final class BoardControllerTest {
 
-public class QuoteControllerTest {
+    private TextService textService;
+    private TestBoardRepository boardRepo;
+    private TestCardListRepository cardRepo;
 
-    public int nextInt;
-    private MyRandom random;
-    private TestQuoteRepository repo;
-
-    private QuoteController sut;
+    private BoardController boardController;
 
     @BeforeEach
     public void setup() {
-        random = new MyRandom();
-        repo = new TestQuoteRepository();
-        sut = new QuoteController(random, repo);
+        this.textService = new TestTextService();
+        this.boardRepo = new TestBoardRepository();
+        this.cardRepo = new TestCardListRepository();
+        this.boardController = new BoardController(this.boardRepo, this.cardRepo,this.textService);
     }
 
     @Test
-    public void cannotAddNullPerson() {
-        var actual = sut.add(getQuote(null));
-        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    public void createBoardTest() {
+        this.boardController.createBoard(new Board("", "password"));
+        final Board board = new Board("aaaaaaaaaa", "password");
+        board.setId(1);
+
+        Assertions.assertEquals(this.boardRepo.getById(1), board);
     }
 
     @Test
-    public void randomSelection() {
-        sut.add(getQuote("q1"));
-        sut.add(getQuote("q2"));
-        nextInt = 1;
-        var actual = sut.getRandom();
+    public void getBoardTest() {
+        this.boardRepo.save(new Board("aaaaaaaaab", "password"));
+        final Board board = new Board("aaaaaaaaaa", "password");
+        this.boardRepo.save(board);
+        this.boardRepo.save(new Board("aaaaaaaaac", "password"));
+        this.boardRepo.save(new Board("aaaaaaaaad", "password"));
 
-        assertTrue(random.wasCalled);
-        assertEquals("q2", actual.getBody().quote);
+        board.setId(2);
+        Assertions.assertEquals(this.boardController.getBoard(2).getBody(), board);
     }
 
     @Test
-    public void databaseIsUsed() {
-        sut.add(getQuote("q1"));
-        repo.calledMethods.contains("save");
+    public void getBoardNotFoundTest() {
+        this.boardRepo.save(new Board("aaaaaaaaab", "password"));
+        this.boardRepo.save(new Board("aaaaaaaaac", "password"));
+        this.boardRepo.save(new Board("aaaaaaaaad", "password"));
+
+        Assertions.assertThrows(ResponseStatusException.class, () -> {
+            this.boardController.getBoard(100);
+        });
     }
 
-    private static Quote getQuote(String q) {
-        return new Quote(new Person(q, q), q);
+    @Test
+    public void createListTest() {
+        this.boardRepo.save(new Board("aaaaaaaaab", "password"));
+        this.boardController.createList(1);
+        Assertions.assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() > 0);
     }
 
-    @SuppressWarnings("serial")
-    public class MyRandom extends Random {
-
-        public boolean wasCalled = false;
-
-        @Override
-        public int nextInt(int bound) {
-            wasCalled = true;
-            return nextInt;
-        }
+    @Test
+    public void createListNotFoundTest() {
+        Assertions.assertThrows(ResponseStatusException.class, () -> {
+            this.boardController.createList(1);
+        });
     }
+
+    @Test
+    public void deleteListTest() {
+        this.boardRepo.save(new Board("aaaaaaaaab", "password"));
+        final CardList list = this.boardController.createList(1).getBody().getListsOnBoard().get(0);
+
+        Assertions.assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() > 0);
+        this.boardController.deleteList(1, list.getId());
+        Assertions.assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() == 0);
+    }
+
+    @Test
+    public void deleteListNotFoundBoardTest() {
+        Assertions.assertThrows(ResponseStatusException.class, () -> {
+            this.boardController.deleteList(1, 1);
+        });
+    }
+
+    @Test
+    public void deleteListNotFoundListTest() {
+        this.boardRepo.save(new Board("aaaaaaaaab", "password"));
+
+        Assertions.assertThrows(ResponseStatusException.class, () -> {
+            this.boardController.deleteList(1, 1000);
+        });
+    }
+
 }

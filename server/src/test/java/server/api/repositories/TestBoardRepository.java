@@ -15,205 +15,188 @@
  */
 package server.api.repositories;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-
+import commons.Board;
+import commons.Quote;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
-
-import commons.Quote;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
+import server.database.BoardRepository;
 import server.database.QuoteRepository;
 
-public class TestQuoteRepository implements QuoteRepository {
+import javax.persistence.EntityNotFoundException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
-    public final List<Quote> quotes = new ArrayList<>();
-    public final List<String> calledMethods = new ArrayList<>();
+public final class TestBoardRepository implements BoardRepository {
 
-    private void call(String name) {
-        calledMethods.add(name);
+    private int nextInt = 0;
+    public final List<Board> boards = new ArrayList<>();
+
+    @Override
+    public List<Board> findAll() {
+        return this.boards;
     }
 
     @Override
-    public List<Quote> findAll() {
-        calledMethods.add("findAll");
-        return quotes;
-    }
-
-    @Override
-    public List<Quote> findAll(Sort sort) {
-        // TODO Auto-generated method stub
+    public List<Board> findAll(Sort sort) {
         return null;
     }
 
     @Override
-    public List<Quote> findAllById(Iterable<Long> ids) {
-        // TODO Auto-generated method stub
+    public Page<Board> findAll(Pageable pageable) {
         return null;
     }
 
     @Override
-    public <S extends Quote> List<S> saveAll(Iterable<S> entities) {
-        // TODO Auto-generated method stub
+    public List<Board> findAllById(Iterable<Integer> integers) {
         return null;
-    }
-
-    @Override
-    public void flush() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public <S extends Quote> S saveAndFlush(S entity) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Quote> List<S> saveAllAndFlush(Iterable<S> entities) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void deleteAllInBatch(Iterable<Quote> entities) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void deleteAllByIdInBatch(Iterable<Long> ids) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void deleteAllInBatch() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public Quote getOne(Long id) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Quote getById(Long id) {
-        call("getById");
-        return find(id).get();
-    }
-
-    private Optional<Quote> find(Long id) {
-        return quotes.stream().filter(q -> q.id == id).findFirst();
-    }
-
-    @Override
-    public <S extends Quote> List<S> findAll(Example<S> example) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Quote> List<S> findAll(Example<S> example, Sort sort) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Page<Quote> findAll(Pageable pageable) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Quote> S save(S entity) {
-        call("save");
-        entity.id = (long) quotes.size();
-        quotes.add(entity);
-        return entity;
-    }
-
-    @Override
-    public Optional<Quote> findById(Long id) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean existsById(Long id) {
-        call("existsById");
-        return find(id).isPresent();
     }
 
     @Override
     public long count() {
-        return quotes.size();
+        return this.boards.size();
     }
 
     @Override
-    public void deleteById(Long id) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void delete(Quote entity) {
-        // TODO Auto-generated method stub
+    public void deleteById(Integer integer) {
 
     }
 
     @Override
-    public void deleteAllById(Iterable<? extends Long> ids) {
-        // TODO Auto-generated method stub
+    public void delete(Board entity) {
 
     }
 
     @Override
-    public void deleteAll(Iterable<? extends Quote> entities) {
-        // TODO Auto-generated method stub
+    public void deleteAllById(Iterable<? extends Integer> integers) {
+
+    }
+
+    @Override
+    public void deleteAll(Iterable<? extends Board> entities) {
 
     }
 
     @Override
     public void deleteAll() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
-    public <S extends Quote> Optional<S> findOne(Example<S> example) {
-        // TODO Auto-generated method stub
+    public <S extends Board> S save(S entity) {
+        nextInt++;
+        for (final Board board : boards) {
+            if (board.getId() == entity.getId()) {
+                board.setPassword(entity.getPassword());
+            }
+        }
+
+        final Board board = new Board(entity.getKey(), entity.getPassword());
+        board.setId(nextInt);
+
+        this.boards.add(board);
+        return (S) board;
+    }
+
+    @Override
+    public <S extends Board> List<S> saveAll(Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public <S extends Quote> Page<S> findAll(Example<S> example, Pageable pageable) {
-        // TODO Auto-generated method stub
+    public Optional<Board> findById(Integer integer) {
+        return this.find(integer);
+    }
+
+    @Override
+    public boolean existsById(Integer integer) {
+        return this.find(integer).isPresent();
+    }
+
+    @Override
+    public void flush() {
+
+    }
+
+    @Override
+    public <S extends Board> S saveAndFlush(S entity) {
         return null;
     }
 
     @Override
-    public <S extends Quote> long count(Example<S> example) {
-        // TODO Auto-generated method stub
+    public <S extends Board> List<S> saveAllAndFlush(Iterable<S> entities) {
+        return null;
+    }
+
+    @Override
+    public void deleteAllInBatch(Iterable<Board> entities) {
+
+    }
+
+    @Override
+    public void deleteAllByIdInBatch(Iterable<Integer> integers) {
+
+    }
+
+    @Override
+    public void deleteAllInBatch() {
+
+    }
+
+    @Override
+    public Board getOne(Integer integer) {
+        return null;
+    }
+
+    @Override
+    public Board getById(Integer integer) {
+        final Optional<Board> boardOpt = find(integer);
+        if (!boardOpt.isPresent()) throw new JpaObjectRetrievalFailureException(new EntityNotFoundException());
+        return boardOpt.get();
+    }
+
+    private Optional<Board> find(final int id) {
+        return this.boards.stream().filter(b -> b.getId() == id).findFirst();
+    }
+
+    @Override
+    public <S extends Board> Optional<S> findOne(Example<S> example) {
+        return Optional.empty();
+    }
+
+    @Override
+    public <S extends Board> List<S> findAll(Example<S> example) {
+        return null;
+    }
+
+    @Override
+    public <S extends Board> List<S> findAll(Example<S> example, Sort sort) {
+        return null;
+    }
+
+    @Override
+    public <S extends Board> Page<S> findAll(Example<S> example, Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public <S extends Board> long count(Example<S> example) {
         return 0;
     }
 
     @Override
-    public <S extends Quote> boolean exists(Example<S> example) {
-        // TODO Auto-generated method stub
+    public <S extends Board> boolean exists(Example<S> example) {
         return false;
     }
 
     @Override
-    public <S extends Quote, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
-        // TODO Auto-generated method stub
+    public <S extends Board, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
 }
