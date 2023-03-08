@@ -13,11 +13,13 @@ public class CardController {
 
     private CardService cardService;
     private final Random random;
+    private final QuoteRepository quoteRepository;
 
 
-    public CardController(CardService cardServicem, Random random) {
+    public CardController(CardService cardServicem, Random random, QuoteRepository quoteRepository) {
         this.cardService = cardService;
         this.random = random;
+        this.quoteRepository = quoteRepository;
     }
     /**
      * to do
