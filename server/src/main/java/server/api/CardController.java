@@ -1,10 +1,12 @@
 package server.api;
 
 import commons.Card;
-import org.springframework.stereotype.Controller;
+import commons.Tag;
+import commons.Task;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.database.QuoteRepository;
-
+import server.database.CardRepository;
 import java.util.Random;
 
 @RestController
@@ -13,13 +15,13 @@ public class CardController {
 
     private CardService cardService;
     private final Random random;
-    private final QuoteRepository quoteRepository;
+    private final CardRepository cardRepository;
 
 
-    public CardController(CardService cardServicem, Random random, QuoteRepository quoteRepository) {
+    public CardController(CardService cardService, Random random, CardRepository cardRepository) {
         this.cardService = cardService;
         this.random = random;
-        this.quoteRepository = quoteRepository;
+        this.cardRepository = cardRepository;
     }
     /**
      * to do
@@ -27,7 +29,7 @@ public class CardController {
      * @return
      */
     @PatchMapping("/{id}")
-    public int editCard(@PathVariable int id) {
+    public int editCard(@PathVariable int id, @RequestBody Card card) {
 
     }
 
@@ -35,8 +37,12 @@ public class CardController {
      * to do
      * @return to do
      */
-    @PostMapping("/tag")
-    public int createTag() {
+    @PostMapping("/{id}/tag")
+    public ResponseEntity<Tag> createTag(@PathVariable int id, @RequestBody Tag tag) {
+        if(tag.getName() != null || tag.getColour() < 0){
+            return ResponseEntity.badRequest().build();
+        }
+        cardRepository.findById(id).get().addTag(tag);
 
     }
 
@@ -44,8 +50,8 @@ public class CardController {
      * to do
      * @return to do
      */
-    @DeleteMapping("/tag")
-    public int deleteTag() {
+    @DeleteMapping("/{id}/tag")
+    public int deleteTag(@PathVariable int id, ) {
 
     }
 
@@ -53,17 +59,20 @@ public class CardController {
      * to do
      * @return to do
      */
-    @PostMapping("task")
-    public int createTask(){
-
+    @PostMapping("/{id}/task")
+    public ResponseEntity<Task> createTask(@PathVariable int id, @RequestBody Task task){
+        if(task.getId() < 0 || task.getName() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        cardRepository.findById(id).get().addTask(task);
     }
 
     /**
      * to do
      * @return to do
      */
-    @DeleteMapping("task")
-    public int deleteTask() {
+    @DeleteMapping("/{id}/task")
+    public int deleteTask(@PathVariable int id, ) {
 
     }
 
