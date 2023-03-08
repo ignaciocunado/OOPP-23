@@ -25,7 +25,7 @@ public class TextService {
      * @param n the length of the randomly generated string
      * @return random string
      */
-    public String randomString(final int n, final String src) {
+    private String randomString(final int n, final String src) {
         return this.random.ints(n,0,src.length()).mapToObj(number -> String.valueOf(src.charAt(number))).collect(Collectors.joining());
     }
 
