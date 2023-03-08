@@ -40,7 +40,7 @@ public class CardController {
         if(!cardRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
-
+        return new ResponseEntity<>(cardRepository.getById(id), new HttpHeaders(), 200);
     }
 
     /**
