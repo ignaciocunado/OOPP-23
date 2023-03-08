@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.*;
 import server.database.BoardRepository;
 import server.database.CardListRepository;
 
-import javax.persistence.EntityNotFoundException;
-
 @RestController
 @RequestMapping("/api/board")
 public class BoardController {
