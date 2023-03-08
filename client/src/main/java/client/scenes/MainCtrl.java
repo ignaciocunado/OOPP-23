@@ -18,6 +18,7 @@ package client.scenes;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
 public class MainCtrl {
@@ -46,6 +47,7 @@ public class MainCtrl {
         this.boardOverviewCtrl = boardOverview.getKey();
         this.boardOverview = new Scene(boardOverview.getValue());
 
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         showLandingOverview();
         primaryStage.show();
     }
@@ -68,15 +70,18 @@ public class MainCtrl {
         boardOverviewCtrl.refresh();
     }
 
-    public void listSetTitle() {
-
+    /**
+     * Method to close the app
+     */
+    public void closeApp() {
+        System.exit(0);
     }
 
-    public void addList() {
-
+    /**
+     * Method to minimize the current window
+     */
+    public void minimizeWindow() {
+        primaryStage.setIconified(true);
     }
 
-    public void deleteList() {
-
-    }
 }

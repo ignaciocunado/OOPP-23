@@ -18,7 +18,6 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.Initializable;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -61,8 +60,18 @@ public class BoardOverviewCtrl implements Initializable {
      */
     public void refresh() {}
 
+    /**
+     * Method to close the app
+     */
     public void closeApp() {
+        mainCtrl.closeApp();
+    }
 
+    /**
+     * Method to minimize the app
+     */
+    public void minimizeApp() {
+        mainCtrl.minimizeWindow();
     }
 
     public void listSetTitle() {
