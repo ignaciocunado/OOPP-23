@@ -3,15 +3,21 @@ package server.api;
 import commons.Card;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import server.database.QuoteRepository;
 
-@Controller
+import java.util.Random;
+
+@RestController
 @RequestMapping("/card")
 public class CardController {
 
     private CardService cardService;
+    private final Random random;
 
-    public CardController(CardService cardService) {
+
+    public CardController(CardService cardServicem, Random random) {
         this.cardService = cardService;
+        this.random = random;
     }
     /**
      * to do
