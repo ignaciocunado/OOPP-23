@@ -61,6 +61,7 @@ public final class Board {
 
     /**
      * Sets the id of the board
+     * @param id
      */
     public void setId(final int id) {
         this.id = id;

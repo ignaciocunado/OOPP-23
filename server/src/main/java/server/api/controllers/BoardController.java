@@ -37,15 +37,23 @@ public class BoardController {
 
     /**
      * RestAPI Controller for the board route
-     *
-     * @param boardRepo
+     * @param boardRepo repository for boards
+     * @param cardListRepository repository for cards
+     * @param textService service for generating random keys
      */
-    public BoardController(final BoardRepository boardRepo, final CardListRepository cardListRepository, final TextService textService) {
+    public BoardController(final BoardRepository boardRepo,
+                           final CardListRepository cardListRepository,
+                           final TextService textService) {
         this.boardRepo = boardRepo;
         this.cardListRepository = cardListRepository;
         this.textService = textService;
     }
 
+    /**
+     * Handler for creating board
+     * @param request the board payload
+     * @return the created board
+     */
     @PostMapping(path = {"", "/"})
     public ResponseEntity<Board> createBoard(@RequestBody final Board request) {
         final String newKey = this.textService.randomAlphanumericalString(10);
@@ -53,6 +61,11 @@ public class BoardController {
         return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), 200);
     }
 
+    /**
+     * Handler for getting the board
+     * @param id the board id
+     * @return the board
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Board> getBoard(@PathVariable final Integer id) {
         try {
@@ -63,6 +76,11 @@ public class BoardController {
         }
     }
 
+    /**
+     * Handler for creating the list in a board
+     * @param id the board to create a list for
+     * @return the board with its new list
+     */
     @PostMapping("/{id}/list")
     public ResponseEntity<Board> createList(@PathVariable final Integer id) {
         try {
@@ -80,8 +98,15 @@ public class BoardController {
         }
     }
 
+    /**
+     * Handler for deleting the list of a board
+     * @param id the board id
+     * @param listId the list id to delete
+     * @return the board without the list
+     */
     @DeleteMapping("/{id}/list/{listId}")
-    public ResponseEntity<Board> deleteList(@PathVariable final Integer id, @PathVariable final Integer listId) {
+    public ResponseEntity<Board> deleteList(@PathVariable final Integer id,
+                                            @PathVariable final Integer listId) {
         try {
             final Board board = this.boardRepo.getById(id);
             if (!board.removeListById(listId)) {
