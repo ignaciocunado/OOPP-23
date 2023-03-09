@@ -10,7 +10,6 @@ import server.database.CardRepository;
 import server.database.TagRepository;
 import server.database.TaskRepository;
 
-import java.util.Random;
 
 @RestController
 @RequestMapping("/api/card")
