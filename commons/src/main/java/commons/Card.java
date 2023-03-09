@@ -46,6 +46,14 @@ public final class Card {
     }
 
     /**
+     * setter for id
+     * @param id new id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for the title of a card
      * @return title of a card
      */
