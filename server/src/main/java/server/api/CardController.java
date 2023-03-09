@@ -15,21 +15,18 @@ import server.database.TaskRepository;
 @RequestMapping("/api/card")
 public class CardController {
 
-    private final CardService cardService;
     private final CardRepository cardRepository;
     private final TagRepository tagRepository;
     private final TaskRepository taskRepository;
 
     /**
      * Constructor
-     * @param cardService
-     * @param cardRepository
-     * @param tagRepository
-     * @param taskRepository
+     * @param cardRepository card DB
+     * @param tagRepository tag DB
+     * @param taskRepository task DB
      */
-    public CardController(final CardService cardService, final CardRepository cardRepository,
-                          final TagRepository tagRepository, final TaskRepository taskRepository) {
-        this.cardService = cardService;
+    public CardController(final CardRepository cardRepository, final TagRepository tagRepository,
+                          final TaskRepository taskRepository) {
         this.cardRepository = cardRepository;
         this.tagRepository = tagRepository;
         this.taskRepository = taskRepository;
@@ -49,8 +46,7 @@ public class CardController {
         }
         Card toEdit = cardRepository.getById(id);
         toEdit.setTitle(newTitle);
-        cardRepository.save(toEdit);
-        return new ResponseEntity<>(cardRepository.getById(id), new HttpHeaders(), 200);
+        return new ResponseEntity<>(cardRepository.save(toEdit), new HttpHeaders(), 200);
     }
 
     /**
@@ -67,8 +63,7 @@ public class CardController {
         }
         Card toEdit = cardRepository.getById(id);
         toEdit.setDescription(newDescription);
-        cardRepository.save(toEdit);
-        return new ResponseEntity<>(cardRepository.getById(id), new HttpHeaders(), 200);
+        return new ResponseEntity<>(cardRepository.save(toEdit), new HttpHeaders(), 200);
     }
 
     /**
@@ -85,10 +80,9 @@ public class CardController {
         }
         Card containsNewTag = cardRepository.getById(id);
         containsNewTag.addTag(tag);
-        cardRepository.save(containsNewTag);
         tagRepository.save(tag);
-        return new ResponseEntity(cardRepository.getById(id), new HttpHeaders(), 200);
-
+        return new ResponseEntity(cardRepository.save(containsNewTag), new HttpHeaders(),
+            200);
     }
 
     /**
@@ -128,9 +122,8 @@ public class CardController {
         }
         Card containsTask = cardRepository.getById(id);
         containsTask.addTask(task);
-        cardRepository.save(containsTask);
         taskRepository.save(task);
-        return new ResponseEntity(cardRepository.getById(id), new HttpHeaders(), 200);
+        return new ResponseEntity(cardRepository.save(containsTask), new HttpHeaders(), 200);
     }
 
     /**

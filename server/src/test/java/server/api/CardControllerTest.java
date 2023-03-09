@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CardControllerTest {
 
-    private CardService service;
     private CardRepositoryTest cardRepo;
     private TagRepositoryTest tagRepo;
     private TaskRepositoryTest taskRepo;
@@ -20,11 +19,10 @@ class CardControllerTest {
 
     @BeforeEach
     public void setup() {
-        service = new CardService();
         cardRepo = new CardRepositoryTest();
         tagRepo = new TagRepositoryTest();
         taskRepo = new TaskRepositoryTest();
-        controller = new CardController(service, cardRepo,tagRepo,taskRepo);
+        controller = new CardController(cardRepo,tagRepo,taskRepo);
     }
 
     @Test
@@ -67,6 +65,16 @@ class CardControllerTest {
     }
 
     @Test
+    public void createTagFaultyTest() {
+        cardRepo.save(new Card("Study ADS", "Weblav"));
+        Tag faulty1 = new Tag(null, 23);
+        assertEquals(ResponseEntity.badRequest().build(), controller.createTag(0, faulty1));
+        faulty1.setName("");
+        faulty1.setColour(-5);
+        assertEquals(ResponseEntity.badRequest().build(), controller.createTag(0, faulty1));
+    }
+
+    @Test
     public void deleteTagTest() {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
         this.controller.createTag(0, new Tag("ADS", 0));
@@ -83,6 +91,14 @@ class CardControllerTest {
     }
 
     @Test
+    public void deleteTagNotInACard() {
+        cardRepo.save(new Card("Study ADS", "Do weblab"));
+        cardRepo.save(new Card("Study OOPP", "Do Git"));
+        this.controller.createTag(0, new Tag("ADS", 0));
+        assertEquals(ResponseEntity.badRequest().build(), controller.deleteTag(1,0));
+    }
+
+    @Test
     public void createTaskTest() {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
         this.controller.createTask(0, new Task("ADS", false));
@@ -91,6 +107,12 @@ class CardControllerTest {
         assertEquals(task, taskRepo.getById(0));
     }
 
+    @Test
+    public void createTaskFaultyTest() {
+        cardRepo.save(new Card("Study ADS", "Weblav"));
+        Task faulty1 = new Task(null, false);
+        assertEquals(ResponseEntity.badRequest().build(), controller.createTask(0, faulty1));
+    }
 
     @Test
     public void deleteTaskTest() {
@@ -106,5 +128,13 @@ class CardControllerTest {
     @Test
     public void deleteTaskNotFoundTest() {
         assertEquals(ResponseEntity.badRequest().build(), controller.deleteTask(0,15));
+    }
+
+    @Test
+    public void deleteTaskNotInACard() {
+        cardRepo.save(new Card("Study ADS", "Do weblab"));
+        cardRepo.save(new Card("Study OOPP", "Do Git"));
+        this.controller.createTask(0, new Task("OOPP", true));
+        assertEquals(ResponseEntity.badRequest().build(), controller.deleteTask(1,0));
     }
 }
