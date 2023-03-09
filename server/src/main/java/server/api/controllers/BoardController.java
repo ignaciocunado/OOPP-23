@@ -71,7 +71,7 @@ public class BoardController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Board> getBoard(@PathVariable final Integer id) {
-        if (this.boardRepo.existsById(id)) {
+        if (!this.boardRepo.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
 
@@ -86,7 +86,7 @@ public class BoardController {
      */
     @PostMapping("/{id}/list")
     public ResponseEntity<Board> createList(@PathVariable final Integer id) {
-        if (this.boardRepo.existsById(id)) {
+        if (!this.boardRepo.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
         final Board board = this.boardRepo.getById(id);
@@ -108,7 +108,7 @@ public class BoardController {
     @DeleteMapping("/{id}/list/{listId}")
     public ResponseEntity<Board> deleteList(@PathVariable final Integer id,
                                             @PathVariable final Integer listId) {
-        if (this.boardRepo.existsById(id)) {
+        if (!this.boardRepo.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
 
