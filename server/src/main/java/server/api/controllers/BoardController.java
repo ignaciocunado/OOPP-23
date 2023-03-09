@@ -18,8 +18,6 @@ package server.api.controllers;
 import commons.Board;
 import commons.CardList;
 import org.springframework.http.HttpStatus;
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
-import org.springframework.web.server.ResponseStatusException;
 import server.services.TextService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
