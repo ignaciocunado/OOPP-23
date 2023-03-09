@@ -17,7 +17,15 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import javafx.event.Event;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -26,10 +34,23 @@ public class BoardOverviewCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
-//    private ObservableList<Board> data;
 
+//    private ObservableList<Board> data;
+    @FXML
+    private Pane root;
+
+    @FXML
+    private HBox hbox;
+    @FXML
+    private FXMLLoader loader;
+
+//    @FXML
+//    private ArrayList<Pane> lists;
+
+    private String hoverId;
     /**
      * Constructor to inject necessary classes into the controller
+     *
      * @param server
      * @param mainCtrl
      */
@@ -51,6 +72,7 @@ public class BoardOverviewCtrl implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        hbox.setSpacing(10);
         refresh();
     }
 
@@ -72,4 +94,28 @@ public class BoardOverviewCtrl implements Initializable {
     public void minimizeApp() {
         mainCtrl.minimizeWindow();
     }
+
+    public void addList() {
+        try {
+            loader = new FXMLLoader(getClass().getResource("ListTemplate.fxml"));
+            Pane newList = (Pane)loader.load();
+            hbox.getChildren().add(newList);
+            //newList.setId(String.valueOf(hbox.getChildren().indexOf(newList)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void removeList() {
+        Pane toBeRemoved = (Pane) hbox.getChildren().get(Integer.parseInt(hoverId));
+        hbox.getChildren().remove(toBeRemoved);
+    }
+    public void getParentId(Event event){
+        Button btn = null;
+        if (event.getSource().getClass() == btn.getClass()) {
+            btn = (Button) event.getSource();
+            Pane parent = (Pane) btn.getParent();
+            hoverId = parent.getId();
+        }
+    }
+
 }
