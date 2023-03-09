@@ -135,7 +135,8 @@ public class BoardOverviewCtrl implements Initializable {
         newList.setMinWidth(250);
         newList.setMaxHeight(550);
         newList.setStyle("-fx-background-color: rgb(35,69,103); -fx-border-radius: 15; " +
-            "-fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.7), 10, 0, 0, 0);");
+            "-fx-background-radius: 15; -" +
+            "fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.7), 10, 0, 0, 0);");
         return newList;
     }
 
@@ -157,8 +158,8 @@ public class BoardOverviewCtrl implements Initializable {
         addButton.setText("+");
         addButton.setTextAlignment(TextAlignment.CENTER);
         addButton.setTextFill(Color.WHITE);
-        Font fAdd = new Font(25);
-        addButton.setFont(fAdd);
+        Font fontAdd = new Font(25);
+        addButton.setFont(fontAdd);
         return addButton;
     }
 
