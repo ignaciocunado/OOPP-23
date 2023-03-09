@@ -17,7 +17,6 @@ import java.util.Random;
 public class CardController {
 
     private final CardService cardService;
-    private final Random random;
     private final CardRepository cardRepository;
     private final TagRepository tagRepository;
     private final TaskRepository taskRepository;
@@ -25,16 +24,13 @@ public class CardController {
     /**
      * Constructor
      * @param cardService
-     * @param random
      * @param cardRepository
      * @param tagRepository
      * @param taskRepository
      */
-    public CardController(final CardService cardService, Random random,
-                          final CardRepository cardRepository,
+    public CardController(final CardService cardService, final CardRepository cardRepository,
                           final TagRepository tagRepository, final TaskRepository taskRepository) {
         this.cardService = cardService;
-        this.random = random;
         this.cardRepository = cardRepository;
         this.tagRepository = tagRepository;
         this.taskRepository = taskRepository;
