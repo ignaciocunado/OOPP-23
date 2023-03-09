@@ -41,16 +41,38 @@ public class CardController {
     }
 
     /**
-     * to do
-     * @param id to do
-     * @param card to do
-     * @return to do
+     * edits the title of a Card iff it exists
+     * @param id id of the Card to edit
+     * @param newTitle the new title for the Card
+     * @return ResponseEntity for status
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<Card> editCard(@PathVariable final int id, @RequestBody Card card) {
+    public ResponseEntity<Card> editCardTitle(@PathVariable final int id,
+                                          @RequestBody String newTitle) {
         if(!cardRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
+        Card toEdit = cardRepository.getById(id);
+        toEdit.setTitle(newTitle);
+        cardRepository.save(toEdit);
+        return new ResponseEntity<>(cardRepository.getById(id), new HttpHeaders(), 200);
+    }
+
+    /**
+     * edits the description of a Card iff it exists
+     * @param id id of the Card to edit
+     * @param newDescription the new description for the Card
+     * @return ResponseEntity for status
+     */
+    @PatchMapping("/{id}")
+    public ResponseEntity<Card> editCardDescription(@PathVariable final int id,
+                                          @RequestBody String newDescription) {
+        if(!cardRepository.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+        Card toEdit = cardRepository.getById(id);
+        toEdit.setDescription(newDescription);
+        cardRepository.save(toEdit);
         return new ResponseEntity<>(cardRepository.getById(id), new HttpHeaders(), 200);
     }
 
@@ -69,6 +91,7 @@ public class CardController {
         Card containsNewTag = cardRepository.getById(id);
         containsNewTag.addTag(tag);
         cardRepository.save(containsNewTag);
+        tagRepository.save(tag);
         return new ResponseEntity(cardRepository.getById(id), new HttpHeaders(), 200);
 
     }
@@ -83,7 +106,7 @@ public class CardController {
     @DeleteMapping("/{id}/tag/{tagId}")
     public ResponseEntity<Card> deleteTag(@PathVariable final int id, @PathVariable int tagId,
                                           @RequestBody Tag tag) {
-        if(!cardRepository.existsById(id)) {
+        if(!cardRepository.existsById(id) || !tagRepository.existsById(tagId)) {
             return ResponseEntity.badRequest().build();
         }
         Card deleteTagFrom = cardRepository.getById(id);
@@ -92,6 +115,7 @@ public class CardController {
             return ResponseEntity.badRequest().build();
         }
         cardRepository.save(deleteTagFrom);
+        tagRepository.deleteById(tagId);
         return new ResponseEntity(cardRepository.getById(id), new HttpHeaders(), 200);
     }
 
@@ -103,12 +127,14 @@ public class CardController {
      */
     @PostMapping("/{id}/task")
     public ResponseEntity<Task> createTask(@PathVariable final int id, @RequestBody Task task){
-        if(task.getId() < 0 || task.getName() == null || id < 0 || cardRepository.existsById(id)) {
+        if(task == null || task.getId() < 0 || task.getName() == null || id < 0 ||
+            cardRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
         Card containsTask = cardRepository.getById(id);
         containsTask.addTask(task);
         cardRepository.save(containsTask);
+        taskRepository.save(task);
         return new ResponseEntity(cardRepository.getById(id), new HttpHeaders(), 200);
     }
 
@@ -122,7 +148,7 @@ public class CardController {
     @DeleteMapping("/{id}/task/{taskId}")
     public ResponseEntity<Card> deleteTask(@PathVariable final int id,
                                            @PathVariable final int taskId, @RequestBody Task task) {
-        if(!cardRepository.existsById(id)) {
+        if(!cardRepository.existsById(id) || !taskRepository.existsById(taskId)) {
             return ResponseEntity.badRequest().build();
         }
         Card deleteTaskFrom = cardRepository.getById(id);
@@ -131,6 +157,7 @@ public class CardController {
             return ResponseEntity.badRequest().build();
         }
         cardRepository.save(deleteTaskFrom);
+        taskRepository.deleteById(taskId);
         return new ResponseEntity(cardRepository.getById(id), new HttpHeaders(), 200);
     }
 }
