@@ -39,12 +39,6 @@ public class TagController {
     /**
      * Handler for editing a tag
      * @param id the tag id
-     * @return the board
-     */
-
-    /**
-     * Handler for editing a tag
-     * @param id the tag id
      * @param tag the new tag data
      * @return the updated tag
      */
