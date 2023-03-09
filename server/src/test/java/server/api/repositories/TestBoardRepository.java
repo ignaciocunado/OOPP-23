@@ -90,13 +90,14 @@ public final class TestBoardRepository implements BoardRepository {
 
     @Override
     public <S extends Board> S save(S entity) {
-        nextInt++;
         for (final Board board : boards) {
             if (board.getId() == entity.getId()) {
                 board.setPassword(entity.getPassword());
+                return (S) board;
             }
         }
 
+        nextInt++;
         final Board board = new Board(entity.getKey(), entity.getPassword());
         board.setId(nextInt);
 
