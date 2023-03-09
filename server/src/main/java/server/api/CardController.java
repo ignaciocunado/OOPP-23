@@ -10,7 +10,7 @@ import server.database.CardRepository;
 import java.util.Random;
 
 @RestController
-@RequestMapping("/card")
+@RequestMapping("/api/card")
 public class CardController {
 
     private CardService cardService;
