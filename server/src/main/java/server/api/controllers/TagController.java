@@ -15,19 +15,12 @@
  */
 package server.api.controllers;
 
-import commons.Board;
-import commons.CardList;
 import commons.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import server.database.BoardRepository;
-import server.database.CardListRepository;
 import server.database.TagRepository;
-import server.services.TextService;
 
 @RestController
 @RequestMapping("/api/tag")
