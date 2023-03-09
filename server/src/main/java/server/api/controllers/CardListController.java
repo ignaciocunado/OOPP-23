@@ -2,9 +2,6 @@ package server.api.controllers;
 
 import commons.Card;
 import commons.CardList;
-import org.springframework.http.HttpStatus;
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
-import org.springframework.web.server.ResponseStatusException;
 import server.database.CardRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -29,27 +26,30 @@ public class CardListController {
         this.cardRepo = cardRepo;
     }
 
-    /** create a card into a card list
+    /** endpoint for creating a card into a list
      * @param id of the card list in which the card gets created
      * @return the card list containing the new card
      */
     @PostMapping("/{id}/card")
     public ResponseEntity<CardList> createCard(@PathVariable final Integer id) {
-        try {
-            final CardList cardlist = this.cardListRepo.getById(id);
-            final Card card = new Card("New Card", "New Description");
-            this.cardRepo.save(card);
+        final CardList cardList = this.cardListRepo.getById(id);
+        final Card card = new Card("New Card", "New Description");
 
-            cardlist.addCard(card);
-            this.cardListRepo.save(cardlist);
-            return new ResponseEntity<>(this.cardListRepo.getById(id), new HttpHeaders(), 200);
-        } catch (final JpaObjectRetrievalFailureException e) {
-            throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Card list not found", e);
+        if(!this.cardListRepo.existsById(id)){
+
+            return ResponseEntity.notFound().build();
+
         }
+        else {
+
+            this.cardRepo.save(card);
+            cardList.addCard(card);
+            return new ResponseEntity<>(this.cardListRepo.save(cardList), new HttpHeaders(), 200);
+        }
+
     }
 
-    /**
+    /** endpoint for deleting a card by it's id
      * @param id integer representing the id of the card list
      * @param cardId integer representing the id of the card we are deleting
      * @return the card list without the card
@@ -57,18 +57,19 @@ public class CardListController {
     @DeleteMapping("/{id}/card/{cardid}")
     public ResponseEntity<CardList> deleteCard(@PathVariable final Integer id,
                                                @PathVariable final Integer cardId) {
-        try {
-            final CardList cardList = this.cardListRepo.getById(id);
-            if(!cardList.removeCardById(cardId)){
-                throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Card not found");
-            }
+
+        final CardList cardList = this.cardListRepo.getById(id);
+
+        if(!this.cardListRepo.existsById(id) || !cardList.removeCardById(cardId)) {
+
+            return ResponseEntity.notFound().build();
+
+        }
+        else {
 
             this.cardRepo.deleteById(cardId);
             return new ResponseEntity<>(cardList, new HttpHeaders(), 200);
-        } catch (final JpaObjectRetrievalFailureException e ) {
-            throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Card list not found", e);
+
         }
     }
 
@@ -81,12 +82,18 @@ public class CardListController {
     public ResponseEntity<CardList> editCardListTitle(@PathVariable final int id,
                                                             @RequestBody String newTitle) {
         if(!cardListRepo.existsById(id)) {
+
             return ResponseEntity.badRequest().build();
+
         }
-        CardList editedCardList = cardListRepo.getById(id);
-        editedCardList.setTitle(newTitle);
-        cardListRepo.save(editedCardList);
-        return new ResponseEntity<>(cardListRepo.getById(id), new HttpHeaders(), 200);
+        else {
+
+            CardList editedCardList = cardListRepo.getById(id);
+            editedCardList.setTitle(newTitle);
+            cardListRepo.save(editedCardList);
+            return new ResponseEntity<>(cardListRepo.getById(id), new HttpHeaders(), 200);
+
+        }
     }
 }
 
