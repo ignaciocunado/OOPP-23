@@ -46,6 +46,12 @@ class BoardTest {
     }
 
     @Test
+    public void setIdTest() {
+        board.setId(10);
+        assertEquals(board.getId(), 10);
+    }
+
+    @Test
     public void setPasswordTest() {
         board.setPassword("NewPassword");
         assertEquals(board.getPassword(), "NewPassword");
