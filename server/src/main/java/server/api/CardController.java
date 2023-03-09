@@ -36,6 +36,7 @@ public class CardController {
      * edits the title of a Card iff it exists
      * @param id id of the Card to edit
      * @param newTitle the new title for the Card
+     * @param newDescription the new description for the Card
      * @return ResponseEntity for status
      */
     @PatchMapping("/{id}")
