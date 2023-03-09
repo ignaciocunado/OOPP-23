@@ -79,6 +79,10 @@ public class TaskRepositoryTest implements TaskRepository{
 
     @Override
     public <S extends Task> S save(S entity) {
+        final Task task = new Task(entity.getName(), entity.isCompleted());
+        task.setId(nextInt++);
+        this.tasks.add(task);
+        return (S) task;
     }
 
     @Override

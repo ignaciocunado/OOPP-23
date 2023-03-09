@@ -79,7 +79,10 @@ public class CardRepositoryTest implements CardRepository{
 
     @Override
     public <S extends Card> S save(S entity) {
-        return null;
+        final Card card = new Card(entity.getTitle(), entity.getDescription());
+        card.setId(nextInt++);
+        this.cards.add(card);
+        return (S) card;
     }
 
     @Override

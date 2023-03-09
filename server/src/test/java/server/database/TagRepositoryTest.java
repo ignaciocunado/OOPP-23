@@ -79,7 +79,10 @@ public class TagRepositoryTest implements TagRepository{
 
     @Override
     public <S extends Tag> S save(S entity) {
-        return null;
+        final Tag tag = new Tag(entity.getName(), entity.getColour());
+        tag.setId(nextInt++);
+        this.tags.add(tag);
+        return (S) tag;
     }
 
     @Override
