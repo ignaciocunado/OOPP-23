@@ -7,26 +7,37 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.CardRepository;
+import server.database.TagRepository;
+import server.database.TaskRepository;
+
 import java.util.Random;
 
 @RestController
 @RequestMapping("/api/card")
 public class CardController {
 
-    private CardService cardService;
+    private final CardService cardService;
     private final Random random;
     private final CardRepository cardRepository;
+    private final TagRepository tagRepository;
+    private final TaskRepository taskRepository;
 
     /**
-     * Constructor for card controller
-     * @param cardService service for application logic
-     * @param random injected object of random class
-     * @param cardRepository repository of cards
+     * Constructor
+     * @param cardService
+     * @param random
+     * @param cardRepository
+     * @param tagRepository
+     * @param taskRepository
      */
-    public CardController(CardService cardService, Random random, CardRepository cardRepository) {
+    public CardController(final CardService cardService, Random random,
+                          final CardRepository cardRepository,
+                          final TagRepository tagRepository, final TaskRepository taskRepository) {
         this.cardService = cardService;
         this.random = random;
         this.cardRepository = cardRepository;
+        this.tagRepository = tagRepository;
+        this.taskRepository = taskRepository;
     }
 
     /**
@@ -63,13 +74,15 @@ public class CardController {
     }
 
     /**
-     * deletes a Tag if it exists
-     * @param id id of the Card where the Tag to be deleted is
-     * @param tag the Tag to delete
+     * deletes a Tag iff it exists
+     * @param id id of the Card
+     * @param tagId id of the Tag
+     * @param tag Tag to delete
      * @return ResponseEntity for status
      */
-    @DeleteMapping("/{id}/tag")
-    public ResponseEntity<Card> deleteTag(@PathVariable int id, @RequestBody Tag tag) {
+    @DeleteMapping("/{id}/tag/{tagId}")
+    public ResponseEntity<Card> deleteTag(@PathVariable final int id, @PathVariable int tagId,
+                                          @RequestBody Tag tag) {
         if(!cardRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
@@ -100,13 +113,15 @@ public class CardController {
     }
 
     /**
-     * deletes a Task if it exists
-     * @param id id of the Card where the Task to be deleted is
-     * @param task the Task to delete
+     * Deletes a Task iff it exists
+     * @param id id of the Card
+     * @param taskId id of the Task
+     * @param task Task to delete
      * @return ResponseEntity for status
      */
-    @DeleteMapping("/{id}/task")
-    public ResponseEntity<Card> deleteTask(@PathVariable final int id, @RequestBody Task task) {
+    @DeleteMapping("/{id}/task/{taskId}")
+    public ResponseEntity<Card> deleteTask(@PathVariable final int id,
+                                           @PathVariable final int taskId, @RequestBody Task task) {
         if(!cardRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
