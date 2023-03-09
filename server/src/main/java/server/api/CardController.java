@@ -98,7 +98,8 @@ public class CardController {
      * @return ResponseEntity for status
      */
     @DeleteMapping("/{id}/tag/{tagId}")
-    public ResponseEntity<Card> deleteTag(@PathVariable final int id, @PathVariable int tagId) {
+    public ResponseEntity<Card> deleteTag(@PathVariable final int id,
+                                          @PathVariable final int tagId) {
         if(!cardRepository.existsById(id) || !tagRepository.existsById(tagId)) {
             return ResponseEntity.badRequest().build();
         }
@@ -122,7 +123,7 @@ public class CardController {
     @PostMapping("/{id}/task")
     public ResponseEntity<Task> createTask(@PathVariable final int id, @RequestBody Task task){
         if(task == null || task.getId() < 0 || task.getName() == null || id < 0 ||
-            cardRepository.existsById(id)) {
+            !cardRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
         Card containsTask = cardRepository.getById(id);

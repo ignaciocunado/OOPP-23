@@ -140,7 +140,6 @@ public class TaskRepositoryTest implements TaskRepository{
         final Optional<Task> taskOpt = find(integer);
         if (!taskOpt.isPresent()) throw new JpaObjectRetrievalFailureException(new EntityNotFoundException());
         return taskOpt.get();
-
     }
 
     @Override
