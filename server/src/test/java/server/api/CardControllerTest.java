@@ -1,5 +1,7 @@
 package server.api;
 
+import commons.Card;
+import commons.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.database.*;
@@ -45,7 +47,11 @@ class CardControllerTest {
 
     @Test
     public void createTagTest() {
-
+        cardRepo.save(new Card("Study ADS", "Do weblab"));
+        this.controller.createTag(0, new Tag("ADS", 0));
+        final Tag tag = new Tag("ADS", 0);
+        System.out.println(cardRepo.getById(0));
+        assertEquals(tag, tagRepo.getById(0));
     }
 
     @Test

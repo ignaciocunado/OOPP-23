@@ -1,12 +1,15 @@
 package server.database;
 
 import commons.Tag;
+import commons.Task;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +20,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TagRepositoryTest implements TagRepository{
 
     private final List<Tag> tags = new ArrayList<>();
+    private int nextInt = 0;
 
     @Override
     public List<Tag> findAll() {
-        return null;
+        return this.tags;
     }
 
     @Override
@@ -40,17 +44,22 @@ public class TagRepositoryTest implements TagRepository{
 
     @Override
     public long count() {
-        return 0;
+        return this.tags.size();
     }
 
     @Override
     public void deleteById(Integer integer) {
-
+        for(Tag t : tags) {
+            if(t.getId() == integer) {
+                tags.remove(t);
+                return;
+            }
+        }
     }
 
     @Override
     public void delete(Tag entity) {
-
+        tags.remove(entity);
     }
 
     @Override
@@ -80,12 +89,12 @@ public class TagRepositoryTest implements TagRepository{
 
     @Override
     public Optional<Tag> findById(Integer integer) {
-        return Optional.empty();
+        return this.find(integer);
     }
 
     @Override
     public boolean existsById(Integer integer) {
-        return false;
+        return this.find(integer).isPresent();
     }
 
     @Override
@@ -125,7 +134,10 @@ public class TagRepositoryTest implements TagRepository{
 
     @Override
     public Tag getById(Integer integer) {
-        return null;
+        final Optional<Tag> tagOpt = find(integer);
+        if (!tagOpt.isPresent()) throw new JpaObjectRetrievalFailureException(new EntityNotFoundException());
+        return tagOpt.get();
+
     }
 
     @Override
@@ -162,5 +174,9 @@ public class TagRepositoryTest implements TagRepository{
     public <S extends Tag, R> R findBy(Example<S> example,
                                        Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
+    }
+
+    private Optional<Tag> find(int id) {
+        return this.tags.stream().filter(b -> b.getId() == id).findFirst();
     }
 }

@@ -1,12 +1,15 @@
 package server.database;
 
 import commons.Card;
+import commons.Task;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +20,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CardRepositoryTest implements CardRepository{
 
     private final List<Card> cards = new ArrayList<>();
+    private int nextInt = 0;
 
     @Override
     public List<Card> findAll() {
-        return null;
+        return this.cards;
     }
 
     @Override
@@ -40,17 +44,22 @@ public class CardRepositoryTest implements CardRepository{
 
     @Override
     public long count() {
-        return 0;
+        return this.cards.size();
     }
 
     @Override
     public void deleteById(Integer integer) {
-
+        for(Card c : cards) {
+            if(c.getId() == integer) {
+                cards.remove(c);
+                return;
+            }
+        }
     }
 
     @Override
     public void delete(Card entity) {
-
+        this.cards.remove(entity);
     }
 
     @Override
@@ -80,12 +89,12 @@ public class CardRepositoryTest implements CardRepository{
 
     @Override
     public Optional<Card> findById(Integer integer) {
-        return Optional.empty();
+        return this.find(integer);
     }
 
     @Override
     public boolean existsById(Integer integer) {
-        return false;
+        return this.find(integer).isPresent();
     }
 
     @Override
@@ -125,7 +134,10 @@ public class CardRepositoryTest implements CardRepository{
 
     @Override
     public Card getById(Integer integer) {
-        return null;
+        final Optional<Card> cardopt = find(integer);
+        if (!cardopt.isPresent()) throw new JpaObjectRetrievalFailureException(new EntityNotFoundException());
+        return cardopt.get();
+
     }
 
     @Override
@@ -162,5 +174,9 @@ public class CardRepositoryTest implements CardRepository{
     public <S extends Card, R> R findBy(Example<S> example,
                                         Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
+    }
+
+    private Optional<Card> find(int id) {
+        return this.cards.stream().filter(b -> b.getId() == id).findFirst();
     }
 }

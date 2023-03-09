@@ -1,12 +1,16 @@
 package server.database;
 
+import commons.Board;
 import commons.Task;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -15,9 +19,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TaskRepositoryTest implements TaskRepository{
 
+    private final List<Task> tasks = new ArrayList<>();
+    private int nextInt = 0;
+
     @Override
     public List<Task> findAll() {
-        return null;
+        return this.tasks;
     }
 
     @Override
@@ -37,17 +44,22 @@ public class TaskRepositoryTest implements TaskRepository{
 
     @Override
     public long count() {
-        return 0;
+        return this.tasks.size();
     }
 
     @Override
     public void deleteById(Integer integer) {
-
+        for(Task t : tasks) {
+            if(t.getId() == integer) {
+                tasks.remove(t);
+                return;
+            }
+        }
     }
 
     @Override
     public void delete(Task entity) {
-
+        tasks.remove(entity);
     }
 
     @Override
@@ -67,7 +79,7 @@ public class TaskRepositoryTest implements TaskRepository{
 
     @Override
     public <S extends Task> S save(S entity) {
-        return null;
+
     }
 
     @Override
@@ -77,12 +89,12 @@ public class TaskRepositoryTest implements TaskRepository{
 
     @Override
     public Optional<Task> findById(Integer integer) {
-        return Optional.empty();
+        return this.find(integer);
     }
 
     @Override
     public boolean existsById(Integer integer) {
-        return false;
+        return this.find(integer).isPresent();
     }
 
     @Override
@@ -122,7 +134,10 @@ public class TaskRepositoryTest implements TaskRepository{
 
     @Override
     public Task getById(Integer integer) {
-        return null;
+        final Optional<Task> taskOpt = find(integer);
+        if (!taskOpt.isPresent()) throw new JpaObjectRetrievalFailureException(new EntityNotFoundException());
+        return taskOpt.get();
+
     }
 
     @Override
@@ -159,5 +174,9 @@ public class TaskRepositoryTest implements TaskRepository{
     public <S extends Task, R> R findBy(Example<S> example,
                                         Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
+    }
+
+    private Optional<Task> find(int id) {
+        return this.tasks.stream().filter(b -> b.getId() == id).findFirst();
     }
 }
