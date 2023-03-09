@@ -31,13 +31,14 @@ class CardControllerTest {
         Card card = new Card("ADS", "ADS");
         card.setId(0);
         assertEquals(cardRepo.getById(0), card);
-        controller.editCardTitle(0, "OOPP");
+        controller.editCard(0, "OOPP", null);
         assertEquals(cardRepo.getById(0).getTitle(), "OOPP");
     }
 
     @Test
     public void editCardTitleNotFoundTest() {
-        assertEquals(ResponseEntity.badRequest().build(), controller.editCardTitle(0,"Test"));
+        assertEquals(ResponseEntity.badRequest().build(), controller.editCard(0,"Test",
+            null));
     }
 
     @Test
@@ -46,13 +47,14 @@ class CardControllerTest {
         Card card = new Card("ADS", "ADS");
         card.setId(0);
         assertEquals(cardRepo.getById(0), card);
-        controller.editCardDescription(0, "Binary Search Trees");
+        controller.editCard(0, "ADS", "Binary Search Trees");
         assertEquals(cardRepo.getById(0).getDescription(), "Binary Search Trees");
     }
 
     @Test
     public void editCardDescriptionNotFoundTest() {
-        assertEquals(ResponseEntity.badRequest().build(), controller.editCardDescription(0,"Test"));
+        assertEquals(ResponseEntity.badRequest().build(), controller.editCard(0,null,
+            "Test"));
     }
 
     @Test

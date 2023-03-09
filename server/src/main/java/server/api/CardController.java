@@ -39,32 +39,17 @@ public class CardController {
      * @return ResponseEntity for status
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<Card> editCardTitle(@PathVariable final int id,
-                                          @RequestBody String newTitle) {
+    public ResponseEntity<Card> editCard(@PathVariable final int id, @RequestBody String newTitle,
+                                         @RequestBody String newDescription) {
         if(!cardRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
         Card toEdit = cardRepository.getById(id);
         toEdit.setTitle(newTitle);
-        return new ResponseEntity<>(cardRepository.save(toEdit), new HttpHeaders(), 200);
-    }
-
-    /**
-     * edits the description of a Card iff it exists
-     * @param id id of the Card to edit
-     * @param newDescription the new description for the Card
-     * @return ResponseEntity for status
-     */
-    @PatchMapping("/{id}")
-    public ResponseEntity<Card> editCardDescription(@PathVariable final int id,
-                                          @RequestBody String newDescription) {
-        if(!cardRepository.existsById(id)) {
-            return ResponseEntity.badRequest().build();
-        }
-        Card toEdit = cardRepository.getById(id);
         toEdit.setDescription(newDescription);
         return new ResponseEntity<>(cardRepository.save(toEdit), new HttpHeaders(), 200);
     }
+
 
     /**
      * creates a Tag and stores it in a Card
