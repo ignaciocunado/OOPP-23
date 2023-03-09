@@ -118,4 +118,10 @@ class CardTest {
     public void toStringTest() {
         assertEquals(card.toString(), "<Card id=0 title=Card description=This is a card>");
     }
+
+    @Test
+    public void setIdTest() {
+        card.setId(69);
+        assertEquals(card.getId(), 69);
+    }
 }
