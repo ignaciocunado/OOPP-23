@@ -95,17 +95,16 @@ public class CardController {
      * deletes a Tag iff it exists
      * @param id id of the Card
      * @param tagId id of the Tag
-     * @param tag Tag to delete
      * @return ResponseEntity for status
      */
     @DeleteMapping("/{id}/tag/{tagId}")
-    public ResponseEntity<Card> deleteTag(@PathVariable final int id, @PathVariable int tagId,
-                                          @RequestBody Tag tag) {
+    public ResponseEntity<Card> deleteTag(@PathVariable final int id, @PathVariable int tagId) {
         if(!cardRepository.existsById(id) || !tagRepository.existsById(tagId)) {
             return ResponseEntity.badRequest().build();
         }
         Card deleteTagFrom = cardRepository.getById(id);
-        boolean deleted = deleteTagFrom.removeTag(tag);
+        Tag tagToBeDeleted = tagRepository.getById(tagId);
+        boolean deleted = deleteTagFrom.removeTag(tagToBeDeleted);
         if (!deleted) {
             return ResponseEntity.badRequest().build();
         }
@@ -137,17 +136,17 @@ public class CardController {
      * Deletes a Task iff it exists
      * @param id id of the Card
      * @param taskId id of the Task
-     * @param task Task to delete
      * @return ResponseEntity for status
      */
     @DeleteMapping("/{id}/task/{taskId}")
     public ResponseEntity<Card> deleteTask(@PathVariable final int id,
-                                           @PathVariable final int taskId, @RequestBody Task task) {
+                                           @PathVariable final int taskId) {
         if(!cardRepository.existsById(id) || !taskRepository.existsById(taskId)) {
             return ResponseEntity.badRequest().build();
         }
         Card deleteTaskFrom = cardRepository.getById(id);
-        boolean deleted = deleteTaskFrom.removeTask(task);
+        Task taskToBeDeleted = taskRepository.getById(taskId);
+        boolean deleted = deleteTaskFrom.removeTask(taskToBeDeleted);
         if (!deleted) {
             return ResponseEntity.badRequest().build();
         }
