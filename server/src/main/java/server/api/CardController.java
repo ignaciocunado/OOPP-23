@@ -65,7 +65,7 @@ public class CardController {
         Card containsNewTag = cardRepository.getById(id);
         containsNewTag.addTag(tag);
         tagRepository.save(tag);
-        return new ResponseEntity(cardRepository.save(containsNewTag), new HttpHeaders(),
+        return new ResponseEntity<>(cardRepository.save(containsNewTag), new HttpHeaders(),
             200);
     }
 
@@ -88,7 +88,8 @@ public class CardController {
             return ResponseEntity.badRequest().build();
         }
         tagRepository.deleteById(tagId);
-        return new ResponseEntity(cardRepository.save(deleteTagFrom), new HttpHeaders(), 200);
+        return new ResponseEntity<>(cardRepository.save(deleteTagFrom), new HttpHeaders(),
+            200);
     }
 
     /**
@@ -98,7 +99,7 @@ public class CardController {
      * @return ResponseEntity for status
      */
     @PostMapping("/{id}/task")
-    public ResponseEntity<Task> createTask(@PathVariable final int id, @RequestBody Task task){
+    public ResponseEntity<Card> createTask(@PathVariable final int id, @RequestBody Task task){
         if(task == null || task.getId() < 0 || task.getName() == null || id < 0 ||
             !cardRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();
@@ -106,7 +107,8 @@ public class CardController {
         Card containsTask = cardRepository.getById(id);
         containsTask.addTask(task);
         taskRepository.save(task);
-        return new ResponseEntity(cardRepository.save(containsTask), new HttpHeaders(), 200);
+        return new ResponseEntity<>(cardRepository.save(containsTask), new HttpHeaders(),
+            200);
     }
 
     /**
