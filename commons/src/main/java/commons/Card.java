@@ -46,7 +46,7 @@ public final class Card {
     }
 
     /**
-     * setter for id
+     *  setter for id
      * @param id new id
      */
     public void setId(int id) {
