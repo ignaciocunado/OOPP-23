@@ -1,5 +1,6 @@
 package server.database;
 
+import commons.Card;
 import commons.Tag;
 import commons.Task;
 import org.springframework.data.domain.Example;
@@ -79,9 +80,17 @@ public class TagRepositoryTest implements TagRepository{
 
     @Override
     public <S extends Tag> S save(S entity) {
-        final Tag tag = new Tag(entity.getName(), entity.getColour());
-        tag.setId(nextInt++);
-        this.tags.add(tag);
+        final Tag tag;
+        if(this.findById(entity.getId()).isPresent()) {
+            tag = this.getById(entity.getId());
+            tag.setName(entity.getName());
+            tag.setColour(entity.getColour());
+        }
+        else {
+            tag = new Tag(entity.getName(), entity.getColour());
+            tag.setId(nextInt++);
+            this.tags.add(tag);
+        }
         return (S) tag;
     }
 
