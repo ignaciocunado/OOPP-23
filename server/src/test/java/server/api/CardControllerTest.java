@@ -29,11 +29,38 @@ class CardControllerTest {
     public void editCardTitleTest() {
         cardRepo.save(new Card("ADS", "ADS"));
         Card card = new Card("ADS", "ADS");
-        card.setId(0);
-        assertEquals(cardRepo.getById(0), card);
+        card.setId(1);
+        assertEquals(cardRepo.getById(1), card);
         Card newCard = new Card("OOPP", null);
-        controller.editCard(0, newCard);
-        assertEquals(cardRepo.getById(0).getTitle(), "OOPP");
+        controller.editCard(1, newCard);
+        assertEquals(cardRepo.getById(1).getTitle(), "OOPP");
+    }
+
+    @Test
+    public void cardRepoTest() {
+        cardRepo.save(new Card("Title", "title"));
+        cardRepo.save(new Card("Title", "ewewew"));
+        assertEquals(2, cardRepo.findAll().size());
+        assertEquals(1, cardRepo.findAll().get(0).getId());
+        assertEquals(2, cardRepo.findAll().get(1).getId());
+    }
+
+    @Test
+    public void taskRepoTest() {
+        taskRepo.save(new Task("Title", false));
+        taskRepo.save(new Task("Title", false));
+        assertEquals(2, taskRepo.findAll().size());
+        assertEquals(1, taskRepo.findAll().get(0).getId());
+        assertEquals(2, taskRepo.findAll().get(1).getId());
+    }
+
+    @Test
+    public void tagRepoTest() {
+        tagRepo.save(new Tag("Title", 0));
+        tagRepo.save(new Tag("Title", 0));
+        assertEquals(2, tagRepo.findAll().size());
+        assertEquals(1, tagRepo.findAll().get(0).getId());
+        assertEquals(2, tagRepo.findAll().get(1).getId());
     }
 
     @Test
@@ -46,10 +73,10 @@ class CardControllerTest {
     public void editCardDescriptionTest() {
         cardRepo.save(new Card("ADS", "ADS"));
         Card card = new Card("ADS", "ADS");
-        card.setId(0);
-        assertEquals(cardRepo.getById(0), card);
-        controller.editCard(0, new Card("ADS", "Binary Search Trees"));
-        assertEquals(cardRepo.getById(0).getDescription(), "Binary Search Trees");
+        card.setId(1);
+        assertEquals(cardRepo.getById(1), card);
+        controller.editCard(1, new Card("ADS", "Binary Search Trees"));
+        assertEquals(cardRepo.getById(1).getDescription(), "Binary Search Trees");
     }
 
     @Test
@@ -61,10 +88,11 @@ class CardControllerTest {
     @Test
     public void createTagTest() {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
-        this.controller.createTag(0, new Tag("ADS", 0));
+        this.controller.createTag(1, new Tag("ADS", 0));
         final Tag tag = new Tag("ADS", 0);
-        assertTrue(tagRepo.existsById(0));
-        assertEquals(tag, tagRepo.getById(0));
+        tag.setId(1);
+        assertTrue(tagRepo.existsById(1));
+        assertEquals(tag, tagRepo.getById(1));
     }
 
     @Test
@@ -80,12 +108,12 @@ class CardControllerTest {
     @Test
     public void deleteTagTest() {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
-        this.controller.createTag(0, new Tag("ADS", 0));
-        assertTrue(cardRepo.getById(0).getTags().size() > 0);
-        assertTrue(tagRepo.existsById(0));
-        this.controller.deleteTag(0,0);
-        assertEquals(0, cardRepo.getById(0).getTags().size());
-        assertFalse(tagRepo.existsById(0));
+        this.controller.createTag(1, new Tag("ADS", 0));
+        assertTrue(cardRepo.getById(1).getTags().size() > 0);
+        assertTrue(tagRepo.existsById(1));
+        this.controller.deleteTag(1,1);
+        assertEquals(0, cardRepo.getById(1).getTags().size());
+        assertFalse(tagRepo.existsById(1));
     }
 
     @Test
@@ -104,10 +132,11 @@ class CardControllerTest {
     @Test
     public void createTaskTest() {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
-        this.controller.createTask(0, new Task("ADS", false));
+        this.controller.createTask(1, new Task("ADS", false));
         final Task task = new Task("ADS", false);
-        assertTrue(taskRepo.existsById(0));
-        assertEquals(task, taskRepo.getById(0));
+        task.setId(1);
+        assertTrue(taskRepo.existsById(1));
+        assertEquals(task, taskRepo.getById(1));
     }
 
     @Test
@@ -120,12 +149,12 @@ class CardControllerTest {
     @Test
     public void deleteTaskTest() {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
-        this.controller.createTask(0, new Task("ADS", false));
-        assertTrue(cardRepo.getById(0).getNestedTaskList().size() > 0);
-        assertTrue(taskRepo.existsById(0));
-        this.controller.deleteTask(0,0);
-        assertEquals(0, cardRepo.getById(0).getNestedTaskList().size());
-        assertFalse(taskRepo.existsById(0));
+        this.controller.createTask(1, new Task("ADS", false));
+        assertTrue(cardRepo.getById(1).getNestedTaskList().size() > 0);
+        assertTrue(taskRepo.existsById(1));
+        this.controller.deleteTask(1,1);
+        assertEquals(0, cardRepo.getById(1).getNestedTaskList().size());
+        assertFalse(taskRepo.existsById(1));
     }
 
     @Test

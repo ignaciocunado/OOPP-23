@@ -80,17 +80,18 @@ public class TagRepositoryTest implements TagRepository{
 
     @Override
     public <S extends Tag> S save(S entity) {
-        final Tag tag;
-        if(this.findById(entity.getId()).isPresent()) {
-            tag = this.getById(entity.getId());
-            tag.setName(entity.getName());
-            tag.setColour(entity.getColour());
+        for(Tag c : tags) {
+            if(c.getId() == entity.getId()) {
+                c.setName(entity.getName());
+                c.setColour(entity.getColour());
+                return (S) c;
+            }
         }
-        else {
-            tag = new Tag(entity.getName(), entity.getColour());
-            tag.setId(nextInt++);
-            this.tags.add(tag);
-        }
+
+        final Tag tag = new Tag(entity.getName(), entity.getColour());
+        nextInt++;
+        tag.setId(nextInt);
+        this.tags.add(tag);
         return (S) tag;
     }
 

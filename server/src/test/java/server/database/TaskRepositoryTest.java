@@ -1,6 +1,7 @@
 package server.database;
 
 import commons.Board;
+import commons.Card;
 import commons.Tag;
 import commons.Task;
 import org.aspectj.weaver.AnnotationTargetKind;
@@ -81,17 +82,18 @@ public class TaskRepositoryTest implements TaskRepository{
 
     @Override
     public <S extends Task> S save(S entity) {
-        final Task task;
-        if(this.findById(entity.getId()).isPresent()) {
-            task = this.getById(entity.getId());
-            task.setName(entity.getName());
-            task.setCompleted(entity.isCompleted());
+        for(Task c : tasks) {
+            if(c.getId() == entity.getId()) {
+                c.setName(entity.getName());
+                c.setCompleted(entity.isCompleted());
+                return (S) c;
+            }
         }
-        else {
-            task = new Task(entity.getName(), entity.isCompleted());
-            task.setId(nextInt++);
-            this.tasks.add(task);
-        }
+
+        final Task task = new Task(entity.getName(), entity.isCompleted());
+        nextInt++;
+        task.setId(nextInt);
+        this.tasks.add(task);
         return (S) task;
     }
 
