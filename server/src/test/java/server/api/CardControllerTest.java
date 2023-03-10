@@ -128,7 +128,7 @@ class CardControllerTest {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
         cardRepo.save(new Card("Study OOPP", "Do Git"));
         this.controller.createTag(1, new Tag("ADS", 0));
-        assertEquals(ResponseEntity.badRequest().build(), controller.deleteTag(2,1Adde));
+        assertEquals(ResponseEntity.badRequest().build(), controller.deleteTag(2,1));
     }
 
     @Test

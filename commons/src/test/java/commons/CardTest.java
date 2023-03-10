@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -123,5 +124,25 @@ class CardTest {
     public void setIdTest() {
         card.setId(69);
         assertEquals(card.getId(), 69);
+    }
+
+    @Test
+    public void setTasksTest() {
+        card.addTask(task);
+        Task task2 = new Task("AAAAAA", false);
+        List<Task> taskList = new ArrayList<>();
+        taskList.add(task2);
+        card.setNestedTaskList(taskList);
+        assertEquals(taskList, card.getNestedTaskList());
+    }
+
+    @Test
+    public void setTagsTess() {
+        card.addTag(tag);
+        Tag tag2 = new Tag("AAAAAA", 0);
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(tag2);
+        card.setTags(tagList);
+        assertEquals(tagList, card.getTags());
     }
 }
