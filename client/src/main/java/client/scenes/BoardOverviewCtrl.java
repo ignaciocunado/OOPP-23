@@ -18,6 +18,8 @@ package client.scenes;
 import client.MyFXML;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Board;
+import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -38,6 +40,7 @@ public class BoardOverviewCtrl implements Initializable {
     @FXML
     private HBox hbox;
     private HashSet<Integer> ids = new HashSet<>();
+    private Board currentBoard;
 
 
     /**
@@ -66,13 +69,17 @@ public class BoardOverviewCtrl implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         hbox.setSpacing(20);
         hbox.setPadding(new Insets(20,20,20,0));
-        refresh();
+        refresh(new Board("",""));
     }
 
+
     /**
-     * Stub method for refreshing boards
+     * Stub method for refreshing the Board
+     * @param currentBoard the current Board being displayed
      */
-    public void refresh() {}
+    public void refresh(Board currentBoard) {
+        this.currentBoard = currentBoard;
+    }
 
     /**
      * Method to close the app
@@ -89,9 +96,7 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     /**
-     * Adds a List to the board
-     *
-     * @return
+     * Adds a List to the current Board object and displays it
      */
     public void addList() throws IOException {
         Pane listPane = FXMLLoader.load(getLocation("client", "scenes", "ListTemplate.fxml"));
@@ -102,6 +107,7 @@ public class BoardOverviewCtrl implements Initializable {
         }
         ids.add(counter);
         listPane.setId(String.valueOf(counter));
+        CardList currentList = new CardList();
         for (int i = 0; i < listPane.getChildren().size(); i++) {
             if (listPane.getChildren().get(i).getClass() == Pane.class) {
                 Pane current = (Pane) listPane.getChildren().get(i);
@@ -115,29 +121,54 @@ public class BoardOverviewCtrl implements Initializable {
             }
             if (listPane.getChildren().get(i).getClass() == Button.class) {
                 listPane.getChildren().get(i).setOnMouseClicked(event-> {
-                    removeList(listPane);
+                    removeList(listPane, currentList.getId());
                 });
             }
             if (listPane.getChildren().get(i).getClass() == TextField.class) {
                 TextField title = (TextField) listPane.getChildren().get(i);
                 title.setText("Title: "+listPane.getId());
+                refreshTitle(currentList, title);
+                title.setOnKeyReleased(event -> refreshTitle(currentList, title));
             }
         }
+        currentBoard.addList(currentList);
     }
 
-    private URL getLocation(String... parts) {
-        var path = Path.of("", parts).toString();
-        return MyFXML.class.getClassLoader().getResource(path);
+
+    /**
+     * Refreshes the title of a List
+     * @param selectedList the selected CardList
+     * @param selectedText the TextFiled associated to the List
+     */
+    public void refreshTitle(CardList selectedList, TextField selectedText) {
+        selectedList.setTitle(selectedText.getText());
     }
 
 
     /**
      * Removes an existing List from the Board
-     * @param toBeRemoved the List which needs to be deleted
+     * @param toBeRemoved the Pane which needs to be deleted
+     * @param idOfList the ID of the List which needs to be deleted
      */
-    public void removeList(Pane toBeRemoved) {
+    public void removeList(Pane toBeRemoved, int idOfList) {
         ids.remove(toBeRemoved.getId());
         int index = hbox.getChildren().indexOf(toBeRemoved);
         hbox.getChildren().remove(index);
+        for (CardList list : currentBoard.getListsOnBoard()) {
+            if (list.getId() == idOfList) {
+                currentBoard.removeList(list);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Gets the location of a resource with the given String elements
+     * @param parts Strings of where to find the resource
+     * @return the URL of the requested resource
+     */
+    private URL getLocation(String... parts) {
+        var path = Path.of("", parts).toString();
+        return MyFXML.class.getClassLoader().getResource(path);
     }
 }
