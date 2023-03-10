@@ -33,21 +33,19 @@ public class CardController {
     }
 
     /**
-     * edits the title of a Card iff it exists
+     * Edits a Card
      * @param id id of the Card to edit
-     * @param newTitle the new title for the Card
-     * @param newDescription the new description for the Card
+     * @param card new Card to take the info from
      * @return ResponseEntity for status
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<Card> editCard(@PathVariable final int id, @RequestBody String newTitle,
-                                         @RequestBody String newDescription) {
+    public ResponseEntity<Card> editCard(@PathVariable final int id, @RequestBody Card card) {
         if(!cardRepository.existsById(id)) {
             return ResponseEntity.badRequest().build();
         }
         Card toEdit = cardRepository.getById(id);
-        toEdit.setTitle(newTitle);
-        toEdit.setDescription(newDescription);
+        toEdit.setTitle(card.getTitle());
+        toEdit.setDescription(card.getDescription());
         return new ResponseEntity<>(cardRepository.save(toEdit), new HttpHeaders(), 200);
     }
 
