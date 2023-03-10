@@ -23,11 +23,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 public class BoardOverviewCtrl implements Initializable {
@@ -36,6 +37,8 @@ public class BoardOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
     @FXML
     private HBox hbox;
+    private HashSet<Integer> ids = new HashSet<>();
+
 
     /**
      * Constructor to inject necessary classes into the controller
@@ -93,13 +96,18 @@ public class BoardOverviewCtrl implements Initializable {
     public void addList() throws IOException {
         Pane listPane = FXMLLoader.load(getLocation("client", "scenes", "ListTemplate.fxml"));
         hbox.getChildren().add(listPane);
-        listPane.setId(String.valueOf(hbox.getChildren().indexOf(listPane)));
+        int counter = 1;
+        while(ids.contains(counter)){
+            counter++;
+        }
+        ids.add(counter);
+        listPane.setId(String.valueOf(counter));
         for (int i = 0; i < listPane.getChildren().size(); i++) {
             if (listPane.getChildren().get(i).getClass() == Pane.class) {
                 Pane current = (Pane) listPane.getChildren().get(i);
                 current.getChildren().get(0).setOnMouseClicked(event-> {
                     try {
-                        addList();
+                        addList();//addCard will be here
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -107,12 +115,12 @@ public class BoardOverviewCtrl implements Initializable {
             }
             if (listPane.getChildren().get(i).getClass() == Button.class) {
                 listPane.getChildren().get(i).setOnMouseClicked(event-> {
-                    removeList(listPane.getId());
+                    removeList(listPane);
                 });
             }
-            if (listPane.getChildren().get(i).getClass() == Text.class) {
-                Text title = (Text) listPane.getChildren().get(i);
-                title.setText("Title"+listPane.getId());
+            if (listPane.getChildren().get(i).getClass() == TextField.class) {
+                TextField title = (TextField) listPane.getChildren().get(i);
+                title.setText("Title: "+listPane.getId());
             }
         }
     }
@@ -125,11 +133,11 @@ public class BoardOverviewCtrl implements Initializable {
 
     /**
      * Removes an existing List from the Board
-     * @param paneId the ID of the List which needs to be deleted
+     * @param toBeRemoved the List which needs to be deleted
      */
-    public void removeList(String paneId) {
-        Pane toBeRemoved = (Pane) hbox.getChildren().get(Integer.parseInt(paneId));
-        hbox.getChildren().remove(toBeRemoved);
+    public void removeList(Pane toBeRemoved) {
+        ids.remove(toBeRemoved.getId());
+        int index = hbox.getChildren().indexOf(toBeRemoved);
+        hbox.getChildren().remove(index);
     }
-
 }
