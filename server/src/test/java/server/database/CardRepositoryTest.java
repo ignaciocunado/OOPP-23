@@ -83,6 +83,8 @@ public class CardRepositoryTest implements CardRepository{
             if(c.getId() == entity.getId()) {
                 c.setTitle(entity.getTitle());
                 c.setDescription(entity.getDescription());
+                c.setNestedTaskList(entity.getNestedTaskList());
+                c.setTags(entity.getTags());
                 return (S) c;
             }
         }

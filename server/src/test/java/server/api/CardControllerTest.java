@@ -108,12 +108,14 @@ class CardControllerTest {
     @Test
     public void deleteTagTest() {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
-        this.controller.createTag(1, new Tag("ADS", 0));
+        Tag toAdd =  new Tag("ADS", 0);
+        toAdd.setId(1);
+        this.controller.createTag(1, toAdd);
         assertTrue(cardRepo.getById(1).getTags().size() > 0);
         assertTrue(tagRepo.existsById(1));
         this.controller.deleteTag(1,1);
-        assertEquals(0, cardRepo.getById(1).getTags().size());
         assertFalse(tagRepo.existsById(1));
+        assertEquals(0, cardRepo.getById(1).getTags().size());
     }
 
     @Test
@@ -125,8 +127,8 @@ class CardControllerTest {
     public void deleteTagNotInACard() {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
         cardRepo.save(new Card("Study OOPP", "Do Git"));
-        this.controller.createTag(0, new Tag("ADS", 0));
-        assertEquals(ResponseEntity.badRequest().build(), controller.deleteTag(1,0));
+        this.controller.createTag(1, new Tag("ADS", 0));
+        assertEquals(ResponseEntity.badRequest().build(), controller.deleteTag(2,1Adde));
     }
 
     @Test
@@ -149,12 +151,14 @@ class CardControllerTest {
     @Test
     public void deleteTaskTest() {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
-        this.controller.createTask(1, new Task("ADS", false));
+        Task toAdd =  new Task("ADS", false);
+        toAdd.setId(1);
+        this.controller.createTask(1, toAdd);
         assertTrue(cardRepo.getById(1).getNestedTaskList().size() > 0);
         assertTrue(taskRepo.existsById(1));
         this.controller.deleteTask(1,1);
-        assertEquals(0, cardRepo.getById(1).getNestedTaskList().size());
         assertFalse(taskRepo.existsById(1));
+        assertEquals(0, cardRepo.getById(1).getNestedTaskList().size());
     }
 
     @Test
@@ -166,7 +170,7 @@ class CardControllerTest {
     public void deleteTaskNotInACard() {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
         cardRepo.save(new Card("Study OOPP", "Do Git"));
-        this.controller.createTask(0, new Task("OOPP", true));
-        assertEquals(ResponseEntity.badRequest().build(), controller.deleteTask(1,0));
+        this.controller.createTask(1, new Task("OOPP", true));
+        assertEquals(ResponseEntity.badRequest().build(), controller.deleteTask(2,1));
     }
 }
