@@ -38,10 +38,18 @@ public final class CardList {
         return id;
     }
 
+    /** setter of id
+     * @param id int unique value representing the id of a card list
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
     /**
      * Getter for the title of a list
      * @return a title of a list
      */
+
     public String getTitle() {
         return title;
     }

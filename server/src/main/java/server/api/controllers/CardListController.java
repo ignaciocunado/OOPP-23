@@ -54,7 +54,7 @@ public class CardListController {
      * @param cardId integer representing the id of the card we are deleting
      * @return the card list without the card
      */
-    @DeleteMapping("/{id}/card/{cardid}")
+    @DeleteMapping("/{id}/card/{cardId}")
     public ResponseEntity<CardList> deleteCard(@PathVariable final Integer id,
                                                @PathVariable final Integer cardId) {
 
