@@ -102,6 +102,22 @@ public final class Card {
     }
 
     /**
+     * setter for the Task list
+     * @param nestedTaskList new list of Tasks
+     */
+    public void setNestedTaskList(List<Task> nestedTaskList) {
+        this.nestedTaskList = nestedTaskList;
+    }
+
+    /**
+     * Setter for the Tag list
+     * @param tags new list of Tags
+     */
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    /**
      * Method which adds a new tag to a card
      * @param tag the tag to be added to the card
      * @return true iff the tag was successfully added
