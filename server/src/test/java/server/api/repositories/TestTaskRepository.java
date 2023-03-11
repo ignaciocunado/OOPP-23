@@ -47,12 +47,7 @@ public class TestTaskRepository implements TaskRepository {
 
     @Override
     public void deleteById(Integer integer) {
-        for(Task t : tasks) {
-            if(t.getId() == integer) {
-                tasks.remove(t);
-                return;
-            }
-        }
+        tasks.removeIf(task -> task.getId() == integer);
     }
 
     @Override
