@@ -1,4 +1,4 @@
-package server.api;
+package server.api.controllers;
 
 import commons.Card;
 import commons.Tag;
@@ -7,22 +7,25 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import server.database.*;
+import server.api.CardController;
+import server.api.repositories.TestTaskRepository;
+import server.api.repositories.TestCardRepository;
+import server.api.repositories.TestTagRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CardControllerTest {
 
-    private CardRepositoryTest cardRepo;
-    private TagRepositoryTest tagRepo;
-    private TaskRepositoryTest taskRepo;
+    private TestCardRepository cardRepo;
+    private TestTagRepository tagRepo;
+    private TestTaskRepository taskRepo;
     private CardController controller;
 
     @BeforeEach
     public void setup() {
-        cardRepo = new CardRepositoryTest();
-        tagRepo = new TagRepositoryTest();
-        taskRepo = new TaskRepositoryTest();
+        cardRepo = new TestCardRepository();
+        tagRepo = new TestTagRepository();
+        taskRepo = new TestTaskRepository();
         controller = new CardController(cardRepo,tagRepo,taskRepo);
     }
 

@@ -1,13 +1,13 @@
-package server.database;
+package server.api.repositories;
 
 import commons.Card;
-import commons.Task;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
+import server.database.CardRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -15,9 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-public class CardRepositoryTest implements CardRepository{
+public class TestCardRepository implements CardRepository {
 
     private final List<Card> cards = new ArrayList<>();
     private int nextInt = 0;

@@ -43,7 +43,7 @@ public final class TestTagRepository implements TagRepository {
 
     @Override
     public List<Tag> findAll() {
-        return null;
+        return this.tags;
     }
 
     @Override
@@ -63,17 +63,22 @@ public final class TestTagRepository implements TagRepository {
 
     @Override
     public long count() {
-        return 0;
+        return this.tags.size();
     }
 
     @Override
     public void deleteById(Integer integer) {
-
+        for(Tag t : tags) {
+            if(t.getId() == integer) {
+                tags.remove(t);
+                return;
+            }
+        }
     }
 
     @Override
     public void delete(Tag entity) {
-
+        tags.remove(entity);
     }
 
     @Override
