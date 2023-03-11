@@ -28,14 +28,6 @@ public final class Tag {
     }
 
     /**
-     * setter for id
-     * @param id new id
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
      * Gets unique id of the tag
      * @return the id
      */
@@ -57,6 +49,14 @@ public final class Tag {
      */
     public int getColour() {
         return colour;
+    }
+
+    /**
+     * Sets the id of the tag
+     * @param id the new id
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
