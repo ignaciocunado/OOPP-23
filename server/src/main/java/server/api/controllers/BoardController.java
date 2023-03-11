@@ -116,7 +116,7 @@ public class BoardController {
         }
 
         this.cardListRepository.deleteById(listId);
-        return new ResponseEntity<>(board, new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), HttpStatus.OK);
     }
 
 }
