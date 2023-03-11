@@ -1,4 +1,4 @@
-package server.api;
+package server.api.controllers;
 
 import commons.Card;
 import commons.Tag;
