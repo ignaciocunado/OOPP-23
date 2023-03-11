@@ -100,6 +100,7 @@ public final class TestBoardRepository implements BoardRepository {
         nextInt++;
         final Board board = new Board(entity.getKey(), entity.getPassword());
         board.setId(nextInt);
+        entity.setId(nextInt);
 
         this.boards.add(board);
         return (S) board;
