@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public class Task {
+public final class Task {
 
     @Id @GeneratedValue
     private int id;
