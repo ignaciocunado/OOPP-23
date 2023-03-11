@@ -19,22 +19,24 @@ public class TaskController {
         this.taskRepo = taskRepo;
     }
 
+
     /** endpoint for editing the name of a card list
      * @param id int value representing the id of a task
-     * @param newName the new name assigned to the task
-     * @param newValue the new value assigned to the task
+     * @param task the task we are editing
      * @return the task with the changed name
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<Task> editTaskName(@PathVariable final int id,
-                                             @RequestBody String newName,
-                                             @RequestBody Boolean newValue) {
+    public ResponseEntity<Task> editTaskNameAndBoolean(@PathVariable final int id,
+                                             @RequestBody final Task task) {
         if(!taskRepo.existsById(id)) {
-            return ResponseEntity.badRequest().build();
+
+            return ResponseEntity.notFound().build();
+
         }
-        Task editedTask = taskRepo.getById(id);
-        editedTask.setName(newName);
-        editedTask.setCompleted(newValue);
+
+        final Task editedTask = taskRepo.getById(id);
+        editedTask.setName(task.getName());
+        editedTask.setCompleted(task.isCompleted());
         taskRepo.save(editedTask);
         return new ResponseEntity<>(taskRepo.getById(id), new HttpHeaders(), 200);
     }
