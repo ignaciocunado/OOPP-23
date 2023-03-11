@@ -15,6 +15,7 @@
  */
 package server.api.repositories;
 
+import commons.Board;
 import commons.CardList;
 import commons.Quote;
 import org.springframework.data.domain.Example;
@@ -31,9 +32,12 @@ import java.util.function.Function;
 
 public final class TestCardListRepository implements CardListRepository {
 
+    private int nextInt = 0;
+    private List<CardList> cardLists = new ArrayList<>();
+
     @Override
     public List<CardList> findAll() {
-        return null;
+        return this.cardLists;
     }
 
     @Override
@@ -53,17 +57,17 @@ public final class TestCardListRepository implements CardListRepository {
 
     @Override
     public long count() {
-        return 0;
+        return this.cardLists.size();
     }
 
     @Override
     public void deleteById(Integer integer) {
-
+        this.cardLists.removeIf(cardList -> cardList.getId() == integer);
     }
 
     @Override
     public void delete(CardList entity) {
-
+        this.cardLists.remove(entity);
     }
 
     @Override
@@ -83,7 +87,21 @@ public final class TestCardListRepository implements CardListRepository {
 
     @Override
     public <S extends CardList> S save(S entity) {
-        return null;
+        for (final CardList cardList : cardLists) {
+            if (cardList.getId() == entity.getId()) {
+                cardList.setTitle(entity.getTitle());
+                return (S) entity;
+            }
+        }
+
+        nextInt++;
+        final CardList cardList = new CardList(entity.getTitle());
+        entity.getCards().stream().forEach(cardList::addCard);
+        cardList.setId(nextInt);
+        entity.setId(nextInt);
+
+        this.cardLists.add(cardList);
+        return (S) cardList;
     }
 
     @Override
