@@ -47,12 +47,7 @@ public class TestCardRepository implements CardRepository {
 
     @Override
     public void deleteById(Integer integer) {
-        for(Card c : cards) {
-            if(c.getId() == integer) {
-                cards.remove(c);
-                return;
-            }
-        }
+        cards.removeIf(card -> card.getId() == integer);
     }
 
     @Override

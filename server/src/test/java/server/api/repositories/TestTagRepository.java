@@ -68,12 +68,7 @@ public final class TestTagRepository implements TagRepository {
 
     @Override
     public void deleteById(Integer integer) {
-        for(Tag t : tags) {
-            if(t.getId() == integer) {
-                tags.remove(t);
-                return;
-            }
-        }
+        tags.removeIf(tag -> tag.getId() == integer);
     }
 
     @Override

@@ -15,6 +15,7 @@
  */
 package server.api.repositories;
 
+import commons.Board;
 import commons.CardList;
 import commons.Quote;
 import commons.Task;
@@ -34,12 +35,12 @@ import java.util.function.Function;
 
 public final class TestCardListRepository implements CardListRepository {
 
-    private final List<CardList> cardList = new ArrayList<>();
+    private final List<CardList> cardLists = new ArrayList<>();
     private int nextInt = 0;
 
     @Override
     public List<CardList> findAll() {
-        return this.cardList;
+        return this.cardLists;
     }
 
     @Override
@@ -59,17 +60,17 @@ public final class TestCardListRepository implements CardListRepository {
 
     @Override
     public long count() {
-        return this.cardList.size();
+        return this.cardLists.size();
     }
 
     @Override
     public void deleteById(Integer integer) {
-        cardList.removeIf(cardList -> (cardList.getId() == integer));
+        cardLists.removeIf(cardList -> (cardList.getId() == integer));
     }
 
     @Override
     public void delete(CardList entity) {
-        this.cardList.remove(entity);
+        this.cardLists.remove(entity);
     }
 
     @Override
@@ -89,18 +90,20 @@ public final class TestCardListRepository implements CardListRepository {
 
     @Override
     public <S extends CardList> S save(S entity) {
-        for(CardList cl : cardList){
-            if(cl.getId() == entity.getId()) {
-                cl.setId(entity.getId());
-                cl.setTitle(entity.getTitle());
-                return (S) cl;
+        for (final CardList cardList : cardLists) {
+            if (cardList.getId() == entity.getId()) {
+                cardList.setTitle(entity.getTitle());
+                return (S) entity;
             }
         }
 
-        final CardList cardList = new CardList(entity.getTitle());
         nextInt++;
+        final CardList cardList = new CardList(entity.getTitle());
+        entity.getCards().stream().forEach(cardList::addCard);
         cardList.setId(nextInt);
-        this.cardList.add(cardList);
+        entity.setId(nextInt);
+
+        this.cardLists.add(cardList);
         return (S) cardList;
     }
 
@@ -197,6 +200,6 @@ public final class TestCardListRepository implements CardListRepository {
     }
 
     private Optional<CardList> find(int id) {
-        return this.cardList.stream().filter(b -> b.getId() == id).findFirst();
+        return this.cardLists.stream().filter(b -> b.getId() == id).findFirst();
     }
 }
