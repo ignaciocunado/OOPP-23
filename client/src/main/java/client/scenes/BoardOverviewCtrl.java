@@ -143,7 +143,7 @@ public class BoardOverviewCtrl implements Initializable {
         currentBoard.addList(currentList);
     }
 
-    public void addCard() throws IOException {
+    public void addCard(Pane list) throws IOException {
         Pane listPane = FXMLLoader.load(getLocation("client", "scenes", "CardTemplate.fxml"));
         vbox.getChildren().add(listPane);
         int counter = 1;
