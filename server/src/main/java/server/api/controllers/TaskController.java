@@ -37,8 +37,7 @@ public class TaskController {
         final Task editedTask = taskRepo.getById(id);
         editedTask.setName(task.getName());
         editedTask.setCompleted(task.isCompleted());
-        taskRepo.save(editedTask);
-        return new ResponseEntity<>(taskRepo.getById(id), new HttpHeaders(), 200);
+        return new ResponseEntity<>(taskRepo.save(editedTask), new HttpHeaders(), 200);
     }
 
 

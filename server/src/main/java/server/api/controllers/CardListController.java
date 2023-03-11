@@ -95,8 +95,7 @@ public class CardListController {
 
             final CardList editedCardList = this.cardListRepo.getById(id);
             editedCardList.setTitle(cardList.getTitle());
-            cardListRepo.save(editedCardList);
-            return new ResponseEntity<>(cardListRepo.getById(id), new HttpHeaders(), 200);
+            return new ResponseEntity<>(cardListRepo.save(editedCardList), new HttpHeaders(), 200);
 
         }
     }
