@@ -16,7 +16,6 @@
 package server.api.repositories;
 
 import commons.Board;
-import commons.Quote;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,10 +23,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import server.database.BoardRepository;
-import server.database.QuoteRepository;
 
 import javax.persistence.EntityNotFoundException;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
