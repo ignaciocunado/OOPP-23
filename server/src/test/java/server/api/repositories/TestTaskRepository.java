@@ -1,16 +1,13 @@
-package server.database;
+package server.api.repositories;
 
-import commons.Board;
-import commons.Card;
-import commons.Tag;
 import commons.Task;
-import org.aspectj.weaver.AnnotationTargetKind;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
+import server.database.TaskRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -18,9 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-public class TaskRepositoryTest implements TaskRepository{
+public class TestTaskRepository implements TaskRepository {
 
     private final List<Task> tasks = new ArrayList<>();
     private int nextInt = 0;
