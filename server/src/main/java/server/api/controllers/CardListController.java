@@ -32,20 +32,19 @@ public class CardListController {
      */
     @PostMapping("/{id}/card")
     public ResponseEntity<CardList> createCard(@PathVariable final Integer id) {
-        final CardList cardList = this.cardListRepo.getById(id);
-        final Card card = new Card("New Card", "New Description");
 
         if(!this.cardListRepo.existsById(id)){
 
             return ResponseEntity.notFound().build();
 
         }
-        else {
 
-            this.cardRepo.save(card);
-            cardList.addCard(card);
-            return new ResponseEntity<>(this.cardListRepo.save(cardList), new HttpHeaders(), 200);
-        }
+        final CardList cardList = this.cardListRepo.getById(id);
+        final Card card = new Card("New Title", "New Description");
+
+        this.cardRepo.save(card);
+        cardList.addCard(card);
+        return new ResponseEntity<>(this.cardListRepo.save(cardList), new HttpHeaders(), 200);
 
     }
 
@@ -58,9 +57,15 @@ public class CardListController {
     public ResponseEntity<CardList> deleteCard(@PathVariable final Integer id,
                                                @PathVariable final Integer cardId) {
 
+        if(!this.cardListRepo.existsById((id))){
+
+            return ResponseEntity.notFound().build();
+
+        }
+
         final CardList cardList = this.cardListRepo.getById(id);
 
-        if(!this.cardListRepo.existsById(id) || !cardList.removeCardById(cardId)) {
+        if(!cardList.removeCardById(cardId)) {
 
             return ResponseEntity.notFound().build();
 
@@ -75,21 +80,21 @@ public class CardListController {
 
     /** endpoint for editing the title of a card list
      * @param id int value representing the id of a card list
-     * @param newTitle the new title assigned to the card list
+     * @param cardList the card list edited
      * @return the card list with the changed new title
      */
     @PatchMapping("/{id}")
     public ResponseEntity<CardList> editCardListTitle(@PathVariable final int id,
-                                                            @RequestBody String newTitle) {
+                                                            @RequestBody final CardList cardList) {
         if(!cardListRepo.existsById(id)) {
 
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
 
         }
         else {
 
-            CardList editedCardList = cardListRepo.getById(id);
-            editedCardList.setTitle(newTitle);
+            final CardList editedCardList = this.cardListRepo.getById(id);
+            editedCardList.setTitle(cardList.getTitle());
             cardListRepo.save(editedCardList);
             return new ResponseEntity<>(cardListRepo.getById(id), new HttpHeaders(), 200);
 

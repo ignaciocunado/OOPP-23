@@ -18,13 +18,16 @@ package server.api.repositories;
 import commons.Board;
 import commons.CardList;
 import commons.Quote;
+import commons.Task;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import server.database.CardListRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,8 +35,8 @@ import java.util.function.Function;
 
 public final class TestCardListRepository implements CardListRepository {
 
+    private final List<CardList> cardLists = new ArrayList<>();
     private int nextInt = 0;
-    private List<CardList> cardLists = new ArrayList<>();
 
     @Override
     public List<CardList> findAll() {
@@ -62,7 +65,7 @@ public final class TestCardListRepository implements CardListRepository {
 
     @Override
     public void deleteById(Integer integer) {
-        this.cardLists.removeIf(cardList -> cardList.getId() == integer);
+        cardLists.removeIf(cardList -> (cardList.getId() == integer));
     }
 
     @Override
@@ -111,12 +114,12 @@ public final class TestCardListRepository implements CardListRepository {
 
     @Override
     public Optional<CardList> findById(Integer integer) {
-        return Optional.empty();
+        return this.find(integer);
     }
 
     @Override
     public boolean existsById(Integer integer) {
-        return false;
+        return this.find(integer).isPresent();
     }
 
     @Override
@@ -156,7 +159,9 @@ public final class TestCardListRepository implements CardListRepository {
 
     @Override
     public CardList getById(Integer integer) {
-        return null;
+        final Optional<CardList> cardListOpt = find(integer);
+        if (!cardListOpt.isPresent()) throw new JpaObjectRetrievalFailureException(new EntityNotFoundException());
+        return cardListOpt.get();
     }
 
     @Override
@@ -192,5 +197,9 @@ public final class TestCardListRepository implements CardListRepository {
     @Override
     public <S extends CardList, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         return null;
+    }
+
+    private Optional<CardList> find(int id) {
+        return this.cardLists.stream().filter(b -> b.getId() == id).findFirst();
     }
 }
