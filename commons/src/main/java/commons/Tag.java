@@ -28,6 +28,14 @@ public final class Tag {
     }
 
     /**
+     * setter for id
+     * @param id new id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
      * Gets unique id of the tag
      * @return the id
      */

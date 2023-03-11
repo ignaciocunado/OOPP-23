@@ -36,6 +36,14 @@ public class Task {
     }
 
     /**
+     * setter for id
+     * @param id new id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
      * @return the name of the task
      */
     public String getName() {

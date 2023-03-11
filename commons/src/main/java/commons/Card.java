@@ -46,6 +46,14 @@ public final class Card {
     }
 
     /**
+     *  setter for id
+     * @param id new id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
      * Getter for the title of a card
      * @return title of a card
      */
@@ -91,6 +99,22 @@ public final class Card {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     * setter for the Task list
+     * @param nestedTaskList new list of Tasks
+     */
+    public void setNestedTaskList(List<Task> nestedTaskList) {
+        this.nestedTaskList = nestedTaskList;
+    }
+
+    /**
+     * Setter for the Tag list
+     * @param tags new list of Tags
+     */
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     /**
