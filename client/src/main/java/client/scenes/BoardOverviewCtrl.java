@@ -27,6 +27,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import java.io.IOException;
@@ -41,8 +42,6 @@ public class BoardOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
     @FXML
     private HBox hbox;
-    @FXML
-    private VBox vbox;
     private HashSet<Integer> ids = new HashSet<>();
     private Board currentBoard;
     private CardList currentList;
@@ -120,9 +119,11 @@ public class BoardOverviewCtrl implements Initializable {
         for (int i = 0; i < listPane.getChildren().size(); i++) {
             if (listPane.getChildren().get(i).getClass() == Pane.class) {
                 Pane current = (Pane) listPane.getChildren().get(i);
+                ScrollPane scrollPane = (ScrollPane) current.getChildren().get(0);
+                VBox vbox = (VBox) scrollPane.getChildren()
                 current.getChildren().get(0).setOnMouseClicked(event-> {
                     try {
-                        addCard();//addCard will be here
+                        addCard(current);//addCard will be here
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -145,7 +146,7 @@ public class BoardOverviewCtrl implements Initializable {
 
     public void addCard(Pane list) throws IOException {
         Pane listPane = FXMLLoader.load(getLocation("client", "scenes", "CardTemplate.fxml"));
-        vbox.getChildren().add(listPane);
+        list.getChildren().add(listPane);
         int counter = 1;
         while(ids.contains(counter)){
             counter++;
