@@ -120,7 +120,7 @@ public class BoardOverviewCtrl implements Initializable {
             if (listPane.getChildren().get(i).getClass() == Pane.class) {
                 Pane current = (Pane) listPane.getChildren().get(i);
                 ScrollPane scrollPane = (ScrollPane) current.getChildren().get(0);
-                VBox vbox = (VBox) scrollPane.getChildren()
+                VBox vbox = (VBox) scrollPane.getChildren();
                 current.getChildren().get(0).setOnMouseClicked(event-> {
                     try {
                         addCard(current);//addCard will be here
