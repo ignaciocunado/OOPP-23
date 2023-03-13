@@ -43,6 +43,7 @@ public class BoardOverviewCtrl implements Initializable {
     @FXML
     private HBox hbox;
     private HashSet<Integer> ids = new HashSet<>();
+    private HashSet<Integer> cardsIds = new HashSet<>();
     private Board currentBoard;
     private CardList currentList;
 
@@ -120,7 +121,6 @@ public class BoardOverviewCtrl implements Initializable {
             if (listPane.getChildren().get(i).getClass() == Pane.class) {
                 Pane current = (Pane) listPane.getChildren().get(i);
                 ScrollPane scrollPane = (ScrollPane) current.getChildren().get(0);
-                VBox vbox = (VBox) scrollPane.getChildren();
                 current.getChildren().get(0).setOnMouseClicked(event-> {
                     try {
                         addCard(current);//addCard will be here
@@ -147,36 +147,29 @@ public class BoardOverviewCtrl implements Initializable {
     public void addCard(Pane list) throws IOException {
         Pane listPane = FXMLLoader.load(getLocation("client", "scenes", "CardTemplate.fxml"));
         list.getChildren().add(listPane);
+        VBox vbox = null;
         int counter = 1;
-        while(ids.contains(counter)){
+        while(cardsIds.contains(counter)){
             counter++;
         }
-        ids.add(counter);
+        cardsIds.add(counter);
         listPane.setId(String.valueOf(counter));
         Card currentCard = new Card();
         Pane cardPane = (Pane) listPane.getChildren().get(0);
         for (int i = 0; i < cardPane.getChildren().size(); i++) {
-            if (cardPane.getChildren().get(i).getClass() == Pane.class) {
-                Pane current = (Pane) cardPane.getChildren().get(i);
-                TextField tag = (TextField) current.getChildren().get(0);
-                tag.setText("Tag");
-                refreshTag(currentCard, tag);
-                tag.setOnKeyReleased(event -> refreshTag(currentCard, tag));
-
-//                current.getChildren().get(0).setOnMouseClicked(event-> {
-//                    try {
-//                        addList();//addCard will be here
-//                    } catch (IOException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                });
-            }
-            if (listPane.getChildren().get(i).getClass() == Button.class) {
+//            if (cardPane.getChildren().get(i).getClass() == Pane.class) {
+//                Pane current = (Pane) cardPane.getChildren().get(i);
+//                TextField tag = (TextField) current.getChildren().get(0);
+//                tag.setText("Tag");
+//                refreshTag(currentCard, tag);
+//                tag.setOnKeyReleased(event -> refreshTag(currentCard, tag));
+//            }
+            if (listPane.getChildren().get(i).getClass() == Button.class && listPane.getChildren().get(i).getId().equals("closeButton")) {
                 listPane.getChildren().get(i).setOnMouseClicked(event-> {
-                    removeCard(cardPane, currentCard.getId());
+                    removeCard(cardPane, currentCard.getId(), vbox);
                 });
             }
-            if (listPane.getChildren().get(i).getClass() == TextField.class) {
+            if (listPane.getChildren().get(i).getClass() == TextField.class && listPane.getChildren().get(i).getId().equals("cardTitle")) {
                 TextField cardTitle = (TextField) listPane.getChildren().get(i);
                 cardTitle.setText("Title: "+listPane.getId());
                 refreshCardTitle(currentCard, cardTitle);
@@ -197,9 +190,6 @@ public class BoardOverviewCtrl implements Initializable {
     public void refreshCardTitle(Card selectedCard, TextField selectedText){
         selectedCard.setTitle(selectedText.getText());
     }
-    public void refreshTag(Card selectedCard, TextField selectedText){
-        selectedCard.addTag(new Tag(selectedText.getText(), 111));
-    }
 
     /**
      * Removes an existing List from the Board
@@ -218,7 +208,7 @@ public class BoardOverviewCtrl implements Initializable {
         }
     }
 
-    public void removeCard(Pane toBeRemoved, int idOfCard){
+    public void removeCard(Pane toBeRemoved, int idOfCard, VBox vbox){
         ids.remove(toBeRemoved.getId());
         int index = vbox.getChildren().indexOf(toBeRemoved);
         vbox.getChildren().remove(index);
