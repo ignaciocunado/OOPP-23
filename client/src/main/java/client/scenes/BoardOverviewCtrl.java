@@ -21,7 +21,6 @@ import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
-import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,10 +28,9 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
-import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
-
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -114,7 +112,7 @@ public class BoardOverviewCtrl implements Initializable {
         }
         ids.add(counter);
         listPane.setId(String.valueOf(counter));
-        CardList currentList = new CardList();
+        CardList currentList = new CardList("");
         for (int i = 0; i < listPane.getChildren().size(); i++) {
             if (listPane.getChildren().get(i).getClass() == Pane.class) {
                 Pane cardPane = (Pane) listPane.getChildren().get(i);
@@ -143,9 +141,14 @@ public class BoardOverviewCtrl implements Initializable {
         currentBoard.addList(currentList);
     }
 
+    /**
+     * Adds a Card to the current List object and displays it
+     * @param vbox the VBox associated to the List
+     * @param currentList the current CardList
+     */
     public void addCard(VBox vbox, CardList currentList) throws IOException {
         Pane cardPane = FXMLLoader.load(getLocation("client", "scenes", "CardTemplate.fxml"));
-        vbox.getChildren().add(cardPane);
+        vbox.getChildren().add(vbox.getChildren().size() - 1, cardPane);
         int counter = 1;
         while(cardsIds.contains(counter)){
             counter++;
@@ -156,41 +159,37 @@ public class BoardOverviewCtrl implements Initializable {
         Pane taskPane = (Pane) cardPane.getChildren().get(0);
         if (taskPane.getChildren().get(4).getClass() == Button.class) {
             taskPane.getChildren().get(4).setOnMouseClicked(event-> {
-                removeCard(cardPane, vbox);
+                removeCard(cardPane, currentCard.getId(), vbox, currentList);
             });
         }
-        for (int i = 0; i < taskPane.getChildren().size(); i++) {
-//            if (cardPane.getChildren().get(i).getClass() == Pane.class) {
-//                Pane current = (Pane) cardPane.getChildren().get(i);
-//                TextField tag = (TextField) current.getChildren().get(0);
-//                tag.setText("Tag");
-//                refreshTag(currentCard, tag);
-//                tag.setOnKeyReleased(event -> refreshTag(currentCard, tag));
-//            }
-            if (taskPane.getChildren().get(i).getClass() == Text.class) {
-                Text cardTitle = (Text) taskPane.getChildren().get(i);
-                cardTitle.setText("Title: "+cardPane.getId());
-                refreshCardTitle(currentCard, cardTitle);
-                cardTitle.setOnKeyReleased(event -> refreshCardTitle(currentCard, cardTitle));
-            }
-            if (taskPane.getChildren().get(i).getClass() == Line.class){
-                taskPane.getChildren().get(i).setOnDragExited(event -> {
-                   //removeCard(cardPane, vbox);
-                });
-            }
+        if (taskPane.getChildren().get(1).getClass() == TextField.class) {
+            TextField cardTitle = (TextField) taskPane.getChildren().get(1);
+            cardTitle.setText("Card: "+cardPane.getId());
+            refreshCardText(currentCard, cardTitle);
+            cardTitle.setOnKeyReleased(event -> refreshCardText(currentCard, cardTitle));
         }
-        //currentList.addCard(currentCard);
+        if (taskPane.getChildren().get(3).getClass() == TextField.class) {
+            TextField cardTitle = (TextField) taskPane.getChildren().get(3);
+            cardTitle.setText("Description: ");
+            refreshCardText(currentCard, cardTitle);
+            cardTitle.setOnKeyReleased(event -> refreshCardText(currentCard, cardTitle));
+        }
+        currentList.addCard(currentCard);
     }
     /**
      * Refreshes the title of a List
      * @param selectedList the selected CardList
-     * @param selectedText the TextFiled associated to the List
+     * @param selectedText the TextField associated to the List
      */
     public void refreshTitle(CardList selectedList, TextField selectedText) {
         selectedList.setTitle(selectedText.getText());
     }
 
-    public void refreshCardTitle(Card selectedCard, Text selectedText){
+    /**
+     * @param selectedCard the selected Card
+     * @param selectedText the TextField associated to the Card
+     */
+    public void refreshCardText(Card selectedCard, TextField selectedText){
         selectedCard.setTitle(selectedText.getText());
     }
 
@@ -211,17 +210,23 @@ public class BoardOverviewCtrl implements Initializable {
         }
     }
 
-    public void removeCard(Pane toBeRemoved, VBox vbox){
-        System.out.println("Trying to remove");
+    /**
+     * Removes an existing Card from the List
+     * @param toBeRemoved the Pane which needs to be deleted
+     * @param idOfCard the ID of the Card which needs to be deleted
+     * @param vbox the VBox associated to the List
+     * @param currentList the current CardList
+     */
+    public void removeCard(Pane toBeRemoved,int idOfCard, VBox vbox, CardList currentList){
         cardsIds.remove(toBeRemoved.getId());
         int index = vbox.getChildren().indexOf(toBeRemoved);
         vbox.getChildren().remove(index);
-//        for (Card card : currentList.getCards()){
-//            if(card.getId() == idOfCard){
-//                currentList.removeCard(card);
-//                break;
-//            }
-//        }
+        for (Card card : currentList.getCards()){
+            if(card.getId() == idOfCard){
+                currentList.removeCard(card);
+                break;
+            }
+        }
     }
     /**
      * Gets the location of a resource with the given String elements
