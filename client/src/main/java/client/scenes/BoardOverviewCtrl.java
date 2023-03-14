@@ -21,7 +21,7 @@ import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
-import commons.Tag;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,6 +29,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
@@ -48,6 +49,7 @@ public class BoardOverviewCtrl implements Initializable {
     private HashSet<Integer> ids = new HashSet<>();
     private HashSet<Integer> cardsIds = new HashSet<>();
     private Board currentBoard;
+    private Card copiedCard;
 
 
     /**
@@ -115,6 +117,19 @@ public class BoardOverviewCtrl implements Initializable {
         ids.add(counter);
         listPane.setId(String.valueOf(counter));
         CardList currentList = new CardList();
+        listPane.setOnDragOver(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                /* data is dragged over the target */
+                /* accept it only if it is not dragged from the same node
+                 * and if it has a string data */
+                if (event.getGestureSource() != listPane && event.getDragboard().hasString()) {
+                    /* allow for both copying and moving, whatever user chooses */
+                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+
+                }
+                event.consume();
+            }
+        });
         for (int i = 0; i < listPane.getChildren().size(); i++) {
             if (listPane.getChildren().get(i).getClass() == Pane.class) {
                 Pane cardPane = (Pane) listPane.getChildren().get(i);
@@ -154,6 +169,38 @@ public class BoardOverviewCtrl implements Initializable {
         cardPane.setId(String.valueOf(counter));
         Card currentCard = new Card();
         Pane taskPane = (Pane) cardPane.getChildren().get(0);
+        taskPane.setOnDragDetected(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                /* drag was detected, start a drag-and-drop gesture*/
+                /* allow any transfer mode */
+                Dragboard db = taskPane.startDragAndDrop(TransferMode.ANY);
+
+                /* Put a string on a dragboard */
+                ClipboardContent content = new ClipboardContent();
+                content.putString("Pane source text");
+                db.setContent(content);
+                System.out.println("Dragging");
+                copiedCard = currentCard;
+                event.consume();
+            }
+        });
+
+        taskPane.setOnDragDropped((DragEvent event) -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasString()) {
+                System.out.println("Dropped: " + db.getString());
+                event.setDropCompleted(true);
+                removeCard(taskPane, vbox);
+            } else {
+                System.out.println("No Drop");
+                event.setDropCompleted(false);
+            }
+            event.consume();
+        });
+//        taskPane.setOnDragEntered(event -> {
+//            System.out.println("Entered new Pane");
+//            //removeCard(cardPane, vbox);
+//        });
         if (taskPane.getChildren().get(4).getClass() == Button.class) {
             taskPane.getChildren().get(4).setOnMouseClicked(event-> {
                 removeCard(cardPane, vbox);
@@ -172,11 +219,6 @@ public class BoardOverviewCtrl implements Initializable {
                 cardTitle.setText("Title: "+cardPane.getId());
                 refreshCardTitle(currentCard, cardTitle);
                 cardTitle.setOnKeyReleased(event -> refreshCardTitle(currentCard, cardTitle));
-            }
-            if (taskPane.getChildren().get(i).getClass() == Line.class){
-                taskPane.getChildren().get(i).setOnDragExited(event -> {
-                   //removeCard(cardPane, vbox);
-                });
             }
         }
         //currentList.addCard(currentCard);
@@ -232,4 +274,6 @@ public class BoardOverviewCtrl implements Initializable {
         var path = Path.of("", parts).toString();
         return MyFXML.class.getClassLoader().getResource(path);
     }
+
+
 }
