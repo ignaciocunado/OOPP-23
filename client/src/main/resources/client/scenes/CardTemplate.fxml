@@ -5,7 +5,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="194.0" prefWidth="237.0" style="-fx-background-color: rgb(35,69,103);" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="194.0" prefWidth="237.0" style="-fx-background-color: rgb(35,69,103);" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardOverviewCtrl">
     <children>
         <Pane layoutX="4.0" layoutY="6.0" prefHeight="183.0" prefWidth="230.0" style="-fx-background-color: #123456; -fx-background-radius: 10;">
             <children>

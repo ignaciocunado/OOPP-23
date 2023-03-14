@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import commons.Board;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -64,10 +65,19 @@ public class MainCtrl {
     /**
      * Shows the main board overview scene
      */
-    public void showBoardOverview() {
+    public void showNewBoardOverview() {
         primaryStage.setTitle("Talio: Task List Organiser");
         primaryStage.setScene(this.boardOverview);
-        boardOverviewCtrl.refresh();
+        boardOverviewCtrl.refresh(new Board("",""));
+    }
+
+    /**
+     * Shows an existing board overview scene
+     */
+    public void showExistingBoardOverview() {
+        primaryStage.setTitle("Talio: Task List Organiser");
+        primaryStage.setScene(this.boardOverview);
+        boardOverviewCtrl.refresh(new Board("",""));
     }
 
     /**
