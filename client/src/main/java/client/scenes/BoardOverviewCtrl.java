@@ -175,7 +175,7 @@ public class BoardOverviewCtrl implements Initializable {
                     (scrollPane.getContent().getBoundsInLocal().getHeight()
                     - scrollPane.getViewportBounds().getHeight());
                 addExistingCard(vbox, cardToDrag, scrollValue,
-                    event.getScreenY(), currentList);
+                    event.getSceneY(), currentList);
             } else {
                 event.setDropCompleted(false);
             }
@@ -278,20 +278,20 @@ public class BoardOverviewCtrl implements Initializable {
      * @param vbox the VBox associated to the List
      * @param draggingCard the Pane which is being dragged
      * @param scrollValue the relative position which the user is seeing
-     * @param screenY mouse horizontal position
+     * @param sceneY mouse horizontal position
      * @param currentList the List to which the Card will be added
      */
     public void addExistingCard(VBox vbox, Pane draggingCard, double scrollValue,
-                                double screenY, CardList currentList) {
+                                double sceneY, CardList currentList) {
         int relativePosition = (int) (scrollValue/184.20001220703125);
         int size = vbox.getChildren().size();
         if (size <= 1) {
             vbox.getChildren().add(0, draggingCard);
         }
-        else if (screenY < 400) {
+        else if (sceneY < 300) {
             vbox.getChildren().add(relativePosition, draggingCard);
         }
-        else if (screenY < 630) {
+        else if (sceneY < 550) {
             if (relativePosition + 1 == vbox.getChildren().size()) {
                 vbox.getChildren().add(vbox.getChildren().size() - 1, draggingCard);
             }
