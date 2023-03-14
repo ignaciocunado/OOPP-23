@@ -165,14 +165,14 @@ public class BoardOverviewCtrl implements Initializable {
         if (taskPane.getChildren().get(1).getClass() == TextField.class) {
             TextField cardTitle = (TextField) taskPane.getChildren().get(1);
             cardTitle.setText("Card: "+cardPane.getId());
-            refreshCardText(currentCard, cardTitle);
-            cardTitle.setOnKeyReleased(event -> refreshCardText(currentCard, cardTitle));
+            refreshCardTitle(currentCard, cardTitle);
+            cardTitle.setOnKeyReleased(event -> refreshCardTitle(currentCard, cardTitle));
         }
         if (taskPane.getChildren().get(3).getClass() == TextField.class) {
             TextField cardTitle = (TextField) taskPane.getChildren().get(3);
             cardTitle.setText("Description: ");
-            refreshCardText(currentCard, cardTitle);
-            cardTitle.setOnKeyReleased(event -> refreshCardText(currentCard, cardTitle));
+            refreshCardDescription(currentCard, cardTitle);
+            cardTitle.setOnKeyReleased(event -> refreshCardDescription(currentCard, cardTitle));
         }
         currentList.addCard(currentCard);
     }
@@ -186,11 +186,21 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     /**
+     * Refreshes the title of a Card
      * @param selectedCard the selected Card
      * @param selectedText the TextField associated to the Card
      */
-    public void refreshCardText(Card selectedCard, TextField selectedText){
+    public void refreshCardTitle(Card selectedCard, TextField selectedText){
         selectedCard.setTitle(selectedText.getText());
+    }
+
+    /**
+     * Refreshes the description of a Card
+     * @param selectedCard the selected Card
+     * @param selectedText the TextField associated to the Card
+     */
+    public void refreshCardDescription(Card selectedCard, TextField selectedText){
+        selectedCard.setDescription(selectedText.getText());
     }
 
     /**
