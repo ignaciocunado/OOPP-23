@@ -12,7 +12,7 @@
                     <content>
                         <VBox fx:id="vbox" layoutX="11.0" layoutY="59.0" prefHeight="453.0" prefWidth="212.0" style="-fx-background-color: rgb(35,69,103);">
                             <children>
-                                <Button contentDisplay="CENTER" graphicTextGap="10.0" layoutX="11.0" layoutY="14.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="207.0" maxWidth="207.0" style="-fx-background-color: #123456; -fx-padding: 0px;" text="+" textAlignment="CENTER" textFill="WHITE">
+                                <Button contentDisplay="CENTER" graphicTextGap="10.0" layoutX="11.0" layoutY="14.0" maxWidth="207.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="207.0" style="-fx-background-color: #123456; -fx-padding: 0px;" text="+" textAlignment="CENTER" textFill="WHITE">
                                     <font>
                                         <Font size="25.0" />
                                     </font>

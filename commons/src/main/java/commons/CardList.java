@@ -27,7 +27,7 @@ public final class CardList {
      */
     public CardList(String title) {
         this.title = title;
-        cards = new ArrayList<>();
+        this.cards = new ArrayList<>();
     }
 
     /**

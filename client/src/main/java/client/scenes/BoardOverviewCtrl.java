@@ -30,6 +30,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Line;
+
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -45,7 +47,6 @@ public class BoardOverviewCtrl implements Initializable {
     private HashSet<Integer> ids = new HashSet<>();
     private HashSet<Integer> cardsIds = new HashSet<>();
     private Board currentBoard;
-    private CardList currentList;
 
 
     /**
@@ -86,10 +87,6 @@ public class BoardOverviewCtrl implements Initializable {
         this.currentBoard = currentBoard;
     }
 
-    public void refreshList(CardList currentList){
-        this.currentList = currentList;
-    }
-
     /**
      * Method to close the app
      */
@@ -119,11 +116,12 @@ public class BoardOverviewCtrl implements Initializable {
         CardList currentList = new CardList();
         for (int i = 0; i < listPane.getChildren().size(); i++) {
             if (listPane.getChildren().get(i).getClass() == Pane.class) {
-                Pane current = (Pane) listPane.getChildren().get(i);
-                ScrollPane scrollPane = (ScrollPane) current.getChildren().get(0);
-                current.getChildren().get(0).setOnMouseClicked(event-> {
+                Pane cardPane = (Pane) listPane.getChildren().get(i);
+                ScrollPane scrollPane = (ScrollPane) cardPane.getChildren().get(0);
+                VBox vbox = (VBox) scrollPane.getContent();
+                vbox.getChildren().get(0).setOnMouseClicked(event-> {
                     try {
-                        addCard(current);//addCard will be here
+                        addCard(vbox, currentList);//addCard will be here
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -144,18 +142,22 @@ public class BoardOverviewCtrl implements Initializable {
         currentBoard.addList(currentList);
     }
 
-    public void addCard(Pane list) throws IOException {
-        Pane listPane = FXMLLoader.load(getLocation("client", "scenes", "CardTemplate.fxml"));
-        list.getChildren().add(listPane);
-        VBox vbox = null;
+    public void addCard(VBox vbox, CardList currentList) throws IOException {
+        Pane cardPane = FXMLLoader.load(getLocation("client", "scenes", "CardTemplate.fxml"));
+        vbox.getChildren().add(cardPane);
         int counter = 1;
         while(cardsIds.contains(counter)){
             counter++;
         }
         cardsIds.add(counter);
-        listPane.setId(String.valueOf(counter));
+        cardPane.setId(String.valueOf(counter));
         Card currentCard = new Card();
-        Pane cardPane = (Pane) listPane.getChildren().get(0);
+        Pane taskPane = (Pane) cardPane.getChildren().get(0);
+        if (taskPane.getChildren().get(3).getClass() == Button.class) {
+            taskPane.getChildren().get(3).setOnMouseClicked(event-> {
+                removeCard(cardPane, vbox);
+            });
+        }
         for (int i = 0; i < cardPane.getChildren().size(); i++) {
 //            if (cardPane.getChildren().get(i).getClass() == Pane.class) {
 //                Pane current = (Pane) cardPane.getChildren().get(i);
@@ -164,19 +166,19 @@ public class BoardOverviewCtrl implements Initializable {
 //                refreshTag(currentCard, tag);
 //                tag.setOnKeyReleased(event -> refreshTag(currentCard, tag));
 //            }
-            if (listPane.getChildren().get(i).getClass() == Button.class && listPane.getChildren().get(i).getId().equals("closeButton")) {
-                listPane.getChildren().get(i).setOnMouseClicked(event-> {
-                    removeCard(cardPane, currentCard.getId(), vbox);
-                });
-            }
-            if (listPane.getChildren().get(i).getClass() == TextField.class && listPane.getChildren().get(i).getId().equals("cardTitle")) {
-                TextField cardTitle = (TextField) listPane.getChildren().get(i);
-                cardTitle.setText("Title: "+listPane.getId());
+            if (taskPane.getChildren().get(i).getClass() == TextField.class) {
+                TextField cardTitle = (TextField) taskPane.getChildren().get(i);
+                cardTitle.setText("Title: "+cardPane.getId());
                 refreshCardTitle(currentCard, cardTitle);
                 cardTitle.setOnKeyReleased(event -> refreshCardTitle(currentCard, cardTitle));
             }
+            if (taskPane.getChildren().get(i).getClass() == Line.class){
+                taskPane.getChildren().get(i).setOnDragExited(event -> {
+                   //removeCard(cardPane, vbox);
+                });
+            }
         }
-        currentList.addCard(currentCard);
+        //currentList.addCard(currentCard);
     }
     /**
      * Refreshes the title of a List
@@ -208,16 +210,17 @@ public class BoardOverviewCtrl implements Initializable {
         }
     }
 
-    public void removeCard(Pane toBeRemoved, int idOfCard, VBox vbox){
-        ids.remove(toBeRemoved.getId());
+    public void removeCard(Pane toBeRemoved, VBox vbox){
+        System.out.println("Trying to remove");
+        cardsIds.remove(toBeRemoved.getId());
         int index = vbox.getChildren().indexOf(toBeRemoved);
         vbox.getChildren().remove(index);
-        for (Card card : currentList.getCards()){
-            if(card.getId() == idOfCard){
-                currentList.removeCard(card);
-                break;
-            }
-        }
+//        for (Card card : currentList.getCards()){
+//            if(card.getId() == idOfCard){
+//                currentList.removeCard(card);
+//                break;
+//            }
+//        }
     }
     /**
      * Gets the location of a resource with the given String elements
