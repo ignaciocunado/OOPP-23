@@ -21,7 +21,6 @@ import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,7 +29,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.*;
-import javafx.scene.text.Text;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -46,10 +44,13 @@ public class BoardOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
     @FXML
     private HBox hbox;
-    private HashSet<Integer> ids = new HashSet<>();
-    private HashSet<Integer> cardsIds = new HashSet<>();
+    private final HashSet<Integer> ids = new HashSet<>();
+    private final HashSet<Integer> cardsIds = new HashSet<>();
     private Board currentBoard;
-    private Card copiedCard;
+    private Pane cardToDrag;
+    private VBox vboxToRemove;
+    private Card selectedCard;
+    private CardList selectedList;
 
 
     /**
@@ -116,58 +117,71 @@ public class BoardOverviewCtrl implements Initializable {
         }
         ids.add(counter);
         listPane.setId(String.valueOf(counter));
-        listPane.setOnDragOver(new EventHandler<DragEvent>() {
-            public void handle(DragEvent event) {
-                /* data is dragged over the target */
-                /* accept it only if it is not dragged from the same node
-                 * and if it has a string data */
-                if (event.getGestureSource() != listPane && event.getDragboard().hasString()) {
-                    /* allow for both copying and moving, whatever user chooses */
-                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-
-                }
-                event.consume();
-            }
-        });
-        listPane.setOnDragDropped((DragEvent event) -> {
-            Dragboard db = event.getDragboard();
-            if (db.hasString()) {
-                System.out.println("Dropped: " + db.getString());
-                event.setDropCompleted(true);
-
-            } else {
-                System.out.println("No Drop");
-                event.setDropCompleted(false);
-            }
-            event.consume();
-        });
         CardList currentList = new CardList("");
+        ScrollPane scrollPane = new ScrollPane();
+        VBox vbox = new VBox();
         for (int i = 0; i < listPane.getChildren().size(); i++) {
             if (listPane.getChildren().get(i).getClass() == Pane.class) {
                 Pane cardPane = (Pane) listPane.getChildren().get(i);
-                ScrollPane scrollPane = (ScrollPane) cardPane.getChildren().get(0);
-                VBox vbox = (VBox) scrollPane.getContent();
+                scrollPane = (ScrollPane) cardPane.getChildren().get(0);
+                vbox = (VBox) scrollPane.getContent();
+                VBox finalVbox = vbox;
+                vbox.setSpacing(5);
                 vbox.getChildren().get(0).setOnMouseClicked(event-> {
                     try {
-                        addCard(vbox, currentList);
+                        addCard(finalVbox, currentList);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 });
             }
             if (listPane.getChildren().get(i).getClass() == Button.class) {
-                listPane.getChildren().get(i).setOnMouseClicked(event-> {
-                    removeList(listPane, currentList.getId());
-                });
+                listPane.getChildren().get(i).setOnMouseClicked(event->
+                    removeList(listPane, currentList.getId()));
             }
             if (listPane.getChildren().get(i).getClass() == TextField.class) {
                 TextField title = (TextField) listPane.getChildren().get(i);
-                title.setText("Title: "+listPane.getId());
+                title.setText("Title: " + listPane.getId());
                 refreshTitle(currentList, title);
                 title.setOnKeyReleased(event -> refreshTitle(currentList, title));
             }
         }
+        VBox finalVbox1 = vbox;
+        setMouseDragActions(listPane, currentList, scrollPane, finalVbox1);
         currentBoard.addList(currentList);
+    }
+
+    /**
+     * Sets the necessary actions when dragging a Card over a List
+     * @param listPane the Pane which the mouse is over
+     * @param currentList the CardList corresponding to the Pane
+     * @param scrollPane the ScrollPane contained in the listPane
+     * @param vbox the VBox to which the Card will be added
+     */
+    private void setMouseDragActions(Pane listPane, CardList currentList, ScrollPane scrollPane,
+                           VBox vbox) {
+        listPane.setOnDragOver(event -> {
+            if (event.getGestureSource() != listPane && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            }
+            event.consume();
+        });
+        listPane.setOnDragDropped((DragEvent event) -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasString()) {
+                event.setDropCompleted(true);
+                removeExistingCard(vboxToRemove, cardToDrag);
+                double scrollValue = scrollPane.getVvalue() *
+                    (scrollPane.getContent().getBoundsInLocal().getHeight()
+                    - scrollPane.getViewportBounds().getHeight());
+                addExistingCard(vbox, cardToDrag, scrollValue,
+                    event.getScreenY(), currentList);
+            } else {
+                event.setDropCompleted(false);
+            }
+            event.consume();
+
+        });
     }
 
     /**
@@ -186,40 +200,52 @@ public class BoardOverviewCtrl implements Initializable {
         cardPane.setId(String.valueOf(counter));
         Card currentCard = new Card();
         Pane taskPane = (Pane) cardPane.getChildren().get(0);
-        taskPane.setOnDragDetected(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent event) {
-                /* drag was detected, start a drag-and-drop gesture*/
-                /* allow any transfer mode */
-                Dragboard db = taskPane.startDragAndDrop(TransferMode.ANY);
-
-                /* Put a string on a dragboard */
-                ClipboardContent content = new ClipboardContent();
-                content.putString("Pane source text");
-                db.setContent(content);
-                System.out.println("Dragging");
-                copiedCard = currentCard;
-                event.consume();
-            }
+        taskPane.setOnDragDetected(event -> {
+            Dragboard db = taskPane.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString("Pane source text");
+            db.setContent(content);
+            cardToDrag = cardPane;
+            vboxToRemove = vbox;
+            selectedCard = currentCard;
+            selectedList = currentList;
+            event.consume();
         });
         if (taskPane.getChildren().get(4).getClass() == Button.class) {
-            taskPane.getChildren().get(4).setOnMouseClicked(event -> {
-                removeCard(cardPane, currentCard.getId(), vbox, currentList);
-            });
+            taskPane.getChildren().get(4).setOnMouseClicked(event ->
+                removeCard(cardPane, currentCard.getId(), vbox, currentList));
         }
         if (taskPane.getChildren().get(1).getClass() == TextField.class) {
             TextField cardTitle = (TextField) taskPane.getChildren().get(1);
             cardTitle.setText("Card: " + cardPane.getId());
-            refreshCardText(currentCard, cardTitle);
-            cardTitle.setOnKeyReleased(event -> refreshCardText(currentCard, cardTitle));
+            refreshCardTitle(currentCard, cardTitle);
+            cardTitle.setOnKeyReleased(event -> refreshCardTitle(currentCard, cardTitle));
         }
         if (taskPane.getChildren().get(3).getClass() == TextField.class) {
             TextField cardTitle = (TextField) taskPane.getChildren().get(3);
             cardTitle.setText("Description: ");
-            refreshCardText(currentCard, cardTitle);
-            cardTitle.setOnKeyReleased(event -> refreshCardText(currentCard, cardTitle));
+            refreshCardDescription(currentCard, cardTitle);
+            cardTitle.setOnKeyReleased(event -> refreshCardDescription(currentCard, cardTitle));
         }
         currentList.addCard(currentCard);
     }
+
+    /**
+     * Removes an existing List from the Board
+     * @param toBeRemoved the Pane which needs to be deleted
+     * @param idOfList the ID of the List which needs to be deleted
+     */
+    public void removeList(Pane toBeRemoved, int idOfList) {
+        ids.remove(toBeRemoved.getId());
+        hbox.getChildren().remove(toBeRemoved);
+        for (CardList list : currentBoard.getListsOnBoard()) {
+            if (list.getId() == idOfList) {
+                currentBoard.removeList(list);
+                break;
+            }
+        }
+    }
+
     /**
      * Refreshes the title of a List
      * @param selectedList the selected CardList
@@ -230,28 +256,79 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     /**
+     * Refreshes the title of a Card
      * @param selectedCard the selected Card
      * @param selectedText the TextField associated to the Card
      */
-    public void refreshCardText(Card selectedCard, TextField selectedText){
+    public void refreshCardTitle(Card selectedCard, TextField selectedText){
         selectedCard.setTitle(selectedText.getText());
     }
 
     /**
-     * Removes an existing List from the Board
-     * @param toBeRemoved the Pane which needs to be deleted
-     * @param idOfList the ID of the List which needs to be deleted
+     * Refreshes the description of a Card
+     * @param selectedCard the selected Card
+     * @param selectedText the TextField associated to the Card
      */
-    public void removeList(Pane toBeRemoved, int idOfList) {
-        ids.remove(toBeRemoved.getId());
-        int index = hbox.getChildren().indexOf(toBeRemoved);
-        hbox.getChildren().remove(index);
-        for (CardList list : currentBoard.getListsOnBoard()) {
-            if (list.getId() == idOfList) {
-                currentBoard.removeList(list);
-                break;
+    public void refreshCardDescription(Card selectedCard, TextField selectedText){
+        selectedCard.setDescription(selectedText.getText());
+    }
+
+    /**
+     * Adds an existing Card to a list
+     * @param vbox the VBox associated to the List
+     * @param draggingCard the Pane which is being dragged
+     * @param scrollValue the relative position which the user is seeing
+     * @param screenY mouse horizontal position
+     * @param currentList the List to which the Card will be added
+     */
+    public void addExistingCard(VBox vbox, Pane draggingCard, double scrollValue,
+                                double screenY, CardList currentList) {
+        int relativePosition = (int) (scrollValue/184.20001220703125);
+        int size = vbox.getChildren().size();
+        if (size <= 1) {
+            vbox.getChildren().add(0, draggingCard);
+        }
+        else if (screenY < 400) {
+            vbox.getChildren().add(relativePosition, draggingCard);
+        }
+        else if (screenY < 630) {
+            if (relativePosition + 1 == vbox.getChildren().size()) {
+                vbox.getChildren().add(vbox.getChildren().size() - 1, draggingCard);
+            }
+            else {
+                vbox.getChildren().add(relativePosition + 1, draggingCard);
             }
         }
+        else {
+            if (relativePosition + 2 == vbox.getChildren().size()) {
+                vbox.getChildren().add(vbox.getChildren().size() - 1, draggingCard);
+            }
+            else {
+                vbox.getChildren().add(relativePosition + 2, draggingCard);
+            }
+        }
+        Pane taskPane = (Pane) draggingCard.getChildren().get(0);
+        taskPane.setOnDragDetected(event -> {
+            Dragboard db = taskPane.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString("Pane source text");
+            db.setContent(content);
+            cardToDrag = draggingCard;
+            vboxToRemove = vbox;
+            selectedList = currentList;
+            event.consume();
+        });
+        taskPane.getChildren().get(4).setOnMouseClicked(event ->
+            removeCard(draggingCard, selectedCard.getId(), vbox, selectedList));
+    }
+
+    /**
+     * Removes an existing Card from a list
+     * @param vbox the VBox associated to the List
+     * @param cardToDrag the Pane which is being dragged
+     */
+    public void removeExistingCard(VBox vbox, Pane cardToDrag) {
+        vbox.getChildren().remove(cardToDrag);
     }
 
     /**
@@ -263,8 +340,7 @@ public class BoardOverviewCtrl implements Initializable {
      */
     public void removeCard(Pane toBeRemoved,int idOfCard, VBox vbox, CardList currentList){
         cardsIds.remove(toBeRemoved.getId());
-        int index = vbox.getChildren().indexOf(toBeRemoved);
-        vbox.getChildren().remove(index);
+        vbox.getChildren().remove(toBeRemoved);
         for (Card card : currentList.getCards()){
             if(card.getId() == idOfCard){
                 currentList.removeCard(card);
