@@ -31,6 +31,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -153,12 +154,12 @@ public class BoardOverviewCtrl implements Initializable {
         cardPane.setId(String.valueOf(counter));
         Card currentCard = new Card();
         Pane taskPane = (Pane) cardPane.getChildren().get(0);
-        if (taskPane.getChildren().get(3).getClass() == Button.class) {
-            taskPane.getChildren().get(3).setOnMouseClicked(event-> {
+        if (taskPane.getChildren().get(4).getClass() == Button.class) {
+            taskPane.getChildren().get(4).setOnMouseClicked(event-> {
                 removeCard(cardPane, vbox);
             });
         }
-        for (int i = 0; i < cardPane.getChildren().size(); i++) {
+        for (int i = 0; i < taskPane.getChildren().size(); i++) {
 //            if (cardPane.getChildren().get(i).getClass() == Pane.class) {
 //                Pane current = (Pane) cardPane.getChildren().get(i);
 //                TextField tag = (TextField) current.getChildren().get(0);
@@ -166,8 +167,8 @@ public class BoardOverviewCtrl implements Initializable {
 //                refreshTag(currentCard, tag);
 //                tag.setOnKeyReleased(event -> refreshTag(currentCard, tag));
 //            }
-            if (taskPane.getChildren().get(i).getClass() == TextField.class) {
-                TextField cardTitle = (TextField) taskPane.getChildren().get(i);
+            if (taskPane.getChildren().get(i).getClass() == Text.class) {
+                Text cardTitle = (Text) taskPane.getChildren().get(i);
                 cardTitle.setText("Title: "+cardPane.getId());
                 refreshCardTitle(currentCard, cardTitle);
                 cardTitle.setOnKeyReleased(event -> refreshCardTitle(currentCard, cardTitle));
@@ -189,7 +190,7 @@ public class BoardOverviewCtrl implements Initializable {
         selectedList.setTitle(selectedText.getText());
     }
 
-    public void refreshCardTitle(Card selectedCard, TextField selectedText){
+    public void refreshCardTitle(Card selectedCard, Text selectedText){
         selectedCard.setTitle(selectedText.getText());
     }
 
