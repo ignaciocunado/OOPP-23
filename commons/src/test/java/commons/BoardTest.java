@@ -46,6 +46,12 @@ class BoardTest {
     }
 
     @Test
+    public void setIdTest() {
+        board.setId(10);
+        assertEquals(board.getId(), 10);
+    }
+
+    @Test
     public void setPasswordTest() {
         board.setPassword("NewPassword");
         assertEquals(board.getPassword(), "NewPassword");
@@ -67,6 +73,16 @@ class BoardTest {
         board.addList(l1);
         List<CardList> listsOnBoard = new ArrayList<>();
         board.removeList(l1);
+        assertEquals(0, board.getListsOnBoard().size());
+        assertEquals(board.getListsOnBoard(), listsOnBoard);
+    }
+
+    @Test
+    public void removeListByIdTest() {
+        CardList l1 = new CardList("cardList");
+        board.addList(l1);
+        List<CardList> listsOnBoard = new ArrayList<>();
+        board.removeListById(0);
         assertEquals(0, board.getListsOnBoard().size());
         assertEquals(board.getListsOnBoard(), listsOnBoard);
     }

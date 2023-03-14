@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-public class Task {
+public final class Task {
 
     @Id @GeneratedValue
     private int id;
@@ -33,6 +33,14 @@ public class Task {
      */
     public int getId() {
         return id;
+    }
+
+    /**
+     * setter for id
+     * @param id new id
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**

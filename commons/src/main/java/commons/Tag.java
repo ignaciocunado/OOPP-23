@@ -52,6 +52,14 @@ public final class Tag {
     }
 
     /**
+     * Sets the id of the tag
+     * @param id the new id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
      * Sets the name of the tag
      * @param name the new name
      */

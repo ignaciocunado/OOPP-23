@@ -51,6 +51,12 @@ public class TagTest {
 	}
 
 	@Test
+	public void setIdTest() {
+		tag.setId(10);
+		assertEquals(tag.getId(), 10);
+	}
+
+	@Test
 	public void setNameTest() {
 		tag.setName("Hotfix");
 		assertEquals(tag.getName(), "Hotfix");
