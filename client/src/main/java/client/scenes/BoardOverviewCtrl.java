@@ -307,6 +307,7 @@ public class BoardOverviewCtrl implements Initializable {
                 vbox.getChildren().add(relativePosition + 2, draggingCard);
             }
         }
+        currentList.addCard(selectedCard);
         Pane taskPane = (Pane) draggingCard.getChildren().get(0);
         taskPane.setOnDragDetected(event -> {
             Dragboard db = taskPane.startDragAndDrop(TransferMode.ANY);
@@ -329,6 +330,7 @@ public class BoardOverviewCtrl implements Initializable {
      */
     public void removeExistingCard(VBox vbox, Pane cardToDrag) {
         vbox.getChildren().remove(cardToDrag);
+        selectedList.getCards().remove(selectedCard);
     }
 
     /**

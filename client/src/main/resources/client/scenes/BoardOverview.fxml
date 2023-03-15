@@ -30,9 +30,9 @@
             <Font size="60.0" />
          </font>
       </Label>
-      <ScrollPane layoutY="59.0" prefHeight="596.0" prefViewportHeight="606.0" prefViewportWidth="918.0" prefWidth="939.0">
+      <ScrollPane hbarPolicy="NEVER" layoutY="59.0" prefHeight="596.0" prefViewportHeight="606.0" prefViewportWidth="918.0" prefWidth="939.0" style="-fx-background-color: rgb(1,35,69); -fx-border-color: rgb(1,35,69);" vbarPolicy="NEVER" vmax="0.0">
          <content>
-            <HBox fx:id="hbox" layoutX="22.0" layoutY="47.0" prefHeight="573.0" prefWidth="939.0" style="-fx-background-color: rgb(1,35,69);">
+            <HBox fx:id="hbox" layoutX="22.0" layoutY="47.0" prefHeight="611.0" prefWidth="939.0" style="-fx-background-color: rgb(1,35,69);">
                <children>
                   <Pane prefHeight="584.0" prefWidth="2.0" />
                </children>
