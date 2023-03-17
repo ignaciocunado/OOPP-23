@@ -31,10 +31,12 @@ public class CardListController {
      * @return the card list containing the new card
      */
     @PostMapping("/{id}/card")
-    public ResponseEntity<CardList> createCard(@PathVariable final Integer id, @RequestBody final Card card) {
+    public ResponseEntity<CardList> createCard(@PathVariable final Integer id, @RequestBody final Card payload) {
         if(!this.cardListRepo.existsById(id)){
             return ResponseEntity.notFound().build();
         }
+
+        final Card card = new Card(payload.getTitle(), payload.getDescription());
         this.cardRepo.save(card);
 
         final CardList cardList = this.cardListRepo.getById(id);
