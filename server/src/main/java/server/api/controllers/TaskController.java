@@ -26,12 +26,10 @@ public class TaskController {
      * @return the task with the changed name
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<Task> editTaskNameAndBoolean(@PathVariable final int id,
+    public ResponseEntity<Task> editTask(@PathVariable final int id,
                                              @RequestBody final Task task) {
         if(!taskRepo.existsById(id)) {
-
             return ResponseEntity.notFound().build();
-
         }
 
         final Task editedTask = taskRepo.getById(id);

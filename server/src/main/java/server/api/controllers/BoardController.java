@@ -83,16 +83,14 @@ public class BoardController {
      * @return the board with its new list
      */
     @PostMapping("/{id}/list")
-    public ResponseEntity<Board> createList(@PathVariable final Integer id) {
+    public ResponseEntity<Board> createList(@PathVariable final Integer id, @RequestBody final CardList cardList) {
         if (!this.boardRepo.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+        this.cardListRepository.save(cardList);
+
         final Board board = this.boardRepo.getById(id);
-
-        final CardList list = new CardList("New List");
-        this.cardListRepository.save(list);
-
-        board.addList(list);
+        board.addList(cardList);
         return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), 200);
     }
 
