@@ -342,4 +342,6 @@ public class BoardOverviewCtrl implements Initializable {
         var path = Path.of("", parts).toString();
         return MyFXML.class.getClassLoader().getResource(path);
     }
+
+
 }
