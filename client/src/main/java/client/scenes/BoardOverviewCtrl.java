@@ -19,14 +19,19 @@ import client.MyFXML;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
+import commons.Card;
 import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
+import javafx.scene.input.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -39,8 +44,13 @@ public class BoardOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
     @FXML
     private HBox hbox;
-    private HashSet<Integer> ids = new HashSet<>();
+    private final HashSet<Integer> ids = new HashSet<>();
+    private final HashSet<Integer> cardsIds = new HashSet<>();
     private Board currentBoard;
+    private Pane paneBeingDragged;
+    private VBox originalVBox;
+    private Card cardBeingDragged;
+    private CardList originalCardList;
 
 
     /**
@@ -107,59 +117,220 @@ public class BoardOverviewCtrl implements Initializable {
         }
         ids.add(counter);
         listPane.setId(String.valueOf(counter));
-        CardList currentList = new CardList();
+        CardList currentList = new CardList("");
+        Pane cardPane = (Pane) listPane.getChildren().get(0);
+        ScrollPane scrollPane = (ScrollPane) cardPane.getChildren().get(0);
+        VBox vbox = (VBox) scrollPane.getContent();
+        vbox.setSpacing(5);
+        setListMethods(listPane, vbox, currentList, scrollPane);
+        currentBoard.addList(currentList);
+    }
+
+    /**
+     * Sets the methods for actions on elements of the added List
+     * @param listPane the new List being added
+     * @param vbox the VBox which is a sub-sub-child of the listPane
+     * @param currentList the new CardList corresponding to the listPane
+     * @param scrollPane the parent of vbox
+     */
+    private void setListMethods(Pane listPane, VBox vbox,
+                                CardList currentList, ScrollPane scrollPane) {
         for (int i = 0; i < listPane.getChildren().size(); i++) {
             if (listPane.getChildren().get(i).getClass() == Pane.class) {
-                Pane current = (Pane) listPane.getChildren().get(i);
-                current.getChildren().get(0).setOnMouseClicked(event-> {
+                vbox.getChildren().get(0).setOnMouseClicked(event-> {
                     try {
-                        addList();//addCard will be here
+                        addCard(vbox, currentList);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 });
             }
             if (listPane.getChildren().get(i).getClass() == Button.class) {
-                listPane.getChildren().get(i).setOnMouseClicked(event-> {
-                    removeList(listPane, currentList.getId());
-                });
+                listPane.getChildren().get(i).setOnMouseClicked(event->
+                    removeList(listPane, currentList));
             }
             if (listPane.getChildren().get(i).getClass() == TextField.class) {
                 TextField title = (TextField) listPane.getChildren().get(i);
-                title.setText("Title: "+listPane.getId());
-                refreshTitle(currentList, title);
-                title.setOnKeyReleased(event -> refreshTitle(currentList, title));
+                title.setText("Title: " + listPane.getId());
+                refreshListTitle(currentList, title);
+                title.setOnKeyReleased(event -> refreshListTitle(currentList, title));
             }
         }
-        currentBoard.addList(currentList);
+        setDropCardOnListActions(listPane, currentList, scrollPane, vbox);
     }
 
+    /**
+     * Sets the necessary actions when dragging a Card over a List (part of a List's methods)
+     * @param paneToDropInto the Pane which the Card is hovering over
+     * @param listToDropInto the CardList corresponding to the Pane
+     * @param scrollPane the ScrollPane contained in the paneToDropInto
+     * @param vbox the VBox to which the Card will be added
+     */
+    private void setDropCardOnListActions(Pane paneToDropInto, CardList listToDropInto,
+                                          ScrollPane scrollPane, VBox vbox) {
+        int cardsAbove = (int) (scrollPane.getVvalue() *
+            (scrollPane.getContent().getBoundsInLocal().getHeight()
+                - scrollPane.getViewportBounds().getHeight()) / 184.20001220703125);
+
+        paneToDropInto.setOnDragOver(event -> {
+            if (event.getGestureSource() != paneToDropInto && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            }
+            event.consume();
+        });
+
+        paneToDropInto.setOnDragDropped((DragEvent event) -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasString()) {
+                event.setDropCompleted(true);
+                removeExistingCard();
+                addExistingCard(vbox, paneBeingDragged, cardsAbove,
+                    event.getSceneY(), listToDropInto);
+            } else {
+                event.setDropCompleted(false);
+            }
+            event.consume();
+        });
+    }
 
     /**
-     * Refreshes the title of a List
-     * @param selectedList the selected CardList
-     * @param selectedText the TextFiled associated to the List
+     * Adds a Card to the current List object and displays it
+     * @param vbox the VBox associated to the List
+     * @param currentList the current CardList
      */
-    public void refreshTitle(CardList selectedList, TextField selectedText) {
-        selectedList.setTitle(selectedText.getText());
+    public void addCard(VBox vbox, CardList currentList) throws IOException {
+        Pane outerCardPane = FXMLLoader.load(getLocation("client", "scenes", "CardTemplate.fxml"));
+        vbox.getChildren().add(vbox.getChildren().size() - 1, outerCardPane);
+        int counter = 1;
+        while (cardsIds.contains(counter)) {
+            counter++;
+        }
+        cardsIds.add(counter);
+        outerCardPane.setId(String.valueOf(counter));
+        Card newCard = new Card();
+        setCardMethods(vbox, currentList, outerCardPane, newCard);
+        currentList.addCard(newCard);
+    }
+
+    /**
+     * Adds an existing Card to a list
+     * @param vbox the VBox associated to the List
+     * @param draggingCard the Pane which is being dragged
+     * @param cardsAbove the number of Cards above what the user can see
+     * @param sceneY mouse horizontal position
+     * @param currentList the List to which the Card will be added
+     */
+    public void addExistingCard(VBox vbox, Pane draggingCard, int cardsAbove,
+                                double sceneY, CardList currentList) {
+        if (cardsAbove + 1 >= vbox.getChildren().size()){
+            vbox.getChildren().add(vbox.getChildren().size() - 1, draggingCard);
+        }
+        else if (sceneY < 300) {
+            vbox.getChildren().add(cardsAbove, draggingCard);
+        }
+        else if (sceneY < 550) {
+            vbox.getChildren().add(cardsAbove + 1, draggingCard);
+        }
+        else {
+            vbox.getChildren().add(cardsAbove + 2, draggingCard);
+        }
+        setCardMethods(vbox, currentList, draggingCard, cardBeingDragged);
+    }
+
+    /**
+     * Sets the methods of a new Card which has just been created
+     * @param vbox the VBox containing the newly added Card
+     * @param currentList the CardList to which the Card now belongs to
+     * @param outerCardPane the Pane of the Card
+     * @param newCard the Card which has just been added
+     */
+    public void setCardMethods(VBox vbox, CardList currentList, Pane outerCardPane, Card newCard) {
+        Pane innerCardPane = (Pane) outerCardPane.getChildren().get(0);
+        outerCardPane.setOnDragDetected(event -> {
+            Dragboard db = innerCardPane.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString("Pane source text");
+            db.setContent(content);
+            paneBeingDragged = outerCardPane;
+            originalVBox = vbox;
+            cardBeingDragged = newCard;
+            originalCardList = currentList;
+            event.consume();
+        });
+
+        innerCardPane.getChildren().get(4).setOnMouseClicked(event ->
+            removeCard(outerCardPane, newCard, vbox, currentList));
+
+        TextField cardTitle = (TextField) innerCardPane.getChildren().get(1);
+        cardTitle.setText("Card: " + outerCardPane.getId());
+        refreshCardTitle(newCard, cardTitle);
+        cardTitle.setOnKeyReleased(event -> refreshCardTitle(newCard, cardTitle));
+
+        TextField cardDescription = (TextField) innerCardPane.getChildren().get(3);
+        cardDescription.setText("Description: ");
+        refreshCardDescription(newCard, cardTitle);
+        cardTitle.setOnKeyReleased(event -> refreshCardDescription(newCard, cardDescription));
     }
 
 
     /**
      * Removes an existing List from the Board
-     * @param toBeRemoved the Pane which needs to be deleted
-     * @param idOfList the ID of the List which needs to be deleted
+     * @param paneToBeRemoved the Pane which needs to be deleted
+     * @param listToBeRemoved the List which needs to be deleted
      */
-    public void removeList(Pane toBeRemoved, int idOfList) {
-        ids.remove(toBeRemoved.getId());
-        int index = hbox.getChildren().indexOf(toBeRemoved);
-        hbox.getChildren().remove(index);
-        for (CardList list : currentBoard.getListsOnBoard()) {
-            if (list.getId() == idOfList) {
-                currentBoard.removeList(list);
-                break;
-            }
-        }
+    public void removeList(Pane paneToBeRemoved, CardList listToBeRemoved) {
+        ids.remove(paneToBeRemoved.getId());
+        hbox.getChildren().remove(paneToBeRemoved);
+        currentBoard.removeList(listToBeRemoved);
+    }
+
+    /**
+     * Removes an existing Card from the List
+     * @param paneToBeRemoved the Pane which needs to be deleted
+     * @param cardToBeRemoved the Card which needs to be deleted
+     * @param vbox the VBox associated to the List
+     * @param currentList the current CardList
+     */
+    public void removeCard(Pane paneToBeRemoved, Card cardToBeRemoved,
+                           VBox vbox, CardList currentList){
+        cardsIds.remove(paneToBeRemoved.getId());
+        vbox.getChildren().remove(paneToBeRemoved);
+        currentList.removeCard(cardToBeRemoved);
+    }
+
+    /**
+     * Removes an existing Card from a List
+     */
+    public void removeExistingCard() {
+        originalVBox.getChildren().remove(paneBeingDragged);
+        originalCardList.getCards().remove(cardBeingDragged);
+    }
+
+    /**
+     * Refreshes the title of a List
+     * @param selectedList the selected CardList
+     * @param selectedText the TextField associated to the List
+     */
+    public void refreshListTitle(CardList selectedList, TextField selectedText) {
+        selectedList.setTitle(selectedText.getText());
+    }
+
+    /**
+     * Refreshes the title of a Card
+     * @param selectedCard the selected Card
+     * @param selectedText the TextField associated to the Card
+     */
+    public void refreshCardTitle(Card selectedCard, TextField selectedText){
+        selectedCard.setTitle(selectedText.getText());
+    }
+
+    /**
+     * Refreshes the description of a Card
+     * @param selectedCard the selected Card
+     * @param selectedText the TextField associated to the Card
+     */
+    public void refreshCardDescription(Card selectedCard, TextField selectedText){
+        selectedCard.setDescription(selectedText.getText());
     }
 
     /**
