@@ -26,12 +26,16 @@ public class CardListController {
         this.cardRepo = cardRepo;
     }
 
-    /** endpoint for creating a card into a list
+    /**
+     * endpoint for creating a card into a list
+     *
      * @param id of the card list in which the card gets created
+     * @param payload the data for the new card
      * @return the card list containing the new card
      */
     @PostMapping("/{id}/card")
-    public ResponseEntity<CardList> createCard(@PathVariable final Integer id, @RequestBody final Card payload) {
+    public ResponseEntity<CardList> createCard(@PathVariable final Integer id,
+                                               @RequestBody final Card payload) {
         if(!this.cardListRepo.existsById(id)){
             return ResponseEntity.notFound().build();
         }

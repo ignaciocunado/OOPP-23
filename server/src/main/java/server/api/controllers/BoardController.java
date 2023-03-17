@@ -80,10 +80,12 @@ public class BoardController {
      * Handler for creating the list in a board
      *
      * @param id the board to create a list for
+     * @param payload the data for the new list
      * @return the board with its new list
      */
     @PostMapping("/{id}/list")
-    public ResponseEntity<Board> createList(@PathVariable final Integer id, @RequestBody final CardList payload) {
+    public ResponseEntity<Board> createList(@PathVariable final Integer id,
+                                            @RequestBody final CardList payload) {
         if (!this.boardRepo.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
