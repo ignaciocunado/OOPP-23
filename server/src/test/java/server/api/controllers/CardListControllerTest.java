@@ -36,8 +36,7 @@ class CardListControllerTest {
     void createCardTestNameAndTitleTest() {
         cardListRepo.save(new CardList("title"));
         final Card card = new Card("New Title", "New Description");
-        this.cardListController.createCard(1);
-
+        this.cardListController.createCard(1, card);
 
         card.setId(1);
         assertEquals(this.cardRepo.getById(1), card);
@@ -45,13 +44,13 @@ class CardListControllerTest {
 
     @Test
     public void createCardNotFoundTest() {
-        Assertions.assertEquals(this.cardListController.createCard(1).getStatusCode(), HttpStatus.NOT_FOUND);
+        Assertions.assertEquals(this.cardListController.createCard(1, new Card("New Title", "New Description")).getStatusCode(), HttpStatus.NOT_FOUND);
     }
 
     @Test
     void deleteCardTest() {
         this.cardListRepo.save(new CardList("title"));
-        final Card card = this.cardListController.createCard(1).getBody().getCards().get(0);
+        final Card card = this.cardListController.createCard(1, new Card("New Title", "New Description")).getBody().getCards().get(0);
 
         Assertions.assertTrue(this.cardListRepo.findById(1).get().getCards().size() > 0);
         this.cardListController.deleteCard(1,card.getId());

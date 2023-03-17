@@ -28,35 +28,32 @@ class TaskControllerTest {
     @Test
     void editTaskTitleTest() {
         this.taskRepo.save(new Task("title", true));
-        final Task task1 = new Task("title", true);
-        task1.setId(1);
-        final Task task2 = new Task("new title", true);
-        task2.setId(1);
+        final Task task = new Task("title", true);
+        task.setId(1);
+        final Task edited = new Task("new title", true);
+        edited.setId(1);
 
-        Assertions.assertEquals(this.taskRepo.findById(1).get(), task1);
-        this.taskController.editTaskNameAndBoolean(1, new Task());
-        task1.setName("new title");
-        taskRepo.save(task1);
-        Assertions.assertEquals(this.taskRepo.findById(1).get(), task2);
+        Assertions.assertEquals(this.taskRepo.findById(1).get(), task);
+        this.taskController.editTask(1, new Task("new title", true));
+        Assertions.assertEquals(this.taskRepo.findById(1).get(), edited);
     }
 
     @Test
     void editTaskBooleanTest() {
         this.taskRepo.save(new Task("title", true));
-        final Task task1 = new Task("title", true);
-        task1.setId(1);
-        final Task task2 = new Task("title", false);
-        task2.setId(1);
+        final Task task = new Task("title", true);
+        task.setId(1);
+        final Task edited = new Task("title", false);
+        edited.setId(1);
 
-        Assertions.assertEquals(this.taskRepo.findById(1).get(), task1);
-        this.taskController.editTaskNameAndBoolean(1, new Task());
-        task2.setCompleted(true);
-        taskRepo.save(task1);
-        Assertions.assertEquals(this.taskRepo.findById(1).get(), task2);
+
+        Assertions.assertEquals(this.taskRepo.findById(1).get(), task);
+        this.taskController.editTask(1, new Task("title", false));
+        Assertions.assertEquals(this.taskRepo.findById(1).get(), edited);
     }
 
     @Test
     void editTaskNotFoundTest() {
-        Assertions.assertEquals(this.taskController.editTaskNameAndBoolean(1, new Task()).getStatusCode(), HttpStatus.NOT_FOUND);
+        Assertions.assertEquals(this.taskController.editTask(1, new Task()).getStatusCode(), HttpStatus.NOT_FOUND);
     }
 }

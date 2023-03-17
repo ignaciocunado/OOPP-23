@@ -85,6 +85,7 @@ public class TestCardRepository implements CardRepository {
         final Card card = new Card(entity.getTitle(), entity.getDescription());
         nextInt++;
         card.setId(nextInt);
+        entity.setId(nextInt);
         this.cards.add(card);
         return (S) card;
     }
