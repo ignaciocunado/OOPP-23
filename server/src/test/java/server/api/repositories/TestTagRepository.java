@@ -104,6 +104,7 @@ public final class TestTagRepository implements TagRepository {
         nextInt++;
         final Tag tag = new Tag(entity.getName(), entity.getColour());
         tag.setId(nextInt);
+        entity.setId(nextInt);
 
         this.tags.add(tag);
         return (S) tag;

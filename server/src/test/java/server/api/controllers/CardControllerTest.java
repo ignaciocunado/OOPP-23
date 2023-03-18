@@ -102,10 +102,10 @@ class CardControllerTest {
     public void createTagFaultyTest() {
         cardRepo.save(new Card("Study ADS", "Weblav"));
         Tag faulty1 = new Tag(null, 23);
-        assertEquals(new ResponseEntity<>(HttpStatus.BAD_REQUEST), controller.createTag(0, faulty1));
+        assertEquals(new ResponseEntity<>(HttpStatus.BAD_REQUEST), controller.createTag(1, faulty1));
         faulty1.setName("");
         faulty1.setColour(-5);
-        assertEquals(new ResponseEntity<>(HttpStatus.BAD_REQUEST), controller.createTag(0, faulty1));
+        assertEquals(new ResponseEntity<>(HttpStatus.BAD_REQUEST), controller.createTag(1, faulty1));
     }
 
     @Test

@@ -26,23 +26,24 @@ public class CardListController {
         this.cardRepo = cardRepo;
     }
 
-    /** endpoint for creating a card into a list
+    /**
+     * endpoint for creating a card into a list
+     *
      * @param id of the card list in which the card gets created
+     * @param payload the data for the new card
      * @return the card list containing the new card
      */
     @PostMapping("/{id}/card")
-    public ResponseEntity<CardList> createCard(@PathVariable final Integer id) {
-
+    public ResponseEntity<CardList> createCard(@PathVariable final Integer id,
+                                               @RequestBody final Card payload) {
         if(!this.cardListRepo.existsById(id)){
-
             return ResponseEntity.notFound().build();
-
         }
 
-        final CardList cardList = this.cardListRepo.getById(id);
-        final Card card = new Card("New Title", "New Description");
-
+        final Card card = new Card(payload.getTitle(), payload.getDescription());
         this.cardRepo.save(card);
+
+        final CardList cardList = this.cardListRepo.getById(id);
         cardList.addCard(card);
         return new ResponseEntity<>(this.cardListRepo.save(cardList), new HttpHeaders(), 200);
 
@@ -56,26 +57,17 @@ public class CardListController {
     @DeleteMapping("/{id}/card/{cardId}")
     public ResponseEntity<CardList> deleteCard(@PathVariable final Integer id,
                                                @PathVariable final Integer cardId) {
-
         if(!this.cardListRepo.existsById((id))){
-
             return ResponseEntity.notFound().build();
-
         }
 
         final CardList cardList = this.cardListRepo.getById(id);
-
         if(!cardList.removeCardById(cardId)) {
-
             return ResponseEntity.notFound().build();
-
         }
-        else {
 
-            this.cardRepo.deleteById(cardId);
-            return new ResponseEntity<>(cardList, new HttpHeaders(), 200);
-
-        }
+        this.cardRepo.deleteById(cardId);
+        return new ResponseEntity<>(cardList, new HttpHeaders(), 200);
     }
 
     /** endpoint for editing the title of a card list
@@ -87,17 +79,12 @@ public class CardListController {
     public ResponseEntity<CardList> editCardListTitle(@PathVariable final int id,
                                                             @RequestBody final CardList cardList) {
         if(!cardListRepo.existsById(id)) {
-
             return ResponseEntity.notFound().build();
-
         }
-        else {
 
-            final CardList editedCardList = this.cardListRepo.getById(id);
-            editedCardList.setTitle(cardList.getTitle());
-            return new ResponseEntity<>(cardListRepo.save(editedCardList), new HttpHeaders(), 200);
-
-        }
+        final CardList editedCardList = this.cardListRepo.getById(id);
+        editedCardList.setTitle(cardList.getTitle());
+        return new ResponseEntity<>(cardListRepo.save(editedCardList), new HttpHeaders(), 200);
     }
 }
 

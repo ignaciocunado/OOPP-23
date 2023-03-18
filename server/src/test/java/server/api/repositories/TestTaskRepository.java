@@ -83,6 +83,8 @@ public class TestTaskRepository implements TaskRepository {
         final Task task = new Task(entity.getName(), entity.isCompleted());
         nextInt++;
         task.setId(nextInt);
+        entity.setId(nextInt);
+
         this.tasks.add(task);
         return (S) task;
     }
