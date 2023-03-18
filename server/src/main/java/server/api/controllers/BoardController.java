@@ -17,7 +17,9 @@ package server.api.controllers;
 
 import commons.Board;
 import commons.CardList;
+import commons.Tag;
 import org.springframework.http.HttpStatus;
+import server.database.TagRepository;
 import server.services.TextService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,7 @@ import server.database.CardListRepository;
 public class BoardController {
 
     private final BoardRepository boardRepo;
+    private final TagRepository tagRepo;
     private final CardListRepository cardListRepository;
     private final TextService textService;
 
@@ -39,13 +42,16 @@ public class BoardController {
      * @param boardRepo          repository for boards
      * @param cardListRepository repository for cards
      * @param textService        service for generating random keys
+     * @param tagRepo repository for tags
      */
     public BoardController(final BoardRepository boardRepo,
                            final CardListRepository cardListRepository,
-                           final TextService textService) {
+                           final TextService textService,
+                           final TagRepository tagRepo) {
         this.boardRepo = boardRepo;
         this.cardListRepository = cardListRepository;
         this.textService = textService;
+        this.tagRepo = tagRepo;
     }
 
     /**
@@ -58,6 +64,9 @@ public class BoardController {
     public ResponseEntity<Board> createBoard(@RequestBody final Board request) {
         final String newKey = this.textService.randomAlphanumericalString(10);
         final Board board = new Board(newKey, request.getPassword());
+        final Tag tag = new Tag("New tag", 0);
+        this.tagRepo.save(tag);
+        board.addTag(tag);
         return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), 200);
     }
 

@@ -2,6 +2,7 @@ package server.api.controllers;
 
 import commons.Board;
 import commons.CardList;
+import commons.Tag;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import server.api.repositories.TestBoardRepository;
 import server.api.repositories.TestCardListRepository;
+import server.api.repositories.TestTagRepository;
 import server.api.services.TestTextService;
 import server.services.TextService;
 
@@ -17,7 +19,7 @@ public final class BoardControllerTest {
     private TextService textService;
     private TestBoardRepository boardRepo;
     private TestCardListRepository cardRepo;
-
+    private TestTagRepository tagRepo;
     private BoardController boardController;
 
     @BeforeEach
@@ -25,7 +27,8 @@ public final class BoardControllerTest {
         this.textService = new TestTextService();
         this.boardRepo = new TestBoardRepository();
         this.cardRepo = new TestCardListRepository();
-        this.boardController = new BoardController(this.boardRepo, this.cardRepo,this.textService);
+        this.tagRepo = new TestTagRepository();
+        this.boardController = new BoardController(this.boardRepo, this.cardRepo,this.textService, this.tagRepo);
     }
 
     @Test
@@ -37,6 +40,16 @@ public final class BoardControllerTest {
         Assertions.assertEquals(this.boardRepo.getById(1), board);
     }
 
+    @Test
+    public void createTagOnNewBoardTest() {
+        boardRepo.save(new Board(",", "aaaaaaa"));
+        final Board board = new Board(",","aaaaaaa");
+        board.setId(1);
+        Tag tag = new Tag("New Tag", 0);
+        board.addTag(tag);
+
+        Assertions.assertEquals(this.boardRepo.getById(1), board);
+    }
     @Test
     public void getBoardTest() {
         this.boardRepo.save(new Board("aaaaaaaaab", "password"));
