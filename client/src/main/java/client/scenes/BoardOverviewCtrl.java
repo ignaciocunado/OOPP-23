@@ -222,18 +222,29 @@ public class BoardOverviewCtrl implements Initializable {
      */
     public void addExistingCard(VBox vbox, Pane draggingCard, int cardsAbove,
                                 double sceneY, CardList currentList) {
-        if (cardsAbove + 1 >= vbox.getChildren().size()){
-            vbox.getChildren().add(vbox.getChildren().size() - 1, draggingCard);
+        if (vbox.getChildren().size() <= 1) {
+            vbox.getChildren().add(0, draggingCard);
         }
         else if (sceneY < 300) {
             vbox.getChildren().add(cardsAbove, draggingCard);
         }
         else if (sceneY < 550) {
-            vbox.getChildren().add(cardsAbove + 1, draggingCard);
+            if (cardsAbove + 1 == vbox.getChildren().size()) {
+                vbox.getChildren().add(vbox.getChildren().size() - 1, draggingCard);
+            }
+            else {
+                vbox.getChildren().add(cardsAbove + 1, draggingCard);
+            }
         }
         else {
-            vbox.getChildren().add(cardsAbove + 2, draggingCard);
+            if (cardsAbove + 2 == vbox.getChildren().size()) {
+                vbox.getChildren().add(vbox.getChildren().size() - 1, draggingCard);
+            }
+            else {
+                vbox.getChildren().add(cardsAbove + 2, draggingCard);
+            }
         }
+
         setCardMethods(vbox, currentList, draggingCard, cardBeingDragged);
     }
 
