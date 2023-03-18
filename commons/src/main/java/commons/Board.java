@@ -17,6 +17,8 @@ public final class Board {
     private String key;
     private String password;
     @OneToMany
+    private List<Tag> tags;
+    @OneToMany
     private List<CardList> listsOnBoard;
 
     /**
@@ -33,6 +35,7 @@ public final class Board {
         this.key = key;
         this.password = password;
         this.listsOnBoard = new ArrayList<>();
+        this.tags = new ArrayList<>();
     }
 
     /**
@@ -83,6 +86,12 @@ public final class Board {
         return listsOnBoard;
     }
 
+    /** Gets the tags that are on this board
+     * @return the list of tags as an ArrayList
+     */
+    public List<Tag> getTagsOnBoard() {
+        return tags;
+    }
     /**
      * Adds a new CardList on this board
      * @param newList the new CardList to be added
@@ -90,6 +99,14 @@ public final class Board {
      */
     public boolean addList(CardList newList) {
         return listsOnBoard.add(newList);
+    }
+
+    /** Adds a new Tag on this board
+     * @param tag the new tag that is created
+     * @return returns a boolean which indicates if the tag has been added to the board
+     */
+    public boolean addTag(Tag tag){
+        return tags.add(tag);
     }
 
     /**
