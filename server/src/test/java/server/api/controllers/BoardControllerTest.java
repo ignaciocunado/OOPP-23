@@ -12,6 +12,7 @@ import server.api.repositories.TestBoardRepository;
 import server.api.repositories.TestCardListRepository;
 import server.api.services.TestTextService;
 import server.exceptions.EntityNotFoundException;
+import server.exceptions.InvalidRequestException;
 import server.services.TextService;
 
 public final class BoardControllerTest {
@@ -74,6 +75,12 @@ public final class BoardControllerTest {
         this.boardController.createList(1, new CardList("New List"), noErrorResult);
         Assertions.assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() > 0);
         Assertions.assertTrue(this.cardRepo.count() > 0);
+    }
+
+    @Test
+    public void createInvalidListTest() {
+        this.boardRepo.save(new Board("aaaaaaaaab", "password"));
+        Assertions.assertThrows(InvalidRequestException.class, () -> this.boardController.createList(1, new CardList(""), hasErrorResult));
     }
 
     @Test
