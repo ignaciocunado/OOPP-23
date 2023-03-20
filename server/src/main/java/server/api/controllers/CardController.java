@@ -106,9 +106,7 @@ public class CardController {
         }
 
         Card deleteTagFrom = cardRepository.getById(id);
-        Tag tagToBeDeleted = tagRepository.getById(tagId);
-        boolean deleted = deleteTagFrom.removeTag(tagToBeDeleted);
-        if (!deleted) {
+        if (!deleteTagFrom.removeTagById(tagId)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         tagRepository.deleteById(tagId);
@@ -160,9 +158,7 @@ public class CardController {
         }
 
         Card deleteTaskFrom = cardRepository.getById(id);
-        Task taskToBeDeleted = taskRepository.getById(taskId);
-        boolean deleted = deleteTaskFrom.removeTask(taskToBeDeleted);
-        if (!deleted) {
+        if (!deleteTaskFrom.removeTaskById(taskId)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         taskRepository.deleteById(taskId);

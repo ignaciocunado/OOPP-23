@@ -140,12 +140,36 @@ class CardTest {
     }
 
     @Test
-    public void setTagsTess() {
+    public void setTagsTest() {
         card.addTag(tag);
         Tag tag2 = new Tag("AAAAAA", 0);
         List<Tag> tagList = new ArrayList<>();
         tagList.add(tag2);
         card.setTags(tagList);
         assertEquals(tagList, card.getTags());
+    }
+
+    @Test
+    public void removeTagByIdTest() {
+        card.addTag(tag);
+        assertTrue(card.removeTagById(tag.getId()));
+    }
+
+    @Test
+    public void removeTagByIdNotFoundTest() {
+        card.addTag(tag);
+        assertFalse(card.removeTagById(tag.getId() + 2));
+    }
+
+    @Test
+    public void removeTaskByIdTest() {
+        card.addTask(task);
+        assertTrue(card.removeTaskById(task.getId()));
+    }
+
+    @Test
+    public void removeTaskByIdNotFoundTest() {
+        card.addTask(task);
+        assertFalse(card.removeTaskById(task.getId() + 2));
     }
 }
