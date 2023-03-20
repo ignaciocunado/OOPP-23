@@ -1,5 +1,7 @@
 package commons;
 
+import commons.entities.Card;
+import commons.entities.CardList;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

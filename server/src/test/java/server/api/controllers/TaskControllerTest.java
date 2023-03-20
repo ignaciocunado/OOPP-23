@@ -1,16 +1,12 @@
 package server.api.controllers;
 
-import commons.CardList;
-import commons.Task;
+import commons.entities.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutorService;
 import org.springframework.http.HttpStatus;
 import server.api.repositories.TestCardRepository;
 import server.api.repositories.TestTaskRepository;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class TaskControllerTest {
 

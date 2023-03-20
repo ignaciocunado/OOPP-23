@@ -1,5 +1,8 @@
 package commons;
 
+import commons.entities.Board;
+import commons.entities.Card;
+import commons.entities.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

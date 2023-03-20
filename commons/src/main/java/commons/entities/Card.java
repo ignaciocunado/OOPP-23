@@ -1,4 +1,4 @@
-package commons;
+package commons.entities;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

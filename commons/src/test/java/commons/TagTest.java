@@ -15,7 +15,7 @@
  */
 package commons;
 
-import org.junit.jupiter.api.BeforeAll;
+import commons.entities.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

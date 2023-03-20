@@ -1,6 +1,6 @@
 package server.database;
 
-import commons.Tag;
+import commons.entities.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

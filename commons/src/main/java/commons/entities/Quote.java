@@ -13,42 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package commons;
+package commons.entities;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
-public class Person {
+public class Quote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
 
-    public String firstName;
-    public String lastName;
+    @OneToOne(cascade = CascadeType.PERSIST)
+    public Person person;
+    public String quote;
 
     @SuppressWarnings("unused")
-    private Person() {
-        // for object mapper
+    private Quote() {
+        // for object mappers
     }
 
     /**
      * to do
-     * @param firstName
-     * @param lastName
+     * @param person
+     * @param quote
      */
-    public Person(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Quote(Person person, String quote) {
+        this.person = person;
+        this.quote = quote;
     }
 
     /**

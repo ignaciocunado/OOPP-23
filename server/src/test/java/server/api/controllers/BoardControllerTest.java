@@ -1,12 +1,11 @@
 package server.api.controllers;
 
-import commons.Board;
-import commons.CardList;
+import commons.entities.Board;
+import commons.entities.CardList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 import server.api.repositories.TestBoardRepository;
 import server.api.repositories.TestCardListRepository;
 import server.api.services.TestTextService;

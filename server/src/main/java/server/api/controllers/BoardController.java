@@ -15,8 +15,8 @@
  */
 package server.api.controllers;
 
-import commons.Board;
-import commons.CardList;
+import commons.entities.Board;
+import commons.entities.CardList;
 import org.springframework.http.HttpStatus;
 import server.services.TextService;
 import org.springframework.http.HttpHeaders;

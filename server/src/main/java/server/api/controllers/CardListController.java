@@ -1,7 +1,7 @@
 package server.api.controllers;
 
-import commons.Card;
-import commons.CardList;
+import commons.entities.Card;
+import commons.entities.CardList;
 import server.database.CardRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;

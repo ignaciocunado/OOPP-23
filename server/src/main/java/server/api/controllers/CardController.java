@@ -1,8 +1,8 @@
 package server.api.controllers;
 
-import commons.Card;
-import commons.Tag;
-import commons.Task;
+import commons.entities.Card;
+import commons.entities.Tag;
+import commons.entities.Task;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

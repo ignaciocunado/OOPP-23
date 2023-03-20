@@ -15,7 +15,7 @@
  */
 package server.api.controllers;
 
-import commons.Tag;
+import commons.entities.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

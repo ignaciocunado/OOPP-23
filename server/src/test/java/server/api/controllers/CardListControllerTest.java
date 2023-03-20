@@ -1,9 +1,7 @@
 package server.api.controllers;
 
-import commons.Board;
-import commons.Card;
-import commons.CardList;
-import org.aspectj.lang.annotation.Before;
+import commons.entities.Card;
+import commons.entities.CardList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import server.api.repositories.TestBoardRepository;
 import server.api.repositories.TestCardListRepository;
 import server.api.repositories.TestCardRepository;
-import server.database.BoardRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 

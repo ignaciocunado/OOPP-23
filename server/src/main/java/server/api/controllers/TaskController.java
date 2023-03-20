@@ -1,6 +1,6 @@
 package server.api.controllers;
 
-import commons.Task;
+import commons.entities.Task;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
