@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import server.api.repositories.TestCardListRepository;
 import server.api.repositories.TestCardRepository;
 import server.exceptions.EntityNotFoundException;
+import server.exceptions.InvalidRequestException;
 
 class CardListControllerTest {
 
@@ -44,6 +44,16 @@ class CardListControllerTest {
 
         this.cardListController.createCard(1, card, noErrorResult);
         Assertions.assertEquals(this.cardRepo.getById(1), card);
+    }
+
+    @Test
+    void createInvalidCardTest() {
+        cardListRepo.save(new CardList("title"));
+
+        final Card card = new Card("", null);
+        card.setId(1);
+
+        Assertions.assertThrows(InvalidRequestException.class, () -> this.cardListController.createCard(1, card, hasErrorResult));
     }
 
     @Test
@@ -86,6 +96,11 @@ class CardListControllerTest {
         cardList1.setTitle("new title");
         cardListRepo.save(cardList1);
         Assertions.assertEquals(this.cardListRepo.findById(1).get(), cardList2);
+    }
+
+    @Test
+    public void editInvalidCardListTest() {
+        Assertions.assertThrows(InvalidRequestException.class, () -> this.cardListController.editCardListTitle(5, new CardList(""), hasErrorResult));
     }
 
     @Test
