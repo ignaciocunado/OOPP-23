@@ -12,10 +12,8 @@ public final class InvalidRequestException extends ServerException {
         super(
                 HttpStatus.BAD_REQUEST,
                 "Invalid request, check reason",
-                errors.getAllErrors()
+                errors.getFieldErrors()
                         .stream()
-                        // This should be safe as the only annotations are field annotations
-                        .map(error -> (FieldError) error)
                         .map(error -> error.getField() + " " + error.getDefaultMessage())
                         .collect(Collectors.toList()));
     }
