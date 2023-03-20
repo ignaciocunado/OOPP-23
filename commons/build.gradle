@@ -1,5 +1,4 @@
-
-
 dependencies {
 	implementation group: 'jakarta.persistence', name: 'jakarta.persistence-api', version: '2.2.3'
+	implementation group: 'jakarta.validation', name: 'jakarta.validation-api', version: '3.0.2'
 }
