@@ -3,8 +3,12 @@ package server.api.controllers;
 import commons.entities.Task;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import server.database.TaskRepository;
+import server.exceptions.EntityNotFoundException;
+import server.exceptions.InvalidRequestException;
 
 @RestController
 @RequestMapping("/api/task")
@@ -27,9 +31,13 @@ public class TaskController {
      */
     @PatchMapping("/{id}")
     public ResponseEntity<Task> editTask(@PathVariable final int id,
-                                             @RequestBody final Task task) {
+                                         @Validated @RequestBody final Task task,
+                                         final BindingResult errors) {
+        if (errors.hasErrors()) {
+            throw new InvalidRequestException(errors);
+        }
         if(!taskRepo.existsById(id)) {
-            return ResponseEntity.notFound().build();
+            throw new EntityNotFoundException("No tag with id " + id);
         }
 
         final Task editedTask = taskRepo.getById(id);
