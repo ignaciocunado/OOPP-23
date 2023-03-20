@@ -101,14 +101,11 @@ public class CardController {
         if (!cardRepository.existsById(id)) {
             throw new EntityNotFoundException("No card with id " + id);
         }
-        if (!tagRepository.existsById(tagId)) {
+        Card deleteTagFrom = cardRepository.getById(id);
+        if (!deleteTagFrom.removeTagById(tagId)) {
             throw new EntityNotFoundException("No tag with id " + id);
         }
 
-        Card deleteTagFrom = cardRepository.getById(id);
-        if (!deleteTagFrom.removeTagById(tagId)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
         tagRepository.deleteById(tagId);
         return new ResponseEntity<>(cardRepository.save(deleteTagFrom), new HttpHeaders(),
                 200);
@@ -153,14 +150,11 @@ public class CardController {
         if (!cardRepository.existsById(id)) {
             throw new EntityNotFoundException("No card with id " + id);
         }
-        if (!taskRepository.existsById(taskId)) {
-            throw new EntityNotFoundException("No task with id " + id);
-        }
-
         Card deleteTaskFrom = cardRepository.getById(id);
         if (!deleteTaskFrom.removeTaskById(taskId)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new EntityNotFoundException("No task with id in this card " + id);
         }
+
         taskRepository.deleteById(taskId);
         return new ResponseEntity(cardRepository.save(deleteTaskFrom), new HttpHeaders(), 200);
     }
