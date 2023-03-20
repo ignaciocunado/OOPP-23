@@ -4,18 +4,31 @@ import commons.entities.Tag;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import server.api.repositories.TestTagRepository;
+import server.exceptions.EntityNotFoundException;
+import server.exceptions.InvalidRequestException;
 
 public final class TagControllerTest {
 
     private TestTagRepository tagRepo;
     private TagController tagController;
 
+    private BindingResult hasErrorResult;
+    private BindingResult noErrorResult;
+
     @BeforeEach
     public void setup() {
         this.tagRepo = new TestTagRepository();
         this.tagController = new TagController(tagRepo);
+
+        this.hasErrorResult = Mockito.mock(BindingResult.class);
+        this.noErrorResult = Mockito.mock(BindingResult.class);
+
+        Mockito.when(hasErrorResult.hasErrors()).thenReturn(true);
+        Mockito.when(noErrorResult.hasErrors()).thenReturn(false);
     }
 
     @Test
@@ -27,13 +40,19 @@ public final class TagControllerTest {
         tag2.setId(1);
 
         Assertions.assertEquals(this.tagRepo.findById(1).get(), tag);
-        this.tagController.editTag(1, new Tag("Edited", 10));
+        this.tagController.editTag(1, new Tag("Edited", 10), noErrorResult);
         Assertions.assertEquals(this.tagRepo.findById(1).get(), tag2);
     }
 
     @Test
+    public void editInvalidTagTest() {
+        this.tagRepo.save(new Tag("", 0));
+        Assertions.assertThrows(InvalidRequestException.class, () -> this.tagController.editTag(1, new Tag("", 1923912212), hasErrorResult));
+    }
+
+    @Test
     public void editTagNotFoundTest() {
-        Assertions.assertEquals(this.tagController.editTag(10, new Tag()).getStatusCode(), HttpStatus.NOT_FOUND);
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.tagController.editTag(10, new Tag("Edit", 0), noErrorResult));
     }
 
 }
