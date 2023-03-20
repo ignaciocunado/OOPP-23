@@ -136,12 +136,21 @@ public final class Card {
     }
 
     /**
-     * Method which removes a specific tag from a card
-     * @param tag the tag to be removed from the card
-     * @return true iff the tag was successfully removed
+     * Method which removes a specific Tag from a card
+     * @param tag the Tag to be removed from the card
+     * @return true iff the Tag was successfully removed
      */
     public boolean removeTag(Tag tag) {
         return this.tags.remove(tag);
+    }
+
+    /**
+     * Removes a Tag from a card iff it exists
+     * @param id id of the Tag to remove
+     * @return true iff the tag was successfully removed
+     */
+    public boolean removeTagById(int id) {
+        return tags.removeIf(tag -> tag.getId() == id);
     }
 
     /**
@@ -151,6 +160,15 @@ public final class Card {
      */
     public boolean removeTask(Task task) {
         return this.nestedTaskList.remove(task);
+    }
+
+    /**
+     * Removes a Task from a card iff it exists
+     * @param id id of the Task to remove
+     * @return true iff the Task was successfully removed
+     */
+    public boolean removeTaskById(int id) {
+        return nestedTaskList.removeIf(task -> task.getId() == id);
     }
 
     /**
