@@ -16,7 +16,6 @@ public final class Tag {
     @NotBlank
     private String name;
 
-    @NotBlank
     @Min(0)
     @Max(16777215)
     // Valid decimal colours Z e {0...2^24-1}

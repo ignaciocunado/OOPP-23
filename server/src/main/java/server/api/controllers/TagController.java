@@ -19,8 +19,12 @@ import commons.entities.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import server.database.TagRepository;
+import server.exceptions.EntityNotFoundException;
+import server.exceptions.InvalidRequestException;
 
 @RestController
 @RequestMapping("/api/tag")
@@ -43,9 +47,14 @@ public class TagController {
      * @return the updated tag
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<Tag> editTag(@PathVariable final Integer id, @RequestBody final Tag tag) {
+    public ResponseEntity<Tag> editTag(@PathVariable final Integer id,
+                                       @Validated @RequestBody final Tag tag,
+                                       final BindingResult errors) {
+        if (errors.hasErrors()) {
+            throw new InvalidRequestException(errors);
+        }
         if (!this.tagRepo.existsById(id)) {
-            return ResponseEntity.notFound().build();
+            throw new EntityNotFoundException("No tag with id " + id);
         }
 
         final Tag savedTag = this.tagRepo.getById(id);
