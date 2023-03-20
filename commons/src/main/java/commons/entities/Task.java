@@ -1,5 +1,7 @@
 package commons.entities;
 
+import jakarta.validation.constraints.NotBlank;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,6 +12,8 @@ public final class Task {
 
     @Id @GeneratedValue
     private int id;
+
+    @NotBlank
     private String name;
     private boolean completed;
 

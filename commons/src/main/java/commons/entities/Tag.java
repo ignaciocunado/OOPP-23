@@ -1,5 +1,9 @@
 package commons.entities;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,7 +13,14 @@ public final class Tag {
 
     @Id @GeneratedValue
     private int id;
+
+    @NotBlank
     private String name;
+
+    @NotBlank
+    @Min(0)
+    @Max(16777215)
+    // Valid decimal colours Z e {0...2^24-1}
     private int colour;
 
     /**

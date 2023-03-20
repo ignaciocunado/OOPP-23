@@ -1,5 +1,7 @@
 package commons.entities;
 
+import jakarta.validation.constraints.NotBlank;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,6 +15,8 @@ public final class CardList {
     @Id
     @GeneratedValue
     private int id;
+
+    @NotBlank
     private String title;
     @OneToMany
     private List<Card> cards;
