@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import server.api.repositories.TestTaskRepository;
 import server.api.repositories.TestCardRepository;
@@ -79,6 +77,11 @@ class CardControllerTest {
     }
 
     @Test
+    public void editInvalidCardTest() {
+        Assertions.assertThrows(InvalidRequestException.class, () -> controller.editCard(1, new Card("", null), hasErrorResult));
+    }
+
+    @Test
     public void editCardTitleNotFoundTest() {
         Assertions.assertThrows(EntityNotFoundException.class, () -> controller.editCard(0,
                 new Card("Test",  "Test"), noErrorResult));
@@ -111,6 +114,11 @@ class CardControllerTest {
     }
 
     @Test
+    public void createTagNoCardTest() {
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.controller.createTag(10, new Tag("ADS", 1), noErrorResult));
+    }
+
+    @Test
     public void createTagFaultyTest() {
         cardRepo.save(new Card("Study ADS", "Weblav"));
         Tag faulty1 = new Tag(null, 23);
@@ -140,7 +148,6 @@ class CardControllerTest {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
         cardRepo.save(new Card("Study OOPP", "Do Git"));
         this.controller.createTag(1, new Tag("ADS", 0), noErrorResult);
-        // TODO: Fix after merge
         Assertions.assertThrows(EntityNotFoundException.class, () -> controller.deleteTag(2,1));
     }
 
@@ -152,6 +159,11 @@ class CardControllerTest {
         task.setId(1);
         Assertions.assertTrue(taskRepo.existsById(1));
         Assertions.assertEquals(task, taskRepo.getById(1));
+    }
+
+    @Test
+    public void createTaskNoCardTest() {
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.controller.createTask(10, new Task("ADS", false), noErrorResult));
     }
 
     @Test
@@ -184,6 +196,6 @@ class CardControllerTest {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
         cardRepo.save(new Card("Study OOPP", "Do Git"));
         this.controller.createTask(1, new Task("OOPP", true), noErrorResult);
-        Assertions.assertEquals(new ResponseEntity<>(HttpStatus.BAD_REQUEST), controller.deleteTask(2,1));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> controller.deleteTask(2,1));
     }
 }
