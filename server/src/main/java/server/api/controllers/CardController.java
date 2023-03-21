@@ -95,7 +95,6 @@ public class CardController {
         if (!deleted) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        tagRepository.deleteById(tagId);
         return new ResponseEntity<>(cardRepository.save(deleteTagFrom), new HttpHeaders(),
             200);
     }

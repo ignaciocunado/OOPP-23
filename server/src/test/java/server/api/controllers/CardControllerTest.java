@@ -108,9 +108,7 @@ class CardControllerTest {
         tagRepo.save(tag);
         this.controller.assignTag(1, 1);
         assertTrue(cardRepo.getById(1).getTags().size() > 0);
-        assertTrue(tagRepo.existsById(1));
         this.controller.deleteTag(1,1);
-        assertFalse(tagRepo.existsById(1));
         assertEquals(0, cardRepo.getById(1).getTags().size());
     }
 
