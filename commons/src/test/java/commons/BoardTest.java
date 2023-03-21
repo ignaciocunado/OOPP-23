@@ -3,6 +3,7 @@ package commons;
 import commons.entities.Board;
 import commons.entities.Card;
 import commons.entities.CardList;
+import commons.entities.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -71,6 +72,15 @@ class BoardTest {
     }
 
     @Test
+    public void addTagTest() {
+        Tag tag = new Tag("tag", 20);
+        board.addTag(tag);
+        List<Tag> tagsOnBoard = new ArrayList<>();
+        tagsOnBoard.add(tag);
+        assertEquals(1,board.getTagsOnBoard().size());
+        assertEquals(board.getTagsOnBoard(), tagsOnBoard);
+    }
+    @Test
     public void removeListTest() {
         CardList l1 = new CardList("cardList");
         board.addList(l1);
@@ -80,6 +90,15 @@ class BoardTest {
         assertEquals(board.getListsOnBoard(), listsOnBoard);
     }
 
+    @Test
+    public void removeTagTest() {
+        Tag tag = new Tag("tag", 0);
+        board.addTag(tag);
+        List<Tag> tags = new ArrayList<>();
+        board.removeTag(tag);
+        assertEquals(0, board.getTagsOnBoard().size());
+        assertEquals(board.getTagsOnBoard(), tags);
+    }
     @Test
     public void removeListByIdTest() {
         CardList l1 = new CardList("cardList");

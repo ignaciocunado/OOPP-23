@@ -17,9 +17,11 @@ package server.api.controllers;
 
 import commons.entities.Board;
 import commons.entities.CardList;
+import commons.entities.Tag;
+import org.springframework.http.HttpStatus;
+import server.database.TagRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import server.services.TextService;
@@ -34,6 +36,7 @@ import server.database.CardListRepository;
 public class BoardController {
 
     private final BoardRepository boardRepo;
+    private final TagRepository tagRepo;
     private final CardListRepository cardListRepository;
     private final TextService textService;
 
@@ -43,13 +46,16 @@ public class BoardController {
      * @param boardRepo          repository for boards
      * @param cardListRepository repository for cards
      * @param textService        service for generating random keys
+     * @param tagRepo repository for tags
      */
     public BoardController(final BoardRepository boardRepo,
                            final CardListRepository cardListRepository,
-                           final TextService textService) {
+                           final TextService textService,
+                           final TagRepository tagRepo) {
         this.boardRepo = boardRepo;
         this.cardListRepository = cardListRepository;
         this.textService = textService;
+        this.tagRepo = tagRepo;
     }
 
     /**
@@ -64,7 +70,6 @@ public class BoardController {
         final Board board = new Board(newKey, request.getPassword());
         return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), 200);
     }
-
     /**
      * Handler for getting the board
      *
@@ -80,6 +85,27 @@ public class BoardController {
         return new ResponseEntity<>(this.boardRepo.getById(id), new HttpHeaders(), 200);
     }
 
+    /** Hnadler for creating a tag
+     * @param id unique id of the board
+     * @param tag the new tag that we are creating
+     * @param errors wrapping for potential validating errors
+     * @return the board with the new tag
+     */
+    @PostMapping("/{id}/tag")
+    public ResponseEntity<Board> createTag(@PathVariable final int id,
+                                           @Validated @RequestBody Tag tag,
+                                           final BindingResult errors){
+        if (errors.hasErrors()) {
+            throw new InvalidRequestException(errors);
+        }
+        if (!boardRepo.existsById(id)) {
+            throw new EntityNotFoundException("No board with id " + id);
+        }
+        tagRepo.save(tag);
+        Board board = boardRepo.getById(id);
+        board.addTag(tag);
+        return new ResponseEntity<>(boardRepo.save(board), new HttpHeaders(), 200);
+    }
     /**
      * Handler for creating the list in a board
      *

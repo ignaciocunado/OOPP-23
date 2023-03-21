@@ -1,13 +1,13 @@
 package server.api.controllers;
 
 import commons.entities.Card;
-import commons.entities.Tag;
 import commons.entities.Task;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import server.database.BoardRepository;
 import server.database.CardRepository;
 import server.database.TagRepository;
 import server.database.TaskRepository;
@@ -22,19 +22,22 @@ public class CardController {
     private final CardRepository cardRepository;
     private final TagRepository tagRepository;
     private final TaskRepository taskRepository;
+    private final BoardRepository boardRepository;
 
     /**
      * Constructor
      *
-     * @param cardRepository card DB
-     * @param tagRepository  tag DB
-     * @param taskRepository task DB
+     * @param cardRepository  card DB
+     * @param tagRepository   tag DB
+     * @param taskRepository  task DB
+     * @param boardRepository board DB
      */
     public CardController(final CardRepository cardRepository, final TagRepository tagRepository,
-                          final TaskRepository taskRepository) {
+                          final TaskRepository taskRepository, BoardRepository boardRepository) {
         this.cardRepository = cardRepository;
         this.tagRepository = tagRepository;
         this.taskRepository = taskRepository;
+        this.boardRepository = boardRepository;
     }
 
     /**
@@ -65,28 +68,26 @@ public class CardController {
 
     /**
      * creates a Tag and stores it in a Card
-     *
-     * @param id  id of the Card in which to store the Tag
-     * @param tag the Tag to create and add
-     * @param errors wrapping object for potential validating errors
+     * @param id id of the Card in which to store the Tag
+     * @param tagId the id of the tag that is assigned to the board and card
+     * @param errors wrapping for potential validating errors
      * @return ResponseEntity for status
      */
-    @PostMapping("/{id}/tag")
-    public ResponseEntity<Card> createTag(@PathVariable final int id,
-                                          @Validated @RequestBody Tag tag,
+    @PostMapping("/{id}/tag/{tagId}")
+    public ResponseEntity<Card> assignTag(@PathVariable final int id,
+                                          @PathVariable final int tagId,
                                           final BindingResult errors) {
+
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
         if (!cardRepository.existsById(id)) {
             throw new EntityNotFoundException("No card with id " + id);
         }
-        tagRepository.save(tag);
-
-        Card containsNewTag = cardRepository.getById(id);
-        containsNewTag.addTag(tag);
-        return new ResponseEntity<>(cardRepository.save(containsNewTag), new HttpHeaders(),
-                200);
+        Card card = cardRepository.getById(id);
+        card.addTag(tagRepository.getById(tagId));
+        return new ResponseEntity<>(cardRepository.save(card), new HttpHeaders(),
+            200);
     }
 
     /**
@@ -107,7 +108,6 @@ public class CardController {
             throw new EntityNotFoundException("No tag with id " + id);
         }
 
-        tagRepository.deleteById(tagId);
         return new ResponseEntity<>(cardRepository.save(deleteTagFrom), new HttpHeaders(),
                 200);
     }
@@ -141,7 +141,6 @@ public class CardController {
 
     /**
      * Deletes a Task iff it exists
-     *
      * @param id     id of the Card
      * @param taskId id of the Task
      * @return ResponseEntity for status

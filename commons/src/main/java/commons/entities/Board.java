@@ -21,6 +21,8 @@ public final class Board {
 
     private String password;
     @OneToMany
+    private List<Tag> tags;
+    @OneToMany
     private List<CardList> listsOnBoard;
 
     /**
@@ -37,6 +39,7 @@ public final class Board {
         this.key = key;
         this.password = password;
         this.listsOnBoard = new ArrayList<>();
+        this.tags = new ArrayList<>();
     }
 
     /**
@@ -87,6 +90,12 @@ public final class Board {
         return listsOnBoard;
     }
 
+    /** Gets the tags that are on this board
+     * @return the list of tags as an ArrayList
+     */
+    public List<Tag> getTagsOnBoard() {
+        return tags;
+    }
     /**
      * Adds a new CardList on this board
      * @param newList the new CardList to be added
@@ -94,6 +103,14 @@ public final class Board {
      */
     public boolean addList(CardList newList) {
         return listsOnBoard.add(newList);
+    }
+
+    /** Adds a new Tag on this board
+     * @param tag the new tag that is created
+     * @return returns a boolean which indicates if the tag has been added to the board
+     */
+    public boolean addTag(Tag tag){
+        return tags.add(tag);
     }
 
     /**
@@ -105,6 +122,13 @@ public final class Board {
         return listsOnBoard.remove(listToDelete);
     }
 
+    /** Removes a given tag from this board
+     * @param tag the tag that will be deleted
+     * @return a boolean value whether the card has been deleted or not
+     */
+    public boolean removeTag(Tag tag) {
+        return tags.remove(tag);
+    }
     /**
      * Removes a given CardList from this board
      * @param id the id of the CardList to be deleted

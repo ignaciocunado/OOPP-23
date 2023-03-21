@@ -11,6 +11,8 @@ import org.springframework.validation.BindingResult;
 import server.api.repositories.TestTaskRepository;
 import server.api.repositories.TestCardRepository;
 import server.api.repositories.TestTagRepository;
+import server.database.BoardRepository;
+import static org.junit.jupiter.api.Assertions.*;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
 
@@ -20,6 +22,7 @@ class CardControllerTest {
     private TestTagRepository tagRepo;
     private TestTaskRepository taskRepo;
     private CardController controller;
+    private BoardRepository boardRepo;
 
     private BindingResult hasErrorResult;
     private BindingResult noErrorResult;
@@ -29,7 +32,7 @@ class CardControllerTest {
         cardRepo = new TestCardRepository();
         tagRepo = new TestTagRepository();
         taskRepo = new TestTaskRepository();
-        controller = new CardController(cardRepo,tagRepo,taskRepo);
+        controller = new CardController(cardRepo,tagRepo,taskRepo, boardRepo);
 
         this.hasErrorResult = Mockito.mock(BindingResult.class);
         this.noErrorResult = Mockito.mock(BindingResult.class);
@@ -104,25 +107,29 @@ class CardControllerTest {
     }
 
     @Test
-    public void createTagTest() {
+    public void assignTagTest() {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
-        this.controller.createTag(1, new Tag("ADS", 0), noErrorResult);
         final Tag tag = new Tag("ADS", 0);
-        tag.setId(1);
-        Assertions.assertTrue(tagRepo.existsById(1));
-        Assertions.assertEquals(tag, tagRepo.getById(1));
+        tag.setId(10);
+        tagRepo.save(tag);
+        this.controller.assignTag(1, 1, noErrorResult);
+        assertTrue(tagRepo.existsById(1));
+        assertEquals(tag, tagRepo.getById(1));
     }
+
 
     @Test
     public void createTagNoCardTest() {
-        Assertions.assertThrows(EntityNotFoundException.class, () -> this.controller.createTag(10, new Tag("ADS", 1), noErrorResult));
+        Tag tag = new Tag("I hate conflicts", 0);
+        tag.setId(1);
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.controller.assignTag(10, 1, noErrorResult));
     }
 
     @Test
     public void createTagFaultyTest() {
         cardRepo.save(new Card("Study ADS", "Weblav"));
         Tag faulty1 = new Tag(null, 23);
-        Assertions.assertThrows(InvalidRequestException.class, () -> controller.createTag(1, faulty1, hasErrorResult));
+        Assertions.assertThrows(InvalidRequestException.class, () -> controller.assignTag(1, 1, hasErrorResult));
     }
 
     @Test
@@ -130,11 +137,10 @@ class CardControllerTest {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
         Tag toAdd =  new Tag("ADS", 0);
         toAdd.setId(1);
-        this.controller.createTag(1, toAdd, noErrorResult);
+        tagRepo.save(toAdd);
+        this.controller.assignTag(1, 1, noErrorResult);
         Assertions.assertTrue(cardRepo.getById(1).getTags().size() > 0);
-        Assertions.assertTrue(tagRepo.existsById(1));
         this.controller.deleteTag(1,1);
-        Assertions.assertFalse(tagRepo.existsById(1));
         Assertions.assertEquals(0, cardRepo.getById(1).getTags().size());
     }
 
@@ -147,7 +153,10 @@ class CardControllerTest {
     public void deleteTagNotInACard() {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
         cardRepo.save(new Card("Study OOPP", "Do Git"));
-        this.controller.createTag(1, new Tag("ADS", 0), noErrorResult);
+        Tag tag = new Tag("ADS", 0);
+        tag.setId(1);
+        tagRepo.save(tag);
+        this.controller.assignTag(1,1, noErrorResult);
         Assertions.assertThrows(EntityNotFoundException.class, () -> controller.deleteTag(2,1));
     }
 
