@@ -1,5 +1,8 @@
 package commons;
 
+import commons.entities.Card;
+import commons.entities.Tag;
+import commons.entities.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

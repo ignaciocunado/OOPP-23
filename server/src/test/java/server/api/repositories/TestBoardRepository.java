@@ -15,7 +15,7 @@
  */
 package server.api.repositories;
 
-import commons.Board;
+import commons.entities.Board;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

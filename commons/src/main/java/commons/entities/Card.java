@@ -1,9 +1,11 @@
-package commons;
+package commons.entities;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +15,11 @@ public final class Card {
     @Id
     @GeneratedValue
     private int id;
+
+    @NotBlank
     private String title;
+
+    @NotNull
     private String description;
     @OneToMany
     private List<Task> nestedTaskList;
