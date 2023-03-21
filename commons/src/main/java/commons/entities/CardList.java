@@ -1,9 +1,10 @@
-package commons;
+package commons.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -13,6 +14,8 @@ public final class CardList {
     @Id
     @GeneratedValue
     private int id;
+
+    @NotBlank
     private String title;
     @OneToMany
     private List<Card> cards;
@@ -38,10 +41,18 @@ public final class CardList {
         return id;
     }
 
+    /** setter of id
+     * @param id int unique value representing the id of a card list
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
     /**
      * Getter for the title of a list
      * @return a title of a list
      */
+
     public String getTitle() {
         return title;
     }
@@ -80,6 +91,15 @@ public final class CardList {
     public boolean removeCard(Card card) {
         return cards.remove(card);
     }
+
+    /** method for deleting a card by it's id
+     * @param id int varaiable representing the id of the card
+     * @return boolean value representing whether the card has been removed or not
+     */
+    public boolean removeCardById(final int id){
+        return this.cards.removeIf(card -> card.getId() == id);
+    }
+
     /**
      * Creates a human readable string representation of list
      * @return human readable string of list

@@ -15,7 +15,7 @@
  */
 package commons;
 
-import org.junit.jupiter.api.BeforeAll;
+import commons.entities.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -48,6 +48,12 @@ public class TagTest {
 	@Test
 	public void getColourTest() {
 		assertEquals(tag.getColour(), 16744576);
+	}
+
+	@Test
+	public void setIdTest() {
+		tag.setId(10);
+		assertEquals(tag.getId(), 10);
 	}
 
 	@Test

@@ -15,59 +15,61 @@
  */
 package server.api.repositories;
 
-import commons.entities.Board;
+import commons.entities.Tag;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
-import server.database.BoardRepository;
+import server.database.TagRepository;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public final class TestBoardRepository implements BoardRepository {
+public final class TestTagRepository implements TagRepository {
 
     private int nextInt = 0;
-    public final List<Board> boards = new ArrayList<>();
+    public final List<Tag> tags = new ArrayList<>();
 
-    @Override
-    public List<Board> findAll() {
-        return this.boards;
+    private Optional<Tag> find(final int id) {
+        return this.tags.stream().filter(t -> t.getId() == id).findFirst();
     }
 
     @Override
-    public List<Board> findAll(Sort sort) {
+    public List<Tag> findAll() {
+        return this.tags;
+    }
+
+    @Override
+    public List<Tag> findAll(Sort sort) {
         return null;
     }
 
     @Override
-    public Page<Board> findAll(Pageable pageable) {
+    public Page<Tag> findAll(Pageable pageable) {
         return null;
     }
 
     @Override
-    public List<Board> findAllById(Iterable<Integer> integers) {
+    public List<Tag> findAllById(Iterable<Integer> integers) {
         return null;
     }
 
     @Override
     public long count() {
-        return this.boards.size();
+        return this.tags.size();
     }
 
     @Override
     public void deleteById(Integer integer) {
-
+        tags.removeIf(tag -> tag.getId() == integer);
     }
 
     @Override
-    public void delete(Board entity) {
-
+    public void delete(Tag entity) {
+        tags.remove(entity);
     }
 
     @Override
@@ -76,7 +78,7 @@ public final class TestBoardRepository implements BoardRepository {
     }
 
     @Override
-    public void deleteAll(Iterable<? extends Board> entities) {
+    public void deleteAll(Iterable<? extends Tag> entities) {
 
     }
 
@@ -86,30 +88,31 @@ public final class TestBoardRepository implements BoardRepository {
     }
 
     @Override
-    public <S extends Board> S save(S entity) {
-        for (final Board board : boards) {
-            if (board.getId() == entity.getId()) {
-                board.setPassword(entity.getPassword());
-                return (S) board;
+    public <S extends Tag> S save(S entity) {
+        for (final Tag tag : tags) {
+            if (tag.getId() == entity.getId()) {
+                tag.setName(entity.getName());
+                tag.setColour(entity.getColour());
+                return (S) tag;
             }
         }
 
         nextInt++;
-        final Board board = new Board(entity.getKey(), entity.getPassword());
-        board.setId(nextInt);
+        final Tag tag = new Tag(entity.getName(), entity.getColour());
+        tag.setId(nextInt);
         entity.setId(nextInt);
 
-        this.boards.add(board);
-        return (S) board;
+        this.tags.add(tag);
+        return (S) tag;
     }
 
     @Override
-    public <S extends Board> List<S> saveAll(Iterable<S> entities) {
+    public <S extends Tag> List<S> saveAll(Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public Optional<Board> findById(Integer integer) {
+    public Optional<Tag> findById(Integer integer) {
         return this.find(integer);
     }
 
@@ -124,17 +127,17 @@ public final class TestBoardRepository implements BoardRepository {
     }
 
     @Override
-    public <S extends Board> S saveAndFlush(S entity) {
+    public <S extends Tag> S saveAndFlush(S entity) {
         return null;
     }
 
     @Override
-    public <S extends Board> List<S> saveAllAndFlush(Iterable<S> entities) {
+    public <S extends Tag> List<S> saveAllAndFlush(Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public void deleteAllInBatch(Iterable<Board> entities) {
+    public void deleteAllInBatch(Iterable<Tag> entities) {
 
     }
 
@@ -149,53 +152,47 @@ public final class TestBoardRepository implements BoardRepository {
     }
 
     @Override
-    public Board getOne(Integer integer) {
-        return null;
+    public Tag getOne(Integer integer) {
+        return this.find(integer).get();
     }
 
     @Override
-    public Board getById(Integer integer) {
-        final Optional<Board> boardOpt = find(integer);
-        if (!boardOpt.isPresent()) throw new JpaObjectRetrievalFailureException(new EntityNotFoundException());
-        return boardOpt.get();
-    }
-
-    private Optional<Board> find(final int id) {
-        return this.boards.stream().filter(b -> b.getId() == id).findFirst();
+    public Tag getById(Integer integer) {
+        return this.find(integer).get();
     }
 
     @Override
-    public <S extends Board> Optional<S> findOne(Example<S> example) {
+    public <S extends Tag> Optional<S> findOne(Example<S> example) {
         return Optional.empty();
     }
 
     @Override
-    public <S extends Board> List<S> findAll(Example<S> example) {
+    public <S extends Tag> List<S> findAll(Example<S> example) {
         return null;
     }
 
     @Override
-    public <S extends Board> List<S> findAll(Example<S> example, Sort sort) {
+    public <S extends Tag> List<S> findAll(Example<S> example, Sort sort) {
         return null;
     }
 
     @Override
-    public <S extends Board> Page<S> findAll(Example<S> example, Pageable pageable) {
+    public <S extends Tag> Page<S> findAll(Example<S> example, Pageable pageable) {
         return null;
     }
 
     @Override
-    public <S extends Board> long count(Example<S> example) {
+    public <S extends Tag> long count(Example<S> example) {
         return 0;
     }
 
     @Override
-    public <S extends Board> boolean exists(Example<S> example) {
+    public <S extends Tag> boolean exists(Example<S> example) {
         return false;
     }
 
     @Override
-    public <S extends Board, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends Tag, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
 }

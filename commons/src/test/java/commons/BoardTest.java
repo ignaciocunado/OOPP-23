@@ -1,5 +1,8 @@
 package commons;
 
+import commons.entities.Board;
+import commons.entities.Card;
+import commons.entities.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -43,6 +46,12 @@ class BoardTest {
     @Test
     public void getListOfCardListTest() {
         assertEquals(board.getListsOnBoard(), new ArrayList<CardList>());
+    }
+
+    @Test
+    public void setIdTest() {
+        board.setId(10);
+        assertEquals(board.getId(), 10);
     }
 
     @Test

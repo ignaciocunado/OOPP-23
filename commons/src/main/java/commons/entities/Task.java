@@ -1,15 +1,18 @@
-package commons;
+package commons.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
-public class Task {
+public final class Task {
 
     @Id @GeneratedValue
     private int id;
+
+    @NotBlank
     private String name;
     private boolean completed;
 
@@ -33,6 +36,14 @@ public class Task {
      */
     public int getId() {
         return id;
+    }
+
+    /**
+     * setter for id
+     * @param id new id
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**

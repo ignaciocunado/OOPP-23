@@ -1,9 +1,13 @@
 package commons;
 
+import commons.entities.Card;
+import commons.entities.Tag;
+import commons.entities.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -117,5 +121,55 @@ class CardTest {
     @Test
     public void toStringTest() {
         assertEquals(card.toString(), "<Card id=0 title=Card description=This is a card>");
+    }
+
+    @Test
+    public void setIdTest() {
+        card.setId(69);
+        assertEquals(card.getId(), 69);
+    }
+
+    @Test
+    public void setTasksTest() {
+        card.addTask(task);
+        Task task2 = new Task("AAAAAA", false);
+        List<Task> taskList = new ArrayList<>();
+        taskList.add(task2);
+        card.setNestedTaskList(taskList);
+        assertEquals(taskList, card.getNestedTaskList());
+    }
+
+    @Test
+    public void setTagsTest() {
+        card.addTag(tag);
+        Tag tag2 = new Tag("AAAAAA", 0);
+        List<Tag> tagList = new ArrayList<>();
+        tagList.add(tag2);
+        card.setTags(tagList);
+        assertEquals(tagList, card.getTags());
+    }
+
+    @Test
+    public void removeTagByIdTest() {
+        card.addTag(tag);
+        assertTrue(card.removeTagById(tag.getId()));
+    }
+
+    @Test
+    public void removeTagByIdNotFoundTest() {
+        card.addTag(tag);
+        assertFalse(card.removeTagById(tag.getId() + 2));
+    }
+
+    @Test
+    public void removeTaskByIdTest() {
+        card.addTask(task);
+        assertTrue(card.removeTaskById(task.getId()));
+    }
+
+    @Test
+    public void removeTaskByIdNotFoundTest() {
+        card.addTask(task);
+        assertFalse(card.removeTaskById(task.getId() + 2));
     }
 }

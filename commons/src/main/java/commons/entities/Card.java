@@ -1,9 +1,11 @@
-package commons;
+package commons.entities;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +15,11 @@ public final class Card {
     @Id
     @GeneratedValue
     private int id;
+
+    @NotBlank
     private String title;
+
+    @NotNull
     private String description;
     @OneToMany
     private List<Task> nestedTaskList;
@@ -43,6 +49,14 @@ public final class Card {
      */
     public int getId() {
         return id;
+    }
+
+    /**
+     *  setter for id
+     * @param id new id
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
@@ -94,6 +108,22 @@ public final class Card {
     }
 
     /**
+     * setter for the Task list
+     * @param nestedTaskList new list of Tasks
+     */
+    public void setNestedTaskList(List<Task> nestedTaskList) {
+        this.nestedTaskList = nestedTaskList;
+    }
+
+    /**
+     * Setter for the Tag list
+     * @param tags new list of Tags
+     */
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    /**
      * Method which adds a new tag to a card
      * @param tag the tag to be added to the card
      * @return true iff the tag was successfully added
@@ -112,12 +142,21 @@ public final class Card {
     }
 
     /**
-     * Method which removes a specific tag from a card
-     * @param tag the tag to be removed from the card
-     * @return true iff the tag was successfully removed
+     * Method which removes a specific Tag from a card
+     * @param tag the Tag to be removed from the card
+     * @return true iff the Tag was successfully removed
      */
     public boolean removeTag(Tag tag) {
         return this.tags.remove(tag);
+    }
+
+    /**
+     * Removes a Tag from a card iff it exists
+     * @param id id of the Tag to remove
+     * @return true iff the tag was successfully removed
+     */
+    public boolean removeTagById(int id) {
+        return tags.removeIf(tag -> tag.getId() == id);
     }
 
     /**
@@ -127,6 +166,15 @@ public final class Card {
      */
     public boolean removeTask(Task task) {
         return this.nestedTaskList.remove(task);
+    }
+
+    /**
+     * Removes a Task from a card iff it exists
+     * @param id id of the Task to remove
+     * @return true iff the Task was successfully removed
+     */
+    public boolean removeTaskById(int id) {
+        return nestedTaskList.removeIf(task -> task.getId() == id);
     }
 
     /**

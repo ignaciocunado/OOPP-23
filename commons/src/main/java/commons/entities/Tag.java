@@ -1,15 +1,24 @@
-package commons;
+package commons.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 @Entity
 public final class Tag {
 
     @Id @GeneratedValue
     private int id;
+
+    @NotBlank
     private String name;
+
+    @Min(0)
+    @Max(16777215)
+    // Valid decimal colours Z e {0...2^24-1}
     private int colour;
 
     /**
@@ -49,6 +58,14 @@ public final class Tag {
      */
     public int getColour() {
         return colour;
+    }
+
+    /**
+     * Sets the id of the tag
+     * @param id the new id
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**

@@ -17,7 +17,12 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Board;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.layout.HBox;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -25,11 +30,15 @@ public class BoardOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private ListWrapper listWrapper;
+    @FXML
+    private HBox hbox;
+    private Board currentBoard;
 
-//    private ObservableList<Board> data;
 
     /**
      * Constructor to inject necessary classes into the controller
+     *
      * @param server
      * @param mainCtrl
      */
@@ -51,14 +60,20 @@ public class BoardOverviewCtrl implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        refresh();
-
+        hbox.setSpacing(20);
+        hbox.setPadding(new Insets(20,20,20,0));
+        refresh(new Board("",""));
+        this.listWrapper = new ListWrapper(hbox, currentBoard);
     }
 
+
     /**
-     * Stub method for refreshing boards
+     * Stub method for refreshing the Board
+     * @param currentBoard the current Board being displayed
      */
-    public void refresh() {}
+    public void refresh(Board currentBoard) {
+        this.currentBoard = currentBoard;
+    }
 
     /**
      * Method to close the app
@@ -74,15 +89,10 @@ public class BoardOverviewCtrl implements Initializable {
         mainCtrl.minimizeWindow();
     }
 
-    public void listSetTitle() {
-
-    }
-
-    public void addList() {
-
-    }
-
-    public void deleteList() {
-
+    /**
+     * Adds a List to the current Board object and displays it
+     */
+    public void addList() throws IOException {
+        listWrapper.addList();
     }
 }

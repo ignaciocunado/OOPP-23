@@ -1,9 +1,10 @@
-package commons;
+package commons.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,10 @@ public final class Board {
 
     @Id @GeneratedValue
     private int id;
+
+    @NotBlank
     private String key;
+
     private String password;
     @OneToMany
     private List<CardList> listsOnBoard;
