@@ -118,6 +118,13 @@ public final class Board {
         return listsOnBoard.remove(listToDelete);
     }
 
+    /** Removes a given tag from this board
+     * @param tag the tag that will be deleted
+     * @return a boolean value whether the card has been deleted or not
+     */
+    public boolean removeTag(Tag tag) {
+        return tags.remove(tag);
+    }
     /**
      * Removes a given CardList from this board
      * @param id the id of the CardList to be deleted

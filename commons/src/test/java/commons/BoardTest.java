@@ -87,6 +87,15 @@ class BoardTest {
     }
 
     @Test
+    public void removeTagTest() {
+        Tag tag = new Tag("tag", 0);
+        board.addTag(tag);
+        List<Tag> tags = new ArrayList<>();
+        board.removeTag(tag);
+        assertEquals(0, board.getTagsOnBoard().size());
+        assertEquals(board.getTagsOnBoard(), tags);
+    }
+    @Test
     public void removeListByIdTest() {
         CardList l1 = new CardList("cardList");
         board.addList(l1);
