@@ -1,6 +1,5 @@
 package server.api.controllers;
 
-import commons.Board;
 import commons.Card;
 import commons.Tag;
 import commons.Task;
@@ -65,7 +64,8 @@ public class CardController {
      * @return ResponseEntity for status
      */
     @PostMapping("/{id}/tag/{tagId}")
-    public ResponseEntity<Card> assignTag(@PathVariable final int id, @PathVariable final int tagId) {
+    public ResponseEntity<Card> assignTag(@PathVariable final int id,
+                                          @PathVariable final int tagId) {
         if(!cardRepository.existsById(id) || !tagRepository.existsById(tagId)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
