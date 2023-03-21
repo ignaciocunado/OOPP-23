@@ -1,8 +1,8 @@
 package client.scenes;
 
 import client.MyFXML;
-import commons.Card;
-import commons.CardList;
+import commons.entities.Card;
+import commons.entities.CardList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
