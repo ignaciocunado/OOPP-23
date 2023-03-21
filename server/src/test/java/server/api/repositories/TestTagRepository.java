@@ -15,18 +15,14 @@
  */
 package server.api.repositories;
 
-import commons.Board;
-import commons.Tag;
+import commons.entities.Tag;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
-import server.database.BoardRepository;
 import server.database.TagRepository;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
