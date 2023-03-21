@@ -88,13 +88,18 @@ public class BoardController {
     /** Hnadler for creating a tag
      * @param id unique id of the board
      * @param tag the new tag that we are creating
+     * @param errors wrapping for potential validating errors
      * @return the board with the new tag
      */
     @PostMapping("/{id}/tag")
-    public ResponseEntity<Board> createTag(@PathVariable final int id, @RequestBody Tag tag){
-        if(tag.getName() == null || tag.getColour() < 0 || id < 0 ||
-            !boardRepo.existsById(id)){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Board> createTag(@PathVariable final int id,
+                                           @Validated @RequestBody Tag tag,
+                                           final BindingResult errors){
+        if (errors.hasErrors()) {
+            throw new InvalidRequestException(errors);
+        }
+        if (!boardRepo.existsById(id)) {
+            throw new EntityNotFoundException("No board with id " + id);
         }
         tagRepo.save(tag);
         Board board = boardRepo.getById(id);

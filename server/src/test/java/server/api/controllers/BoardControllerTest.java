@@ -18,8 +18,7 @@ import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
 import server.services.TextService;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public final class BoardControllerTest {
 
@@ -119,7 +118,7 @@ public final class BoardControllerTest {
     @Test
     public void createTagTest() {
         boardRepo.save(new Board("aa", "aaa"));
-        this.boardController.createTag(1,new Tag("New Tag", 0));
+        this.boardController.createTag(1,new Tag("New Tag", 0), noErrorResult);
         final Tag tag = new Tag("New Tag", 0);
         tag.setId(1);
         assertTrue(tagRepo.existsById(1));
@@ -130,7 +129,6 @@ public final class BoardControllerTest {
     public void createBadTagTest() {
         boardRepo.save(new Board("aa", "aaa"));
         final Tag tag = new Tag("New Tag", -1);
-        assertEquals(new ResponseEntity<>(HttpStatus.BAD_REQUEST),
-            boardController.createTag(1, tag));
+        assertThrows(InvalidRequestException.class, () -> boardController.createTag(1, tag, hasErrorResult));
     }
 }
