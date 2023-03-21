@@ -64,12 +64,8 @@ public class BoardController {
     public ResponseEntity<Board> createBoard(@RequestBody final Board request) {
         final String newKey = this.textService.randomAlphanumericalString(10);
         final Board board = new Board(newKey, request.getPassword());
-        final Tag tag = new Tag("New tag", 0);
-        this.tagRepo.save(tag);
-        board.addTag(tag);
         return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), 200);
     }
-
     /**
      * Handler for getting the board
      *
@@ -85,6 +81,22 @@ public class BoardController {
         return new ResponseEntity<>(this.boardRepo.getById(id), new HttpHeaders(), 200);
     }
 
+    /** Hnadler for creating a tag
+     * @param id unique id of the board
+     * @param tag the new tag that we are creating
+     * @return the board with the new tag
+     */
+    @PostMapping("/{id}/tag")
+    public ResponseEntity<Board> createTag(@PathVariable final int id, @RequestBody Tag tag){
+        if(tag.getName() == null || tag.getColour() < 0 || id < 0 ||
+            !boardRepo.existsById(id)){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        tagRepo.save(tag);
+        Board board = boardRepo.getById(id);
+        board.addTag(tag);
+        return new ResponseEntity<>(boardRepo.save(board), new HttpHeaders(), 200);
+    }
     /**
      * Handler for creating the list in a board
      *

@@ -7,12 +7,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 import server.api.repositories.TestBoardRepository;
 import server.api.repositories.TestCardListRepository;
 import server.api.repositories.TestTagRepository;
 import server.api.services.TestTextService;
 import server.services.TextService;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class BoardControllerTest {
 
@@ -36,17 +40,6 @@ public final class BoardControllerTest {
         this.boardController.createBoard(new Board("", "password"));
         final Board board = new Board("aaaaaaaaaa", "password");
         board.setId(1);
-
-        Assertions.assertEquals(this.boardRepo.getById(1), board);
-    }
-
-    @Test
-    public void createTagOnNewBoardTest() {
-        boardRepo.save(new Board(",", "aaaaaaa"));
-        final Board board = new Board(",","aaaaaaa");
-        board.setId(1);
-        Tag tag = new Tag("New Tag", 0);
-        board.addTag(tag);
 
         Assertions.assertEquals(this.boardRepo.getById(1), board);
     }
@@ -75,8 +68,8 @@ public final class BoardControllerTest {
     public void createListTest() {
         this.boardRepo.save(new Board("aaaaaaaaab", "password"));
         this.boardController.createList(1, new CardList(""));
-        Assertions.assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() > 0);
-        Assertions.assertTrue(this.cardRepo.count() > 0);
+        assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() > 0);
+        assertTrue(this.cardRepo.count() > 0);
     }
 
     @Test
@@ -89,10 +82,10 @@ public final class BoardControllerTest {
         this.boardRepo.save(new Board("aaaaaaaaab", "password"));
         final CardList list = this.boardController.createList(1, new CardList("")).getBody().getListsOnBoard().get(0);
 
-        Assertions.assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() > 0);
+        assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() > 0);
         this.boardController.deleteList(1, list.getId());
-        Assertions.assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() == 0);
-        Assertions.assertTrue(this.cardRepo.count() == 0);
+        assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() == 0);
+        assertTrue(this.cardRepo.count() == 0);
     }
 
     @Test
@@ -107,4 +100,21 @@ public final class BoardControllerTest {
         Assertions.assertEquals(this.boardController.deleteList(1, 1000).getStatusCode(), HttpStatus.NOT_FOUND);
     }
 
+    @Test
+    public void createTagTest() {
+        boardRepo.save(new Board("aa", "aaa"));
+        this.boardController.createTag(1,new Tag("New Tag", 0));
+        final Tag tag = new Tag("New Tag", 0);
+        tag.setId(1);
+        assertTrue(tagRepo.existsById(1));
+        assertEquals(tagRepo.getById(1), tag);
+    }
+
+    @Test
+    public void createBadTagTest() {
+        boardRepo.save(new Board("aa", "aaa"));
+        final Tag tag = new Tag("New Tag", -1);
+        assertEquals(new ResponseEntity<>(HttpStatus.BAD_REQUEST),
+            boardController.createTag(1, tag));
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import server.api.repositories.TestTaskRepository;
 import server.api.repositories.TestCardRepository;
 import server.api.repositories.TestTagRepository;
+import server.database.BoardRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,13 +20,14 @@ class CardControllerTest {
     private TestTagRepository tagRepo;
     private TestTaskRepository taskRepo;
     private CardController controller;
+    private BoardRepository boardRepo;
 
     @BeforeEach
     public void setup() {
         cardRepo = new TestCardRepository();
         tagRepo = new TestTagRepository();
         taskRepo = new TestTaskRepository();
-        controller = new CardController(cardRepo,tagRepo,taskRepo);
+        controller = new CardController(cardRepo,tagRepo,taskRepo, boardRepo);
     }
 
     @Test
@@ -89,31 +91,22 @@ class CardControllerTest {
     }
 
     @Test
-    public void createTagTest() {
+    public void assignTagTest() {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
-        this.controller.createTag(1, new Tag("ADS", 0));
         final Tag tag = new Tag("ADS", 0);
-        tag.setId(1);
+        tag.setId(10);
+        tagRepo.save(tag);
+        this.controller.assignTag(1, 1);
         assertTrue(tagRepo.existsById(1));
         assertEquals(tag, tagRepo.getById(1));
     }
-
-    @Test
-    public void createTagFaultyTest() {
-        cardRepo.save(new Card("Study ADS", "Weblav"));
-        Tag faulty1 = new Tag(null, 23);
-        assertEquals(new ResponseEntity<>(HttpStatus.BAD_REQUEST), controller.createTag(1, faulty1));
-        faulty1.setName("");
-        faulty1.setColour(-5);
-        assertEquals(new ResponseEntity<>(HttpStatus.BAD_REQUEST), controller.createTag(1, faulty1));
-    }
-
     @Test
     public void deleteTagTest() {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
-        Tag toAdd =  new Tag("ADS", 0);
-        toAdd.setId(1);
-        this.controller.createTag(1, toAdd);
+        Tag tag =  new Tag("ADS", 0);
+        tag.setId(1);
+        tagRepo.save(tag);
+        this.controller.assignTag(1, 1);
         assertTrue(cardRepo.getById(1).getTags().size() > 0);
         assertTrue(tagRepo.existsById(1));
         this.controller.deleteTag(1,1);
@@ -123,14 +116,16 @@ class CardControllerTest {
 
     @Test
     public void deleteTagNotFoundTest() {
-        assertEquals(new ResponseEntity<>(HttpStatus.BAD_REQUEST), controller.deleteTag(0,125));
+        assertEquals(new ResponseEntity<>(HttpStatus.BAD_REQUEST), controller.deleteTag(-1,-2));
     }
 
     @Test
     public void deleteTagNotInACard() {
         cardRepo.save(new Card("Study ADS", "Do weblab"));
         cardRepo.save(new Card("Study OOPP", "Do Git"));
-        this.controller.createTag(1, new Tag("ADS", 0));
+        Tag tag = new Tag("ADS", 0);
+        tag.setId(1);
+        this.controller.assignTag(1,1);
         assertEquals(new ResponseEntity<>(HttpStatus.BAD_REQUEST), controller.deleteTag(2,1));
     }
 
