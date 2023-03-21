@@ -1,8 +1,8 @@
 package client.scenes;
 
 import client.MyFXML;
-import commons.Board;
-import commons.CardList;
+import commons.entities.Board;
+import commons.entities.CardList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
