@@ -27,6 +27,7 @@ public class TaskController {
     /** endpoint for editing the name of a card list
      * @param id int value representing the id of a task
      * @param task the task we are editing
+     * @param errors wrapping object for potential validating errors
      * @return the task with the changed name
      */
     @PatchMapping("/{id}")

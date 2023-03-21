@@ -44,6 +44,7 @@ public class TagController {
      * Handler for editing a tag
      * @param id the tag id
      * @param tag the new tag data
+     * @param errors wrapping object for potential validating errors
      * @return the updated tag
      */
     @PatchMapping("/{id}")

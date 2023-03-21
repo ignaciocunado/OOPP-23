@@ -35,6 +35,7 @@ public class CardListController {
      *
      * @param id of the card list in which the card gets created
      * @param payload the data for the new card
+     * @param errors wrapping object for potential validating errors
      * @return the card list containing the new card
      */
     @PostMapping("/{id}/card")
@@ -81,11 +82,13 @@ public class CardListController {
     /** endpoint for editing the title of a card list
      * @param id int value representing the id of a card list
      * @param cardList the card list edited
+     * @param errors wrapping object for potential validating errors
      * @return the card list with the changed new title
      */
     @PatchMapping("/{id}")
     public ResponseEntity<CardList> editCardListTitle(@PathVariable final int id,
-                                                      @Validated @RequestBody final CardList cardList,
+                                                      @Validated @RequestBody
+                                                      final CardList cardList,
                                                       final BindingResult errors) {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);

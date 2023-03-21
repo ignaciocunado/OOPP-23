@@ -4,7 +4,6 @@ import commons.entities.Card;
 import commons.entities.Tag;
 import commons.entities.Task;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -43,6 +42,7 @@ public class CardController {
      *
      * @param id   id of the Card to edit
      * @param card new Card to take the info from
+     * @param errors wrapping object for potential validating errors
      * @return ResponseEntity for status
      */
     @PatchMapping("/{id}")
@@ -68,6 +68,7 @@ public class CardController {
      *
      * @param id  id of the Card in which to store the Tag
      * @param tag the Tag to create and add
+     * @param errors wrapping object for potential validating errors
      * @return ResponseEntity for status
      */
     @PostMapping("/{id}/tag")
@@ -116,6 +117,7 @@ public class CardController {
      *
      * @param id   id of the Card in which to store the Task
      * @param task the Task to create and add
+     * @param errors wrapping object for potential validating errors
      * @return ResponseEntity for status
      */
     @PostMapping("/{id}/task")

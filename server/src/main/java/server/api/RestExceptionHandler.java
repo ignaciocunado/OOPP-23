@@ -34,6 +34,12 @@ public final class RestExceptionHandler {
 
     }
 
+    /**
+     * Handles all server exceptions to give an appropriate response
+     * with a json marshalled error and the correct status code
+     * @param exception the exception we extract this information from
+     * @return the correct response entity as described
+     */
     @ExceptionHandler(ServerException.class)
     public ResponseEntity<Object> handleServerExceptions(final ServerException exception) {
         return new ResponseEntity<>(new APIError(exception), exception.getStatus());

@@ -85,6 +85,7 @@ public class BoardController {
      *
      * @param id the board to create a list for
      * @param payload the data for the new list
+     * @param errors wrapping object for potential validating errors
      * @return the board with its new list
      */
     @PostMapping("/{id}/list")
