@@ -4,6 +4,7 @@ import client.utils.ServerUtils;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -12,7 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class BoardOverviewCtrlWrapper {
+public class BoardOverviewCtrlWrapper implements Initializable {
     private final BoardOverviewCtrl boardOverviewCtrl;
 
     /**
