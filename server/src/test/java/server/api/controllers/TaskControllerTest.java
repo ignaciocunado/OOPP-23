@@ -1,16 +1,16 @@
 package server.api.controllers;
 
-import commons.CardList;
-import commons.Task;
+import commons.entities.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutorService;
+import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import server.api.repositories.TestCardRepository;
 import server.api.repositories.TestTaskRepository;
-
-import static org.junit.jupiter.api.Assertions.*;
+import server.exceptions.EntityNotFoundException;
+import server.exceptions.InvalidRequestException;
 
 class TaskControllerTest {
 
@@ -18,11 +18,20 @@ class TaskControllerTest {
     private TestTaskRepository taskRepo;
     private TaskController taskController;
 
+    private BindingResult hasErrorResult;
+    private BindingResult noErrorResult;
+
     @BeforeEach
     public void setup() {
         this.cardRepo = new TestCardRepository();
         this.taskRepo = new TestTaskRepository();
         this.taskController = new TaskController(taskRepo);
+
+        this.hasErrorResult = Mockito.mock(BindingResult.class);
+        this.noErrorResult = Mockito.mock(BindingResult.class);
+
+        Mockito.when(hasErrorResult.hasErrors()).thenReturn(true);
+        Mockito.when(noErrorResult.hasErrors()).thenReturn(false);
     }
 
     @Test
@@ -34,7 +43,7 @@ class TaskControllerTest {
         edited.setId(1);
 
         Assertions.assertEquals(this.taskRepo.findById(1).get(), task);
-        this.taskController.editTask(1, new Task("new title", true));
+        this.taskController.editTask(1, new Task("new title", true), noErrorResult);
         Assertions.assertEquals(this.taskRepo.findById(1).get(), edited);
     }
 
@@ -48,12 +57,18 @@ class TaskControllerTest {
 
 
         Assertions.assertEquals(this.taskRepo.findById(1).get(), task);
-        this.taskController.editTask(1, new Task("title", false));
+        this.taskController.editTask(1, new Task("title", false), noErrorResult);
         Assertions.assertEquals(this.taskRepo.findById(1).get(), edited);
     }
 
     @Test
+    void editInvalidTaskTest() {
+        this.taskRepo.save(new Task("title", true));
+        Assertions.assertThrows(InvalidRequestException.class, () -> this.taskController.editTask(1, new Task("", true), hasErrorResult));
+    }
+
+    @Test
     void editTaskNotFoundTest() {
-        Assertions.assertEquals(this.taskController.editTask(1, new Task()).getStatusCode(), HttpStatus.NOT_FOUND);
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.taskController.editTask(1, new Task("title", false), noErrorResult));
     }
 }

@@ -1,19 +1,16 @@
 package server.api.controllers;
 
-import commons.Board;
-import commons.Card;
-import commons.CardList;
-import org.aspectj.lang.annotation.Before;
+import commons.entities.Card;
+import commons.entities.CardList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import server.api.repositories.TestBoardRepository;
+import org.mockito.Mockito;
+import org.springframework.validation.BindingResult;
 import server.api.repositories.TestCardListRepository;
 import server.api.repositories.TestCardRepository;
-import server.database.BoardRepository;
-
-import static org.junit.jupiter.api.Assertions.*;
+import server.exceptions.EntityNotFoundException;
+import server.exceptions.InvalidRequestException;
 
 class CardListControllerTest {
 
@@ -21,14 +18,21 @@ class CardListControllerTest {
     private TestCardListRepository cardListRepo;
     private CardListController cardListController;
 
-    private TestBoardRepository boardRepo;
+    private BindingResult hasErrorResult;
+    private BindingResult noErrorResult;
+
 
     @BeforeEach
     public void setup() {
         this.cardRepo = new TestCardRepository();
         this.cardListRepo = new TestCardListRepository();
         this.cardListController = new CardListController(cardListRepo, cardRepo);
-        this.boardRepo = new TestBoardRepository();
+
+        this.hasErrorResult = Mockito.mock(BindingResult.class);
+        this.noErrorResult = Mockito.mock(BindingResult.class);
+
+        Mockito.when(hasErrorResult.hasErrors()).thenReturn(true);
+        Mockito.when(noErrorResult.hasErrors()).thenReturn(false);
     }
 
 
@@ -36,21 +40,31 @@ class CardListControllerTest {
     void createCardTestNameAndTitleTest() {
         cardListRepo.save(new CardList("title"));
         final Card card = new Card("New Title", "New Description");
-        this.cardListController.createCard(1, card);
-
         card.setId(1);
-        assertEquals(this.cardRepo.getById(1), card);
+
+        this.cardListController.createCard(1, card, noErrorResult);
+        Assertions.assertEquals(this.cardRepo.getById(1), card);
+    }
+
+    @Test
+    void createInvalidCardTest() {
+        cardListRepo.save(new CardList("title"));
+
+        final Card card = new Card("", null);
+        card.setId(1);
+
+        Assertions.assertThrows(InvalidRequestException.class, () -> this.cardListController.createCard(1, card, hasErrorResult));
     }
 
     @Test
     public void createCardNotFoundTest() {
-        Assertions.assertEquals(this.cardListController.createCard(1, new Card("New Title", "New Description")).getStatusCode(), HttpStatus.NOT_FOUND);
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.cardListController.createCard(1, new Card("New Title", "New Description"), noErrorResult));
     }
 
     @Test
     void deleteCardTest() {
         this.cardListRepo.save(new CardList("title"));
-        final Card card = this.cardListController.createCard(1, new Card("New Title", "New Description")).getBody().getCards().get(0);
+        final Card card = this.cardListController.createCard(1, new Card("New Title", "New Description"), noErrorResult).getBody().getCards().get(0);
 
         Assertions.assertTrue(this.cardListRepo.findById(1).get().getCards().size() > 0);
         this.cardListController.deleteCard(1,card.getId());
@@ -61,33 +75,36 @@ class CardListControllerTest {
     public void deleteCardNotFoundCardTest() {
         this.cardListRepo.save(new CardList("title"));
 
-        Assertions.assertEquals(this.cardListController.deleteCard(1, 2).getStatusCode(),
-            HttpStatus.NOT_FOUND);
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.cardListController.deleteCard(1, 2));
     }
 
     @Test
     public void deleteCardNotFoundListTest() {
-        Assertions.assertEquals(this.cardListController.deleteCard(1, 1).getStatusCode(),
-            HttpStatus.NOT_FOUND);
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.cardListController.deleteCard(1, 1));
     }
 
     @Test
     void editCardListTitleTest() {
         this.cardListRepo.save(new CardList("title"));
-        final CardList cardlist1 = new CardList("title");
-        cardlist1.setId(1);
-        final CardList cardlist2 = new CardList("new title");
-        cardlist2.setId(1);
+        final CardList cardList1 = new CardList("title");
+        cardList1.setId(1);
+        final CardList cardList2 = new CardList("new title");
+        cardList2.setId(1);
 
-        Assertions.assertEquals(this.cardListRepo.findById(1).get(), cardlist1);
-        this.cardListController.editCardListTitle(1, new CardList());
-        cardlist1.setTitle("new title");
-        cardListRepo.save(cardlist1);
-        Assertions.assertEquals(this.cardListRepo.findById(1).get(), cardlist2);
+        Assertions.assertEquals(this.cardListRepo.findById(1).get(), cardList1);
+        this.cardListController.editCardListTitle(1, new CardList("title"), noErrorResult);
+        cardList1.setTitle("new title");
+        cardListRepo.save(cardList1);
+        Assertions.assertEquals(this.cardListRepo.findById(1).get(), cardList2);
+    }
+
+    @Test
+    public void editInvalidCardListTest() {
+        Assertions.assertThrows(InvalidRequestException.class, () -> this.cardListController.editCardListTitle(5, new CardList(""), hasErrorResult));
     }
 
     @Test
     public void editCardListNotFoundTest() {
-        Assertions.assertEquals(this.cardListController.editCardListTitle(5, new CardList()).getStatusCode(), HttpStatus.NOT_FOUND);
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.cardListController.editCardListTitle(5, new CardList("title"), noErrorResult));
     }
 }

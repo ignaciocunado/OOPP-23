@@ -15,11 +15,16 @@
  */
 package server.api.controllers;
 
-import commons.Board;
-import commons.CardList;
 import commons.Tag;
 import org.springframework.http.HttpStatus;
 import server.database.TagRepository;
+import commons.entities.Board;
+import commons.entities.CardList;
+import server.exceptions.EntityNotFoundException;
+import server.exceptions.InvalidRequestException;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import server.services.TextService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -75,7 +80,7 @@ public class BoardController {
     @GetMapping("/{id}")
     public ResponseEntity<Board> getBoard(@PathVariable final Integer id) {
         if (!this.boardRepo.existsById(id)) {
-            return ResponseEntity.notFound().build();
+            throw new EntityNotFoundException("No board with id " + id);
         }
 
         return new ResponseEntity<>(this.boardRepo.getById(id), new HttpHeaders(), 200);
@@ -102,16 +107,20 @@ public class BoardController {
      *
      * @param id the board to create a list for
      * @param payload the data for the new list
+     * @param errors wrapping object for potential validating errors
      * @return the board with its new list
      */
     @PostMapping("/{id}/list")
     public ResponseEntity<Board> createList(@PathVariable final Integer id,
-                                            @RequestBody final CardList payload) {
-        if (!this.boardRepo.existsById(id)) {
-            return ResponseEntity.notFound().build();
+                                            @Validated @RequestBody final CardList payload,
+                                            final BindingResult errors) {
+        if (errors.hasErrors()) {
+            throw new InvalidRequestException(errors);
         }
 
-        // TODO: payload must contain a title
+        if (!this.boardRepo.existsById(id)) {
+            throw new EntityNotFoundException("No board with id " + id);
+        }
 
         final CardList cardList = new CardList(payload.getTitle());
         this.cardListRepository.save(cardList);
@@ -132,12 +141,12 @@ public class BoardController {
     public ResponseEntity<Board> deleteList(@PathVariable final Integer id,
                                             @PathVariable final Integer listId) {
         if (!this.boardRepo.existsById(id)) {
-            return ResponseEntity.notFound().build();
+            throw new EntityNotFoundException("No board with id " + id);
         }
 
         final Board board = this.boardRepo.getById(id);
         if (!board.removeListById(listId)) {
-            return ResponseEntity.notFound().build();
+            throw new EntityNotFoundException("Board contains no list with id " + listId);
         }
 
         this.cardListRepository.deleteById(listId);

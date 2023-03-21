@@ -1,6 +1,6 @@
 package server.database;
 
-import commons.Card;
+import commons.entities.Card;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
