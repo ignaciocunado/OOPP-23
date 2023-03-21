@@ -12,7 +12,6 @@ import server.api.repositories.TestTaskRepository;
 import server.api.repositories.TestCardRepository;
 import server.api.repositories.TestTagRepository;
 import server.database.BoardRepository;
-
 import static org.junit.jupiter.api.Assertions.*;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
@@ -118,9 +117,10 @@ class CardControllerTest {
         assertEquals(tag, tagRepo.getById(1));
     }
 
+
     @Test
     public void createTagNoCardTest() {
-        Tag tag = new Tag("don't like conflicts", 0);
+        Tag tag = new Tag("I hate conflicts", 0);
         tag.setId(1);
         Assertions.assertThrows(EntityNotFoundException.class, () -> this.controller.assignTag(10, 1, noErrorResult));
     }

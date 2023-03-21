@@ -57,7 +57,7 @@ public class LandingOverviewCtrl implements Initializable {
      * and loads it with the board's information
      */
     public void joinBoard() {
-        this.mainCtrl.showBoardOverview();
+        this.mainCtrl.showExistingBoardOverview();
     }
 
     /**
@@ -66,7 +66,7 @@ public class LandingOverviewCtrl implements Initializable {
      * board's information
      */
     public void createBoard() {
-        this.mainCtrl.showBoardOverview();
+        this.mainCtrl.showNewBoardOverview();
     }
 
     /**

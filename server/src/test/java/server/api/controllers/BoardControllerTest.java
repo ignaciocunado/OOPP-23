@@ -28,7 +28,6 @@ public final class BoardControllerTest {
     private TestCardListRepository cardRepo;
     private TestTagRepository tagRepo;
     private BoardController boardController;
-
     private BindingResult hasErrorResult;
     private BindingResult noErrorResult;
 
@@ -39,7 +38,6 @@ public final class BoardControllerTest {
         this.cardRepo = new TestCardListRepository();
         this.tagRepo = new TestTagRepository();
         this.boardController = new BoardController(this.boardRepo, this.cardRepo,this.textService, this.tagRepo);
-
         this.hasErrorResult = Mockito.mock(BindingResult.class);
         this.noErrorResult = Mockito.mock(BindingResult.class);
 

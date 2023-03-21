@@ -1,7 +1,6 @@
 package server.api.controllers;
 
 import commons.entities.Card;
-import commons.entities.Tag;
 import commons.entities.Task;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -69,7 +68,6 @@ public class CardController {
 
     /**
      * creates a Tag and stores it in a Card
-<<<<<<< HEAD
      * @param id id of the Card in which to store the Tag
      * @param tagId the id of the tag that is assigned to the board and card
      * @param errors wrapping for potential validating errors
@@ -86,7 +84,6 @@ public class CardController {
         if (!cardRepository.existsById(id)) {
             throw new EntityNotFoundException("No card with id " + id);
         }
-
         Card card = cardRepository.getById(id);
         card.addTag(tagRepository.getById(tagId));
         return new ResponseEntity<>(cardRepository.save(card), new HttpHeaders(),
@@ -144,7 +141,6 @@ public class CardController {
 
     /**
      * Deletes a Task iff it exists
-     *
      * @param id     id of the Card
      * @param taskId id of the Task
      * @return ResponseEntity for status
