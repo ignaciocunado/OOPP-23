@@ -20,7 +20,6 @@ import com.google.inject.Inject;
 import commons.entities.Board;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import java.io.IOException;
 import java.net.URL;
