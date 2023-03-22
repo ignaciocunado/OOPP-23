@@ -5,12 +5,14 @@ import commons.entities.Board;
 import commons.entities.CardList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -65,27 +67,18 @@ public class ListWrapper {
      */
     private void setListMethods(Pane listPane, VBox vbox,
                                 CardList currentList, ScrollPane scrollPane) {
-        for (int i = 0; i < listPane.getChildren().size(); i++) {
-            if (listPane.getChildren().get(i).getClass() == Pane.class) {
-                vbox.getChildren().get(0).setOnMouseClicked(event-> {
-                    try {
-                        cardWrapper.addCard(vbox, currentList);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-            }
-            if (listPane.getChildren().get(i).getClass() == Button.class) {
-                listPane.getChildren().get(i).setOnMouseClicked(event->
-                        removeList(listPane, currentList));
-            }
-            if (listPane.getChildren().get(i).getClass() == TextField.class) {
-                TextField title = (TextField) listPane.getChildren().get(i);
-                title.setText("Title: " + listPane.getId());
-                refreshListTitle(currentList, title);
-                title.setOnKeyReleased(event -> refreshListTitle(currentList, title));
-            }
-        }
+        final Pane header = (Pane) listPane.getChildren().get(1);
+        vbox.getChildren().get(0).setOnMouseClicked(event-> {
+            try {cardWrapper.addCard(vbox, currentList);} catch (IOException e) {}
+        });
+
+        final TextField titleField = (TextField) header.getChildren().get(0);
+        titleField.setText("Title: " + listPane.getId());
+        refreshListTitle(currentList, titleField);
+        titleField.setOnKeyReleased(event -> refreshListTitle(currentList, titleField));
+        header.getChildren().get(1).setOnMouseClicked(event->
+                removeList(listPane, currentList));
+
         setDropCardOnListActions(listPane, currentList, scrollPane, vbox);
     }
 
