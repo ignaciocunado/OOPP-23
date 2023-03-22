@@ -139,9 +139,8 @@ public final class BoardControllerTest {
         board2.setId(1);
 
         Assertions.assertEquals(this.boardRepo.findById(1).get(), board1);
-        this.boardController.editPassword(1, new Board("title","password"), noErrorResult);
+        this.boardController.editPassword(1, new Board("title","new password"), noErrorResult);
         board1.setPassword("new password");
-        boardRepo.save(board1);
         Assertions.assertEquals(this.boardRepo.findById(1).get(), board2);
     }
 
