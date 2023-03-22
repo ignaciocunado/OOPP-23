@@ -79,6 +79,41 @@ public class CardListController {
         return new ResponseEntity<>(cardList, new HttpHeaders(), 200);
     }
 
+
+    /**
+     * endpoint for changing the list to which a card is assigned to based on its id
+     * @param cardId integer representing the id of the card
+     * @param deleteListId integer representing the list from which the card will be deleted
+     * @param addListId integer representing the list to which the card will be added
+     * @return the card list with the added card
+     */
+    @PatchMapping("/{deleteListId}/{addListId}/{cardId}")
+    public ResponseEntity<CardList> switchList(@PathVariable final Integer deleteListId,
+                                               @PathVariable final Integer addListId,
+                                               @PathVariable final Integer cardId) {
+        if(!this.cardRepo.existsById((cardId))){
+            throw new EntityNotFoundException("No card with id " + cardId);
+        }
+        final Card card = this.cardRepo.getById(cardId);
+
+        if(!this.cardListRepo.existsById((deleteListId))){
+            throw new EntityNotFoundException("No card list with id " + deleteListId);
+        }
+        final CardList listToDeleteFrom = this.cardListRepo.getById(deleteListId);
+
+        if(!this.cardListRepo.existsById((addListId))){
+            throw new EntityNotFoundException("No card list with id " + addListId);
+        }
+        final CardList listToAddTo = this.cardListRepo.getById(addListId);
+
+        if(!listToDeleteFrom.removeCardById(cardId)) {
+            throw new EntityNotFoundException("Card list contains no card with id " + cardId);
+        }
+        listToAddTo.addCard(card);
+        cardListRepo.save(listToDeleteFrom);
+        return new ResponseEntity<>(cardListRepo.save(listToAddTo), new HttpHeaders(), 200);
+    }
+
     /** endpoint for editing the title of a card list
      * @param id int value representing the id of a card list
      * @param cardList the card list edited
