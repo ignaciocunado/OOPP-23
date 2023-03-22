@@ -58,7 +58,7 @@ public class CardListController {
 
     }
 
-    /** endpoint for deleting a card by it's id
+    /** endpoint for deleting a card by its id
      * @param id integer representing the id of the card list
      * @param cardId integer representing the id of the card we are deleting
      * @return the card list without the card
