@@ -4,13 +4,16 @@ import commons.entities.Card;
 import commons.entities.Tag;
 import commons.entities.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
-public class CardEditorControl {
+public class CardEditorControl implements Initializable {
 
     @FXML
     private TextField title;
@@ -22,24 +25,28 @@ public class CardEditorControl {
     private VBox nestedTaskList;
     private Card currentCard;
 
-    public CardEditorControl() {
+    public CardEditorControl(){
 
     }
 
-    public Tag addTag() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
     }
 
-    public Task addTask() {
+    public void addTag() {
 
     }
 
-    public Card saveCard() {
+    public void addTask() {
+
+    }
+
+    public void saveCard() {
         String newTitle;
         String newDescription;
         ArrayList<Tag> newTagList;
         ArrayList<Task> newNestedTaskList;
         Card newCard = new Card(newTitle,newDescription,newTagList,newNestedTaskList);
     }
-
 }
