@@ -41,7 +41,7 @@ public class CardEditorControl implements Initializable {
     public void addTask() {
 
     }
-
+/*
     public void saveCard() {
         String newTitle;
         String newDescription;
@@ -49,4 +49,6 @@ public class CardEditorControl implements Initializable {
         ArrayList<Task> newNestedTaskList;
         Card newCard = new Card(newTitle,newDescription,newTagList,newNestedTaskList);
     }
+
+ */
 }
