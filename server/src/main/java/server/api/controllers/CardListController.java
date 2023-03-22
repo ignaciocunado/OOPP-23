@@ -82,12 +82,12 @@ public class CardListController {
 
     /**
      * endpoint for changing the list to which a card is assigned to based on its id
-     * @param cardId integer representing the id of the card
      * @param deleteListId integer representing the list from which the card will be deleted
      * @param addListId integer representing the list to which the card will be added
+     * @param cardId integer representing the id of the card
      * @return the card list with the added card
      */
-    @PatchMapping("/{deleteListId}/{addListId}/{cardId}")
+    @PatchMapping("/{deleteListId}/move/{cardId}/{addListId}")
     public ResponseEntity<CardList> switchList(@PathVariable final Integer deleteListId,
                                                @PathVariable final Integer addListId,
                                                @PathVariable final Integer cardId) {
