@@ -32,7 +32,7 @@ public class BoardOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
     private ListWrapper listWrapper;
     @FXML
-    private HBox hbox;
+    private HBox lists;
     private Board currentBoard;
 
 
@@ -60,10 +60,8 @@ public class BoardOverviewCtrl implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        hbox.setSpacing(20);
-        hbox.setPadding(new Insets(20,20,20,0));
         refresh(new Board("",""));
-        this.listWrapper = new ListWrapper(hbox, currentBoard);
+        this.listWrapper = new ListWrapper(lists, currentBoard);
     }
 
 
