@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="63.0" prefWidth="338.0" style="-fx-background-color: rgb(35,69,103);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField layoutX="80.0" layoutY="6.0" prefHeight="52.0" prefWidth="245.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 25; -fx-text-fill: white;" text="Title" />
+      <CheckBox layoutX="8.0" layoutY="6.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="17.0" style="-fx-background-color: rgb(35,69,103);" textAlignment="CENTER" textFill="#26ff00">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </CheckBox>
+   </children>
+</Pane>
