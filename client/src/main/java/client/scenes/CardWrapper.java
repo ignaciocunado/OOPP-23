@@ -13,7 +13,9 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.checkerframework.checker.units.qual.C;
 
 import java.io.IOException;
 import java.net.URL;
@@ -145,7 +147,8 @@ public class CardWrapper {
             event.consume();
         });
 
-        innerCardPane.getChildren().get(4).setOnMouseClicked(event ->
+
+        innerCardPane.getChildren().get(3).setOnMouseClicked(event ->
                 removeCard(outerCardPane, newCard, vbox, currentList));
 
         TextField cardTitle = (TextField) innerCardPane.getChildren().get(1);
@@ -153,10 +156,16 @@ public class CardWrapper {
         refreshCardTitle(newCard, cardTitle);
         cardTitle.setOnKeyReleased(event -> refreshCardTitle(newCard, cardTitle));
 
-        TextField cardDescription = (TextField) innerCardPane.getChildren().get(3);
+        TextField cardDescription = (TextField) innerCardPane.getChildren().get(2);
         cardDescription.setText("Description: ");
         refreshCardDescription(newCard, cardTitle);
         cardTitle.setOnKeyReleased(event -> refreshCardDescription(newCard, cardDescription));
+
+        innerCardPane.setOnMouseClicked(event -> {
+            loadEditor();
+            CardEditorControl cardEditorControl = new CardEditorControl(newCard);
+            cardEditorControl.refresh();
+        });
     }
 
     /**
@@ -206,5 +215,21 @@ public class CardWrapper {
     private URL getLocation(String... parts) {
         var path = Path.of("", parts).toString();
         return MyFXML.class.getClassLoader().getResource(path);
+    }
+
+    public void loadEditor() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("CardEditor.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Card Editor");
+            stage.setScene(scene);
+            stage.showAndWait();
+        } catch (IOException e) {
+            Logger logger = Logger.getLogger(getClass().getName());
+            logger.log(Level.SEVERE, "Failed to create new Window.", e);
+        }
     }
 }
