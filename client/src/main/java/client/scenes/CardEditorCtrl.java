@@ -75,6 +75,7 @@ public class CardEditorCtrl implements Initializable{
     public Card save() {
         currentCard.setTitle(this.title.getText());
         currentCard.setDescription(this.description.getText());
+        mainCtrl.closeCardEditor();
         return currentCard;
     }
 
