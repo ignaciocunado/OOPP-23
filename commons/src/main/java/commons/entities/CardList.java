@@ -92,8 +92,9 @@ public final class CardList {
         return cards.remove(card);
     }
 
-    /** method for deleting a card by it's id
-     * @param id int varaiable representing the id of the card
+    /**
+     * Method for deleting a card by its id
+     * @param id int variable representing the id of the card
      * @return boolean value representing whether the card has been removed or not
      */
     public boolean removeCardById(final int id){
@@ -101,15 +102,29 @@ public final class CardList {
     }
 
     /**
-     * Creates a human readable string representation of list
-     * @return human readable string of list
+     * Method for swapping two cads in the Cards list
+     * @param card the card to edit the index of
+     * @param index the new index of the card
+     */
+    public boolean editCardIndex(Card card, int index) {
+        if (!cards.contains(card)) {
+            return false;
+        }
+        for (int i = cards.indexOf(card); i < index; i++) {
+            cards.set(i, cards.get(i+1));
+        }
+        cards.set(index, card);
+        return true;
+    }
+
+    /**
+     * Creates a human-readable string representation of list
+     * @return human-readable string of list
      */
     @Override
     public String toString() {
         return "List: title - " + getTitle() + ", id - " + getId() + ".";
     }
-
-
 
     /**
      * Checks if the o Object is equal to the list
