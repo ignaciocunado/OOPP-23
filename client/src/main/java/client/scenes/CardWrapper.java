@@ -5,6 +5,7 @@ import commons.entities.Card;
 import commons.entities.CardList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
@@ -147,18 +148,16 @@ public class CardWrapper {
         });
 
 
-        innerCardPane.getChildren().get(3).setOnMouseClicked(event ->
+        innerCardPane.getChildren().get(1).setOnMouseClicked(event ->
                 removeCard(outerCardPane, newCard, vbox, currentList));
 
-        TextField cardTitle = (TextField) innerCardPane.getChildren().get(1);
+        Label cardTitle = (Label) innerCardPane.getChildren().get(3);
         cardTitle.setText("Card: " + outerCardPane.getId());
-        refreshCardTitle(newCard, cardTitle);
         //cardTitle.setOnKeyPressed(event -> refreshCardTitle(newCard, cardTitle));
 
 
-        TextField cardDescription = (TextField) innerCardPane.getChildren().get(2);
+        Label cardDescription = (Label) innerCardPane.getChildren().get(4);
         cardDescription.setText("Description: ");
-        refreshCardDescription(newCard, cardDescription);
         /*
         cardDescription.setOnKeyPressed(event -> {
             refreshCardDescription(newCard, cardDescription);
@@ -167,9 +166,11 @@ public class CardWrapper {
 
 
         innerCardPane.setOnMouseClicked(event -> {
-            refreshCardDescription(newCard,cardDescription);
             refreshCardTitle(newCard, cardTitle);
+            refreshCardDescription(newCard, cardDescription);
             mainCtrl.showCardEditor(newCard);
+            cardTitle.setText(newCard.getTitle());
+            cardDescription.setText(newCard.getDescription());
         });
     }
 
@@ -199,7 +200,7 @@ public class CardWrapper {
      * @param selectedCard the selected Card
      * @param selectedText the TextField associated to the Card
      */
-    public void refreshCardTitle(Card selectedCard, TextField selectedText){
+    public void refreshCardTitle(Card selectedCard, Label selectedText){
         selectedCard.setTitle(selectedText.getText());
         System.out.println(selectedCard);
     }
@@ -209,7 +210,7 @@ public class CardWrapper {
      * @param selectedCard the selected Card
      * @param selectedText the TextField associated to the Card
      */
-    public void refreshCardDescription(Card selectedCard, TextField selectedText){
+    public void refreshCardDescription(Card selectedCard, Label selectedText){
         selectedCard.setDescription(selectedText.getText());
         System.out.println(selectedCard);
     }
