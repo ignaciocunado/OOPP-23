@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 
-public class CardListRenderable {
+public final class CardListRenderable implements Renderable {
 
     private CardWrapper cardWrapper;
     private final BoardOverviewCtrl ctrl;
@@ -31,6 +31,7 @@ public class CardListRenderable {
         this.list = list;
     }
 
+    @Override
     public Node render() throws IOException {
         final Pane listPane = FXMLLoader.load(getLocation("client", "scenes", "ListTemplate.fxml"));
         listPane.setId("list-"+this.list.getId());
