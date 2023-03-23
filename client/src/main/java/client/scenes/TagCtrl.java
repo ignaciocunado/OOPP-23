@@ -2,7 +2,6 @@ package client.scenes;
 
 import client.MyFXML;
 import commons.entities.Card;
-import commons.entities.Tag;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.HBox;

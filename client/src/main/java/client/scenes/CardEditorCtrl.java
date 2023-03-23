@@ -79,10 +79,18 @@ public class CardEditorCtrl implements Initializable{
         return currentCard;
     }
 
+    /**
+     * Calls method to add a tag
+     * @throws IOException
+     */
     public void addTag() throws IOException {
         tagCtrl.addTag(currentCard, tags);
     }
 
+    /**
+     * Calls method to add a task
+     * @throws IOException
+     */
     public void addTask() throws IOException {
         taskCtrl.addTask(currentCard, nestedTaskList);
     }
