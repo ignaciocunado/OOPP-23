@@ -1,27 +1,19 @@
 package client.scenes;
 
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
 import commons.entities.Card;
-import commons.entities.Tag;
-import commons.entities.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
-public class CardEditorControl{
+
+public class CardEditorControl implements Initializable{
 
     @FXML
     private TextField title;
@@ -32,18 +24,53 @@ public class CardEditorControl{
     @FXML
     private VBox nestedTaskList;
     private Card currentCard;
+    private MainCtrl mainCtrl;
+    private ServerUtils serverUtils;
 
-    public CardEditorControl() {
+    /**
+     * Constructor
+     * @param mainCtrl mainCtrl
+     * @param serverUtils serverUtils
+     */
+    @Inject
+    public CardEditorControl(MainCtrl mainCtrl, ServerUtils serverUtils) {
+        this.mainCtrl = mainCtrl;
+        this.serverUtils = serverUtils;
     }
 
+    /**
+     *
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
 
-    public CardEditorControl(Card card){
+    }
+
+    /**
+     * Refreshes card editor info
+     * @param card current Card
+     */
+    public void refresh(Card card) {
         this.currentCard = card;
-    }
-
-    public void refresh() {
         this.title.setText(this.currentCard.getTitle());
         this.description.setText(this.currentCard.getDescription());
     }
 
+    /**
+     * Saves data from new Card
+     * @return card
+     */
+    public Card save() {
+        currentCard.setTitle(this.title.getText());
+        currentCard.setDescription(this.description.getText());
+
+        return currentCard;
+    }
 }

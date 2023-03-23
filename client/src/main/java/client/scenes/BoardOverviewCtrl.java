@@ -63,7 +63,7 @@ public class BoardOverviewCtrl implements Initializable {
         hbox.setSpacing(20);
         hbox.setPadding(new Insets(20,20,20,0));
         refresh(new Board("",""));
-        this.listWrapper = new ListWrapper(hbox, currentBoard);
+        this.listWrapper = new ListWrapper(hbox, currentBoard, mainCtrl);
     }
 
 

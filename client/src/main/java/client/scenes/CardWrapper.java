@@ -5,7 +5,6 @@ import commons.entities.Card;
 import commons.entities.CardList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
@@ -13,16 +12,11 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import org.checkerframework.checker.units.qual.C;
-
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.HashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class CardWrapper {
 
@@ -34,10 +28,15 @@ public class CardWrapper {
     @FXML
     private HBox tagList;
 
+    private MainCtrl mainCtrl;
+
     /**
      * Initiates the CardWrapper class
+     * @param mainCtrl mainCtrl
      */
-    public CardWrapper(){}
+    public CardWrapper(MainCtrl mainCtrl){
+        this.mainCtrl = mainCtrl;
+    }
 
     /**
      * Gets the Pane currently being dragged
@@ -154,17 +153,23 @@ public class CardWrapper {
         TextField cardTitle = (TextField) innerCardPane.getChildren().get(1);
         cardTitle.setText("Card: " + outerCardPane.getId());
         refreshCardTitle(newCard, cardTitle);
-        cardTitle.setOnKeyReleased(event -> refreshCardTitle(newCard, cardTitle));
+        //cardTitle.setOnKeyPressed(event -> refreshCardTitle(newCard, cardTitle));
+
 
         TextField cardDescription = (TextField) innerCardPane.getChildren().get(2);
         cardDescription.setText("Description: ");
-        refreshCardDescription(newCard, cardTitle);
-        cardTitle.setOnKeyReleased(event -> refreshCardDescription(newCard, cardDescription));
+        refreshCardDescription(newCard, cardDescription);
+        /*
+        cardDescription.setOnKeyPressed(event -> {
+            refreshCardDescription(newCard, cardDescription);
+        });
+        */
+
 
         innerCardPane.setOnMouseClicked(event -> {
-            loadEditor();
-            CardEditorControl cardEditorControl = new CardEditorControl(newCard);
-            cardEditorControl.refresh();
+            refreshCardDescription(newCard,cardDescription);
+            refreshCardTitle(newCard, cardTitle);
+            mainCtrl.showCardEditor(newCard);
         });
     }
 
@@ -196,6 +201,7 @@ public class CardWrapper {
      */
     public void refreshCardTitle(Card selectedCard, TextField selectedText){
         selectedCard.setTitle(selectedText.getText());
+        System.out.println(selectedCard);
     }
 
     /**
@@ -205,6 +211,7 @@ public class CardWrapper {
      */
     public void refreshCardDescription(Card selectedCard, TextField selectedText){
         selectedCard.setDescription(selectedText.getText());
+        System.out.println(selectedCard);
     }
 
     /**
@@ -217,19 +224,4 @@ public class CardWrapper {
         return MyFXML.class.getClassLoader().getResource(path);
     }
 
-    public void loadEditor() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("CardEditor.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Card Editor");
-            stage.setScene(scene);
-            stage.showAndWait();
-        } catch (IOException e) {
-            Logger logger = Logger.getLogger(getClass().getName());
-            logger.log(Level.SEVERE, "Failed to create new Window.", e);
-        }
-    }
 }

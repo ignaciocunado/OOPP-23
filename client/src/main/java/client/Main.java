@@ -59,8 +59,10 @@ public class Main extends Application {
                 FXML.load(LandingOverviewCtrl.class, "client", "scenes", "LandingOverview.fxml");
         final Pair<BoardOverviewCtrl, Parent> boardOverview =
                 FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
+        final Pair<CardEditorControl, Parent> cardEditor =
+            FXML.load(CardEditorControl.class, "client", "scenes", "CardEditor.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, landingOverview, boardOverview);
+        mainCtrl.initialize(primaryStage, landingOverview, boardOverview, cardEditor);
     }
 }

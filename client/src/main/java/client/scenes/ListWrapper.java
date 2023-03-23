@@ -26,15 +26,19 @@ public class ListWrapper {
     private final HashSet<Integer> ids = new HashSet<>();
     private Board currentBoard;
 
+    private MainCtrl mainCtrl;
+
     /**
      * Initiates the ListWrapper class
      * @param hbox the HBox to display the List of Cards in
      * @param currentBoard the Board the List of Cards belongs to
+     * @param mainCtrl mainCtrl
      */
-    public ListWrapper(HBox hbox, Board currentBoard) {
-        cardWrapper = new CardWrapper();
+    public ListWrapper(HBox hbox, Board currentBoard, MainCtrl mainCtrl) {
+        cardWrapper = new CardWrapper(mainCtrl);
         this.hbox = hbox;
         this.currentBoard = currentBoard;
+        this.mainCtrl = mainCtrl;
     }
 
     /**

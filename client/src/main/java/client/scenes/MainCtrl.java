@@ -16,8 +16,10 @@
 package client.scenes;
 
 import commons.entities.Board;
+import commons.entities.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
@@ -32,14 +34,19 @@ public class MainCtrl {
     private BoardOverviewCtrl boardOverviewCtrl;
     private Scene boardOverview;
 
+    private CardEditorControl cardEditorControl;
+    private Scene cardEditorScene;
+
     /**
      * Initialize main controller with all FXML controllers
      * @param primaryStage main stage for FXML views
      * @param landingOverview the landing overview
      * @param boardOverview the main board overview
+     * @param cardEditor card editor view
      */
     public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
-            Pair<BoardOverviewCtrl, Parent> boardOverview) {
+            Pair<BoardOverviewCtrl, Parent> boardOverview, Pair<CardEditorControl, Parent>
+                           cardEditor) {
         this.primaryStage = primaryStage;
 
         this.landingOverviewCtrl = landingOverview.getKey();
@@ -47,6 +54,9 @@ public class MainCtrl {
 
         this.boardOverviewCtrl = boardOverview.getKey();
         this.boardOverview = new Scene(boardOverview.getValue());
+
+        this.cardEditorControl = cardEditor.getKey();
+        this.cardEditorScene = new Scene(cardEditor.getValue());
 
         primaryStage.initStyle(StageStyle.UNDECORATED);
         showLandingOverview();
@@ -78,6 +88,19 @@ public class MainCtrl {
         primaryStage.setTitle("Talio: Task List Organiser");
         primaryStage.setScene(this.boardOverview);
         boardOverviewCtrl.refresh(new Board("",""));
+    }
+
+    /**
+     * render card view
+     * @param card
+     */
+    public void showCardEditor(Card card) {
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Card Editor");
+        stage.setScene(cardEditorScene);
+        cardEditorControl.refresh(card);
+        stage.showAndWait();
     }
 
     /**
