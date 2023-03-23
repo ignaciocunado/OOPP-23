@@ -15,14 +15,11 @@
  */
 package client.utils;
 
-import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.List;
 
+import commons.entities.Board;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.core.MediaType;
 import org.glassfish.jersey.client.ClientConfig;
 
 import commons.entities.Quote;
@@ -32,44 +29,41 @@ import jakarta.ws.rs.core.GenericType;
 
 public class ServerUtils {
 
-    private static final String SERVER = "http://localhost:8080/";
-
-    /**
-     * to do
-     * @throws IOException
-     */
-    public void getQuotesTheHardWay() throws IOException {
-        var url = new URL("http://localhost:8080/api/quotes");
-        var is = url.openConnection().getInputStream();
-        var br = new BufferedReader(new InputStreamReader(is));
-        String line;
-        while ((line = br.readLine()) != null) {
-            System.out.println(line);
-        }
+    private Client client;
+    private String server;
+    public ServerUtils(final String server) {
+        this.client = ClientBuilder.newClient(new ClientConfig());
+        this.server = server;
     }
 
     /**
-     * to do
-     * @return to do
+     * Gets board from the given server by the given id
+     * @return the relevant board, or null
      */
-    public List<Quote> getQuotes() {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/quotes") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Quote>>() {});
+    /**
+     * Creates a new board in the given server with the given password
+     * @param password the password to create the board with
+     * @return the newly created board
+     */
+    public Board createBoard(final String password) {
+        return client.target(this.server).path("api/board")
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(
+                        Entity.entity(new Board("", password), MediaType.APPLICATION_JSON),
+                        Board.class
+                );
     }
 
     /**
-     * to do
-     * @param quote
-     * @return to do
+     * Gets board from the given server by the given id
+     * @return the relevant board, or null
      */
-    public Quote addQuote(Quote quote) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/quotes") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
+    public Board getBoard(final int id) {
+        return client.target(this.server).path("api/board/{id}")
+                .resolveTemplate("id", id)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .get(Board.class);
     }
 }

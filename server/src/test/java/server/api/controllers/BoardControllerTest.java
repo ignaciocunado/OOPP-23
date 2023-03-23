@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import server.api.repositories.TestBoardRepository;
 import server.api.repositories.TestCardListRepository;
@@ -77,7 +75,7 @@ public final class BoardControllerTest {
     public void createListTest() {
         this.boardRepo.save(new Board("aaaaaaaaab", "password"));
         this.boardController.createList(1, new CardList("New List"), noErrorResult);
-        Assertions.assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() > 0);
+        Assertions.assertTrue(this.boardRepo.findById(1).get().getLists().size() > 0);
         Assertions.assertTrue(this.cardRepo.count() > 0);
     }
 
@@ -95,11 +93,11 @@ public final class BoardControllerTest {
     @Test
     public void deleteListTest() {
         this.boardRepo.save(new Board("aaaaaaaaab", "password"));
-        final CardList list = this.boardController.createList(1, new CardList("New List"), noErrorResult).getBody().getListsOnBoard().get(0);
+        final CardList list = this.boardController.createList(1, new CardList("New List"), noErrorResult).getBody().getLists().get(0);
 
-        assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() > 0);
+        assertTrue(this.boardRepo.findById(1).get().getLists().size() > 0);
         this.boardController.deleteList(1, list.getId());
-        assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() == 0);
+        assertTrue(this.boardRepo.findById(1).get().getLists().size() == 0);
         assertTrue(this.cardRepo.count() == 0);
     }
 
