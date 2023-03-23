@@ -73,6 +73,7 @@ public class MainCtrl {
 
     /**
      * Shows an existing board overview scene
+     * @param board the board
      */
     public void showExistingBoardOverview(final Board board) {
         primaryStage.setTitle("Talio: Task List Organiser");

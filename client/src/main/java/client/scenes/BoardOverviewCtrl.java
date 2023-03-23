@@ -22,6 +22,7 @@ import commons.entities.Board;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -51,30 +52,30 @@ public class BoardOverviewCtrl implements Initializable {
 
     /**
      * Initialisation method initialising FXML objects
-     * @param location
-     * The location used to resolve relative paths for the root object, or
-     * {@code null} if the location is not known.
      *
-     * @param resources
-     * The resources used to localize the root object, or {@code null} if
-     * the root object was not localized.
+     * @param location  The location used to resolve relative paths for the root object, or
+     *                  {@code null} if the location is not known.
+     * @param resources The resources used to localize the root object, or {@code null} if
+     *                  the root object was not localized.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        refresh(new Board("",""));
+        refresh(new Board("", ""));
         this.server.setServer("http://localhost:8080/");
     }
 
 
     /**
      * Stub method for refreshing the Board
+     *
      * @param currentBoard the current Board being displayed
      */
     public void refresh(Board currentBoard) {
         this.lists.getChildren().clear();
         this.currentBoard = currentBoard;
         this.currentBoard.getLists().forEach(list -> {
-           final CardListRenderable renderable = new CardListRenderable(this.cardWrapper, this, list);
+            final CardListRenderable renderable =
+                    new CardListRenderable(this.cardWrapper, this, list);
             try {
                 this.lists.getChildren().add(renderable.render());
             } catch (IOException e) {
@@ -91,6 +92,10 @@ public class BoardOverviewCtrl implements Initializable {
         this.refresh(board);
     }
 
+    /**
+     * Removes a list from the board based on an id
+     * @param id the list id
+     */
     public void removeListById(int id) {
         final Board board = this.server.deleteList(this.currentBoard.getId(), id);
         this.refresh(board);

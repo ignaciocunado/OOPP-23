@@ -82,7 +82,11 @@ public class BoardController {
             throw new EntityNotFoundException("No board with key " + key);
         }
 
-        return new ResponseEntity<>(this.boardRepo.findBoardByKey(key).get(), new HttpHeaders(), 200);
+        return new ResponseEntity<>(
+                this.boardRepo.findBoardByKey(key).get(),
+                new HttpHeaders(),
+                200
+        );
     }
 
     /** Hnadler for creating a tag

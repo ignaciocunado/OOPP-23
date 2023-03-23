@@ -25,12 +25,27 @@ public final class CardListRenderable implements Renderable {
     private final CardList list;
 
 
-    public CardListRenderable(final CardWrapper wrapper, final BoardOverviewCtrl ctrl, final CardList list) {
+    /**
+     * The wrapping renderable for a card list
+     * @param wrapper a wrapper for card methods
+     * @param ctrl the board controller
+     * @param list the list being represented
+     */
+    public CardListRenderable(
+            final CardWrapper wrapper,
+            final BoardOverviewCtrl ctrl,
+            final CardList list
+    ) {
         this.cardWrapper = wrapper;
         this.ctrl = ctrl;
         this.list = list;
     }
 
+    /**
+     * Renders the cardlist into the java fx scene
+     * @return a node with the correct events and information
+     * @throws IOException when failing to load the FXML
+     */
     @Override
     public Node render() throws IOException {
         final Pane listPane = FXMLLoader.load(getLocation("client", "scenes", "ListTemplate.fxml"));

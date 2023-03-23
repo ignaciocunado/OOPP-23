@@ -30,9 +30,17 @@ public class ServerUtils {
     private Client client;
     private String server;
 
+    /**
+     * Empty constructor
+     */
     public ServerUtils() {
         this.client = ClientBuilder.newClient(new ClientConfig());
     }
+
+    /**
+     * Object that has utility methods for accessing the server
+     * @param server the server string
+     */
     public ServerUtils(final String server) {
         this.client = ClientBuilder.newClient(new ClientConfig());
         this.server = server;
@@ -74,7 +82,8 @@ public class ServerUtils {
     }
 
     /**
-     * Gets board from the given server by the given id
+     * Gets board from the given server by the given key
+     * @param key the key
      * @return the relevant board, or null
      */
     public Board getBoard(final String key) {
@@ -89,6 +98,12 @@ public class ServerUtils {
         }
     }
 
+    /**
+     * Sends a request to create a list
+     * @param id the id of the board to create the list in
+     * @param title the title of the list
+     * @return the edited board
+     */
     public Board createList(final int id, final String title) {
         try {
             return client.target(this.server).path("api/board/{id}/list")
@@ -104,6 +119,12 @@ public class ServerUtils {
         }
     }
 
+    /**
+     * Sends a request to delete a list from the board
+     * @param id the board id
+     * @param listId the id of the list to delete from the board
+     * @return the edited board
+     */
     public Board deleteList(final int id, final int listId) {
         try {
             return client.target(this.server).path("api/board/{id}/list/{listId}")
