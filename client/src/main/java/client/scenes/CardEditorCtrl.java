@@ -8,6 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -26,6 +28,9 @@ public class CardEditorCtrl implements Initializable{
     private Card currentCard;
     private MainCtrl mainCtrl;
     private ServerUtils serverUtils;
+
+    private TagCtrl tagCtrl = new TagCtrl();
+    private TaskCtrl taskCtrl = new TaskCtrl();
 
     /**
      * Constructor
@@ -72,5 +77,13 @@ public class CardEditorCtrl implements Initializable{
         currentCard.setDescription(this.description.getText());
         mainCtrl.closeCardEditor();
         return currentCard;
+    }
+
+    public void addTag() throws IOException {
+        tagCtrl.addTag(currentCard, tags);
+    }
+
+    public void addTask() throws IOException {
+        taskCtrl.addTask(currentCard, nestedTaskList);
     }
 }

@@ -13,6 +13,8 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -151,12 +153,12 @@ public class CardWrapper {
         innerCardPane.getChildren().get(1).setOnMouseClicked(event ->
                 removeCard(outerCardPane, newCard, vbox, currentList));
 
-        Label cardTitle = (Label) innerCardPane.getChildren().get(3);
+        Text cardTitle = (Text) innerCardPane.getChildren().get(3);
         cardTitle.setText("Card: " + outerCardPane.getId());
         //cardTitle.setOnKeyPressed(event -> refreshCardTitle(newCard, cardTitle));
 
 
-        Label cardDescription = (Label) innerCardPane.getChildren().get(4);
+        Text cardDescription = (Text) innerCardPane.getChildren().get(4);
         cardDescription.setText("Description: ");
         /*
         cardDescription.setOnKeyPressed(event -> {
@@ -200,7 +202,7 @@ public class CardWrapper {
      * @param selectedCard the selected Card
      * @param selectedText the TextField associated to the Card
      */
-    public void refreshCardTitle(Card selectedCard, Label selectedText){
+    public void refreshCardTitle(Card selectedCard, Text selectedText){
         selectedCard.setTitle(selectedText.getText());
         System.out.println(selectedCard);
     }
@@ -210,7 +212,7 @@ public class CardWrapper {
      * @param selectedCard the selected Card
      * @param selectedText the TextField associated to the Card
      */
-    public void refreshCardDescription(Card selectedCard, Label selectedText){
+    public void refreshCardDescription(Card selectedCard, Text selectedText){
         selectedCard.setDescription(selectedText.getText());
         System.out.println(selectedCard);
     }
