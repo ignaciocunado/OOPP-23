@@ -59,6 +59,10 @@ public class MainCtrl {
         this.cardEditorCtrl = cardEditor.getKey();
         this.cardEditorScene = new Scene(cardEditor.getValue());
 
+        cardEditorStage.initModality(Modality.APPLICATION_MODAL);
+        cardEditorStage.setTitle("Card Editor");
+        cardEditorStage.setScene(cardEditorScene);
+
         primaryStage.initStyle(StageStyle.UNDECORATED);
         showLandingOverview();
         primaryStage.show();
@@ -96,9 +100,6 @@ public class MainCtrl {
      * @param card
      */
     public void showCardEditor(Card card) {
-        cardEditorStage.initModality(Modality.APPLICATION_MODAL);
-        cardEditorStage.setTitle("Card Editor");
-        cardEditorStage.setScene(cardEditorScene);
         cardEditorCtrl.refresh(card);
         cardEditorStage.showAndWait();
     }
