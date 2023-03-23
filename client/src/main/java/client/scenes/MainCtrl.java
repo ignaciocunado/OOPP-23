@@ -101,6 +101,7 @@ public class MainCtrl {
         cardEditorStage.setScene(cardEditorScene);
         cardEditorCtrl.refresh(card);
         cardEditorStage.showAndWait();
+        cardEditorStage.close();
     }
 
     /**
