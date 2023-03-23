@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import server.api.repositories.TestBoardRepository;
 import server.api.repositories.TestCardListRepository;
@@ -130,5 +128,28 @@ public final class BoardControllerTest {
         boardRepo.save(new Board("aa", "aaa"));
         final Tag tag = new Tag("New Tag", -1);
         assertThrows(InvalidRequestException.class, () -> boardController.createTag(1, tag, hasErrorResult));
+    }
+
+    @Test
+    public void editPasswordTest() {
+        this.boardRepo.save(new Board("title", "password"));
+        final Board board1 = new Board("title", "password");
+        board1.setId(1);
+        final Board board2 = new Board("title", "new password");
+        board2.setId(1);
+
+        Assertions.assertEquals(this.boardRepo.findById(1).get(), board1);
+        this.boardController.editPassword(1, new Board("title","new password"), noErrorResult);
+        Assertions.assertEquals(this.boardRepo.findById(1).get(), board2);
+    }
+
+    @Test
+    public void editInvalidBoardTest() {
+        Assertions.assertThrows(InvalidRequestException.class, () -> this.boardController.editPassword(5, new Board("",""), hasErrorResult));
+    }
+
+    @Test
+    public void editBoardNotFoundTest() {
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.boardController.editPassword(5, new Board("title","password"), noErrorResult));
     }
 }
