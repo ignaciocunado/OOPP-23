@@ -76,7 +76,7 @@ public class BoardController {
      * @param key the board key
      * @return the board
      */
-    @GetMapping("/{id}")
+    @GetMapping("/{key}")
     public ResponseEntity<Board> getBoard(@PathVariable final String key) {
         if (this.boardRepo.findBoardByKey(key).isEmpty()) {
             throw new EntityNotFoundException("No board with key " + key);

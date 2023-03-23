@@ -59,9 +59,9 @@ public class ServerUtils {
      * Gets board from the given server by the given id
      * @return the relevant board, or null
      */
-    public Board getBoard(final int id) {
-        return client.target(this.server).path("api/board/{id}")
-                .resolveTemplate("id", id)
+    public Board getBoard(final String key) {
+        return client.target(this.server).path("api/board/{key}")
+                .resolveTemplate("key", key)
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .get(Board.class);
