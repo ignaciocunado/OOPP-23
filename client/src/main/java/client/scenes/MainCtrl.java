@@ -35,7 +35,7 @@ public class MainCtrl {
     private BoardOverviewCtrl boardOverviewCtrl;
     private Scene boardOverview;
 
-    private CardEditorControl cardEditorControl;
+    private CardEditorCtrl cardEditorCtrl;
     private Scene cardEditorScene;
 
     /**
@@ -46,7 +46,7 @@ public class MainCtrl {
      * @param cardEditor card editor view
      */
     public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
-            Pair<BoardOverviewCtrl, Parent> boardOverview, Pair<CardEditorControl, Parent>
+            Pair<BoardOverviewCtrl, Parent> boardOverview, Pair<CardEditorCtrl, Parent>
                            cardEditor) {
         this.primaryStage = primaryStage;
         this.cardEditorStage = new Stage();
@@ -56,7 +56,7 @@ public class MainCtrl {
         this.boardOverviewCtrl = boardOverview.getKey();
         this.boardOverview = new Scene(boardOverview.getValue());
 
-        this.cardEditorControl = cardEditor.getKey();
+        this.cardEditorCtrl = cardEditor.getKey();
         this.cardEditorScene = new Scene(cardEditor.getValue());
 
         primaryStage.initStyle(StageStyle.UNDECORATED);
@@ -99,7 +99,7 @@ public class MainCtrl {
         cardEditorStage.initModality(Modality.APPLICATION_MODAL);
         cardEditorStage.setTitle("Card Editor");
         cardEditorStage.setScene(cardEditorScene);
-        cardEditorControl.refresh(card);
+        cardEditorCtrl.refresh(card);
         cardEditorStage.showAndWait();
     }
 

@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 
 
-public class CardEditorControl implements Initializable{
+public class CardEditorCtrl implements Initializable{
 
     @FXML
     private TextField title;
@@ -33,7 +33,7 @@ public class CardEditorControl implements Initializable{
      * @param serverUtils serverUtils
      */
     @Inject
-    public CardEditorControl(MainCtrl mainCtrl, ServerUtils serverUtils) {
+    public CardEditorCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
     }
