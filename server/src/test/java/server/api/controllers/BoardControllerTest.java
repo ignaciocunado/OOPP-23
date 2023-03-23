@@ -140,7 +140,6 @@ public final class BoardControllerTest {
 
         Assertions.assertEquals(this.boardRepo.findById(1).get(), board1);
         this.boardController.editPassword(1, new Board("title","new password"), noErrorResult);
-        board1.setPassword("new password");
         Assertions.assertEquals(this.boardRepo.findById(1).get(), board2);
     }
 
