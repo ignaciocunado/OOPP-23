@@ -119,7 +119,8 @@ public class CardListController {
      * @param listId integer representing the list to which the card will be added
      * @param cardId integer representing the id of the card
      * @param index integer representing the new index of the card within its list
-     * @return the card list with the added card
+     * @param errors wrapping object for potential validating errors
+     * @return the card list with the edited positions
      */
     @PatchMapping("/{listId}/card/{cardId}")
     public ResponseEntity<CardList> editCardPositioning(@PathVariable final Integer listId,

@@ -105,6 +105,7 @@ public final class CardList {
      * Method for swapping two cads in the Cards list
      * @param card the card to edit the index of
      * @param index the new index of the card
+     * @return whether the method has succeeded in switching the index of the card
      */
     public boolean editCardIndex(Card card, int index) {
         if (!cards.contains(card)) {
