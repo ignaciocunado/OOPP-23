@@ -27,6 +27,7 @@ import javafx.util.Pair;
 public class MainCtrl {
 
     private Stage primaryStage;
+    private Stage cardEditorStage;
 
     private LandingOverviewCtrl landingOverviewCtrl;
     private Scene landingOverview;
@@ -48,7 +49,7 @@ public class MainCtrl {
             Pair<BoardOverviewCtrl, Parent> boardOverview, Pair<CardEditorControl, Parent>
                            cardEditor) {
         this.primaryStage = primaryStage;
-
+        this.cardEditorStage = new Stage();
         this.landingOverviewCtrl = landingOverview.getKey();
         this.landingOverview = new Scene(landingOverview.getValue());
 
@@ -95,13 +96,20 @@ public class MainCtrl {
      * @param card
      */
     public void showCardEditor(Card card) {
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Card Editor");
-        stage.setScene(cardEditorScene);
+        cardEditorStage.initModality(Modality.APPLICATION_MODAL);
+        cardEditorStage.setTitle("Card Editor");
+        cardEditorStage.setScene(cardEditorScene);
         cardEditorControl.refresh(card);
-        stage.showAndWait();
+        cardEditorStage.showAndWait();
     }
+
+    /**
+     * closes card editor stage
+     */
+    public void closeCardEditor() {
+        cardEditorStage.close();
+    }
+
 
     /**
      * Method to close the app
