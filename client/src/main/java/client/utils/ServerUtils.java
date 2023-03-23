@@ -15,24 +15,42 @@
  */
 package client.utils;
 
-import java.util.List;
-
 import commons.entities.Board;
+import commons.entities.CardList;
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.MediaType;
 import org.glassfish.jersey.client.ClientConfig;
 
-import commons.entities.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
-import jakarta.ws.rs.core.GenericType;
 
 public class ServerUtils {
 
     private Client client;
     private String server;
+
+    public ServerUtils() {
+        this.client = ClientBuilder.newClient(new ClientConfig());
+    }
     public ServerUtils(final String server) {
         this.client = ClientBuilder.newClient(new ClientConfig());
+        this.server = server;
+    }
+
+    /**
+     * Gets current server string
+     * @return the server
+     */
+    public String getServer() {
+        return server;
+    }
+
+    /**
+     * Sets current server string
+     * @param server the new server
+     */
+    public void setServer(String server) {
         this.server = server;
     }
 
@@ -60,10 +78,42 @@ public class ServerUtils {
      * @return the relevant board, or null
      */
     public Board getBoard(final String key) {
-        return client.target(this.server).path("api/board/{key}")
-                .resolveTemplate("key", key)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .get(Board.class);
+        try {
+            return client.target(this.server).path("api/board/{key}")
+                    .resolveTemplate("key", key)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .get(Board.class);
+        } catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    public Board createList(final int id, final String title) {
+        try {
+            return client.target(this.server).path("api/board/{id}/list")
+                    .resolveTemplate("id", id)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .post(
+                            Entity.entity(new CardList(title), MediaType.APPLICATION_JSON),
+                            Board.class
+                    );
+        } catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    public Board deleteList(final int id, final int listId) {
+        try {
+            return client.target(this.server).path("api/board/{id}/list/{listId}")
+                    .resolveTemplate("id", id)
+                    .resolveTemplate("listId", listId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .delete(Board.class);
+        } catch (NotFoundException e) {
+            return null;
+        }
     }
 }
