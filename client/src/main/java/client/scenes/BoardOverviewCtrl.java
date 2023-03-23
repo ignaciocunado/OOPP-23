@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import client.renderable.CardListRenderable;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
@@ -27,9 +28,9 @@ import java.util.ResourceBundle;
 
 public class BoardOverviewCtrl implements Initializable {
 
+    private final CardWrapper cardWrapper;
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-    private ListWrapper listWrapper;
     @FXML
     private HBox lists;
     private Board currentBoard;
@@ -43,6 +44,7 @@ public class BoardOverviewCtrl implements Initializable {
      */
     @Inject
     public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+        this.cardWrapper = new CardWrapper();
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
@@ -60,7 +62,7 @@ public class BoardOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh(new Board("",""));
-        this.listWrapper = new ListWrapper(lists, currentBoard);
+        this.server.setServer("http://localhost:8080/");
     }
 
 
@@ -69,27 +71,28 @@ public class BoardOverviewCtrl implements Initializable {
      * @param currentBoard the current Board being displayed
      */
     public void refresh(Board currentBoard) {
+        this.lists.getChildren().clear();
         this.currentBoard = currentBoard;
-    }
-
-    /**
-     * Method to close the app
-     */
-    public void closeApp() {
-        mainCtrl.closeApp();
-    }
-
-    /**
-     * Method to minimize the app
-     */
-    public void minimizeApp() {
-        mainCtrl.minimizeWindow();
+        this.currentBoard.getLists().forEach(list -> {
+           final CardListRenderable renderable = new CardListRenderable(this.cardWrapper, this, list);
+            try {
+                this.lists.getChildren().add(renderable.render());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     /**
      * Adds a List to the current Board object and displays it
      */
     public void addList() throws IOException {
-        listWrapper.addList();
+        final Board board = this.server.createList(this.currentBoard.getId(), "New List");
+        this.refresh(board);
+    }
+
+    public void removeListById(int id) {
+        final Board board = this.server.deleteList(this.currentBoard.getId(), id);
+        this.refresh(board);
     }
 }

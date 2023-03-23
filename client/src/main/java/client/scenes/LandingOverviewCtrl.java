@@ -17,7 +17,12 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.entities.Board;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -25,6 +30,15 @@ public class LandingOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+
+    @FXML
+    private TextField joinKey;
+    @FXML
+    private TextField joinPassword;
+    @FXML
+    private TextField createPassword;
+    @FXML
+    private TextField createConfirmPassword;
 
     /**
      * Constructor to inject necessary classes into the controller
@@ -57,7 +71,16 @@ public class LandingOverviewCtrl implements Initializable {
      * and loads it with the board's information
      */
     public void joinBoard() {
-        this.mainCtrl.showExistingBoardOverview();
+        this.server.setServer("http://localhost:8080/"); // TODO: temporary
+        final Board board = this.server.getBoard(this.joinKey.getText());
+        if (board == null) {
+            final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("This board wasn't recognised");
+            alert.show();
+            return;
+        }
+        this.mainCtrl.showExistingBoardOverview(board);
     }
 
     /**
