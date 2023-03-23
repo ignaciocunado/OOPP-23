@@ -68,7 +68,7 @@ class BoardTest {
         final List<Tag> tags = Arrays.asList(new Tag());
         assertEquals(board.getTags(), new ArrayList<Tag>());
         board.setTags(tags);
-        assertEquals(board.getLists(), tags);
+        assertEquals(board.getTags(), tags);
     }
 
 
