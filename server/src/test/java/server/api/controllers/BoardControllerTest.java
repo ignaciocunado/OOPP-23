@@ -124,6 +124,11 @@ public final class BoardControllerTest {
     }
 
     @Test
+    public void createTagBoardNotFoundTest() {
+        assertThrows(EntityNotFoundException.class, () -> boardController.createTag(10, new Tag(), noErrorResult));
+    }
+
+    @Test
     public void createBadTagTest() {
         boardRepo.save(new Board("aa", "aaa"));
         final Tag tag = new Tag("New Tag", -1);
