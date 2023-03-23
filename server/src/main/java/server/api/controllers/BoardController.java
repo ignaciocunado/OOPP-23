@@ -73,16 +73,16 @@ public class BoardController {
     /**
      * Handler for getting the board
      *
-     * @param id the board id
+     * @param key the board key
      * @return the board
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Board> getBoard(@PathVariable final Integer id) {
-        if (!this.boardRepo.existsById(id)) {
-            throw new EntityNotFoundException("No board with id " + id);
+    public ResponseEntity<Board> getBoard(@PathVariable final String key) {
+        if (this.boardRepo.findBoardByKey(key).isEmpty()) {
+            throw new EntityNotFoundException("No board with key " + key);
         }
 
-        return new ResponseEntity<>(this.boardRepo.getById(id), new HttpHeaders(), 200);
+        return new ResponseEntity<>(this.boardRepo.findBoardByKey(key).get(), new HttpHeaders(), 200);
     }
 
     /** Hnadler for creating a tag

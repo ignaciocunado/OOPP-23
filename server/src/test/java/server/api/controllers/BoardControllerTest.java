@@ -59,7 +59,7 @@ public final class BoardControllerTest {
         this.boardRepo.save(new Board("aaaaaaaaad", "password"));
 
         board.setId(2);
-        Assertions.assertEquals(this.boardController.getBoard(2).getBody(), board);
+        Assertions.assertEquals(this.boardController.getBoard("aaaaaaaaaa").getBody(), board);
     }
 
     @Test
@@ -68,7 +68,7 @@ public final class BoardControllerTest {
         this.boardRepo.save(new Board("aaaaaaaaac", "password"));
         this.boardRepo.save(new Board("aaaaaaaaad", "password"));
 
-        Assertions.assertThrows(EntityNotFoundException.class, () -> this.boardController.getBoard(100));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.boardController.getBoard("doesntexist"));
     }
 
     @Test

@@ -26,9 +26,11 @@ import server.database.BoardRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public final class TestBoardRepository implements BoardRepository {
 
@@ -197,5 +199,15 @@ public final class TestBoardRepository implements BoardRepository {
     @Override
     public <S extends Board, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         return null;
+    }
+
+    @Override
+    public Board getBoardByKey(String key) {
+        return this.findBoardByKey(key).get();
+    }
+
+    @Override
+    public Optional<Board> findBoardByKey(String key) {
+        return this.boards.stream().filter(b -> b.getKey().equals(key)).findFirst();
     }
 }
