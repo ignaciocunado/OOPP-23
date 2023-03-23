@@ -9,10 +9,10 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(35,69,103);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardEditorControl">
    <children>
-      <TextField fx:id="title" layoutX="35.0" layoutY="11.0" prefHeight="14.0" prefWidth="210.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 40; -fx-text-fill: white;" text="Title" />
-      <TextField fx:id="description" layoutX="52.0" layoutY="96.0" prefHeight="14.0" prefWidth="210.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-text-fill: white;" text="Description" />
-      <TextField layoutX="52.0" layoutY="157.0" prefHeight="14.0" prefWidth="210.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-text-fill: white;" text="Tags:" />
-      <TextField layoutX="52.0" layoutY="233.0" prefHeight="14.0" prefWidth="210.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-text-fill: white;" text="Tasks:" />
+      <TextField fx:id="title" layoutX="35.0" layoutY="11.0" prefHeight="85.0" prefWidth="540.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 40; -fx-text-fill: white;" text="Title" />
+      <TextField fx:id="description" layoutX="52.0" layoutY="96.0" prefHeight="43.0" prefWidth="530.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-text-fill: white;" text="Description" />
+      <TextField layoutX="52.0" layoutY="157.0" prefHeight="43.0" prefWidth="75.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-text-fill: white;" text="Tags:" />
+      <TextField layoutX="52.0" layoutY="233.0" prefHeight="43.0" prefWidth="75.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-text-fill: white;" text="Tasks:" />
       <HBox fx:id="tags" layoutX="67.0" layoutY="200.0" prefHeight="43.0" prefWidth="511.0" />
       <VBox fx:id="nestedTaskList" layoutX="67.0" layoutY="270.0" prefHeight="85.0" prefWidth="497.0" />
       <Button layoutX="117.0" layoutY="162.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="47.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" />
