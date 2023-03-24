@@ -1,7 +1,10 @@
 package client.scenes;
 
+import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.CardList;
+import javafx.beans.Observable;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -15,6 +18,8 @@ import java.io.IOException;
 import java.util.function.Consumer;
 
 public final class CardListCtrl {
+
+    private ServerUtils server;
 
     @FXML
     private Pane list;
@@ -38,9 +43,15 @@ public final class CardListCtrl {
      * @param ctrl the board controller
      */
     @Inject
-    public CardListCtrl(final BoardOverviewCtrl ctrl, final CardWrapper wrapper) {
-        this.cardWrapper = wrapper;
+    public CardListCtrl(final ServerUtils server, final BoardOverviewCtrl ctrl, final CardWrapper wrapper) {
+        this.server = server;
         this.ctrl = ctrl;
+        this.cardWrapper = wrapper;
+    }
+
+    @FXML
+    public void initialize() {
+        this.listNameField.focusedProperty().addListener(this::handleNameChanged);
     }
 
     /**
@@ -63,6 +74,14 @@ public final class CardListCtrl {
      */
     public void handleDeleteList() {
         this.onDelete.accept(this.cardList.getId());
+    }
+
+    private void handleNameChanged(final Observable observable) {
+        if (!(observable instanceof ReadOnlyBooleanProperty)) return; // Doesn't happen
+        final ReadOnlyBooleanProperty focused = (ReadOnlyBooleanProperty) observable;
+        if(focused.getValue()) return; // If focuses then don't save yet
+
+        this.server.renameList(this.cardList.getId(), listNameField.getText());
     }
 
     /**

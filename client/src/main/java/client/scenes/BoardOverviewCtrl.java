@@ -62,7 +62,6 @@ public class BoardOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh(new Board("", ""));
-        this.server.setServer("http://localhost:8080/");
     }
 
 

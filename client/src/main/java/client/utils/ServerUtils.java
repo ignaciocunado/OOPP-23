@@ -156,7 +156,7 @@ public class ServerUtils {
     public void renameList(final int id, final String title) {
         try {
             final HttpClient client = HttpClients.createDefault();
-            final HttpPatch request = new HttpPatch(this.server+"api/list/{id}");
+            final HttpPatch request = new HttpPatch(this.server+"api/list/"+id);
             final StringEntity entity = new StringEntity(String.format("{\"title\": \"%s\"}", title));
             request.setEntity(entity);
             request.setHeader("content-type", "application/json");
