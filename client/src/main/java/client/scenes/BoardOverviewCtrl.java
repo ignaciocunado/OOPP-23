@@ -15,10 +15,11 @@
  */
 package client.scenes;
 
-import client.renderable.CardListRenderable;
+import client.Main;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
+import commons.entities.CardList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
@@ -71,17 +72,17 @@ public class BoardOverviewCtrl implements Initializable {
      * @param currentBoard the current Board being displayed
      */
     public void refresh(Board currentBoard) {
-        this.lists.getChildren().clear();
         this.currentBoard = currentBoard;
-        this.currentBoard.getLists().forEach(list -> {
-            final CardListRenderable renderable =
-                    new CardListRenderable(this.cardWrapper, this, list);
-            try {
-                this.lists.getChildren().add(renderable.render());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        this.lists.getChildren().clear();
+        for (final CardList list : this.currentBoard.getLists()) {
+            var pair = Main.FXML.load(CardListCtrl.class, "client", "scenes", "ListTemplate.fxml");
+            this.lists.getChildren().add(pair.getValue());
+            final CardListCtrl ctrl = pair.getKey();
+            ctrl.setCardList(list);
+            ctrl.refresh();
+
+            ctrl.onDelete(deletedList -> this.refresh(this.server.deleteList(this.currentBoard.getId(), deletedList)));
+        }
     }
 
     /**
