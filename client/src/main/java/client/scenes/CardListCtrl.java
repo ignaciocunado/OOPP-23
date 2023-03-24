@@ -73,18 +73,6 @@ public final class CardListCtrl {
         this.onDelete = onDelete;
     }
 
-    private void setupRemoveButton(final Pane header) {
-        header.getChildren().get(1).setOnMouseClicked(event-> {
-            ctrl.removeListById(this.cardList.getId());
-        });
-    }
-
-    private void setupAddCardButton(final VBox cards) {
-        cards.getChildren().get(0).setOnMouseClicked(event -> {
-            try {cardWrapper.addCard(cards, this.cardList);} catch (IOException e) {}
-        });
-    }
-
     /**
      * Sets the necessary actions when dragging a Card over a List (part of a List's methods)
      * @param paneToDropInto the Pane which the Card is hovering over
@@ -126,7 +114,5 @@ public final class CardListCtrl {
     public void setCardList(final CardList cardList) {
         this.cardList = cardList;
     }
-
-
 
 }
