@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -13,8 +15,10 @@
       <TextField fx:id="description" layoutX="35.0" layoutY="78.0" prefHeight="43.0" prefWidth="530.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-text-fill: white;" text="Description" />
       <TextField layoutX="47.0" layoutY="141.0" prefHeight="43.0" prefWidth="75.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-text-fill: white;" text="Tags:" />
       <TextField layoutX="52.0" layoutY="233.0" prefHeight="43.0" prefWidth="75.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-text-fill: white;" text="Tasks:" />
-      <HBox fx:id="tags" layoutX="62.0" layoutY="184.0" prefHeight="43.0" prefWidth="511.0" />
-      <VBox fx:id="nestedTaskList" layoutX="62.0" layoutY="270.0" prefHeight="85.0" prefWidth="497.0" />
+      <HBox fx:id="tags" layoutX="62.0" layoutY="184.0" prefHeight="43.0" prefWidth="511.0">
+         <children>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+         </children></HBox>
       <Button layoutX="113.0" layoutY="146.0" mnemonicParsing="false" onAction="#addTag" prefHeight="33.0" prefWidth="47.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" />
       <Button layoutX="125.0" layoutY="238.0" mnemonicParsing="false" onAction="#addTask" prefHeight="33.0" prefWidth="47.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" />
       <Button contentDisplay="CENTER" graphicTextGap="10.0" layoutX="212.0" layoutY="355.0" maxWidth="207.0" mnemonicParsing="false" onAction="#save" prefHeight="22.0" prefWidth="207.0" style="-fx-background-color: #123456; -fx-padding: 0px;" text="SAVE" textAlignment="CENTER" textFill="WHITE">
@@ -22,5 +26,10 @@
             <Font size="25.0" />
          </font>
       </Button>
+      <ScrollPane hbarPolicy="NEVER" hmax="0.0" layoutX="62.0" layoutY="276.0" prefHeight="67.0" prefWidth="519.0" style="-fx-border-color: rgb(35,69,103); -fx-background-color: rgb(35,69,103); -fx-padding: 0px;" vbarPolicy="NEVER">
+         <content>
+            <VBox fx:id="nestedTaskList" prefHeight="70.0" prefWidth="518.0" style="-fx-background-color: rgb(35,69,103);" />
+         </content>
+      </ScrollPane>
    </children>
 </Pane>
