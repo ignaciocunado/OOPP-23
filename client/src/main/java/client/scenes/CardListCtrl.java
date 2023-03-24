@@ -1,11 +1,14 @@
-package client.renderable;
+package client.scenes;
 
 import client.MyFXML;
-import client.scenes.BoardOverviewCtrl;
-import client.scenes.CardWrapper;
+import com.google.inject.Inject;
+import commons.entities.Board;
 import commons.entities.CardList;
-import javafx.fxml.FXMLLoader;
+import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
@@ -17,70 +20,65 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
-public final class CardListRenderable implements Renderable {
+public final class CardListCtrl {
 
+    @FXML
+    private Pane list;
+    @FXML
+    private TextField listNameField;
+    @FXML
+    private ScrollPane scroll;
+    @FXML
+    private VBox cards;
+
+    private CardList cardList;
     private CardWrapper cardWrapper;
-    private final BoardOverviewCtrl ctrl;
-    private final CardList list;
+    private BoardOverviewCtrl ctrl;
+
+    private Consumer<Integer> onDelete;
 
 
     /**
      * The wrapping renderable for a card list
      * @param wrapper a wrapper for card methods
      * @param ctrl the board controller
-     * @param list the list being represented
      */
-    public CardListRenderable(
-            final CardWrapper wrapper,
-            final BoardOverviewCtrl ctrl,
-            final CardList list
-    ) {
+    @Inject
+    public CardListCtrl(final BoardOverviewCtrl ctrl, final CardWrapper wrapper) {
         this.cardWrapper = wrapper;
         this.ctrl = ctrl;
-        this.list = list;
     }
 
-    /**
-     * Renders the cardlist into the java fx scene
-     * @return a node with the correct events and information
-     * @throws IOException when failing to load the FXML
-     */
-    @Override
-    public Node render() throws IOException {
-        final Pane listPane = FXMLLoader.load(getLocation("client", "scenes", "ListTemplate.fxml"));
-
-        listPane.setId("list-"+this.list.getId());
-
-        final Pane header = (Pane) listPane.getChildren().get(1);
-        final Pane cardPane = (Pane) listPane.getChildren().get(0);
-        final ScrollPane scrollPane = (ScrollPane) cardPane.getChildren().get(0);
-        final VBox cards = (VBox) scrollPane.getContent();
-
-        this.setupTitle(header);
-        this.setupRemoveButton(header);
-//        this.setupAddCardButton(cards);
-//        this.setDropCardOnListActions(listPane, this.list, scrollPane, cards);
-        return listPane;
+    public void refresh() {
+        this.listNameField.setText(this.cardList.getTitle());
+        this.setDropCardOnListActions(list, this.cardList, scroll, cards);
     }
 
-    private void setupTitle(final Pane header) {
-        final TextField titleField = (TextField) header.getChildren().get(0);
-        titleField.setText(this.list.getTitle());
-        titleField.setOnKeyReleased(event -> {
-            this.list.setTitle(event.getText());
-        });
+    public void handleAddCard() {
+        try {cardWrapper.addCard(cards, this.cardList);} catch (IOException e) {}
+    }
+
+    public void handleDeleteList() {
+        this.onDelete.accept(this.cardList.getId());
+    }
+
+
+    public void onDelete(final Consumer<Integer> onDelete) {
+        this.onDelete = onDelete;
     }
 
     private void setupRemoveButton(final Pane header) {
         header.getChildren().get(1).setOnMouseClicked(event-> {
-            ctrl.removeListById(this.list.getId());
+            ctrl.removeListById(this.cardList.getId());
         });
     }
 
     private void setupAddCardButton(final VBox cards) {
         cards.getChildren().get(0).setOnMouseClicked(event -> {
-            try {cardWrapper.addCard(cards, this.list);} catch (IOException e) {}
+            try {cardWrapper.addCard(cards, this.cardList);} catch (IOException e) {}
         });
     }
 
@@ -118,13 +116,10 @@ public final class CardListRenderable implements Renderable {
         });
     }
 
-    /**
-     * Gets the location of a resource with the given String elements
-     * @param parts Strings of where to find the resource
-     * @return the URL of the requested resource
-     */
-    private URL getLocation(String... parts) {
-        var path = Path.of("", parts).toString();
-        return MyFXML.class.getClassLoader().getResource(path);
+    public void setCardList(final CardList cardList) {
+        this.cardList = cardList;
     }
+
+
+
 }
