@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.MyFXML;
+import com.google.inject.Singleton;
 import commons.entities.Card;
 import commons.entities.CardList;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.HashSet;
 
+@Singleton
 public class CardWrapper {
 
     private final HashSet<Integer> cardsIds = new HashSet<>();
