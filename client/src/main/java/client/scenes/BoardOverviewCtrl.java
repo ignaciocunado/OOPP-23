@@ -81,7 +81,14 @@ public class BoardOverviewCtrl implements Initializable {
             ctrl.setCardList(list);
             ctrl.refresh();
 
-            ctrl.onDelete(deletedList -> this.refresh(this.server.deleteList(this.currentBoard.getId(), deletedList)));
+            ctrl.onDelete(deletedList ->
+                    this.refresh(
+                            this.server.deleteList(
+                                    this.currentBoard.getId(),
+                                    deletedList
+                            )
+                    )
+            );
         }
     }
 

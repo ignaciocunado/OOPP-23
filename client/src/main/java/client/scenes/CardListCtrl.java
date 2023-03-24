@@ -1,14 +1,8 @@
 package client.scenes;
 
-import client.MyFXML;
 import com.google.inject.Inject;
-import commons.entities.Board;
 import commons.entities.CardList;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
@@ -18,9 +12,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 public final class CardListCtrl {
@@ -52,20 +43,32 @@ public final class CardListCtrl {
         this.ctrl = ctrl;
     }
 
+    /**
+     * Refreshes all data associated with a cardlist
+     */
     public void refresh() {
         this.listNameField.setText(this.cardList.getTitle());
         this.setDropCardOnListActions(list, this.cardList, scroll, cards);
     }
 
+    /**
+     * Handles the add card button
+     */
     public void handleAddCard() {
         try {cardWrapper.addCard(cards, this.cardList);} catch (IOException e) {}
     }
 
+    /**
+     * Handles the delete list button
+     */
     public void handleDeleteList() {
         this.onDelete.accept(this.cardList.getId());
     }
 
-
+    /**
+     * Sets the on delete handler for logic about what to do after deleting
+     * @param onDelete the callback to run
+     */
     public void onDelete(final Consumer<Integer> onDelete) {
         this.onDelete = onDelete;
     }
@@ -116,6 +119,10 @@ public final class CardListCtrl {
         });
     }
 
+    /**
+     * Sets the cardlist to get details from
+     * @param cardList the cardlist
+     */
     public void setCardList(final CardList cardList) {
         this.cardList = cardList;
     }
