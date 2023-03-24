@@ -15,16 +15,26 @@
  */
 package client.utils;
 
+import com.google.inject.Singleton;
 import commons.entities.Board;
 import commons.entities.CardList;
+import jakarta.ws.rs.HttpMethod;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.MediaType;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpPatch;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.glassfish.jersey.client.ClientConfig;
 
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+import org.glassfish.jersey.client.HttpUrlConnectorProvider;
 
+import java.io.IOException;
+
+@Singleton
 public class ServerUtils {
 
     private Client client;
@@ -135,6 +145,24 @@ public class ServerUtils {
                     .delete(Board.class);
         } catch (NotFoundException e) {
             return null;
+        }
+    }
+
+    /**
+     * TODO: Acutally properly implement with JAX RS WS client
+     * @param id
+     * @param title
+     */
+    public void renameList(final int id, final String title) {
+        try {
+            final HttpClient client = HttpClients.createDefault();
+            final HttpPatch request = new HttpPatch(this.server+"api/list/{id}");
+            final StringEntity entity = new StringEntity(String.format("{\"title\": \"%s\"}", title));
+            request.setEntity(entity);
+            request.setHeader("content-type", "application/json");
+            client.execute(request, response -> null);
+        } catch (NotFoundException | IOException e) {
+            return;
         }
     }
 }
