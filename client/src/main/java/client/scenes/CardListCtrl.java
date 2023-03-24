@@ -49,6 +49,7 @@ public final class CardListRenderable implements Renderable {
     @Override
     public Node render() throws IOException {
         final Pane listPane = FXMLLoader.load(getLocation("client", "scenes", "ListTemplate.fxml"));
+
         listPane.setId("list-"+this.list.getId());
 
         final Pane header = (Pane) listPane.getChildren().get(1);
@@ -58,8 +59,8 @@ public final class CardListRenderable implements Renderable {
 
         this.setupTitle(header);
         this.setupRemoveButton(header);
-        this.setupAddCardButton(cards);
-        this.setDropCardOnListActions(listPane, this.list, scrollPane, cards);
+//        this.setupAddCardButton(cards);
+//        this.setDropCardOnListActions(listPane, this.list, scrollPane, cards);
         return listPane;
     }
 
