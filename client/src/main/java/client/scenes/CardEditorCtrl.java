@@ -20,7 +20,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-
+/**
+ * Please note that not all methods work as at the moment all the tagIDS are 0.
+ * When connected to server, these will work.
+ */
 public class CardEditorCtrl implements Initializable{
 
     @FXML
