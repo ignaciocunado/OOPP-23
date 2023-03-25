@@ -19,19 +19,16 @@ import com.google.inject.Singleton;
 import commons.entities.Board;
 import commons.entities.Card;
 import commons.entities.CardList;
-import jakarta.ws.rs.HttpMethod;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.MediaType;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpPatch;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.glassfish.jersey.client.ClientConfig;
-
-import jakarta.ws.rs.client.ClientBuilder;
-import jakarta.ws.rs.client.Entity;
-import org.glassfish.jersey.client.HttpUrlConnectorProvider;
 
 import java.io.IOException;
 
@@ -158,7 +155,8 @@ public class ServerUtils {
         try {
             final HttpClient client = HttpClients.createDefault();
             final HttpPatch request = new HttpPatch(this.server+"api/list/"+id);
-            final StringEntity entity = new StringEntity(String.format("{\"title\": \"%s\"}", title));
+            final StringEntity entity =
+                    new StringEntity(String.format("{\"title\": \"%s\"}", title));
             request.setEntity(entity);
             request.setHeader("content-type", "application/json");
             client.execute(request, response -> null);
@@ -213,7 +211,6 @@ public class ServerUtils {
      * @param id the id of the card
      * @param listId the list to move the card to
      * @param position the position of the card in the new list
-     * @return the edited board
      */
     public void moveCard(final int id, final int listId, final int position) {
         try {
@@ -237,7 +234,11 @@ public class ServerUtils {
         try {
             final HttpClient client = HttpClients.createDefault();
             final HttpPatch request = new HttpPatch(this.server+"api/card/"+id);
-            final StringEntity entity = new StringEntity(String.format("{\"title\": \"%s\", \"description\": \"%s\"}", title, description));
+            final StringEntity entity =
+                    new StringEntity(
+                            String.format("{\"title\": \"%s\", \"description\": \"%s\"}",
+                                    title,description)
+                    );
             request.setEntity(entity);
             request.setHeader("content-type", "application/json");
             client.execute(request, response -> null);

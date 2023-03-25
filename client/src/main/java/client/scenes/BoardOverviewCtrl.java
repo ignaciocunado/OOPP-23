@@ -37,10 +37,10 @@ public class BoardOverviewCtrl implements Initializable {
 
 
     /**
-     * Constructor to inject necessary classes into the controller
+     * The wrapping controller for a card list
      *
-     * @param server
-     * @param mainCtrl
+     * @param server the server functions
+     * @param mainCtrl the main controller
      */
     @Inject
     public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {

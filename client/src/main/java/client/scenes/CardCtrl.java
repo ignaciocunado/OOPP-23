@@ -26,15 +26,27 @@ public final class CardCtrl {
 
     private Card card;
 
+    /**
+     * The wrapping controller for a card
+     * @param server the server functions
+     */
     @Inject
     public CardCtrl(final ServerUtils server) {
         this.server = server;
     }
 
+    /**
+     * Additional setter to inject the correct card list controller
+     * @param cardListCtrl the card list controller
+     */
     public void setCardListCtrl(final CardListCtrl cardListCtrl) {
         this.cardListCtrl = cardListCtrl;
     }
 
+    /**
+     * Refreshes card with the card data provided
+     * @param card the data
+     */
     public void refresh(final Card card) {
         this.card = card;
 
@@ -42,6 +54,9 @@ public final class CardCtrl {
         this.cardDescriptionField.setText(this.card.getDescription());
     }
 
+    /**
+     * Initialisation method initialising FXML objects
+     */
     @FXML
     public void initialize() {
         cardPane.setOnDragDetected(event -> {
@@ -65,6 +80,10 @@ public final class CardCtrl {
         final ReadOnlyBooleanProperty focused = (ReadOnlyBooleanProperty) observable;
         if (focused.getValue()) return; // If focuses then don't save yet
 
-        this.server.editCard(this.card.getId(), cardTitleField.getText(), cardDescriptionField.getText());
+        this.server.editCard(
+                this.card.getId(),
+                cardTitleField.getText(),
+                cardDescriptionField.getText()
+        );
     }
 }

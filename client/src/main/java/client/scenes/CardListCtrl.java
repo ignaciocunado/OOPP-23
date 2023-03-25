@@ -3,22 +3,17 @@ package client.scenes;
 import client.Main;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.entities.Board;
 import commons.entities.Card;
 import commons.entities.CardList;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.util.Objects;
 
 public final class CardListCtrl {
@@ -35,8 +30,8 @@ public final class CardListCtrl {
 
 
     /**
-     * The wrapping renderable for a card list
-     *
+     * The wrapping controller for a card list
+     * @param server the server functions
      * @param ctrl the board controller
      */
     @Inject
@@ -45,6 +40,9 @@ public final class CardListCtrl {
         this.boardOverviewCtrl = ctrl;
     }
 
+    /**
+     * Initialisation method initialising FXML objects
+     */
     @FXML
     public void initialize() {
         this.listTitleField.focusedProperty().addListener(this::handleTitleChanged);
@@ -52,7 +50,8 @@ public final class CardListCtrl {
     }
 
     /**
-     * Refreshes all data associated with a Card List
+     * Refreshes card list with the card list data provided
+     * @param cardList the data
      */
     public void refresh(final CardList cardList) {
         this.cardList = cardList;
@@ -94,6 +93,10 @@ public final class CardListCtrl {
         this.server.renameList(this.cardList.getId(), listTitleField.getText());
     }
 
+    /**
+     * Removes the card from the list based on the id
+     * @param cardId the card id
+     */
     public void removeCard(final int cardId) {
         final CardList cardList = this.server.deleteCard(this.cardList.getId(), cardId);
         this.refresh(cardList);
@@ -131,7 +134,6 @@ public final class CardListCtrl {
                     this.cardList.getCards().size()
             );
 
-            System.out.println("Dragged " + draggedCardId + " to " + this.cardList.getId() + " in position " + position);
             this.server.moveCard(draggedCardId, this.cardList.getId(), position);
             this.boardOverviewCtrl.refresh();
         });
