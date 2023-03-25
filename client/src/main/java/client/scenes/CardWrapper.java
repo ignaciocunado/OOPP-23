@@ -85,7 +85,7 @@ public class CardWrapper {
         }
         cardsIds.add(counter);
         outerCardPane.setId(String.valueOf(counter));
-        Card newCard = new Card();
+        Card newCard = new Card("Title", "Description");
         currentList.addCard(newCard);
         setCardMethods(vbox, currentList, outerCardPane, newCard);
     }

@@ -34,7 +34,6 @@ public class CardEditorCtrl implements Initializable{
     private Card currentCard;
     private MainCtrl mainCtrl;
     private ServerUtils serverUtils;
-
     private TagCtrl tagCtrl = new TagCtrl();
     private TaskCtrl taskCtrl = new TaskCtrl();
 
@@ -72,30 +71,8 @@ public class CardEditorCtrl implements Initializable{
         this.currentCard = card;
         this.title.setText(this.currentCard.getTitle());
         this.description.setText(this.currentCard.getDescription());
-        for(Tag tag : card.getTags()) {
-            Pane tagPane = FXMLLoader.load(getLocation("client", "scenes", "Tag.fxml"));
-            tagPane.setId(Integer.toString(tag.getId()));
-            TextField name = (TextField) tagPane.getChildren().get(0);
-            title.setText(tag.getName());
-            tags.getChildren().add(tagPane);
-        }
-        for(Task task : card.getNestedTaskList()) {
-            Pane taskPane = FXMLLoader.load(getLocation("client", "scenes", "Task.fxml"));
-            taskPane.setId(Integer.toString(task.getId()));
-            TextField title = (TextField) taskPane.getChildren().get(0);
-            title.setText(task.getName());
-            CheckBox checkBox = (CheckBox) taskPane.getChildren().get(1);
-            if(task.isCompleted()) {
-                checkBox.selectedProperty().set(true);
-                checkBox.indeterminateProperty().set(false);
-            }
-            else {
-                checkBox.selectedProperty().set(false);
-                checkBox.indeterminateProperty().set(false);
-            }
-            taskPane.setId(Integer.toString(task.getId()));
-            tags.getChildren().add(taskPane);
-        }
+        tagCtrl.renderTag(currentCard, tags);
+        taskCtrl.renderTask(currentCard, nestedTaskList);
     }
 
     /**
@@ -105,6 +82,8 @@ public class CardEditorCtrl implements Initializable{
     public Card save() {
         currentCard.setTitle(this.title.getText());
         currentCard.setDescription(this.description.getText());
+        currentCard.addTag(new Tag("DN", 0));
+        currentCard.addTask(new Task("dd", true));
         mainCtrl.closeCardEditor();
         return currentCard;
     }
