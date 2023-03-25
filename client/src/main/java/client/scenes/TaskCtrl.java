@@ -15,14 +15,14 @@ import java.net.URL;
 import java.nio.file.Path;
 
 public class TaskCtrl {
-
+/*
     @FXML
     private CheckBox completed;
 
     @FXML
     private TextField title;
     private Card currentCard;
-
+*/
     /**
      * Constructor
      */
@@ -34,7 +34,7 @@ public class TaskCtrl {
      * Removes a task from a card
      */
     public void removeTask() {
-        title.setText("lfjenljfe");
+        
     }
 
     public void renderTask(Card currentCard, VBox nestedTaskList) throws IOException {

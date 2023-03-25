@@ -16,13 +16,13 @@ import java.nio.file.Path;
 
 
 public class TagCtrl {
-
+/*
     @FXML
     private Pane background;
     @FXML
-    private Text tag;
+    private Text title;
     private Card currentCard;
-
+*/
     /**
      * Constructor
      */
@@ -36,7 +36,7 @@ public class TagCtrl {
      * Removes a tag from a card
      */
     public void removeTag() {
-        tag.setText("ddddd");
+
     }
 
     public void renderTag(Card currentCard, HBox tags) throws IOException {
