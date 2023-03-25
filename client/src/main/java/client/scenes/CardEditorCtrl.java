@@ -70,10 +70,34 @@ public class CardEditorCtrl implements Initializable{
      * Refreshes card editor info
      * @param card current Card
      */
-    public void refresh(Card card) {
+    public void refresh(Card card) throws IOException {
         this.currentCard = card;
         this.title.setText(this.currentCard.getTitle());
         this.description.setText(this.currentCard.getDescription());
+        for(Tag tag : card.getTags()) {
+            Pane tagPane = FXMLLoader.load(getLocation("client", "scenes", "Tag.fxml"));
+            tagPane.setId(Integer.toString(tag.getId()));
+            TextField name = (TextField) tagPane.getChildren().get(0);
+            title.setText(tag.getName());
+            tags.getChildren().add(tagPane);
+        }
+        for(Task task : card.getNestedTaskList()) {
+            Pane taskPane = FXMLLoader.load(getLocation("client", "scenes", "Task.fxml"));
+            taskPane.setId(Integer.toString(task.getId()));
+            TextField title = (TextField) taskPane.getChildren().get(0);
+            title.setText(task.getName());
+            CheckBox checkBox = (CheckBox) taskPane.getChildren().get(1);
+            if(task.isCompleted()) {
+                checkBox.selectedProperty().set(true);
+                checkBox.indeterminateProperty().set(false);
+            }
+            else {
+                checkBox.selectedProperty().set(false);
+                checkBox.indeterminateProperty().set(false);
+            }
+            taskPane.setId(Integer.toString(task.getId()));
+            tags.getChildren().add(taskPane);
+        }
     }
 
     /**
@@ -94,6 +118,8 @@ public class CardEditorCtrl implements Initializable{
      */
     public void addTask() throws IOException {
         Pane taskPane = FXMLLoader.load(getLocation("client", "scenes", "Task.fxml"));
+        Task task = new Task("New title", false);
+        taskPane.setId(Integer.toString(task.getId()));
         nestedTaskList.getChildren().add(taskPane);
     }
 
@@ -102,8 +128,10 @@ public class CardEditorCtrl implements Initializable{
      * @throws IOException
      */
     public void addTag() throws IOException {
-        Pane taskPane = FXMLLoader.load(getLocation("client", "scenes", "Tag.fxml"));
-        tags.getChildren().add(taskPane);
+        Pane tagPane = FXMLLoader.load(getLocation("client", "scenes", "Tag.fxml"));
+        Tag tag = new Tag("New title", 0);
+        tagPane.setId(Integer.toString(tag.getId()));
+        tags.getChildren().add(tagPane);
     }
 
     /**

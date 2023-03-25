@@ -168,7 +168,11 @@ public class CardWrapper {
         innerCardPane.setOnMouseClicked(event -> {
             refreshCardTitle(newCard, cardTitle);
             refreshCardDescription(newCard, cardDescription);
-            mainCtrl.showCardEditor(newCard);
+            try {
+                mainCtrl.showCardEditor(newCard);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             cardTitle.setText(newCard.getTitle());
             cardDescription.setText(newCard.getDescription());
         });

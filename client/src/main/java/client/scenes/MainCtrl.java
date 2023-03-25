@@ -24,6 +24,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
+import java.io.IOException;
+
 public class MainCtrl {
 
     private Stage primaryStage;
@@ -99,7 +101,7 @@ public class MainCtrl {
      * render card view
      * @param card
      */
-    public void showCardEditor(Card card) {
+    public void showCardEditor(Card card) throws IOException {
         cardEditorCtrl.refresh(card);
         cardEditorStage.showAndWait();
     }
