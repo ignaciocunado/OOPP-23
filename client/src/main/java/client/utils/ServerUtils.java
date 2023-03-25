@@ -17,6 +17,7 @@ package client.utils;
 
 import com.google.inject.Singleton;
 import commons.entities.Board;
+import commons.entities.Card;
 import commons.entities.CardList;
 import jakarta.ws.rs.HttpMethod;
 import jakarta.ws.rs.NotFoundException;
@@ -158,6 +159,85 @@ public class ServerUtils {
             final HttpClient client = HttpClients.createDefault();
             final HttpPatch request = new HttpPatch(this.server+"api/list/"+id);
             final StringEntity entity = new StringEntity(String.format("{\"title\": \"%s\"}", title));
+            request.setEntity(entity);
+            request.setHeader("content-type", "application/json");
+            client.execute(request, response -> null);
+        } catch (NotFoundException | IOException e) {
+            return;
+        }
+    }
+
+    /**
+     * Sends a request to create a card
+     * @param id the id of the list to create the card in
+     * @param title the title of the card
+     * @param description the title of the card
+     * @return the edited board
+     */
+    public CardList createCard(final int id, final String title, final String description) {
+        try {
+            return client.target(this.server).path("api/list/{id}/card")
+                    .resolveTemplate("id", id)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .post(
+                            Entity.entity(new Card(title, description), MediaType.APPLICATION_JSON),
+                            CardList.class
+                    );
+        } catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Sends a request to delete a card
+     * @param id the id of the list to delete the card from
+     * @param cardId the id of the card
+     * @return the edited board
+     */
+    public CardList deleteCard(final int id, final int cardId) {
+        try {
+            return client.target(this.server).path("api/list/{id}/card/{cardId}")
+                    .resolveTemplate("id", id)
+                    .resolveTemplate("cardId", cardId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .delete(CardList.class);
+        } catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Sends a request to move a card
+     * @param id the id of the card
+     * @param listId the list to move the card to
+     * @param position the position of the card in the new list
+     * @return the edited board
+     */
+    public void moveCard(final int id, final int listId, final int position) {
+        try {
+            client.target(this.server).path("api/card/{id}/move/{listId}/{position}")
+                    .resolveTemplate("id", id)
+                    .resolveTemplate("listId", listId)
+                    .resolveTemplate("position", position)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .get().close();
+        } catch (NotFoundException e) {}
+    }
+
+    /**
+     * TODO: Acutally properly implement with JAX RS WS client
+     * @param id
+     * @param title
+     * @param description
+     */
+    public void editCard(final int id, final String title, final String description) {
+        try {
+            final HttpClient client = HttpClients.createDefault();
+            final HttpPatch request = new HttpPatch(this.server+"api/card/"+id);
+            final StringEntity entity = new StringEntity(String.format("{\"title\": \"%s\", \"description\": \"%s\"}", title, description));
             request.setEntity(entity);
             request.setHeader("content-type", "application/json");
             client.execute(request, response -> null);
