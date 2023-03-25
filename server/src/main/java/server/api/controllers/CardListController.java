@@ -114,6 +114,43 @@ public class CardListController {
         return new ResponseEntity<>(cardListRepo.save(listToAddTo), new HttpHeaders(), 200);
     }
 
+    /**
+     * endpoint for changing the list to which a card is assigned to based on its id
+     * @param listId integer representing the list to which the card will be added
+     * @param cardId integer representing the id of the card
+     * @param index integer representing the new index of the card within its list
+     * @param errors wrapping object for potential validating errors
+     * @return the card list with the edited positions
+     */
+    @PatchMapping("/{listId}/card/{cardId}")
+    public ResponseEntity<CardList> editCardPositioning(@PathVariable final Integer listId,
+                                                        @PathVariable final Integer cardId,
+                                                        @Validated @RequestBody
+                                                            final Integer index,
+                                                        final BindingResult errors) {
+        if (errors.hasErrors()) {
+            throw new InvalidRequestException(errors);
+        }
+        if(!this.cardRepo.existsById((cardId))){
+            throw new EntityNotFoundException("No card with id " + cardId);
+        }
+        final Card card = this.cardRepo.getById(cardId);
+
+        if(!this.cardListRepo.existsById((listId))){
+            throw new EntityNotFoundException("No card list with id " + listId);
+        }
+        final CardList list = this.cardListRepo.getById(listId);
+
+        if(list.getCards().size() <= index){
+            throw new EntityNotFoundException("Invalid index");
+        }
+
+        if(!list.editCardIndex(card, index)) {
+            throw new EntityNotFoundException("Card list contains no card with id " + cardId);
+        }
+        return new ResponseEntity<>(cardListRepo.save(list), new HttpHeaders(), 200);
+    }
+
     /** endpoint for editing the title of a card list
      * @param id int value representing the id of a card list
      * @param cardList the card list edited
