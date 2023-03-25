@@ -24,13 +24,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class BoardOverviewCtrl implements Initializable {
 
-    private final CardWrapper cardWrapper;
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     @FXML
@@ -46,7 +44,6 @@ public class BoardOverviewCtrl implements Initializable {
      */
     @Inject
     public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
-        this.cardWrapper = new CardWrapper();
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
@@ -66,7 +63,7 @@ public class BoardOverviewCtrl implements Initializable {
 
 
     /**
-     * Stub method for refreshing the Board
+     * Refreshes the Board and the lists in it.
      *
      * @param currentBoard the current Board being displayed
      */
@@ -77,15 +74,23 @@ public class BoardOverviewCtrl implements Initializable {
             var pair = Main.FXML.load(CardListCtrl.class, "client", "scenes", "ListTemplate.fxml");
             this.lists.getChildren().add(pair.getValue());
             final CardListCtrl ctrl = pair.getKey();
-            ctrl.setCardList(list);
-            ctrl.refresh();
+            ctrl.refresh(list);
         }
+    }
+
+    /**
+     * Refreshes the Board and the lists in it by using the key
+     * to get the board details.
+     */
+    public void refresh() {
+        this.refresh(this.server.getBoard(this.currentBoard.getKey()));
     }
 
     /**
      * Adds a List to the current Board object and displays it
      */
-    public void addList() throws IOException {
+    @FXML
+    private void addList() {
         final Board board = this.server.createList(this.currentBoard.getId(), "New List");
         this.refresh(board);
     }
