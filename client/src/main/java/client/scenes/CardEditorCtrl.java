@@ -9,17 +9,12 @@ import commons.entities.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-
-import javax.swing.text.html.HTML;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.ResourceBundle;
 
 
@@ -105,7 +100,7 @@ public class CardEditorCtrl implements Initializable{
         tagCtrl.addOrUpdateTags(currentCard, tags);
         taskCtrl.addOrUpdateTasks(currentCard, nestedTaskList);
         */
-        currentCard.addTag(new Tag("New tag", 6969));
+        currentCard.addTag(new Tag("New taddsdsdsdg", 3125329));
         mainCtrl.closeCardEditor();
         return currentCard;
     }

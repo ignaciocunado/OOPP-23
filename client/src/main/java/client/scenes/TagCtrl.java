@@ -31,6 +31,8 @@ public class TagCtrl {
 
     public void editData(Tag tag) {
         this.name.setText(tag.getName());
-        this.background.setStyle("-fx-background-color:#" + Integer.toString(tag.getColour()));
+        this.background.setStyle("-fx-background-color:#" + Integer.toHexString(tag.getColour()) +
+            ";-fx-background-radius: 10");
+
     }
 }
