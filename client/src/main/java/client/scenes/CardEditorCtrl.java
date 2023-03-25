@@ -8,14 +8,15 @@ import commons.entities.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -70,6 +71,7 @@ public class CardEditorCtrl implements Initializable{
         this.title.setText(this.currentCard.getTitle());
         this.description.setText(this.currentCard.getDescription());
         tags.getChildren().removeAll(tags.getChildren());
+
         nestedTaskList.getChildren().removeAll(nestedTaskList.getChildren());
         for(Tag tag : currentCard.getTags()) {
             FXMLLoader loader = new FXMLLoader();
@@ -99,10 +101,40 @@ public class CardEditorCtrl implements Initializable{
     public Card save() {
         currentCard.setTitle(this.title.getText());
         currentCard.setDescription(this.description.getText());
-        /*
-        tagCtrl.addOrUpdateTags(currentCard, tags);
-        taskCtrl.addOrUpdateTasks(currentCard, nestedTaskList);
+
+        for(Node node : nestedTaskList.getChildren()) {
+            Pane pane = (Pane) node;
+            TextField textField = (TextField) pane.getChildren().get(0);
+            String name = textField.getText();
+            CheckBox checkBox = (CheckBox) pane.getChildren().get(1);
+            boolean completed;
+            if(checkBox.isSelected() && !checkBox.isIndeterminate()) {
+                completed = true;
+            }
+            else {
+                completed = false;
+            }
+            int id = Integer.parseInt(pane.getId());
+            List<Task> found = currentCard.getNestedTaskList().stream().filter(task1 ->
+                task1.getId() == id).toList();
+            if(found.size() == 0) {
+                Task newTask = new Task(name, completed);
+                newTask.setId(id);
+                currentCard.addTask(newTask);
+            }
+            else {
+                Task task = found.get(0);
+                task.setName(name);
+                task.setCompleted(completed);
+            }
+        }
+/*
+        for(Node node : tags.getChildren()) {
+
+        }
         */
+
+
         mainCtrl.closeCardEditor();
         return currentCard;
     }
