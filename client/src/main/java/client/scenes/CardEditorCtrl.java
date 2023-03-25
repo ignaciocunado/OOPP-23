@@ -14,8 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import org.checkerframework.checker.units.qual.C;
-
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;

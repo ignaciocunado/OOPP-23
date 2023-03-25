@@ -1,16 +1,10 @@
 package client.scenes;
 
-import client.MyFXML;
 import commons.entities.Card;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Path;
 
 public class TagCtrl {
 
