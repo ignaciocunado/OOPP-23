@@ -1,16 +1,24 @@
 package client.scenes;
 
+import client.MyFXML;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Card;
+import commons.entities.Tag;
+import commons.entities.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import org.checkerframework.checker.units.qual.C;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ResourceBundle;
 
 
@@ -79,19 +87,32 @@ public class CardEditorCtrl implements Initializable{
         return currentCard;
     }
 
-    /**
-     * Calls method to add a tag
-     * @throws IOException
-     */
-    public void addTag() throws IOException {
-        tagCtrl.addTag(currentCard, tags);
-    }
 
     /**
      * Calls method to add a task
      * @throws IOException
      */
     public void addTask() throws IOException {
-        taskCtrl.addnewTask(currentCard, nestedTaskList);
+        Pane taskPane = FXMLLoader.load(getLocation("client", "scenes", "Task.fxml"));
+        nestedTaskList.getChildren().add(taskPane);
+    }
+
+    /**
+     * Adds a tag to a card
+     * @throws IOException
+     */
+    public void addTag() throws IOException {
+        Pane taskPane = FXMLLoader.load(getLocation("client", "scenes", "Tag.fxml"));
+        tags.getChildren().add(taskPane);
+    }
+
+    /**
+     * Gets the location of a resource with the given String elements
+     * @param parts Strings of where to find the resource
+     * @return the URL of the requested resource
+     */
+    private URL getLocation(String... parts) {
+        var path = Path.of("", parts).toString();
+        return MyFXML.class.getClassLoader().getResource(path);
     }
 }
