@@ -4,7 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-quizz.trace.db
+quizzzz.trace.db
 
 **/*.mv.db
 
