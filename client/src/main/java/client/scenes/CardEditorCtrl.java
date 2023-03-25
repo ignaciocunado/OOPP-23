@@ -12,6 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -75,6 +77,7 @@ public class CardEditorCtrl implements Initializable{
             TagCtrl ctrl = loader.getController();
             tagPane.setId(Integer.toString(tag.getId()));
             ctrl.editData(tag);
+            ctrl.update(tag.getId(), this);
             tags.getChildren().add(tagPane);
         }
         for(Task task: currentCard.getNestedTaskList()) {
@@ -84,6 +87,7 @@ public class CardEditorCtrl implements Initializable{
             TaskCtrl ctrl = loader.getController();
             ctrl.editData(task);
             taskPane.setId(Integer.toString(task.getId()));
+            ctrl.update(task.getId(), this);
             nestedTaskList.getChildren().add(taskPane);
         }
     }
@@ -114,6 +118,7 @@ public class CardEditorCtrl implements Initializable{
         TaskCtrl ctrl = loader.getController();
         Task task = new Task("New title", false);
         taskPane.setId(Integer.toString(task.getId()));
+        ctrl.update(task.getId(), this);
         nestedTaskList.getChildren().add(taskPane);
     }
 
@@ -127,7 +132,24 @@ public class CardEditorCtrl implements Initializable{
         TagCtrl ctrl = loader.getController();
         Tag tag = new Tag("New title", 0);
         tagPane.setId(Integer.toString(tag.getId()));
+        ctrl.update(tag.getId(), this);
         tags.getChildren().add(tagPane);
+    }
+
+    /**
+     * Removes rendered Tag with the specified id if it exists
+     * @param id id of the tag to remove
+     */
+    public void removeTag(int id){
+        tags.getChildren().removeIf(pane -> Integer.parseInt(pane.getId()) == id);
+    }
+
+    /**
+     * Removes rendered Task with the specified id if it exists
+     * @param id id of the task to remove
+     */
+    public void removeTask(int id){
+        nestedTaskList.getChildren().removeIf(pane -> Integer.parseInt(pane.getId()) == id);
     }
 
 }

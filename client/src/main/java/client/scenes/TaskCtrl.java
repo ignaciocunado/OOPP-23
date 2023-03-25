@@ -1,11 +1,9 @@
 package client.scenes;
 
-import commons.entities.Card;
 import commons.entities.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 
 
 public class TaskCtrl {
@@ -14,18 +12,20 @@ public class TaskCtrl {
     private TextField title;
     @FXML
     private CheckBox completed;
-
+    private int id;
+    private CardEditorCtrl cardEditorCtrl;
 
     /**
      * Removes a task from a card
      */
     public void removeTask() {
-        
+        cardEditorCtrl.removeTask(id);
     }
 
-    public void addOrUpdateTasks(Card currentCard, VBox nestedTaskList) {
-    }
-
+    /**
+     * Edits the data of the rendered Task
+     * @param task task that this rendered object represents
+     */
     public void editData(Task task) {
         this.title.setText(task.getName());
         if(task.isCompleted()) {
@@ -36,5 +36,15 @@ public class TaskCtrl {
             completed.selectedProperty().set(false);
             completed.indeterminateProperty().set(false);
         }
+    }
+
+    /**
+     * Update methods
+     * @param id id of the rendered object
+     * @param cardEditorCtrl ctrl
+     */
+    public void update(int id, CardEditorCtrl cardEditorCtrl){
+        this.id = id;
+        this.cardEditorCtrl = cardEditorCtrl;
     }
 }
