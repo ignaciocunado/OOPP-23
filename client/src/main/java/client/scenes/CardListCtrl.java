@@ -32,9 +32,7 @@ public final class CardListCtrl {
 
     private CardList cardList;
     private CardWrapper cardWrapper;
-    private BoardOverviewCtrl ctrl;
-
-    private Consumer<Integer> onDelete;
+    private BoardOverviewCtrl boardOverviewCtrl;
 
 
     /**
@@ -45,7 +43,7 @@ public final class CardListCtrl {
     @Inject
     public CardListCtrl(final ServerUtils server, final BoardOverviewCtrl ctrl, final CardWrapper wrapper) {
         this.server = server;
-        this.ctrl = ctrl;
+        this.boardOverviewCtrl = ctrl;
         this.cardWrapper = wrapper;
     }
 
@@ -73,7 +71,7 @@ public final class CardListCtrl {
      * Handles the delete list button
      */
     public void handleDeleteList() {
-        this.onDelete.accept(this.cardList.getId());
+        this.boardOverviewCtrl.removeListById(this.cardList.getId());
     }
 
     private void handleNameChanged(final Observable observable) {
@@ -82,14 +80,6 @@ public final class CardListCtrl {
         if(focused.getValue()) return; // If focuses then don't save yet
 
         this.server.renameList(this.cardList.getId(), listNameField.getText());
-    }
-
-    /**
-     * Sets the on delete handler for logic about what to do after deleting
-     * @param onDelete the callback to run
-     */
-    public void onDelete(final Consumer<Integer> onDelete) {
-        this.onDelete = onDelete;
     }
 
     /**
