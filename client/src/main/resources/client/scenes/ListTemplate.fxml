@@ -27,7 +27,7 @@
             </children></AnchorPane>
         <Pane layoutX="5.0" prefHeight="60.0" prefWidth="250.0" AnchorPane.topAnchor="0.0">
             <children>
-                <TextField fx:id="listNameField" layoutY="2.0" prefHeight="15.0" prefWidth="200.0" promptText="Title" style="-fx-background-color: transparent; -fx-font-size: 25; -fx-text-fill: white;" text="Title" />
+                <TextField fx:id="listTitleField" layoutY="2.0" prefHeight="15.0" prefWidth="200.0" promptText="Title" style="-fx-background-color: transparent; -fx-font-size: 25; -fx-text-fill: white;" text="Title" />
                 <Button fx:id="removeListButton" layoutX="200.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleDeleteList" style="-fx-background-color: transparent;">
                     <graphic>
                         <ImageView fitHeight="32.0" fitWidth="28.0">
