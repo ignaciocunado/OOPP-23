@@ -14,6 +14,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+
+import javax.swing.text.html.HTML;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -34,8 +37,7 @@ public class CardEditorCtrl implements Initializable{
     private Card currentCard;
     private MainCtrl mainCtrl;
     private ServerUtils serverUtils;
-    private TagCtrl tagCtrl = new TagCtrl();
-    private TaskCtrl taskCtrl = new TaskCtrl();
+
 
     /**
      * Constructor
@@ -71,8 +73,25 @@ public class CardEditorCtrl implements Initializable{
         this.currentCard = card;
         this.title.setText(this.currentCard.getTitle());
         this.description.setText(this.currentCard.getDescription());
-        tagCtrl.renderTag(currentCard, tags);
-        taskCtrl.renderTask(currentCard, nestedTaskList);
+        tags.getChildren().removeAll(tags.getChildren());
+        nestedTaskList.getChildren().removeAll(nestedTaskList.getChildren());
+        for(Tag tag : currentCard.getTags()) {
+            FXMLLoader loader = new FXMLLoader();
+            Pane tagPane = loader.load(getClass().getResource("Tag.fxml").openStream());
+            TagCtrl ctrl = loader.getController();
+            tagPane.setId(Integer.toString(tag.getId()));
+            ctrl.editData(tag);
+            tags.getChildren().add(tagPane);
+        }
+        for(Task task: currentCard.getNestedTaskList()) {
+            FXMLLoader loader = new FXMLLoader();
+            Pane taskPane = loader.load(getClass().getResource("Task.fxml").openStream());
+            taskPane.setId(Integer.toString(task.getId()));
+            TaskCtrl ctrl = loader.getController();
+            ctrl.editData(task);
+            taskPane.setId(Integer.toString(task.getId()));
+            nestedTaskList.getChildren().add(taskPane);
+        }
     }
 
     /**
@@ -82,8 +101,10 @@ public class CardEditorCtrl implements Initializable{
     public Card save() {
         currentCard.setTitle(this.title.getText());
         currentCard.setDescription(this.description.getText());
-        currentCard.addTag(new Tag("DN", 0));
-        currentCard.addTask(new Task("dd", true));
+        /*
+        tagCtrl.addOrUpdateTags(currentCard, tags);
+        taskCtrl.addOrUpdateTasks(currentCard, nestedTaskList);
+        */
         mainCtrl.closeCardEditor();
         return currentCard;
     }
@@ -94,7 +115,9 @@ public class CardEditorCtrl implements Initializable{
      * @throws IOException
      */
     public void addTask() throws IOException {
-        Pane taskPane = FXMLLoader.load(getLocation("client", "scenes", "Task.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        Pane taskPane = loader.load(getClass().getResource("Task.fxml").openStream());
+        TaskCtrl ctrl = loader.getController();
         Task task = new Task("New title", false);
         taskPane.setId(Integer.toString(task.getId()));
         nestedTaskList.getChildren().add(taskPane);
@@ -105,19 +128,12 @@ public class CardEditorCtrl implements Initializable{
      * @throws IOException
      */
     public void addTag() throws IOException {
-        Pane tagPane = FXMLLoader.load(getLocation("client", "scenes", "Tag.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        Pane tagPane = loader.load(getClass().getResource("Tag.fxml").openStream());
+        TagCtrl ctrl = loader.getController();
         Tag tag = new Tag("New title", 0);
         tagPane.setId(Integer.toString(tag.getId()));
         tags.getChildren().add(tagPane);
     }
 
-    /**
-     * Gets the location of a resource with the given String elements
-     * @param parts Strings of where to find the resource
-     * @return the URL of the requested resource
-     */
-    private URL getLocation(String... parts) {
-        var path = Path.of("", parts).toString();
-        return MyFXML.class.getClassLoader().getResource(path);
-    }
 }

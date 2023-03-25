@@ -3,8 +3,8 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 
-<Pane prefHeight="20.0" prefWidth="41.0" style="-fx-background-color: #d05757; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="background" prefHeight="20.0" prefWidth="41.0" style="-fx-background-color: #d05757; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagCtrl">
    <children>
-      <Text fx:id="tag" fill="WHITE" layoutX="9.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tag" />
+      <Text fx:id="name" fill="WHITE" layoutX="9.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tag" />
    </children>
 </Pane>
