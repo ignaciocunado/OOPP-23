@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.MyFXML;
 import commons.entities.Card;
+import commons.entities.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -20,10 +21,8 @@ public class TaskCtrl {
     private CheckBox completed;
 
     @FXML
-    private Button delete;
-
-    @FXML
     private TextField title;
+    private int counter = 0;
 
     /**
      * Constructor
@@ -38,7 +37,7 @@ public class TaskCtrl {
      * @param box box in which to add the task
      * @throws IOException
      */
-    public void addTask(Card currentCard, VBox box) throws IOException {
+    public void addnewTask(Card currentCard, VBox box) throws IOException {
         Pane taskPane = FXMLLoader.load(getLocation("client", "scenes", "Task.fxml"));
         box.getChildren().add(taskPane);
     }
@@ -47,6 +46,20 @@ public class TaskCtrl {
      * Removes a task from a card
      */
     public void removeTask() {
+        
+    }
+
+    /**
+     * Renders existing tasks onto the card view
+     */
+    public void renderExistingTaks() {
+
+    }
+
+    /**
+     * Edits a task
+     */
+    public void editTask() {
 
     }
 

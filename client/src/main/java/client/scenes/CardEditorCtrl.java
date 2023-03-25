@@ -92,6 +92,6 @@ public class CardEditorCtrl implements Initializable{
      * @throws IOException
      */
     public void addTask() throws IOException {
-        taskCtrl.addTask(currentCard, nestedTaskList);
+        taskCtrl.addnewTask(currentCard, nestedTaskList);
     }
 }
