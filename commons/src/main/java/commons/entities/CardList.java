@@ -108,11 +108,18 @@ public final class CardList {
      * @return whether the method has succeeded in switching the index of the card
      */
     public boolean editCardIndex(Card card, int index) {
-        if (!cards.contains(card)) {
+        if (!cards.contains(card) || index >= cards.size()) {
             return false;
         }
-        for (int i = cards.indexOf(card); i < index; i++) {
-            cards.set(i, cards.get(i+1));
+        if (cards.indexOf(card) < index) {
+            for (int i = cards.indexOf(card); i < index; i++) {
+                cards.set(i, cards.get(i+1));
+            }
+        }
+        else {
+            for (int i = cards.indexOf(card); i > index; i--) {
+                cards.set(i, cards.get(i-1));
+            }
         }
         cards.set(index, card);
         return true;
