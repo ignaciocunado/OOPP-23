@@ -105,6 +105,7 @@ public class CardEditorCtrl implements Initializable{
         tagCtrl.addOrUpdateTags(currentCard, tags);
         taskCtrl.addOrUpdateTasks(currentCard, nestedTaskList);
         */
+        currentCard.addTag(new Tag("New tag", 6969));
         mainCtrl.closeCardEditor();
         return currentCard;
     }
