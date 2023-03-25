@@ -1,6 +1,5 @@
 package client.scenes;
 
-import client.MyFXML;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Card;
