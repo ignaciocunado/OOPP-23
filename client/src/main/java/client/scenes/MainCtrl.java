@@ -67,7 +67,7 @@ public class MainCtrl {
         cardEditorScene.getStylesheets().add(getClass().getResource("comboBox.css")
             .toExternalForm());
 
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.initStyle(StageStyle.DECORATED);
         showLandingOverview();
         primaryStage.show();
     }
