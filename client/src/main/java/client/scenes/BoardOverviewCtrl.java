@@ -21,7 +21,6 @@ import commons.entities.Board;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
-import javafx.stage.Screen;
 
 import java.io.IOException;
 import java.net.URL;
@@ -75,7 +74,7 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     @FXML
-    public void showBoardSettings() {
+    private void showBoardSettings() {
         this.mainCtrl.showBoardSettings();
     }
 

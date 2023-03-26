@@ -42,9 +42,12 @@ public class MainCtrl {
      * @param primaryStage main stage for FXML views
      * @param landingOverview the landing overview
      * @param boardOverview the main board overview
+     * @param boardSettings the board settings overview
      */
-    public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
-            Pair<BoardOverviewCtrl, Parent> boardOverview, Pair<BoardSettingsCtrl, Parent> boardSettings) {
+    public void initialize(Stage primaryStage,
+                           Pair<LandingOverviewCtrl, Parent> landingOverview,
+                           Pair<BoardOverviewCtrl, Parent> boardOverview,
+                           Pair<BoardSettingsCtrl, Parent> boardSettings) {
         this.primaryStage = primaryStage;
         this.boardSettingsStage = new Stage();
 
