@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 
 /**
@@ -121,7 +122,7 @@ public class CardEditorCtrl implements Initializable{
             }
             int id = Integer.parseInt(pane.getId());
             List<Task> found = currentCard.getNestedTaskList().stream().filter(task1 ->
-                task1.getId() == id).toList();
+                task1.getId() == id).collect(Collectors.toList());
             if(found.size() == 0) {
                 Task newTask = new Task(name, completed);
                 newTask.setId(id);
@@ -140,7 +141,7 @@ public class CardEditorCtrl implements Initializable{
             String name = textField.getText();
             int id = Integer.parseInt(pane.getId());
             List<Tag> found = currentCard.getTags().stream().filter(tag1 ->
-                tag1.getId() == id).toList();
+                tag1.getId() == id).collect(Collectors.toList());
             if(found.size() == 0) {
                 //add tag with id id;
             }

@@ -30,6 +30,7 @@ import java.io.IOException;
 public class MainCtrl {
 
     private Stage primaryStage;
+    private Stage createTagStage;
     private Stage cardEditorStage;
 
 
@@ -58,6 +59,7 @@ public class MainCtrl {
                            Pair<BoardOverviewCtrl, Parent> boardOverview, Pair<CardEditorCtrl, Parent>
                            cardEditor, Pair<TagOverviewCtrl, Parent> tagOverview) {
         this.primaryStage = primaryStage;
+        this.createTagStage =  new Stage();
         this.cardEditorStage = new Stage();
         this.landingOverviewCtrl = landingOverview.getKey();
         this.landingOverview = new Scene(landingOverview.getValue());
@@ -79,6 +81,7 @@ public class MainCtrl {
 
         primaryStage.initStyle(StageStyle.DECORATED);
         showLandingOverview();
+        showTagOverview();
         primaryStage.show();
     }
 
@@ -104,20 +107,11 @@ public class MainCtrl {
      * Method for the tag overview
      */
     public void showTagOverview(){
-        primaryStage.setTitle("Talio: Tag list Overview");
-        primaryStage.setScene(this.tagOverview);
-//        proportionsTagOverview();
+        createTagStage.setTitle("Talio: Tag list Overview");
+        createTagStage.setScene(this.tagOverview);
+        createTagStage.show();
     }
 
-    /**
-     * proprtions of the new window
-     */
-//    public void proportionsTagOverview(){
-//        primaryStage.setMaxHeight(400);
-//        primaryStage.setMaxWidth(780);
-//        primaryStage.setMinHeight(400);
-//        primaryStage.setMinWidth(780);
-//    }
 
     /**
      * Shows an existing board overview scene

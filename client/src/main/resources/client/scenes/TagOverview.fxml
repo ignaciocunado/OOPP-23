@@ -1,30 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="780.0" style="-fx-background-color: #123456;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagOverviewCtrl">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="567.0" prefWidth="780.0" style="-fx-background-color: #123456;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagOverviewCtrl">
    <children>
-      <AnchorPane layoutY="-5.0" prefHeight="400.0" prefWidth="780.0">
+      <AnchorPane fx:id="custo" prefHeight="567.0" prefWidth="780.0">
          <children>
-            <Button alignment="CENTER" layoutX="712.0" layoutY="6.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#cancel" prefHeight="49.0" prefWidth="61.0" style="-fx-background-color: #123456;" text="X" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="345.0" AnchorPane.leftAnchor="712.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="6.0">
+            <Button alignment="CENTER" layoutX="719.0" layoutY="-47.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#cancel" prefHeight="119.0" prefWidth="61.0" style="-fx-background-color: #123456;" text="X" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="470.0" AnchorPane.leftAnchor="719.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-47.0">
                <font>
                   <Font size="22.0" />
                </font>
             </Button>
+            <Pane layoutX="507.0" layoutY="51.0" prefHeight="459.0" prefWidth="236.0" style="-fx-background-color: #0492C2;">
+               <children>
+                  <TextField alignment="CENTER" layoutX="18.0" layoutY="14.0" prefHeight="7.0" prefWidth="200.0" style="-fx-background-color: #0492C2; -fx-font-size: 20; -fx-text-fill: #c6c6c6;" text="Title">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </TextField>
+                  <Button alignment="CENTER" layoutX="24.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #000000;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="79.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #ffc0cb;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="134.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00008b;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="188.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #CCFFFF;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="24.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: CCFFE5;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="79.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00CC00;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="134.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #FF0000;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="188.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #009999;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Text fx:id="name" fill="#c6c6c6" layoutX="88.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Colours" wrappingWidth="105.458984375">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="name1" fill="#c6c6c6" layoutX="88.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Custom" wrappingWidth="105.458984375">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <ColorPicker fx:id="colorPicker" layoutX="56.0" layoutY="270.0" style="-fx-background-color: #0492C2;">
+                     <value>
+                        <Color />
+                     </value>
+                  </ColorPicker>
+                  <Circle fx:id="circle" fill="DODGERBLUE" layoutX="123.0" layoutY="365.0" radius="44.0" stroke="BLACK" strokeType="INSIDE" />
+               </children>
+            </Pane>
+            <Button alignment="CENTER" layoutX="317.0" layoutY="439.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="97.0" prefWidth="147.0" style="-fx-background-color: #123456;" text="+" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font size="57.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
-      <Pane layoutX="514.0" layoutY="72.0" prefHeight="299.0" prefWidth="236.0" style="-fx-background-color: #0492C2;">
-         <children>
-            <TextField layoutX="18.0" layoutY="26.0" prefHeight="7.0" prefWidth="200.0" style="-fx-background-color: #0492C2; -fx-font-size: 15; -fx-text-fill: #c6c6c6;" text="Title">
-               <font>
-                  <Font size="30.0" />
-               </font>
-            </TextField>
-         </children>
-      </Pane>
    </children>
 </Pane>
