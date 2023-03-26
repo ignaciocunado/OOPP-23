@@ -157,4 +157,27 @@ public class BoardController {
         return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), HttpStatus.OK);
     }
 
+    /** endpoint for editing the title of a card list
+     *
+     * @param id int value representing the id of a Board
+     * @param board the Board being edited
+     * @param errors wrapping object for potential validating errors
+     * @return the card list with the changed new title
+     */
+    @PatchMapping("/{id}")
+    public ResponseEntity<Board> editPassword(@PathVariable final Integer id,
+                                              @Validated @RequestBody
+                                              final Board board,
+                                              final BindingResult errors) {
+        if(errors.hasErrors()) {
+            throw new InvalidRequestException(errors);
+        }
+        if (!this.boardRepo.existsById(id)) {
+            throw new EntityNotFoundException("No board with id " + id);
+        }
+        Board editedBoard = boardRepo.getById(id);
+        editedBoard.setPassword(board.getPassword());
+        return new ResponseEntity<>(this.boardRepo.save(editedBoard), new HttpHeaders(), 200);
+    }
+
 }

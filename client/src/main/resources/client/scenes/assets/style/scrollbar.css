@@ -1,0 +1,12 @@
+.increment-button,.decrement-button,
+.increment-arrow,.decrement-arrow {
+    -fx-padding: 0 0 0 0; /* Hides the arrows */
+}
+
+.track {
+    -fx-background-color: #012345;
+}
+
+.thumb {
+    -fx-background-color: #001428;
+}
