@@ -22,9 +22,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
+import java.lang.ref.PhantomReference;
+
 public class MainCtrl {
 
     private Stage primaryStage;
+
 
     private LandingOverviewCtrl landingOverviewCtrl;
     private Scene landingOverview;
@@ -32,14 +35,21 @@ public class MainCtrl {
     private BoardOverviewCtrl boardOverviewCtrl;
     private Scene boardOverview;
 
+    private TagOverviewCtrl tagOverviewCtrl;
+
+    private Scene tagOverview;
+
     /**
      * Initialize main controller with all FXML controllers
-     * @param primaryStage main stage for FXML views
+     *
+     * @param primaryStage    main stage for FXML views
      * @param landingOverview the landing overview
-     * @param boardOverview the main board overview
+     * @param boardOverview   the main board overview
+     * @param tagOverview the tag overview
      */
     public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
-            Pair<BoardOverviewCtrl, Parent> boardOverview) {
+                           Pair<BoardOverviewCtrl, Parent> boardOverview,
+                           Pair<TagOverviewCtrl, Parent> tagOverview) {
         this.primaryStage = primaryStage;
 
         this.landingOverviewCtrl = landingOverview.getKey();
@@ -47,6 +57,9 @@ public class MainCtrl {
 
         this.boardOverviewCtrl = boardOverview.getKey();
         this.boardOverview = new Scene(boardOverview.getValue());
+
+        this.tagOverviewCtrl = tagOverview.getKey();
+        this.tagOverview = new Scene(tagOverview.getValue());
 
         primaryStage.initStyle(StageStyle.DECORATED);
         showLandingOverview();
@@ -70,6 +83,25 @@ public class MainCtrl {
         primaryStage.setScene(this.boardOverview);
         boardOverviewCtrl.refresh(new Board("",""));
     }
+
+    /**
+     * Method for the tag overview
+     */
+    public void showTagOverview(){
+        primaryStage.setTitle("Talio: Tag list Overview");
+        primaryStage.setScene(this.tagOverview);
+//        proportionsTagOverview();
+    }
+
+    /**
+     * proprtions of the new window
+     */
+//    public void proportionsTagOverview(){
+//        primaryStage.setMaxHeight(400);
+//        primaryStage.setMaxWidth(780);
+//        primaryStage.setMinHeight(400);
+//        primaryStage.setMinWidth(780);
+//    }
 
     /**
      * Shows an existing board overview scene

@@ -40,6 +40,11 @@
                   <Font size="13.0" />
                </font>
             </Button>
+            <Button fx:id="addTasks1" layoutX="61.0" layoutY="128.0" mnemonicParsing="false" style="-fx-background-color: #123456; -fx-label-padding: 0px; -fx-padding: 0px;" text="+" textFill="WHITE">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </children>

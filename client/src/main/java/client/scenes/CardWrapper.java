@@ -23,10 +23,16 @@ public class CardWrapper {
     private Card cardBeingDragged;
     private CardList originalCardList;
 
+    private final MainCtrl mainCtrl;
+
+
     /**
      * Initiates the CardWrapper class
+     * @param mainCtrl mainCtrl of the application
      */
-    public CardWrapper(){}
+    public CardWrapper(MainCtrl mainCtrl){
+        this.mainCtrl = mainCtrl;
+    }
 
     /**
      * Gets the Pane currently being dragged
@@ -148,6 +154,11 @@ public class CardWrapper {
         cardDescription.setText("Description: ");
         refreshCardDescription(newCard, cardTitle);
         cardTitle.setOnKeyReleased(event -> refreshCardDescription(newCard, cardDescription));
+
+        innerCardPane.getChildren().get(9).setOnMouseClicked(event ->
+            mainCtrl.showTagOverview());
+
+
     }
 
     /**

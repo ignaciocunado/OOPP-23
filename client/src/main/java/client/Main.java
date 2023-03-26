@@ -60,7 +60,10 @@ public class Main extends Application {
         final Pair<BoardOverviewCtrl, Parent> boardOverview =
                 FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
 
+        final Pair<TagOverviewCtrl, Parent> tagOverview =
+            FXML.load(TagOverviewCtrl.class, "client", "scenes", "TagOverview.fxml");
+
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, landingOverview, boardOverview);
+        mainCtrl.initialize(primaryStage, landingOverview, boardOverview, tagOverview);
     }
 }
