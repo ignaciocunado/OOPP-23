@@ -206,7 +206,6 @@ public class CardWrapper {
      */
     public void refreshCardTitle(Card selectedCard, Text selectedText){
         selectedCard.setTitle(selectedText.getText());
-        System.out.println(selectedCard);
     }
 
     /**
@@ -216,7 +215,6 @@ public class CardWrapper {
      */
     public void refreshCardDescription(Card selectedCard, Text selectedText){
         selectedCard.setDescription(selectedText.getText());
-        System.out.println(selectedCard);
     }
 
     /**
