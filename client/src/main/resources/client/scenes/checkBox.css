@@ -1,0 +1,9 @@
+.jfx-check-box .box{
+    -fx-pref-height: 30;
+    -fx-pref-width: 30;
+}
+
+.jfx-check-box .mark{
+    -fx-max-width: 28;
+    -fx-max-height: 28;
+}

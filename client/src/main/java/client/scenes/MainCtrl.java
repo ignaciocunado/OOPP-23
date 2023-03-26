@@ -16,15 +16,20 @@
 package client.scenes;
 
 import commons.entities.Board;
+import commons.entities.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
+import java.io.IOException;
+
 public class MainCtrl {
 
     private Stage primaryStage;
+    private Stage cardEditorStage;
 
     private LandingOverviewCtrl landingOverviewCtrl;
     private Scene landingOverview;
@@ -32,21 +37,35 @@ public class MainCtrl {
     private BoardOverviewCtrl boardOverviewCtrl;
     private Scene boardOverview;
 
+    private CardEditorCtrl cardEditorCtrl;
+    private Scene cardEditorScene;
+
     /**
      * Initialize main controller with all FXML controllers
      * @param primaryStage main stage for FXML views
      * @param landingOverview the landing overview
      * @param boardOverview the main board overview
+     * @param cardEditor card editor view
      */
     public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
-            Pair<BoardOverviewCtrl, Parent> boardOverview) {
+            Pair<BoardOverviewCtrl, Parent> boardOverview, Pair<CardEditorCtrl, Parent>
+                           cardEditor) {
         this.primaryStage = primaryStage;
-
+        this.cardEditorStage = new Stage();
         this.landingOverviewCtrl = landingOverview.getKey();
         this.landingOverview = new Scene(landingOverview.getValue());
 
         this.boardOverviewCtrl = boardOverview.getKey();
         this.boardOverview = new Scene(boardOverview.getValue());
+
+        this.cardEditorCtrl = cardEditor.getKey();
+        this.cardEditorScene = new Scene(cardEditor.getValue());
+
+        cardEditorStage.initModality(Modality.APPLICATION_MODAL);
+        cardEditorStage.setTitle("Card Editor");
+        cardEditorStage.setScene(cardEditorScene);
+        cardEditorScene.getStylesheets().add(getClass().getResource("comboBox.css")
+            .toExternalForm());
 
         primaryStage.initStyle(StageStyle.DECORATED);
         showLandingOverview();
@@ -63,7 +82,7 @@ public class MainCtrl {
     }
 
     /**
-     * Shows the a new board overview scene
+     * Shows a new board overview scene
      */
     public void showNewBoardOverview() {
         primaryStage.setTitle("Talio: Task List Organiser");
@@ -79,6 +98,23 @@ public class MainCtrl {
         primaryStage.setScene(this.boardOverview);
         boardOverviewCtrl.refresh(new Board("",""));
     }
+
+    /**
+     * render card view
+     * @param card
+     */
+    public void showCardEditor(Card card) throws IOException {
+        cardEditorCtrl.refresh(card);
+        cardEditorStage.showAndWait();
+    }
+
+    /**
+     * closes card editor stage
+     */
+    public void closeCardEditor() {
+        cardEditorStage.close();
+    }
+
 
     /**
      * Method to close the app

@@ -60,7 +60,7 @@ public class BoardOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh(new Board("",""));
-        this.listWrapper = new ListWrapper(lists, currentBoard);
+        this.listWrapper = new ListWrapper(lists, currentBoard, mainCtrl);
     }
 
 
