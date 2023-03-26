@@ -21,6 +21,8 @@ import commons.entities.Board;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
+import javafx.stage.Screen;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -70,6 +72,11 @@ public class BoardOverviewCtrl implements Initializable {
      */
     public void refresh(Board currentBoard) {
         this.currentBoard = currentBoard;
+    }
+
+    @FXML
+    public void showBoardSettings() {
+        this.mainCtrl.showBoardSettings();
     }
 
     /**
