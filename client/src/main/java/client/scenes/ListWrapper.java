@@ -31,9 +31,9 @@ public class ListWrapper {
      * @param currentBoard the Board the List of Cards belongs to
      * @param mainCtrl mainCtrl
      */
-    public ListWrapper(HBox hbox, Board currentBoard, MainCtrl mainCtrl) {
+    public ListWrapper(HBox lists, Board currentBoard, MainCtrl mainCtrl) {
         cardWrapper = new CardWrapper(mainCtrl);
-        this.hbox = hbox;
+        this.lists = lists;
         this.currentBoard = currentBoard;
         this.mainCtrl = mainCtrl;
     }
