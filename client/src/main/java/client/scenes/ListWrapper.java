@@ -32,10 +32,10 @@ public class ListWrapper {
      * @param mainCtrl mainCtrl of the application
      */
     public ListWrapper(HBox lists, Board currentBoard, MainCtrl mainCtrl) {
-        this.mainCtrl = mainCtrl;
         cardWrapper = new CardWrapper(mainCtrl);
         this.lists = lists;
         this.currentBoard = currentBoard;
+        this.mainCtrl = mainCtrl;
     }
 
     /**

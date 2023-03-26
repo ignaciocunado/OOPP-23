@@ -3,17 +3,21 @@ package client.scenes;
 import client.MyFXML;
 import commons.entities.Card;
 import commons.entities.CardList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.HashSet;
+
 
 public class CardWrapper {
 
@@ -22,6 +26,8 @@ public class CardWrapper {
     private VBox originalVBox;
     private Card cardBeingDragged;
     private CardList originalCardList;
+    @FXML
+    private HBox tagList;
 
     private final MainCtrl mainCtrl;
 
@@ -80,7 +86,7 @@ public class CardWrapper {
         }
         cardsIds.add(counter);
         outerCardPane.setId(String.valueOf(counter));
-        Card newCard = new Card();
+        Card newCard = new Card("Title", "Description");
         currentList.addCard(newCard);
         setCardMethods(vbox, currentList, outerCardPane, newCard);
     }
@@ -142,23 +148,35 @@ public class CardWrapper {
             event.consume();
         });
 
-        innerCardPane.getChildren().get(4).setOnMouseClicked(event ->
+
+        innerCardPane.getChildren().get(1).setOnMouseClicked(event ->
                 removeCard(outerCardPane, newCard, vbox, currentList));
 
-        TextField cardTitle = (TextField) innerCardPane.getChildren().get(1);
+        Text cardTitle = (Text) innerCardPane.getChildren().get(3);
         cardTitle.setText("Card: " + outerCardPane.getId());
-        refreshCardTitle(newCard, cardTitle);
-        cardTitle.setOnKeyReleased(event -> refreshCardTitle(newCard, cardTitle));
+        //cardTitle.setOnKeyPressed(event -> refreshCardTitle(newCard, cardTitle));
 
-        TextField cardDescription = (TextField) innerCardPane.getChildren().get(3);
+
+        Text cardDescription = (Text) innerCardPane.getChildren().get(4);
         cardDescription.setText("Description: ");
-        refreshCardDescription(newCard, cardTitle);
-        cardTitle.setOnKeyReleased(event -> refreshCardDescription(newCard, cardDescription));
+        /*
+        cardDescription.setOnKeyPressed(event -> {
+            refreshCardDescription(newCard, cardDescription);
+        });
+        */
 
-        innerCardPane.getChildren().get(9).setOnMouseClicked(event ->
-            mainCtrl.showTagOverview());
 
-
+        innerCardPane.setOnMouseClicked(event -> {
+            refreshCardTitle(newCard, cardTitle);
+            refreshCardDescription(newCard, cardDescription);
+            try {
+                mainCtrl.showCardEditor(newCard);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            cardTitle.setText(newCard.getTitle());
+            cardDescription.setText(newCard.getDescription());
+        });
     }
 
     /**
@@ -187,7 +205,7 @@ public class CardWrapper {
      * @param selectedCard the selected Card
      * @param selectedText the TextField associated to the Card
      */
-    public void refreshCardTitle(Card selectedCard, TextField selectedText){
+    public void refreshCardTitle(Card selectedCard, Text selectedText){
         selectedCard.setTitle(selectedText.getText());
     }
 
@@ -196,7 +214,7 @@ public class CardWrapper {
      * @param selectedCard the selected Card
      * @param selectedText the TextField associated to the Card
      */
-    public void refreshCardDescription(Card selectedCard, TextField selectedText){
+    public void refreshCardDescription(Card selectedCard, Text selectedText){
         selectedCard.setDescription(selectedText.getText());
     }
 
@@ -209,4 +227,5 @@ public class CardWrapper {
         var path = Path.of("", parts).toString();
         return MyFXML.class.getClassLoader().getResource(path);
     }
+
 }
