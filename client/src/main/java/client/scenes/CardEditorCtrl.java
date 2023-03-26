@@ -10,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -37,6 +39,8 @@ public class CardEditorCtrl implements Initializable{
     private Card currentCard;
     private MainCtrl mainCtrl;
     private ServerUtils serverUtils;
+    @FXML
+    ComboBox combo;
 
 
     /**
@@ -62,7 +66,6 @@ public class CardEditorCtrl implements Initializable{
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     /**
@@ -71,10 +74,10 @@ public class CardEditorCtrl implements Initializable{
      */
     public void refresh(Card card) throws IOException {
         this.currentCard = card;
+        combo.getItems().addAll(currentCard.getTags());
         this.title.setText(this.currentCard.getTitle());
         this.description.setText(this.currentCard.getDescription());
         tags.getChildren().removeAll(tags.getChildren());
-
         nestedTaskList.getChildren().removeAll(nestedTaskList.getChildren());
         for(Tag tag : currentCard.getTags()) {
             FXMLLoader loader = new FXMLLoader();
@@ -131,13 +134,18 @@ public class CardEditorCtrl implements Initializable{
                 task.setCompleted(completed);
             }
         }
-/*
+
         for(Node node : tags.getChildren()) {
-
+            Pane pane = (Pane) node;
+            TextField textField = (TextField) pane.getChildren().get(0);
+            String name = textField.getText();
+            int id = Integer.parseInt(pane.getId());
+            List<Tag> found = currentCard.getTags().stream().filter(tag1 ->
+                tag1.getId() == id).toList();
+            if(found.size() == 0) {
+                //add tag with id id;
+            }
         }
-        */
-
-
         mainCtrl.closeCardEditor();
         return currentCard;
     }
@@ -162,10 +170,10 @@ public class CardEditorCtrl implements Initializable{
      * @throws IOException
      */
     public void addTag() throws IOException {
+        Tag tag = (Tag) combo.getValue();
         FXMLLoader loader = new FXMLLoader();
         Pane tagPane = loader.load(getClass().getResource("Tag.fxml").openStream());
         TagCtrl ctrl = loader.getController();
-        Tag tag = new Tag("New title", 0);
         tagPane.setId(Integer.toString(tag.getId()));
         ctrl.update(tag.getId(), this);
         tags.getChildren().add(tagPane);

@@ -64,6 +64,7 @@ public class MainCtrl {
         cardEditorStage.initModality(Modality.APPLICATION_MODAL);
         cardEditorStage.setTitle("Card Editor");
         cardEditorStage.setScene(cardEditorScene);
+        cardEditorScene.getStylesheets().add(getClass().getResource("comboBox.css").toExternalForm());
 
         primaryStage.initStyle(StageStyle.UNDECORATED);
         showLandingOverview();
