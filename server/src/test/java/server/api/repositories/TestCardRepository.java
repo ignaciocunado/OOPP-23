@@ -190,6 +190,7 @@ public class TestCardRepository implements CardRepository {
 
     @Override
     public List<Integer> selectCardsWithTag(int tagId) {
-        return null;
+        //for the sake of the test this query is omitted
+        return List.of(1);
     }
 }

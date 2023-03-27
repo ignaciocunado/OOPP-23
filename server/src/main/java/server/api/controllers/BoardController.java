@@ -134,10 +134,12 @@ public class BoardController {
             throw new EntityNotFoundException("No tag with id " + tagId);
         }
         List<Integer> cardsId = cardRepository.selectCardsWithTag(tagId);
-        for (int cardId : cardsId){
-            Card card = this.cardRepository.getById(cardId);
-            card.removeTagById(tagId);
-            cardRepository.save(card);
+        if (cardsId != null) {
+            for (int cardId : cardsId) {
+                Card card = this.cardRepository.getById(cardId);
+                card.removeTagById(tagId);
+                cardRepository.save(card);
+            }
         }
         board.removeTagById(tagId);
         boardRepo.save(board);

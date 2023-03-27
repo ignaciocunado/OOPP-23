@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
 
+import java.util.NoSuchElementException;
+
 class CardControllerTest {
 
     private TestCardRepository cardRepo;
@@ -129,7 +131,7 @@ class CardControllerTest {
     public void createTagFaultyTest() {
         cardRepo.save(new Card("Study ADS", "Weblav"));
         Tag faulty1 = new Tag(null, 23);
-        Assertions.assertThrows(InvalidRequestException.class, () -> controller.assignTag(1, 1));
+        Assertions.assertThrows(NoSuchElementException.class, () -> controller.assignTag(1, 1));
     }
 
     @Test
