@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 public class TagOverviewCtrl implements Initializable{
@@ -24,6 +25,8 @@ public class TagOverviewCtrl implements Initializable{
     private final MainCtrl mainCtrl;
     @FXML
     private Pane newPane;
+
+    private final HashSet<Integer> ids = new HashSet<>();
     @FXML
     private ColorPicker colorPicker;
     @FXML
@@ -32,8 +35,6 @@ public class TagOverviewCtrl implements Initializable{
     private TextField newTitle;
     @FXML
     private VBox vbox;
-    private int id;
-    private TagOverviewCtrl tagOverviewCtrl;
 
     /** Constructor to inject necessary classes into the controller
      * @param server serverUtils
@@ -80,16 +81,27 @@ public class TagOverviewCtrl implements Initializable{
      * @throws IOException
      */
     public void createTag() throws IOException {
+        int counter = 1;
+        while(ids.contains(counter)){
+            counter++;
+        }
+        ids.add(counter);
         FXMLLoader loader = new FXMLLoader();
         Pane tagPane = loader.load(getClass().getResource("Tag.fxml").openStream());
         TagCtrl ctrl = loader.getController();
         Tag newTag = new Tag(newTitle.getText(), colourToInt());
+        newTag.setId(counter);
         tagPane.setId(Integer.toString(newTag.getId()));
         ctrl.update(newTag.getId(), this, newTitle.getText(), colourToInt());
         vbox.getChildren().add(tagPane);
     }
 
-
+    /** method to remove a tag by id
+     * @param id id of the tag
+     */
+    public void removeTag(int id){
+        vbox.getChildren().removeIf(pane -> Integer.parseInt(pane.getId()) == id);
+    }
 
     /**
      * Gets the location of a resource with the given String elements

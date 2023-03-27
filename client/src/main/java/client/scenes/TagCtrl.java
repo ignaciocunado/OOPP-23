@@ -25,7 +25,10 @@ public class TagCtrl {
      * Removes a tag from a card
      */
     public void removeTag() {
-        cardEditorCtrl.removeTag(id);
+        if(cardEditorCtrl != null )cardEditorCtrl.removeTag(id);
+        else {
+            tagOverviewCtrl.removeTag(id);
+        }
     }
 
     /**
@@ -49,6 +52,12 @@ public class TagCtrl {
         this.cardEditorCtrl = cardEditorCtrl;
     }
 
+    /** update methods for tagoverviewctrl
+     * @param id id of the object
+     * @param tagOverviewCtrl ctrl of tagoverview
+     * @param name name of the tag
+     * @param color color of the tag
+     */
     public void update(int id,TagOverviewCtrl tagOverviewCtrl, String name, int color){
         this.id = id;
         this.tagOverviewCtrl = tagOverviewCtrl;

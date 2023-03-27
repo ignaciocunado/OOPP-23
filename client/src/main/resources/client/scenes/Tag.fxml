@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Text?>
 
 <Pane fx:id="background" maxHeight="30.0" minHeight="20.0" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: #d05757; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagCtrl">
    <children>
-      <Text fill="WHITE" layoutX="81.0" layoutY="17.0" onMouseClicked="#removeTag" strokeType="OUTSIDE" strokeWidth="0.0" text="X" wrappingWidth="9.478134155273438" />
       <TextField fx:id="name" layoutX="7.0" prefHeight="25.0" prefWidth="66.0" style="-fx-background-color: 0000000;" text="New Title" />
+      <Button alignment="CENTER" layoutX="65.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#removeTag" prefHeight="25.0" prefWidth="32.0" style="-fx-background-color: 0000000000000000;" text="X" textAlignment="CENTER" textFill="WHITE" />
    </children>
 </Pane>
