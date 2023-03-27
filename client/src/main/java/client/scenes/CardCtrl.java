@@ -10,8 +10,6 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-import java.io.IOException;
-
 public final class CardCtrl {
 
     private ServerUtils server;
@@ -61,6 +59,10 @@ public final class CardCtrl {
         this.cardDescription.setText(this.card.getDescription());
     }
 
+    /**
+     * Gets the card this card ctrl is controller
+     * @return the card
+     */
     public Card getCard() {
         return this.card;
     }

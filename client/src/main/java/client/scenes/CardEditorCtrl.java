@@ -1,6 +1,5 @@
 package client.scenes;
 
-import client.Main;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Card;
@@ -8,7 +7,6 @@ import commons.entities.Tag;
 import commons.entities.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -18,10 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.List;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 
 /**
@@ -110,7 +105,11 @@ public class CardEditorCtrl {
         currentCard.setTitle(this.title.getText());
         currentCard.setDescription(this.description.getText());
 
-        this.serverUtils.editCard(this.currentCard.getId(), this.title.getText(), this.description.getText());
+        this.serverUtils.editCard(
+                this.currentCard.getId(),
+                this.title.getText(),
+                this.description.getText()
+        );
 
         for (Node node : nestedTaskList.getChildren()) {
             final Pane pane = (Pane) node;
@@ -119,7 +118,12 @@ public class CardEditorCtrl {
             final CheckBox checkBox = (CheckBox) pane.getChildren().get(1);
             final boolean completed = checkBox.isSelected() && !checkBox.isIndeterminate();
             final int id = Integer.parseInt(pane.getId());
-            final Optional<Task> taskOpt = this.currentCard.getNestedTaskList().stream().filter(task -> task.getId() == id).findAny();
+            final Optional<Task> taskOpt =
+                    this.currentCard
+                            .getNestedTaskList()
+                            .stream()
+                            .filter(task -> task.getId() == id)
+                            .findAny();
             if (taskOpt.isEmpty()) {
                 // TODO: This should send a request to create a new task
                 Task newTask = new Task(name, completed);
