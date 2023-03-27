@@ -92,19 +92,20 @@ public class MainCtrl {
 
     /**
      * Shows an existing board overview scene
+     * @param board the board
      */
-    public void showExistingBoardOverview() {
+    public void showExistingBoardOverview(final Board board) {
         primaryStage.setTitle("Talio: Task List Organiser");
         primaryStage.setScene(this.boardOverview);
-        boardOverviewCtrl.refresh(new Board("",""));
+        boardOverviewCtrl.refresh(board);
     }
 
     /**
      * render card view
-     * @param card
+     * @param cardCtrl
      */
-    public void showCardEditor(Card card) throws IOException {
-        cardEditorCtrl.refresh(card);
+    public void showCardEditor(final CardCtrl cardCtrl) {
+        cardEditorCtrl.refresh(cardCtrl);
         cardEditorStage.showAndWait();
     }
 
