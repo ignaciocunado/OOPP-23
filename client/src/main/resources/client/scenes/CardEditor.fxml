@@ -4,32 +4,39 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(35,69,103);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardEditorCtrl">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(35,69,103);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardEditorCtrl">
    <children>
-      <TextField fx:id="title" layoutX="47.0" prefHeight="78.0" prefWidth="535.0" promptText="Title" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 40; -fx-text-fill: white; -fx-padding: 0;" />
-      <TextField fx:id="description" layoutX="35.0" layoutY="78.0" prefHeight="43.0" prefWidth="535.0" promptText="Description" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-text-fill: white;" />
-      <Text fill="WHITE" layoutX="55.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tags:" wrappingWidth="29.58203125" />
-      <Text fill="WHITE" layoutX="54.0" layoutY="259.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tasks:" />
-      <HBox fx:id="tags" layoutX="62.0" layoutY="184.0" prefHeight="43.0" prefWidth="511.0" />
-      <Button layoutX="113.0" layoutY="144.0" mnemonicParsing="false" onAction="#addTag" prefHeight="33.0" prefWidth="47.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" />
-      <Button layoutX="114.0" layoutY="238.0" mnemonicParsing="false" onAction="#addTask" prefHeight="33.0" prefWidth="47.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" />
-      <Button contentDisplay="CENTER" graphicTextGap="10.0" layoutX="212.0" layoutY="355.0" maxWidth="207.0" mnemonicParsing="false" onAction="#save" prefHeight="22.0" prefWidth="207.0" style="-fx-background-color: #123456; -fx-padding: 0px;" text="Save" textAlignment="CENTER" textFill="WHITE">
-         <font>
-            <Font size="25.0" />
-         </font>
-      </Button>
-      <ScrollPane hbarPolicy="NEVER" hmax="0.0" layoutX="62.0" layoutY="276.0" prefHeight="67.0" prefWidth="519.0" style="-fx-border-color: rgb(35,69,103); -fx-background-color: rgb(35,69,103); -fx-padding: 0px;" vbarPolicy="NEVER">
-         <content>
-            <VBox fx:id="nestedTaskList" prefHeight="70.0" prefWidth="518.0" style="-fx-background-color: rgb(35,69,103);" />
-         </content>
-      </ScrollPane>
-      <ComboBox fx:id="combo" layoutX="160.0" layoutY="150.0" prefWidth="150.0" promptText="Select" stylesheets="" />
+      <AnchorPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <TextField fx:id="title" promptText="Title" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 40; -fx-text-fill: white; -fx-padding: 0;" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+            <TextField fx:id="description" promptText="Description" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-text-fill: white; -fx-padding: 0;" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0" />
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Tags:" wrappingWidth="29.58203125" AnchorPane.leftAnchor="12.5" AnchorPane.topAnchor="120.0" />
+            <Button layoutX="97.0" layoutY="117.0" mnemonicParsing="false" onAction="#addTag" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="113.5" />
+            <ComboBox fx:id="combo" prefWidth="150.0" promptText="Select" stylesheets="" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="115.0" />
+            <HBox fx:id="tags" minHeight="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0" />
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Tasks:" AnchorPane.leftAnchor="12.5" AnchorPane.topAnchor="210.0" />
+            <Button mnemonicParsing="false" onAction="#addTask" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="205.0" />
+            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" style="-fx-border-color: rgb(35,69,103); -fx-background-color: rgb(35,69,103); -fx-padding: 0px;" vbarPolicy="NEVER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="230.0">
+               <content>
+                  <VBox fx:id="nestedTaskList" style="-fx-background-color: rgb(35,69,103);" />
+               </content>
+            </ScrollPane>
+            <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <Button contentDisplay="CENTER" graphicTextGap="10.0" mnemonicParsing="false" onAction="#save" prefHeight="24.0" prefWidth="200.0" style="-fx-background-color: #123456; -fx-padding: 0px;" text="Save" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
    </children>
-</Pane>
+</AnchorPane>
