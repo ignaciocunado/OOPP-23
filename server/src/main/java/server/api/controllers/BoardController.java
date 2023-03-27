@@ -16,9 +16,12 @@
 package server.api.controllers;
 
 import commons.entities.Board;
+import commons.entities.Card;
 import commons.entities.CardList;
 import commons.entities.Tag;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import server.database.CardRepository;
 import server.database.TagRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
@@ -31,6 +34,10 @@ import org.springframework.web.bind.annotation.*;
 import server.database.BoardRepository;
 import server.database.CardListRepository;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/board")
 public class BoardController {
@@ -38,22 +45,26 @@ public class BoardController {
     private final BoardRepository boardRepo;
     private final TagRepository tagRepo;
     private final CardListRepository cardListRepository;
+    private final CardRepository cardRepository;
     private final TextService textService;
 
     /**
      * RestAPI Controller for the board route
      *
      * @param boardRepo          repository for boards
-     * @param cardListRepository repository for cards
+     * @param cardListRepository repository for cardLists
+     * @param cardRepository     repository for cards
      * @param textService        service for generating random keys
      * @param tagRepo repository for tags
      */
     public BoardController(final BoardRepository boardRepo,
                            final CardListRepository cardListRepository,
+                           final CardRepository cardRepository,
                            final TextService textService,
                            final TagRepository tagRepo) {
         this.boardRepo = boardRepo;
         this.cardListRepository = cardListRepository;
+        this.cardRepository = cardRepository;
         this.textService = textService;
         this.tagRepo = tagRepo;
     }
@@ -144,17 +155,24 @@ public class BoardController {
     @DeleteMapping("/{id}/list/{listId}")
     public ResponseEntity<Board> deleteList(@PathVariable final Integer id,
                                             @PathVariable final Integer listId) {
-        if (!this.boardRepo.existsById(id)) {
-            throw new EntityNotFoundException("No board with id " + id);
-        }
+        try {
+            if (!this.boardRepo.existsById(id)) {
+                throw new EntityNotFoundException("No board with id " + id);
+            }
 
-        final Board board = this.boardRepo.getById(id);
-        if (!board.removeListById(listId)) {
-            throw new EntityNotFoundException("Board contains no list with id " + listId);
-        }
+            final Board board = this.boardRepo.getById(id);
+            if (!board.removeListById(listId)) {
+                throw new EntityNotFoundException("Board contains no list with id " + listId);
+            }
 
-        this.cardListRepository.deleteById(listId);
-        return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), HttpStatus.OK);
+            final List<Card> cards = new ArrayList<>(this.cardListRepository.getById(listId).getCards());
+            this.cardListRepository.deleteById(listId);
+            cards.forEach(card -> this.cardRepository.deleteById(card.getId()));
+
+            return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), HttpStatus.OK);
+        } catch (DataIntegrityViolationException ex) {
+            return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.CONFLICT);
+        }
     }
 
     /** endpoint for editing the title of a card list
