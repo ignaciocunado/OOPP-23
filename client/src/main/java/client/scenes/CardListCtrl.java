@@ -138,4 +138,8 @@ public final class CardListCtrl {
             this.boardOverviewCtrl.refresh();
         });
     }
+
+    public String getKeyOfBoard() {
+        return boardOverviewCtrl.getkey();
+    }
 }

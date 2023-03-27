@@ -16,6 +16,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -63,8 +65,8 @@ public class CardEditorCtrl {
     public void refresh(final CardCtrl cardCtrl) {
         this.currentCard = cardCtrl.getCard();
         this.cardCtrl = cardCtrl;
-
-//        combo.getItems().addAll(currentCard.getTags()); TODO: These should come from the board
+        combo.getItems().clear();
+        combo.getItems().addAll(serverUtils.getBoard(this.cardCtrl.getKeyOfBoard()).getTags());
         this.title.setText(this.currentCard.getTitle());
         this.description.setText(this.currentCard.getDescription());
 
@@ -175,6 +177,7 @@ public class CardEditorCtrl {
         TagCtrl ctrl = loader.getController();
         tagPane.setId(Integer.toString(tag.getId()));
         ctrl.update(tag.getId(), this);
+        ctrl.editData(tag);
         tags.getChildren().add(tagPane);
     }
 

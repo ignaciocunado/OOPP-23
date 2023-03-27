@@ -103,4 +103,8 @@ public class BoardOverviewCtrl implements Initializable {
         final Board board = this.server.deleteList(this.currentBoard.getId(), id);
         this.refresh(board);
     }
+
+    public String getkey() {
+        return this.currentBoard.getKey();
+    }
 }

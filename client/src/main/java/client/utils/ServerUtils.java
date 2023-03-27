@@ -19,6 +19,7 @@ import com.google.inject.Singleton;
 import commons.entities.Board;
 import commons.entities.Card;
 import commons.entities.CardList;
+import commons.entities.Tag;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -31,6 +32,7 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.glassfish.jersey.client.ClientConfig;
 
 import java.io.IOException;
+import java.util.List;
 
 @Singleton
 public class ServerUtils {

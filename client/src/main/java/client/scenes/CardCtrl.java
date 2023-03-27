@@ -91,4 +91,7 @@ public final class CardCtrl {
         this.mainCtrl.showCardEditor(this);
     }
 
+    public String getKeyOfBoard() {
+        return cardListCtrl.getKeyOfBoard();
+    }
 }
