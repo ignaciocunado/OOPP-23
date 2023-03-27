@@ -75,7 +75,7 @@ public final class BoardControllerTest {
     public void createListTest() {
         this.boardRepo.save(new Board("aaaaaaaaab", "password"));
         this.boardController.createList(1, new CardList("New List"), noErrorResult);
-        Assertions.assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() > 0);
+        Assertions.assertTrue(this.boardRepo.findById(1).get().getLists().size() > 0);
         Assertions.assertTrue(this.cardRepo.count() > 0);
     }
 
@@ -93,11 +93,11 @@ public final class BoardControllerTest {
     @Test
     public void deleteListTest() {
         this.boardRepo.save(new Board("aaaaaaaaab", "password"));
-        final CardList list = this.boardController.createList(1, new CardList("New List"), noErrorResult).getBody().getListsOnBoard().get(0);
+        final CardList list = this.boardController.createList(1, new CardList("New List"), noErrorResult).getBody().getLists().get(0);
 
-        assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() > 0);
+        assertTrue(this.boardRepo.findById(1).get().getLists().size() > 0);
         this.boardController.deleteList(1, list.getId());
-        assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() == 0);
+        assertTrue(this.boardRepo.findById(1).get().getLists().size() == 0);
         assertTrue(this.cardRepo.count() == 0);
     }
 
