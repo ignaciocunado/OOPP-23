@@ -16,9 +16,11 @@
 package server.api.controllers;
 
 import commons.entities.Board;
+import commons.entities.Card;
 import commons.entities.CardList;
 import commons.entities.Tag;
 import org.springframework.http.HttpStatus;
+import server.database.CardRepository;
 import server.database.TagRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
@@ -31,6 +33,8 @@ import org.springframework.web.bind.annotation.*;
 import server.database.BoardRepository;
 import server.database.CardListRepository;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/board")
 public class BoardController {
@@ -38,22 +42,27 @@ public class BoardController {
     private final BoardRepository boardRepo;
     private final TagRepository tagRepo;
     private final CardListRepository cardListRepository;
+    private final CardRepository cardRepository;
     private final TextService textService;
+
 
     /**
      * RestAPI Controller for the board route
      *
      * @param boardRepo          repository for boards
      * @param cardListRepository repository for cards
+     * @param cardRepository     repository for cards
      * @param textService        service for generating random keys
      * @param tagRepo repository for tags
      */
     public BoardController(final BoardRepository boardRepo,
                            final CardListRepository cardListRepository,
+                           final CardRepository cardRepository,
                            final TextService textService,
                            final TagRepository tagRepo) {
         this.boardRepo = boardRepo;
         this.cardListRepository = cardListRepository;
+        this.cardRepository = cardRepository;
         this.textService = textService;
         this.tagRepo = tagRepo;
     }
@@ -105,6 +114,36 @@ public class BoardController {
         Board board = boardRepo.getById(id);
         board.addTag(tag);
         return new ResponseEntity<>(boardRepo.save(board), new HttpHeaders(), 200);
+    }
+
+    /**
+     * Handler for deleting a tag on a board
+     *
+     * @param id an id of a board on which this tag exists
+     * @param tagId an id of a tag to be deleted
+     * @return the board without this tag
+     */
+    @DeleteMapping("/{id}/tag/{tagId}")
+    public ResponseEntity<Board> deleteTag(@PathVariable final int id,
+                                           @PathVariable final int tagId) {
+        if (!boardRepo.existsById(id)){
+            throw new EntityNotFoundException("No board with id " + id);
+        }
+        Board board = boardRepo.getById(id);
+        if (!tagRepo.existsById(tagId)){
+            throw new EntityNotFoundException("No tag with id " + tagId);
+        }
+        List<Integer> cardsId = cardRepository.selectCardsWithTag(tagId);
+        for (int cardId : cardsId){
+            Card card = this.cardRepository.getById(cardId);
+            card.removeTagById(tagId);
+            cardRepository.save(card);
+        }
+        board.removeTagById(tagId);
+        boardRepo.save(board);
+        this.tagRepo.deleteById(tagId);
+
+        return new ResponseEntity<>(board, new HttpHeaders(), 200);
     }
     /**
      * Handler for creating the list in a board

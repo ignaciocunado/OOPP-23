@@ -10,8 +10,10 @@ import org.mockito.Mockito;
 import org.springframework.validation.BindingResult;
 import server.api.repositories.TestBoardRepository;
 import server.api.repositories.TestCardListRepository;
+import server.api.repositories.TestCardRepository;
 import server.api.repositories.TestTagRepository;
 import server.api.services.TestTextService;
+import server.database.CardRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
 import server.services.TextService;
@@ -22,7 +24,8 @@ public final class BoardControllerTest {
 
     private TextService textService;
     private TestBoardRepository boardRepo;
-    private TestCardListRepository cardRepo;
+    private TestCardListRepository cardListRepo;
+    private TestCardRepository cardRepo;
     private TestTagRepository tagRepo;
     private BoardController boardController;
     private BindingResult hasErrorResult;
@@ -32,9 +35,10 @@ public final class BoardControllerTest {
     public void setup() {
         this.textService = new TestTextService();
         this.boardRepo = new TestBoardRepository();
-        this.cardRepo = new TestCardListRepository();
+        this.cardRepo = new TestCardRepository();
+        this.cardListRepo = new TestCardListRepository();
         this.tagRepo = new TestTagRepository();
-        this.boardController = new BoardController(this.boardRepo, this.cardRepo,this.textService, this.tagRepo);
+        this.boardController = new BoardController(this.boardRepo, this.cardListRepo, this.cardRepo, this.textService, this.tagRepo);
         this.hasErrorResult = Mockito.mock(BindingResult.class);
         this.noErrorResult = Mockito.mock(BindingResult.class);
 

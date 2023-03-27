@@ -187,4 +187,9 @@ public class TestCardRepository implements CardRepository {
     private Optional<Card> find(int id) {
         return this.cards.stream().filter(b -> b.getId() == id).findFirst();
     }
+
+    @Override
+    public List<Integer> selectCardsWithTag(int tagId) {
+        return null;
+    }
 }
