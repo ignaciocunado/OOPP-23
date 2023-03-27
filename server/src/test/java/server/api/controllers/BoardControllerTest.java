@@ -59,7 +59,7 @@ public final class BoardControllerTest {
         this.boardRepo.save(new Board("aaaaaaaaad", "password"));
 
         board.setId(2);
-        Assertions.assertEquals(this.boardController.getBoard(2).getBody(), board);
+        Assertions.assertEquals(this.boardController.getBoard("aaaaaaaaaa").getBody(), board);
     }
 
     @Test
@@ -68,14 +68,14 @@ public final class BoardControllerTest {
         this.boardRepo.save(new Board("aaaaaaaaac", "password"));
         this.boardRepo.save(new Board("aaaaaaaaad", "password"));
 
-        Assertions.assertThrows(EntityNotFoundException.class, () -> this.boardController.getBoard(100));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.boardController.getBoard("doesntexist"));
     }
 
     @Test
     public void createListTest() {
         this.boardRepo.save(new Board("aaaaaaaaab", "password"));
         this.boardController.createList(1, new CardList("New List"), noErrorResult);
-        Assertions.assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() > 0);
+        Assertions.assertTrue(this.boardRepo.findById(1).get().getLists().size() > 0);
         Assertions.assertTrue(this.cardRepo.count() > 0);
     }
 
@@ -93,11 +93,11 @@ public final class BoardControllerTest {
     @Test
     public void deleteListTest() {
         this.boardRepo.save(new Board("aaaaaaaaab", "password"));
-        final CardList list = this.boardController.createList(1, new CardList("New List"), noErrorResult).getBody().getListsOnBoard().get(0);
+        final CardList list = this.boardController.createList(1, new CardList("New List"), noErrorResult).getBody().getLists().get(0);
 
-        assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() > 0);
+        assertTrue(this.boardRepo.findById(1).get().getLists().size() > 0);
         this.boardController.deleteList(1, list.getId());
-        assertTrue(this.boardRepo.findById(1).get().getListsOnBoard().size() == 0);
+        assertTrue(this.boardRepo.findById(1).get().getLists().size() == 0);
         assertTrue(this.cardRepo.count() == 0);
     }
 
@@ -121,6 +121,11 @@ public final class BoardControllerTest {
         tag.setId(1);
         assertTrue(tagRepo.existsById(1));
         assertEquals(tagRepo.getById(1), tag);
+    }
+
+    @Test
+    public void createTagBoardNotFoundTest() {
+        assertThrows(EntityNotFoundException.class, () -> boardController.createTag(10, new Tag(), noErrorResult));
     }
 
     @Test
