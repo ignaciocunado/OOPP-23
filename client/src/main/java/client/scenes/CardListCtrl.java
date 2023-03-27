@@ -130,7 +130,7 @@ public final class CardListCtrl {
             // 185 + 2.5 is the card height plus half of the space between them
             // Rounded to closest and can be maximum the amount of children already there.
             int position = Math.min(
-                    (int) Math.round(event.getY() / (185 + 2.5)),
+                    (int) Math.round(event.getY() / (128 + 2.5)),
                     this.cardList.getCards().size()
             );
 

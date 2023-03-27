@@ -23,22 +23,10 @@ import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Integer> {
 
-    /**
-     * Gets the board by a key
-     * @param key the key
-     * @return the board
-     */
     @Query("SELECT b FROM Board b WHERE b.key = ?1")
     Board getBoardByKey(final String key);
 
-    /**
-     * Finds the board by a key
-     * @param key the key
-     * @return the potential board wrapped in an Optional
-     */
     @Query("SELECT b FROM Board b WHERE b.key = ?1")
     Optional<Board> findBoardByKey(final String key);
-
-
 
 }

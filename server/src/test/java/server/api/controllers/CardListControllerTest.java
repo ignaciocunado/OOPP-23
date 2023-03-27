@@ -84,6 +84,111 @@ class CardListControllerTest {
     }
 
     @Test
+    public void switchListTest() {
+        final CardList deleteList = this.cardListRepo.save(new CardList("title"));
+        final CardList addList = this.cardListRepo.save(new CardList("title"));
+        final Card card = this.cardListController.createCard(deleteList.getId(), new Card("New Title", "New Description"), noErrorResult).getBody().getCards().get(0);
+
+        Assertions.assertTrue(this.cardListRepo.findById(deleteList.getId()).get().getCards().size() > 0);
+        this.cardListController.switchList(deleteList.getId(), addList.getId(), card.getId());
+        Assertions.assertTrue(this.cardListRepo.findById(deleteList.getId()).get().getCards().size() == 0);
+        Assertions.assertTrue(this.cardListRepo.findById(addList.getId()).get().getCards().size() > 0);
+    }
+
+    @Test
+    public void switchListCardNotFoundTest() {
+        final CardList deleteList = this.cardListRepo.save(new CardList("title"));
+        final CardList addList = this.cardListRepo.save(new CardList("title"));
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.cardListController.switchList(
+            deleteList.getId(), addList.getId(), 0));
+    }
+
+    @Test
+    public void switchListDeleteListNotFoundTest() {
+        final CardList addList = this.cardListRepo.save(new CardList("title"));
+        final Card card = this.cardListController.createCard(addList.getId(), new Card("New Title", "New Description"), noErrorResult).getBody().getCards().get(0);
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.cardListController.switchList(
+            0, addList.getId(), card.getId()));
+    }
+
+    @Test
+    public void switchListAddListNotFoundTest() {
+        final CardList deleteList = this.cardListRepo.save(new CardList("title"));
+        final Card card = this.cardListController.createCard(deleteList.getId(), new Card("New Title", "New Description"), noErrorResult).getBody().getCards().get(0);
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.cardListController.switchList(
+            deleteList.getId(), 0, card.getId()));
+    }
+
+    @Test
+    public void switchListCardNotFoundInListTest() {
+        final CardList deleteList = this.cardListRepo.save(new CardList("title"));
+        final CardList addList = this.cardListRepo.save(new CardList("title"));
+        final Card card = this.cardListController.createCard(addList.getId(), new Card("New Title", "New Description"), noErrorResult).getBody().getCards().get(0);
+
+        Assertions.assertTrue(this.cardListRepo.findById(addList.getId()).get().getCards().size() > 0);
+        Assertions.assertTrue(this.cardListRepo.findById(deleteList.getId()).get().getCards().size() == 0);
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.cardListController.switchList(
+            deleteList.getId(), addList.getId(), card.getId()));
+    }
+
+    @Test
+    public void editCardPositioningTest() {
+        final CardList list = this.cardListRepo.save(new CardList("title"));
+        final Card card = this.cardListController.createCard(list.getId(), new Card("New Title", "New Description"), noErrorResult).getBody().getCards().get(0);
+        final Card card2 = this.cardListController.createCard(list.getId(), new Card("New Title2", "New Description2"), noErrorResult).getBody().getCards().get(1);
+
+        Assertions.assertEquals(card, this.cardListRepo.findById(list.getId()).get().getCards().get(0));
+        this.cardListController.editCardPositioning(list.getId(), card.getId(), 1, noErrorResult);
+        Assertions.assertEquals(card, this.cardListRepo.findById(list.getId()).get().getCards().get(1));
+    }
+
+    @Test
+    public void editInvalidCardPositioningTest() {
+        final CardList list = this.cardListRepo.save(new CardList("title"));
+        final Card card = this.cardListController.createCard(list.getId(), new Card("New Title", "New Description"), noErrorResult).getBody().getCards().get(0);
+        Assertions.assertThrows(InvalidRequestException.class, () -> this.cardListController.editCardPositioning(list.getId(),
+            card.getId(), 0, hasErrorResult));
+    }
+
+    @Test
+    public void editCardPositioningCardNotFoundTest() {
+        final CardList list = this.cardListRepo.save(new CardList("title"));
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.cardListController.editCardPositioning(
+            list.getId(), 1, 0, noErrorResult));
+    }
+
+    @Test
+    public void editCardPositioningListNotFoundTest() {
+        final CardList list = this.cardListRepo.save(new CardList("title"));
+        final Card card = this.cardListController.createCard(list.getId(), new Card("New Title", "New Description"), noErrorResult).getBody().getCards().get(0);
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.cardListController.editCardPositioning(
+            0, card.getId(), 0, noErrorResult));
+    }
+
+    @Test
+    public void editCardPositioningInvalidIndexTest() {
+        final CardList list = this.cardListRepo.save(new CardList("title"));
+        final Card card = this.cardListController.createCard(list.getId(), new Card("New Title", "New Description"), noErrorResult).getBody().getCards().get(0);
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.cardListController.editCardPositioning(
+            list.getId(), card.getId(), 1, noErrorResult));
+    }
+
+    @Test
+    public void editCardPositioningCardNotFoundInListTest() {
+        final CardList list = this.cardListRepo.save(new CardList("title"));
+        final CardList list2 = this.cardListRepo.save(new CardList("title2"));
+        final Card card = this.cardListController.createCard(list2.getId(), new Card("New Title", "New Description"), noErrorResult).getBody().getCards().get(0);
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.cardListController.editCardPositioning(
+            list.getId(), card.getId(), 0, noErrorResult));
+    }
+
+    @Test
     void editCardListTitleTest() {
         this.cardListRepo.save(new CardList("title"));
         final CardList cardList1 = new CardList("title");

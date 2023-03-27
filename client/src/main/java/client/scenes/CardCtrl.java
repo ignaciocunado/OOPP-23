@@ -3,40 +3,44 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Card;
-import javafx.beans.Observable;
-import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 
 public final class CardCtrl {
 
     private ServerUtils server;
+    private MainCtrl mainCtrl;
+
     private CardListCtrl cardListCtrl;
 
     @FXML
     private Pane cardPane;
     @FXML
-    private TextField cardTitleField;
+    private Text cardTitle;
     @FXML
-    private TextField cardDescriptionField;
+    private Text cardDescription;
 
     private Card card;
 
     /**
      * The wrapping controller for a card
-     * @param server the server functions
+     *
+     * @param server   the server functions
+     * @param mainCtrl
      */
     @Inject
-    public CardCtrl(final ServerUtils server) {
+    public CardCtrl(final ServerUtils server, final MainCtrl mainCtrl) {
         this.server = server;
+        this.mainCtrl = mainCtrl;
     }
 
     /**
      * Additional setter to inject the correct card list controller
+     *
      * @param cardListCtrl the card list controller
      */
     public void setCardListCtrl(final CardListCtrl cardListCtrl) {
@@ -45,13 +49,22 @@ public final class CardCtrl {
 
     /**
      * Refreshes card with the card data provided
+     *
      * @param card the data
      */
     public void refresh(final Card card) {
         this.card = card;
 
-        this.cardTitleField.setText(this.card.getTitle());
-        this.cardDescriptionField.setText(this.card.getDescription());
+        this.cardTitle.setText(this.card.getTitle());
+        this.cardDescription.setText(this.card.getDescription());
+    }
+
+    /**
+     * Gets the card this card ctrl is controller
+     * @return the card
+     */
+    public Card getCard() {
+        return this.card;
     }
 
     /**
@@ -66,8 +79,6 @@ public final class CardCtrl {
             db.setContent(content);
             event.consume();
         });
-        cardTitleField.focusedProperty().addListener(this::handleCardDetailsChanged);
-        cardDescriptionField.focusedProperty().addListener(this::handleCardDetailsChanged);
     }
 
     @FXML
@@ -75,15 +86,9 @@ public final class CardCtrl {
         this.cardListCtrl.removeCard(this.card.getId());
     }
 
-    private void handleCardDetailsChanged(final Observable observable) {
-        if (!(observable instanceof ReadOnlyBooleanProperty)) return; // Doesn't happen
-        final ReadOnlyBooleanProperty focused = (ReadOnlyBooleanProperty) observable;
-        if (focused.getValue()) return; // If focuses then don't save yet
-
-        this.server.editCard(
-                this.card.getId(),
-                cardTitleField.getText(),
-                cardDescriptionField.getText()
-        );
+    @FXML
+    private void handleEditCard() {
+        this.mainCtrl.showCardEditor(this);
     }
+
 }
