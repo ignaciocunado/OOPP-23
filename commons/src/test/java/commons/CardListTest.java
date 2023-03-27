@@ -64,6 +64,41 @@ class CardListTest {
     }
 
     @Test
+    void editCardIndexRightwardsTest() {
+        CardList list = new CardList("new");
+        Card card = new Card("newCard", "this is a new card");
+        Card card2 = new Card("newCard2", "this is a new card");
+        Card card3 = new Card("newCard3", "this is a new card");
+        Card card4 = new Card("newCard4", "this is a new card");
+        list.addCard(card);
+        list.addCard(card2);
+        list.addCard(card3);
+        list.addCard(card4);
+        list.editCardIndex(card2, 3);
+        assertEquals(card2, list.getCards().get(3));
+        assertEquals(card3, list.getCards().get(1));
+        assertEquals(card4, list.getCards().get(2));
+    }
+
+    @Test
+    void editCardIndexLeftwardsTest() {
+        CardList list = new CardList("new");
+        Card card = new Card("newCard", "this is a new card");
+        Card card2 = new Card("newCard2", "this is a new card");
+        Card card3 = new Card("newCard3", "this is a new card");
+        Card card4 = new Card("newCard4", "this is a new card");
+        list.addCard(card);
+        list.addCard(card2);
+        list.addCard(card3);
+        list.addCard(card4);
+        list.editCardIndex(card3, 0);
+        assertEquals(card3, list.getCards().get(0));
+        assertEquals(card, list.getCards().get(1));
+        assertEquals(card2, list.getCards().get(2));
+        assertEquals(card4, list.getCards().get(3));
+    }
+
+    @Test
     void toStingTest() {
         CardList list = new CardList("new");
         assertEquals("List: title - new, id - 0.", list.toString());

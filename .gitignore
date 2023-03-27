@@ -4,6 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+quizzzz.mv.db
 
 **/*.mv.db
 
@@ -39,3 +40,4 @@ out/
 
 ### VS Code ###
 .vscode/
+

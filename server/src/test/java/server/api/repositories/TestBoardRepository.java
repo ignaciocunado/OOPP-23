@@ -198,4 +198,16 @@ public final class TestBoardRepository implements BoardRepository {
     public <S extends Board, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
+
+    @Override
+    public Board getBoardByKey(String key) {
+        return this.findBoardByKey(key).get();
+    }
+
+    @Override
+    public Optional<Board> findBoardByKey(String key) {
+        return this.boards.stream().filter(b -> b.getKey().equals(key)).findFirst();
+    }
+
+
 }
