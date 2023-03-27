@@ -5,6 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
@@ -14,14 +15,14 @@
    <children>
       <AnchorPane fx:id="custo" prefHeight="567.0" prefWidth="780.0">
          <children>
-            <Button alignment="CENTER" layoutX="719.0" layoutY="-47.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#cancel" prefHeight="119.0" prefWidth="61.0" style="-fx-background-color: #123456;" text="X" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="470.0" AnchorPane.leftAnchor="719.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-47.0">
+            <Button alignment="CENTER" layoutX="719.0" layoutY="-44.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#cancel" prefHeight="119.0" prefWidth="61.0" style="-fx-background-color: #123456;" text="X" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="467.0" AnchorPane.leftAnchor="719.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-44.0">
                <font>
                   <Font size="22.0" />
                </font>
             </Button>
             <Pane layoutX="507.0" layoutY="51.0" prefHeight="459.0" prefWidth="236.0" style="-fx-background-color: #0492C2;">
                <children>
-                  <TextField alignment="CENTER" layoutX="18.0" layoutY="14.0" prefHeight="7.0" prefWidth="200.0" style="-fx-background-color: #0492C2; -fx-font-size: 20; -fx-text-fill: #c6c6c6;" text="Title">
+                  <TextField fx:id="newTitle" alignment="CENTER" layoutX="18.0" layoutY="14.0" prefHeight="7.0" prefWidth="200.0" style="-fx-background-color: #0492C2; -fx-font-size: 20; -fx-text-fill: #c6c6c6;" text="Title">
                      <font>
                         <Font size="30.0" />
                      </font>
@@ -84,11 +85,12 @@
                   <Circle fx:id="circle" fill="DODGERBLUE" layoutX="123.0" layoutY="365.0" radius="44.0" stroke="BLACK" strokeType="INSIDE" />
                </children>
             </Pane>
-            <Button alignment="CENTER" layoutX="317.0" layoutY="439.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="97.0" prefWidth="147.0" style="-fx-background-color: #123456;" text="+" textAlignment="CENTER" textFill="WHITE">
+            <Button alignment="CENTER" layoutX="333.0" layoutY="439.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#createTag" prefHeight="97.0" prefWidth="147.0" style="-fx-background-color: #123456;" text="+" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="57.0" />
                </font>
             </Button>
+            <VBox fx:id="vbox" alignment="CENTER" layoutX="56.0" layoutY="54.0" prefHeight="459.0" prefWidth="250.0" style="-fx-background-color: #0492C2;" />
          </children>
       </AnchorPane>
    </children>

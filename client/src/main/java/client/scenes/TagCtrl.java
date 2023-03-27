@@ -1,9 +1,17 @@
 package client.scenes;
 
+import client.MyFXML;
 import commons.entities.Tag;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.util.HashSet;
 
 
 public class TagCtrl {
@@ -14,6 +22,9 @@ public class TagCtrl {
     private Text name;
     private int id;
     private CardEditorCtrl cardEditorCtrl;
+    private VBox tags;
+    private HashSet<Integer> ids = new HashSet<>();
+
 
     /**
      * Removes a tag from a card
@@ -42,4 +53,5 @@ public class TagCtrl {
         this.id = id;
         this.cardEditorCtrl = cardEditorCtrl;
     }
+
 }
