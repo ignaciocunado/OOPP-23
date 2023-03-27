@@ -8,16 +8,18 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
 
 <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(35,69,103);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardEditorCtrl">
    <children>
       <TextField fx:id="title" layoutX="47.0" prefHeight="78.0" prefWidth="535.0" promptText="Title" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 40; -fx-text-fill: white; -fx-padding: 0;" />
       <TextField fx:id="description" layoutX="35.0" layoutY="78.0" prefHeight="43.0" prefWidth="535.0" promptText="Description" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-text-fill: white;" />
-      <TextField layoutX="47.0" layoutY="141.0" prefHeight="43.0" prefWidth="75.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-text-fill: white;" text="Tags:" />
-      <TextField layoutX="52.0" layoutY="233.0" prefHeight="43.0" prefWidth="75.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-text-fill: white;" text="Tasks:" />
+      <Text fill="WHITE" layoutX="55.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tags:" wrappingWidth="29.58203125" />
+      <Text fill="WHITE" layoutX="54.0" layoutY="259.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tasks:" />
       <HBox fx:id="tags" layoutX="62.0" layoutY="184.0" prefHeight="43.0" prefWidth="511.0" />
-      <Button layoutX="113.0" layoutY="146.0" mnemonicParsing="false" onAction="#addTag" prefHeight="33.0" prefWidth="47.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" />
-      <Button layoutX="125.0" layoutY="238.0" mnemonicParsing="false" onAction="#addTask" prefHeight="33.0" prefWidth="47.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" />
+      <Button layoutX="113.0" layoutY="144.0" mnemonicParsing="false" onAction="#addTag" prefHeight="33.0" prefWidth="47.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" />
+      <Button layoutX="114.0" layoutY="238.0" mnemonicParsing="false" onAction="#addTask" prefHeight="33.0" prefWidth="47.0" style="-fx-background-color: rgb(35,69,103); -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" />
       <Button contentDisplay="CENTER" graphicTextGap="10.0" layoutX="212.0" layoutY="355.0" maxWidth="207.0" mnemonicParsing="false" onAction="#save" prefHeight="22.0" prefWidth="207.0" style="-fx-background-color: #123456; -fx-padding: 0px;" text="Save" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="25.0" />
