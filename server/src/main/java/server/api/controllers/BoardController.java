@@ -19,7 +19,6 @@ import commons.entities.Board;
 import commons.entities.Card;
 import commons.entities.CardList;
 import commons.entities.Tag;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import server.database.CardRepository;
 import server.database.TagRepository;
@@ -33,9 +32,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.BoardRepository;
 import server.database.CardListRepository;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -153,22 +150,23 @@ public class BoardController {
      * @return the board without the list
      */
     @DeleteMapping("/{id}/list/{listId}")
-    public ResponseEntity<Board> deleteList(@PathVariable final Integer id,
-                                            @PathVariable final Integer listId) {
-            if (!this.boardRepo.existsById(id)) {
-                throw new EntityNotFoundException("No board with id " + id);
-            }
+    public ResponseEntity<Board> deleteList (@PathVariable final Integer id,
+                                             @PathVariable final Integer listId) {
+        if (!this.boardRepo.existsById(id)) {
+            throw new EntityNotFoundException("No board with id " + id);
+        }
 
-            final Board board = this.boardRepo.getById(id);
-            if (!board.removeListById(listId)) {
-                throw new EntityNotFoundException("Board contains no list with id " + listId);
-            }
+        final Board board = this.boardRepo.getById(id);
+        if (!board.removeListById(listId)) {
+            throw new EntityNotFoundException("Board contains no list with id " + listId);
+        }
 
-            final List<Card> cards = new ArrayList<>(this.cardListRepository.getById(listId).getCards());
-            this.cardListRepository.deleteById(listId);
-            cards.forEach(card -> this.cardRepository.deleteById(card.getId()));
+        final List<Card> cards =
+                new ArrayList<>(this.cardListRepository.getById(listId).getCards());
+        this.cardListRepository.deleteById(listId);
+        cards.forEach(card -> this.cardRepository.deleteById(card.getId()));
 
-            return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), HttpStatus.OK);
     }
 
     /** endpoint for editing the title of a card list
