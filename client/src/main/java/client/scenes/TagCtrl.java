@@ -2,9 +2,9 @@ package client.scenes;
 
 import commons.entities.Tag;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import java.util.HashSet;
 
 
@@ -13,9 +13,10 @@ public class TagCtrl {
     @FXML
     private Pane background;
     @FXML
-    private Text name;
+    private TextField name;
     private int id;
     private CardEditorCtrl cardEditorCtrl;
+    private TagOverviewCtrl tagOverviewCtrl;
     private VBox tags;
     private HashSet<Integer> ids = new HashSet<>();
 
@@ -46,6 +47,13 @@ public class TagCtrl {
     public void update(int id, CardEditorCtrl cardEditorCtrl){
         this.id = id;
         this.cardEditorCtrl = cardEditorCtrl;
+    }
+
+    public void update(int id,TagOverviewCtrl tagOverviewCtrl, String name, int color){
+        this.id = id;
+        this.tagOverviewCtrl = tagOverviewCtrl;
+        this.name.setText(name);
+        this.background.setStyle("-fx-background-color:#" + color);
     }
 
 }

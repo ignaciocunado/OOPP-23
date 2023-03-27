@@ -82,7 +82,7 @@
                         <Color />
                      </value>
                   </ColorPicker>
-                  <Circle fx:id="circle" fill="DODGERBLUE" layoutX="123.0" layoutY="365.0" radius="44.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="circle" layoutX="123.0" layoutY="365.0" radius="44.0" stroke="BLACK" strokeType="INSIDE" />
                </children>
             </Pane>
             <Button alignment="CENTER" layoutX="333.0" layoutY="439.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#createTag" prefHeight="97.0" prefWidth="147.0" style="-fx-background-color: #123456;" text="+" textAlignment="CENTER" textFill="WHITE">

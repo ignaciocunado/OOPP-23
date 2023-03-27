@@ -69,12 +69,11 @@ public class TagOverviewCtrl implements Initializable{
      * @return the colour in int values
      */
     public int colourToInt(){
-        Color newColour = colorPicker.getValue();
-        double red = newColour.getRed();
-        double green = newColour.getGreen();
-        double blue = newColour.getBlue();
-        int colour = ((int)red << 16) | ((int)green << 8) | (int)blue;
-        return colour;
+        Color color = colorPicker.getValue();
+        return Integer.decode(String.format( "0x%02X%02X%02X",
+            (int)( color.getRed() * 255 ),
+            (int)( color.getGreen() * 255 ),
+            (int)( color.getBlue() * 255 )));
     }
 
     /** method to create a tag and add it to the list of tags (vbox)
@@ -82,25 +81,15 @@ public class TagOverviewCtrl implements Initializable{
      */
     public void createTag() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        Pane tagPane = loader.load(getClass().getResource("TagCopy.fxml").openStream());
-        TagOverviewCtrl ctrl = loader.getController();
+        Pane tagPane = loader.load(getClass().getResource("Tag.fxml").openStream());
+        TagCtrl ctrl = loader.getController();
         Tag newTag = new Tag(newTitle.getText(), colourToInt());
         tagPane.setId(Integer.toString(newTag.getId()));
-        ctrl.update(newTag.getId(), this);
+        ctrl.update(newTag.getId(), this, newTitle.getText(), colourToInt());
         vbox.getChildren().add(tagPane);
-
     }
 
-    /**
-     * Update methods
-     * @param id id of the rendered object
-     * @param tagOverviewCtrl ctrl
-     */
 
-    private void update(int id, TagOverviewCtrl tagOverviewCtrl) {
-        this.id = id;
-        this.tagOverviewCtrl = tagOverviewCtrl;
-    }
 
     /**
      * Gets the location of a resource with the given String elements
