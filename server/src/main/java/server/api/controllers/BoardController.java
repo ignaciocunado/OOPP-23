@@ -155,7 +155,6 @@ public class BoardController {
     @DeleteMapping("/{id}/list/{listId}")
     public ResponseEntity<Board> deleteList(@PathVariable final Integer id,
                                             @PathVariable final Integer listId) {
-        try {
             if (!this.boardRepo.existsById(id)) {
                 throw new EntityNotFoundException("No board with id " + id);
             }
@@ -170,9 +169,6 @@ public class BoardController {
             cards.forEach(card -> this.cardRepository.deleteById(card.getId()));
 
             return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), HttpStatus.OK);
-        } catch (DataIntegrityViolationException ex) {
-            return new ResponseEntity<>(null, new HttpHeaders(), HttpStatus.CONFLICT);
-        }
     }
 
     /** endpoint for editing the title of a card list
