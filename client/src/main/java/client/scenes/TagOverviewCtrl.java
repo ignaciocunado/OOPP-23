@@ -34,6 +34,12 @@ public class TagOverviewCtrl implements Initializable{
     private VBox vbox;
     private int id;
     private TagOverviewCtrl tagOverviewCtrl;
+
+    /** Constructor to inject necessary classes into the controller
+     * @param server serverUtils
+     * @param mainCtrl mainCtrl of the server
+     * @param vbox the vbox to display the tags in
+     */
     @Inject
     public TagOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, VBox vbox){
         this.server = server;
@@ -41,15 +47,27 @@ public class TagOverviewCtrl implements Initializable{
         this.vbox = vbox;
     }
 
+    /**
+     * cancel method so you can go back to the board by accessing a button
+     */
     public void cancel(){
         mainCtrl.showNewBoardOverview();
     }
 
+    /** method used to show the color picked in the color picker by filling a circle
+     * @param location  The location used to resolve relative paths for the root object, or
+     *                  {@code null} if the location is not known.
+     * @param resources The resources used to localize the root object, or {@code null} if
+     *                  the root object was not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         colorPicker.setOnAction(event -> this.circle.setFill(colorPicker.getValue()));
     }
 
+    /** method to convert from type color to type int
+     * @return the colour in int values
+     */
     public int colourToInt(){
         Color newColour = colorPicker.getValue();
         double red = newColour.getRed();
@@ -59,6 +77,9 @@ public class TagOverviewCtrl implements Initializable{
         return colour;
     }
 
+    /** method to create a tag and add it to the list of tags (vbox)
+     * @throws IOException
+     */
     public void createTag() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         Pane tagPane = loader.load(getClass().getResource("TagCopy.fxml").openStream());
@@ -70,11 +91,22 @@ public class TagOverviewCtrl implements Initializable{
 
     }
 
+    /**
+     * Update methods
+     * @param id id of the rendered object
+     * @param tagOverviewCtrl ctrl
+     */
+
     private void update(int id, TagOverviewCtrl tagOverviewCtrl) {
         this.id = id;
         this.tagOverviewCtrl = tagOverviewCtrl;
     }
 
+    /**
+     * Gets the location of a resource with the given String elements
+     * @param parts Strings of where to find the resource
+     * @return the URL of the requested resource
+     */
     private URL getLocation(String... parts) {
         var path = Path.of("", parts).toString();
         return MyFXML.class.getClassLoader().getResource(path);

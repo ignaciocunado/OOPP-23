@@ -23,7 +23,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
-import java.lang.ref.PhantomReference;
 import java.io.IOException;
 
 
@@ -56,8 +55,9 @@ public class MainCtrl {
      * @param cardEditor stage for the card editor
      */
     public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
-                           Pair<BoardOverviewCtrl, Parent> boardOverview, Pair<CardEditorCtrl, Parent>
-                           cardEditor, Pair<TagOverviewCtrl, Parent> tagOverview) {
+                           Pair<BoardOverviewCtrl, Parent> boardOverview,
+                           Pair<CardEditorCtrl, Parent> cardEditor,
+                           Pair<TagOverviewCtrl, Parent> tagOverview) {
         this.primaryStage = primaryStage;
         this.createTagStage =  new Stage();
         this.cardEditorStage = new Stage();
