@@ -17,5 +17,16 @@ package server.database;
 
 import commons.entities.Board;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-public interface BoardRepository extends JpaRepository<Board, Integer> {}
+import java.util.Optional;
+
+public interface BoardRepository extends JpaRepository<Board, Integer> {
+
+    @Query("SELECT b FROM Board b WHERE b.key = ?1")
+    Board getBoardByKey(final String key);
+
+    @Query("SELECT b FROM Board b WHERE b.key = ?1")
+    Optional<Board> findBoardByKey(final String key);
+
+}
