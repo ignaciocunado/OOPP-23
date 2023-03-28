@@ -16,10 +16,7 @@
 package client.utils;
 
 import com.google.inject.Singleton;
-import commons.entities.Board;
-import commons.entities.Card;
-import commons.entities.CardList;
-import commons.entities.Tag;
+import commons.entities.*;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -245,6 +242,61 @@ public class ServerUtils {
             request.setHeader("content-type", "application/json");
             client.execute(request, response -> null);
         } catch (NotFoundException | IOException e) {
+            return;
+        }
+    }
+
+    /**
+     * Adds a tag to the specified card
+     * @param tagId if of the tag to add
+     * @param cardId id of the car where the tag will be added
+     */
+    public void addTag(final int tagId, final int cardId) {
+        try{
+            client.target(this.server).path("api/card/{cardId}/tag/{tagId}")
+                .resolveTemplate("cardId", cardId)
+                .resolveTemplate("tagId", tagId)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .put(null);
+
+        }
+        catch (NotFoundException e) {
+            return;
+        }
+    }
+
+    public Card createTask(final int cardId, final String name, final boolean completed) {
+        try{
+            return client.target(this.server).path("api/card/{cardId}/task")
+                .resolveTemplate("cardId", cardId)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(
+                    Entity.entity(new Task(name, completed), MediaType.APPLICATION_JSON),
+                    Card.class
+                );
+        }
+        catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    public void editTask(final int cardId, final int taskId, final String name, final boolean completed) {
+        try{
+            final HttpClient client = HttpClients.createDefault();
+            final HttpPatch req = new HttpPatch(this.server + "api/card/" + cardId + "/task/" + taskId);
+            final StringEntity entity =
+                new StringEntity(
+                    String.format("{\"name\": \"%s\", \"completed\": \"%b\"}",
+                        name,completed)
+                );
+            req.setEntity(entity);
+            req.setHeader("content-type", "application/json");
+            client.execute(req, response -> response.getEntity());
+
+        }
+        catch (NotFoundException | IOException e) {
             return;
         }
     }

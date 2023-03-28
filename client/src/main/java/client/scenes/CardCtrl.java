@@ -54,7 +54,6 @@ public final class CardCtrl {
      */
     public void refresh(final Card card) {
         this.card = card;
-
         this.cardTitle.setText(this.card.getTitle());
         this.cardDescription.setText(this.card.getDescription());
     }

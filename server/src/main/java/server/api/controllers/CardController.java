@@ -73,7 +73,7 @@ public class CardController {
      * @param errors wrapping for potential validating errors
      * @return ResponseEntity for status
      */
-    @PostMapping("/{id}/tag/{tagId}")
+    @PutMapping("/{id}/tag/{tagId}")
     public ResponseEntity<Card> assignTag(@PathVariable final int id,
                                           @PathVariable final int tagId,
                                           final BindingResult errors) {

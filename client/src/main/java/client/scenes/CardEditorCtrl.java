@@ -112,7 +112,7 @@ public class CardEditorCtrl {
                 this.title.getText(),
                 this.description.getText()
         );
-
+        // TODO: Handle remove Task and Tag
         for (Node node : nestedTaskList.getChildren()) {
             final Pane pane = (Pane) node;
             final TextField textField = (TextField) pane.getChildren().get(0);
@@ -127,22 +127,20 @@ public class CardEditorCtrl {
                             .filter(task -> task.getId() == id)
                             .findAny();
             if (taskOpt.isEmpty()) {
-                // TODO: This should send a request to create a new task
-                Task newTask = new Task(name, completed);
-                newTask.setId(id);
-                this.currentCard.addTask(newTask);
+                Card updatedFromServer = serverUtils.createTask(currentCard.getId(), name,completed);
+                this.currentCard = updatedFromServer;
                 break;
             }
-            // TODO: This should send a request to edit a task
+            // TODO: Edit request so that it returns a card
             final Task task = taskOpt.get();
-            task.setName(name);
-            task.setCompleted(completed);
+            serverUtils.editTask(currentCard.getId(), task.getId(), task.getName(), task.isCompleted());
         }
 
         for (Node node : tags.getChildren()) {
             Pane pane = (Pane) node;
             int id = Integer.parseInt(pane.getId());
-            // TODO: This should send a request to assign this tag to the board
+            serverUtils.addTag(currentCard.getId(), id);
+            // TODO: Edit request so that it returns a tag
         }
         mainCtrl.closeCardEditor();
         this.cardCtrl.refresh(this.currentCard);
@@ -155,6 +153,8 @@ public class CardEditorCtrl {
      *
      * @throws IOException
      */
+
+    //TODO: Handle IDs of tasks correctly
     public void addTask() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         Pane taskPane = loader.load(getClass().getResource("Task.fxml").openStream());
@@ -183,7 +183,6 @@ public class CardEditorCtrl {
 
     /**
      * Removes rendered Tag with the specified id if it exists
-     *
      * @param id id of the tag to remove
      */
     public void removeTag(int id) {
@@ -192,7 +191,6 @@ public class CardEditorCtrl {
 
     /**
      * Removes rendered Task with the specified id if it exists
-     *
      * @param id id of the task to remove
      */
     public void removeTask(int id) {
