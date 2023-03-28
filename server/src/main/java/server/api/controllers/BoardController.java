@@ -52,7 +52,7 @@ public class BoardController {
      * @param cardListRepository repository for cardLists
      * @param cardRepository     repository for cards
      * @param textService        service for generating random keys
-     * @param tagRepo repository for tags
+     * @param tagRepo            repository for tags
      */
     public BoardController(final BoardRepository boardRepo,
                            final CardListRepository cardListRepository,
@@ -78,31 +78,36 @@ public class BoardController {
         final Board board = new Board(newKey, request.getPassword());
         return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), 200);
     }
+
     /**
      * Handler for getting the board
      *
-     * @param id the board id
+     * @param key the board key
      * @return the board
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<Board> getBoard(@PathVariable final Integer id) {
-        if (!this.boardRepo.existsById(id)) {
-            throw new EntityNotFoundException("No board with id " + id);
+    @GetMapping("/{key}")
+    public ResponseEntity<Board> getBoard(@PathVariable final String key) {
+        if (this.boardRepo.findBoardByKey(key).isEmpty()) {
+            throw new EntityNotFoundException("No board with key " + key);
         }
 
-        return new ResponseEntity<>(this.boardRepo.getById(id), new HttpHeaders(), 200);
+        return new ResponseEntity<>(
+                this.boardRepo.findBoardByKey(key).get(),new HttpHeaders(), 200);
     }
 
-    /** Hnadler for creating a tag
-     * @param id unique id of the board
-     * @param tag the new tag that we are creating
+
+    /**
+     * Hnadler for creating a tag
+     *
+     * @param id     unique id of the board
+     * @param tag    the new tag that we are creating
      * @param errors wrapping for potential validating errors
      * @return the board with the new tag
      */
     @PostMapping("/{id}/tag")
     public ResponseEntity<Board> createTag(@PathVariable final int id,
                                            @Validated @RequestBody Tag tag,
-                                           final BindingResult errors){
+                                           final BindingResult errors) {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
@@ -114,12 +119,13 @@ public class BoardController {
         board.addTag(tag);
         return new ResponseEntity<>(boardRepo.save(board), new HttpHeaders(), 200);
     }
+
     /**
      * Handler for creating the list in a board
      *
-     * @param id the board to create a list for
+     * @param id      the board to create a list for
      * @param payload the data for the new list
-     * @param errors wrapping object for potential validating errors
+     * @param errors  wrapping object for potential validating errors
      * @return the board with its new list
      */
     @PostMapping("/{id}/list")
@@ -169,19 +175,19 @@ public class BoardController {
         return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), HttpStatus.OK);
     }
 
-    /** endpoint for editing the title of a card list
+    /**
+     * endpoint for editing the title of a card list
      *
-     * @param id int value representing the id of a Board
-     * @param board the Board being edited
+     * @param id     int value representing the id of a Board
+     * @param board  the Board being edited
      * @param errors wrapping object for potential validating errors
      * @return the card list with the changed new title
      */
     @PatchMapping("/{id}")
     public ResponseEntity<Board> editPassword(@PathVariable final Integer id,
-                                              @Validated @RequestBody
-                                              final Board board,
+                                              @Validated @RequestBody final Board board,
                                               final BindingResult errors) {
-        if(errors.hasErrors()) {
+        if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
         if (!this.boardRepo.existsById(id)) {

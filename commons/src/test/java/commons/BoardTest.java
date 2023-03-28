@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,8 +47,30 @@ class BoardTest {
 
     @Test
     public void getListOfCardListTest() {
-        assertEquals(board.getListsOnBoard(), new ArrayList<CardList>());
+        assertEquals(board.getLists(), new ArrayList<CardList>());
     }
+
+    @Test
+    public void getTagsTest() {
+        assertEquals(board.getTags(), new ArrayList<Tag>());
+    }
+
+    @Test
+    public void setListsTest() {
+        final List<CardList> lists = Arrays.asList(new CardList());
+        assertEquals(board.getLists(), new ArrayList<CardList>());
+        board.setLists(lists);
+        assertEquals(board.getLists(), lists);
+    }
+
+    @Test
+    public void setTagsTest() {
+        final List<Tag> tags = Arrays.asList(new Tag());
+        assertEquals(board.getTags(), new ArrayList<Tag>());
+        board.setTags(tags);
+        assertEquals(board.getTags(), tags);
+    }
+
 
     @Test
     public void setIdTest() {
@@ -67,8 +90,8 @@ class BoardTest {
         board.addList(l1);
         List<CardList> listsOnBoard = new ArrayList<>();
         listsOnBoard.add(l1);
-        assertEquals(1, board.getListsOnBoard().size());
-        assertEquals(board.getListsOnBoard(), listsOnBoard);
+        assertEquals(1, board.getLists().size());
+        assertEquals(board.getLists(), listsOnBoard);
     }
 
     @Test
@@ -77,8 +100,8 @@ class BoardTest {
         board.addTag(tag);
         List<Tag> tagsOnBoard = new ArrayList<>();
         tagsOnBoard.add(tag);
-        assertEquals(1,board.getTagsOnBoard().size());
-        assertEquals(board.getTagsOnBoard(), tagsOnBoard);
+        assertEquals(1,board.getTags().size());
+        assertEquals(board.getTags(), tagsOnBoard);
     }
     @Test
     public void removeListTest() {
@@ -86,8 +109,8 @@ class BoardTest {
         board.addList(l1);
         List<CardList> listsOnBoard = new ArrayList<>();
         board.removeList(l1);
-        assertEquals(0, board.getListsOnBoard().size());
-        assertEquals(board.getListsOnBoard(), listsOnBoard);
+        assertEquals(0, board.getLists().size());
+        assertEquals(board.getLists(), listsOnBoard);
     }
 
     @Test
@@ -96,8 +119,8 @@ class BoardTest {
         board.addTag(tag);
         List<Tag> tags = new ArrayList<>();
         board.removeTag(tag);
-        assertEquals(0, board.getTagsOnBoard().size());
-        assertEquals(board.getTagsOnBoard(), tags);
+        assertEquals(0, board.getTags().size());
+        assertEquals(board.getTags(), tags);
     }
     @Test
     public void removeListByIdTest() {
@@ -105,8 +128,8 @@ class BoardTest {
         board.addList(l1);
         List<CardList> listsOnBoard = new ArrayList<>();
         board.removeListById(0);
-        assertEquals(0, board.getListsOnBoard().size());
-        assertEquals(board.getListsOnBoard(), listsOnBoard);
+        assertEquals(0, board.getLists().size());
+        assertEquals(board.getLists(), listsOnBoard);
     }
 
     @Test
