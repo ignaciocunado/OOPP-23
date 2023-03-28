@@ -55,7 +55,7 @@ public class TagOverviewCtrl implements Initializable{
         mainCtrl.showNewBoardOverview();
     }
 
-    /** method used to show the color picked in the color picker by filling a circle
+    /** ethod used to show the color picked in the color picker by filling a circle
      * @param location  The location used to resolve relative paths for the root object, or
      *                  {@code null} if the location is not known.
      * @param resources The resources used to localize the root object, or {@code null} if
@@ -95,7 +95,6 @@ public class TagOverviewCtrl implements Initializable{
         ctrl.update(newTag.getId(), this, newTitle.getText(), colourToInt());
         vbox.getChildren().add(tagPane);
     }
-
     /** method to remove a tag by id
      * @param id id of the tag
      */
