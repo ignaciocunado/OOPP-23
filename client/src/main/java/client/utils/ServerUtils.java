@@ -293,11 +293,26 @@ public class ServerUtils {
                 );
             req.setEntity(entity);
             req.setHeader("content-type", "application/json");
-            client.execute(req, response -> response.getEntity());
+            client.execute(req, response -> null);
 
         }
         catch (NotFoundException | IOException e) {
             return;
         }
+    }
+
+    public Card removeTagFromCard(final int cardId, final int tagId) {
+        try{
+            return client.target(this.server).path("api/card/{cardId}/tag/{tagId}")
+                .resolveTemplate("cardId", cardId)
+                .resolveTemplate("tagId", tagId)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .delete(Card.class);
+        }
+        catch (NotFoundException e) {
+
+        }
+
     }
 }

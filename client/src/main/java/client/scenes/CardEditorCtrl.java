@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,7 +113,6 @@ public class CardEditorCtrl {
                 this.title.getText(),
                 this.description.getText()
         );
-        // TODO: Handle remove Task and Tag
         for (Node node : nestedTaskList.getChildren()) {
             final Pane pane = (Pane) node;
             final TextField textField = (TextField) pane.getChildren().get(0);
@@ -127,14 +127,16 @@ public class CardEditorCtrl {
                             .filter(task -> task.getId() == id)
                             .findAny();
             if (taskOpt.isEmpty()) {
-                Card updatedFromServer = serverUtils.createTask(currentCard.getId(), name,completed);
-                this.currentCard = updatedFromServer;
-                break;
+                currentCard = serverUtils.createTask(currentCard.getId(), name,completed);
+                continue;
             }
             // TODO: Edit request so that it returns a card
             final Task task = taskOpt.get();
-            serverUtils.editTask(currentCard.getId(), task.getId(), task.getName(), task.isCompleted());
+            serverUtils.editTask(currentCard.getId(), task.getId(), task.getName(),
+                task.isCompleted());
         }
+
+        //TODO: Handle remove task
 
         for (Node node : tags.getChildren()) {
             Pane pane = (Pane) node;
@@ -142,6 +144,16 @@ public class CardEditorCtrl {
             serverUtils.addTag(currentCard.getId(), id);
             // TODO: Edit request so that it returns a tag
         }
+
+        ArrayList<Integer> idsInCard = (ArrayList<Integer>) currentCard.getTags().stream().map(
+            tag -> tag.getId()).toList();
+        ArrayList<Integer> idsInClient = (ArrayList<Integer>) tags.getChildren().stream().map(
+            pane -> pane.getId()).map(s -> Integer.parseInt(s)).toList();
+        idsInCard.removeAll(idsInClient);
+        for(int idOfTagRemoved : idsInCard) {
+            currentCard = serverUtils.removeTagFromCard(this.currentCard.getId(), idOfTagRemoved);
+        }
+
         mainCtrl.closeCardEditor();
         this.cardCtrl.refresh(this.currentCard);
         return currentCard;
