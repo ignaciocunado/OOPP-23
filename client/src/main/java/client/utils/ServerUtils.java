@@ -266,6 +266,13 @@ public class ServerUtils {
         }
     }
 
+    /**
+     * Creates a new task and adds it to a card
+     * @param cardId id of the card in which to add the task
+     * @param name name of the task
+     * @param completed is the task completed?
+     * @return the new card containing the task
+     */
     public Card createTask(final int cardId, final String name, final boolean completed) {
         try{
             return client.target(this.server).path("api/card/{cardId}/task")
@@ -282,6 +289,13 @@ public class ServerUtils {
         }
     }
 
+    /**
+     * Edits a task from the server
+     * @param cardId id of the card which contains the task
+     * @param taskId id of the task
+     * @param name new name of the task
+     * @param completed new boolean for completeness of the task
+     */
     public void editTask(final int cardId, final int taskId, final String name, final boolean completed) {
         try{
             final HttpClient client = HttpClients.createDefault();
@@ -301,6 +315,12 @@ public class ServerUtils {
         }
     }
 
+    /**
+     * Method to remove an existing tag from a card
+     * @param cardId id of the card
+     * @param tagId id of the tag to remove
+     * @return the new card without the tag
+     */
     public Card removeTagFromCard(final int cardId, final int tagId) {
         try{
             return client.target(this.server).path("api/card/{cardId}/tag/{tagId}")
@@ -311,7 +331,7 @@ public class ServerUtils {
                 .delete(Card.class);
         }
         catch (NotFoundException e) {
-
+            return null;
         }
 
     }
