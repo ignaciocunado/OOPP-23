@@ -104,7 +104,8 @@ public class LandingOverviewCtrl implements Initializable {
         final Board board = this.server.createBoard(this.createPassword.getText());
         final ButtonType copyButton = new ButtonType("Copy", ButtonBar.ButtonData.OK_DONE);
         final ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
-        final Alert creationAlert = new Alert(Alert.AlertType.INFORMATION, "", copyButton, closeButton);
+        final Alert creationAlert = new Alert(Alert.AlertType.INFORMATION,
+                "", copyButton, closeButton);
         creationAlert.setTitle("New Board Created");
         creationAlert.setHeaderText("You've created a new board with key: " + board.getKey());
         final Optional<ButtonType> res = creationAlert.showAndWait();
