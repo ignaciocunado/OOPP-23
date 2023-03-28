@@ -16,7 +16,6 @@
 package client.scenes;
 
 import client.Config;
-import client.Main;
 import client.MyFXML;
 import client.MyModule;
 import client.utils.ServerUtils;
@@ -61,6 +60,7 @@ public class LandingOverviewCtrl implements Initializable {
      * Constructor to inject necessary classes into the controller
      * @param server
      * @param mainCtrl
+     * @param config
      */
     @Inject
     public LandingOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, Config config) {

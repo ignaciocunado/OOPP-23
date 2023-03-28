@@ -109,9 +109,19 @@ public class MainCtrl {
      * Shows the overview of the board history
      */
     public void showHistory() {
+        boardHistoryStage.setTitle("Board Visitation History");
+        boardHistoryStage.setScene(boardHistoryOverview);
         boardHistoryStage.show();
-        boardHistoryOverviewCtrl.refresh();
+
     }
+
+    /**
+     * Closes the overview of the board history
+     */
+    public void closeHistory() {
+        boardHistoryStage.close();
+    }
+
     /**
      * closes card editor stage
      */
@@ -133,5 +143,4 @@ public class MainCtrl {
     public void minimizeWindow() {
         primaryStage.setIconified(true);
     }
-
 }

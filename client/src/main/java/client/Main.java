@@ -16,14 +16,9 @@
 package client;
 
 import static com.google.inject.Guice.createInjector;
-
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-
 import client.scenes.*;
 import com.google.inject.Injector;
-
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -69,6 +64,10 @@ public class Main extends Application {
             boardHistoryOverview);
     }
 
+    /**
+     * Saves RecentBoards when app is stopped
+     * @throws IOException if file is not found
+     */
     @Override
     public void stop() throws IOException {
         final Config config = INJECTOR.getInstance(Config.class);

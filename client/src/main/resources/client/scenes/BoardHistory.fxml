@@ -31,17 +31,8 @@
             </Text>
          </children>
       </Pane>
-      <VBox id="keyvbox" layoutX="66.0" layoutY="146.0" prefHeight="240.0" prefWidth="127.0">
-         <children>
-            <Button mnemonicParsing="false" text="Button" />
-         </children></VBox>
-      <VBox id="servervbox" layoutX="237.0" layoutY="146.0" prefHeight="240.0" prefWidth="127.0">
-         <children>
-            <CheckBox mnemonicParsing="false" text="CheckBox" />
-         </children></VBox>
-      <VBox id="actionsvbox" layoutX="407.0" layoutY="146.0" prefHeight="240.0" prefWidth="127.0">
-         <children>
-            <Button mnemonicParsing="false" text="Button" />
-         </children></VBox>
+      <VBox fx:id="keyVBox" layoutX="66.0" layoutY="146.0" prefHeight="240.0" prefWidth="127.0" style="-fx-spacing: 7px;" />
+      <VBox fx:id="serverVBox" layoutX="237.0" layoutY="146.0" prefHeight="240.0" prefWidth="127.0" style="-fx-spacing: 7px;" />
+      <VBox fx:id="actionsVBox" layoutX="407.0" layoutY="146.0" prefHeight="240.0" prefWidth="127.0" style="-fx-spacing: 7px;" />
    </children>
 </AnchorPane>

@@ -7,9 +7,10 @@ import commons.entities.Board;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import javax.inject.Inject;
 import java.net.URL;
@@ -21,13 +22,11 @@ public class BoardHistoryOverviewCtrl implements Initializable {
     private MainCtrl mainCtrl;
     private ServerUtils server;
     @FXML
-    private VBox keyvbox;
+    private VBox keyVBox;
     @FXML
-    private VBox servervbox;
+    private VBox serverVBox;
     @FXML
-    private VBox actionsvbox;
-    @FXML
-    private AnchorPane anchorPane;
+    private VBox actionsVBox;
 
 
     /** Constructor to inject necessary classes into the controller
@@ -53,9 +52,16 @@ public class BoardHistoryOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         for (RecentBoard recent:config.getBoards()) {
-            System.out.println(recent.getKey());
-            keyvbox.getChildren().add(new Text(recent.getKey()));
-            servervbox.getChildren().add(new Text(recent.getServer()));
+            Text keyText = new Text(recent.getKey());
+            keyText.setWrappingWidth(70);
+            keyText.setTextAlignment(TextAlignment.CENTER);
+            keyText.setFill(Color.WHITE);
+            keyVBox.getChildren().add(keyText);
+            Text serverText = new Text(recent.getServer());
+            serverText.setWrappingWidth(125);
+            serverText.setTextAlignment(TextAlignment.CENTER);
+            serverText.setFill(Color.WHITE);
+            serverVBox.getChildren().add(serverText);
             Text joinText = new Text("Rejoin");
             joinText.setOnMouseClicked(event -> {
                 final Board board = this.server.getBoard(recent.getKey());
@@ -66,15 +72,13 @@ public class BoardHistoryOverviewCtrl implements Initializable {
                     alert.show();
                     return;
                 }
+                this.mainCtrl.closeHistory();
                 this.mainCtrl.showBoardOverview(board);
             });
-            actionsvbox.getChildren().add(joinText);
+            joinText.setWrappingWidth(145);
+            joinText.setTextAlignment(TextAlignment.CENTER);
+            joinText.setFill(Color.WHITE);
+            actionsVBox.getChildren().add(joinText);
         }
-    }
-
-    /**
-     * refreshes the BoardHistoryOverviewCtrl
-     */
-    public void refresh() {
     }
 }
