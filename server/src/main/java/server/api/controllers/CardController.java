@@ -14,6 +14,8 @@ import server.database.TaskRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
 
+import javax.management.relation.RelationNotFoundException;
+
 
 @RestController
 @RequestMapping("/api/card")
@@ -26,7 +28,6 @@ public class CardController {
 
     /**
      * Constructor
-     *
      * @param cardRepository  card DB
      * @param tagRepository   tag DB
      * @param taskRepository  task DB
@@ -42,7 +43,6 @@ public class CardController {
 
     /**
      * Edits a Card
-     *
      * @param id   id of the Card to edit
      * @param card new Card to take the info from
      * @param errors wrapping object for potential validating errors
@@ -86,7 +86,6 @@ public class CardController {
 
     /**
      * deletes a Tag iff it exists
-     *
      * @param id    id of the Card
      * @param tagId id of the Tag
      * @return ResponseEntity for status
@@ -97,18 +96,19 @@ public class CardController {
         if (!cardRepository.existsById(id)) {
             throw new EntityNotFoundException("No card with id " + id);
         }
+        if(!tagRepository.existsById(tagId)) {
+            throw new EntityNotFoundException("No tag with id " + tagId);
+        }
         Card deleteTagFrom = cardRepository.getById(id);
         if (!deleteTagFrom.removeTagById(tagId)) {
-            throw new EntityNotFoundException("No tag with id " + id);
+            throw new EntityNotFoundException("No tag with id " + tagId + " in card " + id);
         }
-
         return new ResponseEntity<>(cardRepository.save(deleteTagFrom), new HttpHeaders(),
                 200);
     }
 
     /**
      * creates a Task and stores it in a Card
-     *
      * @param id   id of the Card in which to store the Task
      * @param task the Task to create and add
      * @param errors wrapping object for potential validating errors
