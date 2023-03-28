@@ -20,11 +20,14 @@ import com.google.inject.Inject;
 import commons.entities.Board;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
+import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class LandingOverviewCtrl implements Initializable {
@@ -90,6 +93,27 @@ public class LandingOverviewCtrl implements Initializable {
      * board's information
      */
     public void createBoard() {
+        if (!this.createPassword.getText().equals(this.createConfirmPassword.getText())) {
+            final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("The passwords don't match");
+            alert.show();
+            return;
+        }
+
+        final Board board = this.server.createBoard(this.createPassword.getText());
+        final ButtonType copyButton = new ButtonType("Copy", ButtonBar.ButtonData.OK_DONE);
+        final ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
+        final Alert creationAlert = new Alert(Alert.AlertType.INFORMATION, "", copyButton, closeButton);
+        creationAlert.setTitle("New Board Created");
+        creationAlert.setHeaderText("You've created a new board with key: " + board.getKey());
+        final Optional<ButtonType> res = creationAlert.showAndWait();
+        if (res.orElse(closeButton) == copyButton) {
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(new StringSelection(board.getKey()), null);
+        }
+
+        this.mainCtrl.showBoardOverview(board);
     }
 
     /**
