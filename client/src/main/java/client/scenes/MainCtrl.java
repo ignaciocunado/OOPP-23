@@ -27,6 +27,9 @@ public class MainCtrl {
 
     private Stage primaryStage;
     private Stage cardEditorStage;
+    private Stage boardHistoryStage;
+    private BoardHistoryOverviewCtrl boardHistoryOverviewCtrl;
+    private Scene boardHistoryOverview;
 
     private LandingOverviewCtrl landingOverviewCtrl;
     private Scene landingOverview;
@@ -43,14 +46,19 @@ public class MainCtrl {
      * @param landingOverview the landing overview
      * @param boardOverview the main board overview
      * @param cardEditor card editor view
+     * @param boardHistoryOverview board history overview
      */
     public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
-            Pair<BoardOverviewCtrl, Parent> boardOverview, Pair<CardEditorCtrl, Parent>
-                           cardEditor) {
+            Pair<BoardOverviewCtrl, Parent> boardOverview, Pair<CardEditorCtrl, Parent> cardEditor,
+                           Pair<BoardHistoryOverviewCtrl, Parent> boardHistoryOverview) {
         this.primaryStage = primaryStage;
         this.cardEditorStage = new Stage();
+        this.boardHistoryStage = new Stage();
         this.landingOverviewCtrl = landingOverview.getKey();
         this.landingOverview = new Scene(landingOverview.getValue());
+
+        this.boardHistoryOverviewCtrl = boardHistoryOverview.getKey();
+        this.boardHistoryOverview = new Scene(boardHistoryOverview.getValue());
 
         this.boardOverviewCtrl = boardOverview.getKey();
         this.boardOverview = new Scene(boardOverview.getValue());
@@ -97,6 +105,13 @@ public class MainCtrl {
         cardEditorStage.showAndWait();
     }
 
+    /**
+     * Shows the overview of the board history
+     */
+    public void showHistory() {
+        boardHistoryStage.show();
+        boardHistoryOverviewCtrl.refresh();
+    }
     /**
      * closes card editor stage
      */
