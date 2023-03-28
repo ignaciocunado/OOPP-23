@@ -16,7 +16,6 @@
 package client.scenes;
 
 import commons.entities.Board;
-import commons.entities.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -95,39 +94,21 @@ public class MainCtrl {
     }
 
     /**
-     * Shows a new board overview scene
+     * Shows the board overview scene
+     * @param board the board
      */
-    public void showNewBoardOverview() {
+    public void showBoardOverview(final Board board) {
         primaryStage.setTitle("Talio: Task List Organiser");
         primaryStage.setScene(this.boardOverview);
-        boardOverviewCtrl.refresh(new Board("",""));
-    }
-
-    /**
-     * Method for the tag overview
-     */
-    public void showTagOverview(){
-        createTagStage.setTitle("Talio: Tag list Overview");
-        createTagStage.setScene(this.tagOverview);
-        createTagStage.show();
-    }
-
-
-    /**
-     * Shows an existing board overview scene
-     */
-    public void showExistingBoardOverview() {
-        primaryStage.setTitle("Talio: Task List Organiser");
-        primaryStage.setScene(this.boardOverview);
-        boardOverviewCtrl.refresh(new Board("",""));
+        boardOverviewCtrl.refresh(board);
     }
 
     /**
      * render card view
-     * @param card
+     * @param cardCtrl
      */
-    public void showCardEditor(Card card) throws IOException {
-        cardEditorCtrl.refresh(card);
+    public void showCardEditor(final CardCtrl cardCtrl) {
+        cardEditorCtrl.refresh(cardCtrl);
         cardEditorStage.showAndWait();
     }
 
@@ -152,5 +133,17 @@ public class MainCtrl {
     public void minimizeWindow() {
         primaryStage.setIconified(true);
     }
+
+
+    /**
+     * Method for the tag overview
+     */
+    public void showTagOverview(){
+        createTagStage.setTitle("Talio: Tag list Overview");
+        createTagStage.setScene(this.tagOverview);
+        createTagStage.show();
+    }
+
+
 
 }

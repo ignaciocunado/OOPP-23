@@ -52,7 +52,7 @@ public class TagOverviewCtrl implements Initializable{
      * cancel method so you can go back to the board by accessing a button
      */
     public void cancel(){
-        mainCtrl.showNewBoardOverview();
+//        mainCtrl.showBoardOverview();
     }
 
     /** ethod used to show the color picked in the color picker by filling a circle
@@ -90,6 +90,7 @@ public class TagOverviewCtrl implements Initializable{
         Pane tagPane = loader.load(getClass().getResource("Tag.fxml").openStream());
         TagCtrl ctrl = loader.getController();
         Tag newTag = new Tag(newTitle.getText(), colourToInt());
+        System.out.println(colourToInt());
         newTag.setId(counter);
         tagPane.setId(Integer.toString(newTag.getId()));
         ctrl.update(newTag.getId(), this, newTitle.getText(), colourToInt());

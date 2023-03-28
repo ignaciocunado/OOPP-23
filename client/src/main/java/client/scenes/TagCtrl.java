@@ -62,7 +62,7 @@ public class TagCtrl {
         this.id = id;
         this.tagOverviewCtrl = tagOverviewCtrl;
         this.name.setText(name);
-        this.background.setStyle("-fx-background-color:#" + color);
+        this.background.setStyle("-fx-background-color:#" + Integer.toHexString(color));
     }
 
 }
