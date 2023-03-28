@@ -21,6 +21,7 @@ import commons.entities.Board;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -34,11 +35,11 @@ public class LandingOverviewCtrl implements Initializable {
     @FXML
     private TextField joinKey;
     @FXML
-    private TextField joinPassword;
+    private PasswordField joinPassword;
     @FXML
-    private TextField createPassword;
+    private PasswordField createPassword;
     @FXML
-    private TextField createConfirmPassword;
+    private PasswordField createConfirmPassword;
 
     /**
      * Constructor to inject necessary classes into the controller
@@ -64,6 +65,7 @@ public class LandingOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh();
+        this.server.setServer("http://localhost:8080/"); // TODO: temporary
     }
 
     /**
@@ -71,7 +73,6 @@ public class LandingOverviewCtrl implements Initializable {
      * and loads it with the board's information
      */
     public void joinBoard() {
-        this.server.setServer("http://localhost:8080/"); // TODO: temporary
         final Board board = this.server.getBoard(this.joinKey.getText());
         if (board == null) {
             final Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -80,7 +81,7 @@ public class LandingOverviewCtrl implements Initializable {
             alert.show();
             return;
         }
-        this.mainCtrl.showExistingBoardOverview(board);
+        this.mainCtrl.showBoardOverview(board);
     }
 
     /**
@@ -89,7 +90,6 @@ public class LandingOverviewCtrl implements Initializable {
      * board's information
      */
     public void createBoard() {
-        this.mainCtrl.showNewBoardOverview();
     }
 
     /**
