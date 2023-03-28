@@ -251,18 +251,17 @@ public class ServerUtils {
      * @param tagId if of the tag to add
      * @param cardId id of the car where the tag will be added
      */
-    public void addTag(final int tagId, final int cardId) {
+    public Card addTag(final int tagId, final int cardId, final Tag tag) {
         try{
-            client.target(this.server).path("api/card/{cardId}/tag/{tagId}")
+            return client.target(this.server).path("api/card/{cardId}/tag/{tagId}")
                 .resolveTemplate("cardId", cardId)
                 .resolveTemplate("tagId", tagId)
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .put(null);
-
+                .put(Entity.entity(tag, MediaType.APPLICATION_JSON), Card.class);
         }
         catch (NotFoundException e) {
-            return;
+            return null;
         }
     }
 
@@ -273,7 +272,7 @@ public class ServerUtils {
      * @param completed is the task completed?
      * @return the new card containing the task
      */
-    public Card createTask(final int cardId, final String name, final boolean completed) {
+    public Card addTaskToCard(final int cardId, final String name, final boolean completed) {
         try{
             return client.target(this.server).path("api/card/{cardId}/task")
                 .resolveTemplate("cardId", cardId)
@@ -334,5 +333,19 @@ public class ServerUtils {
             return null;
         }
 
+    }
+
+    public Card removeTaskFromCard(int taskId, int cardId) {
+        try {
+            return client.target(this.server).path("api/card/{cardId}/task/{taskId}")
+                .resolveTemplate("cardId", cardId)
+                .resolveTemplate("taskId", taskId)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .delete(Card.class);
+        }
+        catch(NotFoundException e) {
+            return null;
+        }
     }
 }

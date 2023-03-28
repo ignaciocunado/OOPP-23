@@ -112,7 +112,7 @@ class CardControllerTest {
         final Tag tag = new Tag("ADS", 0);
         tag.setId(10);
         tagRepo.save(tag);
-        this.controller.assignTag(1, 1, noErrorResult);
+        this.controller.assignTag(1, 1);
         assertTrue(tagRepo.existsById(1));
         assertEquals(tag, tagRepo.getById(1));
     }
@@ -122,14 +122,14 @@ class CardControllerTest {
     public void createTagNoCardTest() {
         Tag tag = new Tag("I hate conflicts", 0);
         tag.setId(1);
-        Assertions.assertThrows(EntityNotFoundException.class, () -> this.controller.assignTag(10, 1, noErrorResult));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.controller.assignTag(10, 1));
     }
 
     @Test
     public void createTagFaultyTest() {
         cardRepo.save(new Card("Study ADS", "Weblav"));
         Tag faulty1 = new Tag(null, 23);
-        Assertions.assertThrows(InvalidRequestException.class, () -> controller.assignTag(1, 1, hasErrorResult));
+        Assertions.assertThrows(InvalidRequestException.class, () -> controller.assignTag(1, 1));
     }
 
     @Test
@@ -138,7 +138,7 @@ class CardControllerTest {
         Tag toAdd =  new Tag("ADS", 0);
         toAdd.setId(1);
         tagRepo.save(toAdd);
-        this.controller.assignTag(1, 1, noErrorResult);
+        this.controller.assignTag(1, 1);
         Assertions.assertTrue(cardRepo.getById(1).getTags().size() > 0);
         this.controller.deleteTag(1,1);
         Assertions.assertEquals(0, cardRepo.getById(1).getTags().size());
@@ -156,7 +156,7 @@ class CardControllerTest {
         Tag tag = new Tag("ADS", 0);
         tag.setId(1);
         tagRepo.save(tag);
-        this.controller.assignTag(1,1, noErrorResult);
+        this.controller.assignTag(1,1);
         Assertions.assertThrows(EntityNotFoundException.class, () -> controller.deleteTag(2,1));
     }
 

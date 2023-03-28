@@ -1,6 +1,11 @@
 package client.scenes;
 
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
+import commons.entities.Card;
 import commons.entities.Task;
+import javafx.beans.Observable;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -14,6 +19,8 @@ public class TaskCtrl {
     private CheckBox completed;
     private int id;
     private CardEditorCtrl cardEditorCtrl;
+    private Task task;
+
 
     /**
      * Removes a task from a card
@@ -43,8 +50,22 @@ public class TaskCtrl {
      * @param id id of the rendered object
      * @param cardEditorCtrl ctrl
      */
-    public void update(int id, CardEditorCtrl cardEditorCtrl){
+    public void update(int id, CardEditorCtrl cardEditorCtrl, Task task){
         this.id = id;
         this.cardEditorCtrl = cardEditorCtrl;
+        this.title.focusedProperty().addListener(this::titleEdited);
+        this.task = task;
+        this.completed.setOnMouseClicked(event -> {
+            boolean isTaskCompleted = !completed.isIndeterminate() && completed.isSelected();
+            cardEditorCtrl.editTask(this.task.getId(), title.getText(), isTaskCompleted);
+        });
+    }
+
+    private void titleEdited(Observable observable) {
+        if (!(observable instanceof ReadOnlyBooleanProperty)) return; // Doesn't happen
+        final ReadOnlyBooleanProperty focused = (ReadOnlyBooleanProperty) observable;
+        if (focused.getValue()) return; // If focuses then don't save yet
+        boolean isTaskCompleted = !completed.isIndeterminate() && completed.isSelected();
+        cardEditorCtrl.editTask(this.task.getId(), title.getText(), isTaskCompleted);
     }
 }

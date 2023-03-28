@@ -70,17 +70,11 @@ public class CardController {
      * creates a Tag and stores it in a Card
      * @param id id of the Card in which to store the Tag
      * @param tagId the id of the tag that is assigned to the board and card
-     * @param errors wrapping for potential validating errors
      * @return ResponseEntity for status
      */
     @PutMapping("/{id}/tag/{tagId}")
     public ResponseEntity<Card> assignTag(@PathVariable final int id,
-                                          @PathVariable final int tagId,
-                                          final BindingResult errors) {
-
-        if (errors.hasErrors()) {
-            throw new InvalidRequestException(errors);
-        }
+                                          @PathVariable final int tagId) {
         if (!cardRepository.existsById(id)) {
             throw new EntityNotFoundException("No card with id " + id);
         }

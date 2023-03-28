@@ -52,7 +52,7 @@ public final class CardCtrl {
      *
      * @param card the data
      */
-    public void refresh(final Card card) {
+    public void refresh(Card card) {
         this.card = card;
         this.cardTitle.setText(this.card.getTitle());
         this.cardDescription.setText(this.card.getDescription());
