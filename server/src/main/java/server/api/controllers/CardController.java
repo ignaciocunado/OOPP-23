@@ -1,6 +1,5 @@
 package server.api.controllers;
 
-import commons.entities.Board;
 import commons.entities.Card;
 import commons.entities.CardList;
 import commons.entities.Task;
@@ -28,14 +27,15 @@ public class CardController {
     /**
      * Constructor
      *
-     * @param cardListRepository
+     * @param cardListRepository cardList DB
      * @param cardRepository     card DB
      * @param tagRepository      tag DB
      * @param taskRepository     task DB
-     * @param boardRepository    board DB
      */
-    public CardController(final CardListRepository cardListRepository, final CardRepository cardRepository,
-                          final TagRepository tagRepository, final TaskRepository taskRepository) {
+    public CardController(final CardListRepository cardListRepository,
+                          final CardRepository cardRepository,
+                          final TagRepository tagRepository,
+                          final TaskRepository taskRepository) {
         this.cardListRepository = cardListRepository;
         this.cardRepository = cardRepository;
         this.tagRepository = tagRepository;
@@ -164,15 +164,14 @@ public class CardController {
 
     /**
      * endpoint for changing the list to which a card is assigned to based on its id
-     * @param deleteListId integer representing the list from which the card will be deleted
-     * @param addListId integer representing the list to which the card will be added
-     * @param cardId integer representing the id of the card
-     * @return the card list with the added card
+     * @param id integer representing the id of the card
+     * @param listId integer representing the list to which the card will be added
+     * @param position the position in the children of the list to which the card will be added
      */
     @GetMapping("/{id}/move/{listId}/{position}")
     public void move(@PathVariable final Integer id,
-                                      @PathVariable final Integer listId,
-                                      @PathVariable final Integer position) {
+                      @PathVariable final Integer listId,
+                      @PathVariable final Integer position) {
         if(!this.cardRepository.existsById((id))){
             throw new EntityNotFoundException("No card with id " + id);
         }

@@ -23,6 +23,11 @@ import java.util.Optional;
 
 public interface CardListRepository extends JpaRepository<CardList, Integer> {
 
+    /**
+     * Finds the cardList from the repository by a cardId
+     * @param cardId the cardId
+     * @return the cardList
+     */
     @Query("SELECT cl from CardList cl JOIN cl.cards cards WHERE cards.id = :cardId")
     Optional<CardList> findByCardId(final int cardId);
 
