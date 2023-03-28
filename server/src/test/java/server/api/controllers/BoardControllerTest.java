@@ -1,5 +1,6 @@
 package server.api.controllers;
 
+import commons.entities.Card;
 import commons.entities.Tag;
 import commons.entities.Board;
 import commons.entities.CardList;
@@ -10,6 +11,7 @@ import org.mockito.Mockito;
 import org.springframework.validation.BindingResult;
 import server.api.repositories.TestBoardRepository;
 import server.api.repositories.TestCardListRepository;
+import server.api.repositories.TestCardRepository;
 import server.api.repositories.TestTagRepository;
 import server.api.services.TestTextService;
 import server.exceptions.EntityNotFoundException;
@@ -22,7 +24,8 @@ public final class BoardControllerTest {
 
     private TextService textService;
     private TestBoardRepository boardRepo;
-    private TestCardListRepository cardRepo;
+    private TestCardListRepository cardListRepo;
+    private TestCardRepository cardRepo;
     private TestTagRepository tagRepo;
     private BoardController boardController;
     private BindingResult hasErrorResult;
@@ -32,9 +35,10 @@ public final class BoardControllerTest {
     public void setup() {
         this.textService = new TestTextService();
         this.boardRepo = new TestBoardRepository();
-        this.cardRepo = new TestCardListRepository();
+        this.cardRepo = new TestCardRepository();
+        this.cardListRepo = new TestCardListRepository();
         this.tagRepo = new TestTagRepository();
-        this.boardController = new BoardController(this.boardRepo, this.cardRepo,this.textService, this.tagRepo);
+        this.boardController = new BoardController(this.boardRepo, this.cardListRepo, this.cardRepo, this.textService, this.tagRepo);
         this.hasErrorResult = Mockito.mock(BindingResult.class);
         this.noErrorResult = Mockito.mock(BindingResult.class);
 
@@ -76,7 +80,7 @@ public final class BoardControllerTest {
         this.boardRepo.save(new Board("aaaaaaaaab", "password"));
         this.boardController.createList(1, new CardList("New List"), noErrorResult);
         Assertions.assertTrue(this.boardRepo.findById(1).get().getLists().size() > 0);
-        Assertions.assertTrue(this.cardRepo.count() > 0);
+        Assertions.assertTrue(this.cardListRepo.count() > 0);
     }
 
     @Test
@@ -111,6 +115,21 @@ public final class BoardControllerTest {
         this.boardRepo.save(new Board("aaaaaaaaab", "password"));
 
         Assertions.assertThrows(EntityNotFoundException.class, () -> this.boardController.deleteList(1, 1000));
+    }
+    @Test
+    public void deleteListWithCardsTest(){
+        this.boardRepo.save(new Board("aaaaaaaaab", "password"));
+        final CardList list = this.boardController.createList(1, new CardList("New List"), noErrorResult).getBody().getLists().get(0);
+        Card card = new Card("title","desc");
+        list.addCard(card);
+
+        assertTrue(this.boardRepo.findById(1).get().getLists().size() > 0);
+        assertTrue(list.getCards().get(0).equals(card));
+
+        boardController.deleteList(1, list.getId());
+        assertTrue(this.boardRepo.findById(1).get().getLists().size() == 0);
+        assertEquals(0, cardRepo.count());
+
     }
 
     @Test
