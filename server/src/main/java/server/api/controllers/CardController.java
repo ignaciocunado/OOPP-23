@@ -76,6 +76,9 @@ public class CardController {
         if (!cardRepository.existsById(id)) {
             throw new EntityNotFoundException("No card with id " + id);
         }
+        if(!tagRepository.existsById(tagId)) {
+            throw new EntityNotFoundException("No tag with id " + tagId);
+        }
         Card card = cardRepository.getById(id);
         card.addTag(tagRepository.getById(tagId));
         return new ResponseEntity<>(cardRepository.save(card), new HttpHeaders(),
