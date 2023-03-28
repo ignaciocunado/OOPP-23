@@ -95,6 +95,11 @@ public class BoardOverviewCtrl implements Initializable {
         this.refresh(board);
     }
 
+    @FXML
+    private void showLandingOverview(){
+        mainCtrl.showLandingOverview();
+    }
+
     /**
      * Removes a list from the board based on an id
      * @param id the list id
