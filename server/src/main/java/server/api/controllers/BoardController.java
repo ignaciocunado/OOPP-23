@@ -97,16 +97,11 @@ public class BoardController {
     /** Hnadler for creating a tag
      * @param id unique id of the board
      * @param tag the new tag that we are creating
-     * @param errors wrapping for potential validating errors
      * @return the board with the new tag
      */
     @PostMapping("/{id}/tag")
     public ResponseEntity<Board> createTag(@PathVariable final int id,
-                                           @Validated @RequestBody Tag tag,
-                                           final BindingResult errors){
-        if (errors.hasErrors()) {
-            throw new InvalidRequestException(errors);
-        }
+                                           @Validated @RequestBody Tag tag){
         if (!boardRepo.existsById(id)) {
             throw new EntityNotFoundException("No board with id " + id);
         }
@@ -133,8 +128,8 @@ public class BoardController {
         if (!tagRepo.existsById(tagId)){
             throw new EntityNotFoundException("No tag with id " + tagId);
         }
-        List<Integer> cardsId = cardRepository.selectCardsWithTag(tagId);
-        if (cardsId != null) {
+        if (cardRepository.count() != 0) {
+            List<Integer> cardsId = cardRepository.selectCardsWithTag(tagId);
             for (int cardId : cardsId) {
                 Card card = this.cardRepository.getById(cardId);
                 card.removeTagById(tagId);

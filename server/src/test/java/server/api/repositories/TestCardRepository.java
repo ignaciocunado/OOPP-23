@@ -10,6 +10,7 @@ import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import server.database.CardRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -190,7 +191,12 @@ public class TestCardRepository implements CardRepository {
 
     @Override
     public List<Integer> selectCardsWithTag(int tagId) {
-        //for the sake of the test this query is omitted
-        return List.of(1);
+        List<Integer> result = new ArrayList<>();
+        for (Card card : cards){
+            if (tagId == card.getId()){
+                result.add(card.getId());
+            }
+        }
+        return result;
     }
 }
