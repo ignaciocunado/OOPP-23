@@ -56,6 +56,7 @@ public class TaskCtrl {
         this.completed.setOnAction(event -> {
             boolean isTaskCompleted = !completed.isIndeterminate() && completed.isSelected();
             cardEditorCtrl.editTask(this.task.getId(), title.getText(), isTaskCompleted);
+            task.setCompleted(isTaskCompleted);
         });
     }
 
@@ -64,6 +65,7 @@ public class TaskCtrl {
         final ReadOnlyBooleanProperty focused = (ReadOnlyBooleanProperty) observable;
         if (focused.getValue()) return; // If focuses then don't save yet
         boolean isTaskCompleted = !completed.isIndeterminate() && completed.isSelected();
+        task.setName(title.getText());
         cardEditorCtrl.editTask(this.task.getId(), title.getText(), isTaskCompleted);
     }
 }
