@@ -104,6 +104,10 @@ public class BoardOverviewCtrl implements Initializable {
         this.refresh(board);
     }
 
+    /**
+     * Getter for Board key
+     * @return key of the board
+     */
     public String getkey() {
         return this.currentBoard.getKey();
     }

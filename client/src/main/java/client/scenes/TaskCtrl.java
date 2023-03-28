@@ -1,8 +1,5 @@
 package client.scenes;
 
-import client.utils.ServerUtils;
-import com.google.inject.Inject;
-import commons.entities.Card;
 import commons.entities.Task;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -49,6 +46,7 @@ public class TaskCtrl {
      * Update methods
      * @param id id of the rendered object
      * @param cardEditorCtrl ctrl
+     * @param task task that this represents
      */
     public void update(int id, CardEditorCtrl cardEditorCtrl, Task task){
         this.id = id;

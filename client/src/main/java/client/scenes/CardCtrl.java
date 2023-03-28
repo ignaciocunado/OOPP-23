@@ -90,6 +90,10 @@ public final class CardCtrl {
         this.mainCtrl.showCardEditor(this);
     }
 
+    /**
+     * getter for board key
+     * @return key of the board
+     */
     public String getKeyOfBoard() {
         return cardListCtrl.getKeyOfBoard();
     }

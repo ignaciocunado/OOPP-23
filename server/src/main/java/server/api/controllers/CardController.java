@@ -14,8 +14,6 @@ import server.database.TaskRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
 
-import javax.management.relation.RelationNotFoundException;
-
 
 @RestController
 @RequestMapping("/api/card")

@@ -184,7 +184,12 @@ public class CardEditorCtrl {
         this.currentCard = serverUtils.removeTaskFromCard(id, currentCard.getId());
     }
 
-
+    /**
+     * Handles Tasks edits
+     * @param taskId id of the task to edit
+     * @param title new title of the task
+     * @param isTaskCompleted boolean representing completeness of the task
+     */
     public void editTask(int taskId, String title, boolean isTaskCompleted) {
         this.serverUtils.editTask(this.currentCard.getId(),taskId, title,
             isTaskCompleted);
