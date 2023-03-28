@@ -199,4 +199,10 @@ public final class TestCardListRepository implements CardListRepository {
     private Optional<CardList> find(int id) {
         return this.cardLists.stream().filter(b -> b.getId() == id).findFirst();
     }
+
+    @Override
+    public Optional<CardList> findByCardId(int cardId) {
+        return this.cardLists.stream().filter(cl -> cl.getCards().stream().anyMatch(card ->
+            card.getId() == cardId)).findAny();
+    }
 }

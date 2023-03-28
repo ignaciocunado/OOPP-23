@@ -128,11 +128,7 @@ public final class CardListCtrl {
             final int draggedCardId = Integer.parseInt(dragBoard.getString());
 
             // 128 + 2.5 is the card height plus half of the space between them
-            // Rounded to closest and can be maximum the amount of children already there.
-            int position = Math.min(
-                    (int) Math.round(event.getY() / (128 + 2.5)),
-                    this.cardList.getCards().size()
-            );
+            int position = (int) Math.round(event.getY() / (128 + 2.5));
 
             this.server.moveCard(draggedCardId, this.cardList.getId(), position);
             this.boardOverviewCtrl.refresh();

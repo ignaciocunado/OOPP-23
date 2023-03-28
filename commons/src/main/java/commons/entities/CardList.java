@@ -102,30 +102,6 @@ public final class CardList {
     }
 
     /**
-     * Method for swapping two cads in the Cards list
-     * @param card the card to edit the index of
-     * @param index the new index of the card
-     * @return whether the method has succeeded in switching the index of the card
-     */
-    public boolean editCardIndex(Card card, int index) {
-        if (!cards.contains(card) || index >= cards.size()) {
-            return false;
-        }
-        if (cards.indexOf(card) < index) {
-            for (int i = cards.indexOf(card); i < index; i++) {
-                cards.set(i, cards.get(i+1));
-            }
-        }
-        else {
-            for (int i = cards.indexOf(card); i > index; i--) {
-                cards.set(i, cards.get(i-1));
-            }
-        }
-        cards.set(index, card);
-        return true;
-    }
-
-    /**
      * Creates a human-readable string representation of list
      * @return human-readable string of list
      */
