@@ -1,6 +1,7 @@
 package server.api.controllers;
 
 import commons.entities.Card;
+import commons.entities.CardList;
 import commons.entities.Tag;
 import commons.entities.Task;
 import org.junit.jupiter.api.Assertions;
@@ -8,21 +9,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.validation.BindingResult;
+import server.api.repositories.TestCardListRepository;
 import server.api.repositories.TestTaskRepository;
 import server.api.repositories.TestCardRepository;
 import server.api.repositories.TestTagRepository;
 import server.database.BoardRepository;
 import static org.junit.jupiter.api.Assertions.*;
+
+import server.database.CardListRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
+
+import java.util.NoSuchElementException;
 
 class CardControllerTest {
 
     private TestCardRepository cardRepo;
     private TestTagRepository tagRepo;
     private TestTaskRepository taskRepo;
+    private CardListRepository listRepo;
     private CardController controller;
-    private BoardRepository boardRepo;
 
     private BindingResult hasErrorResult;
     private BindingResult noErrorResult;
@@ -32,7 +38,8 @@ class CardControllerTest {
         cardRepo = new TestCardRepository();
         tagRepo = new TestTagRepository();
         taskRepo = new TestTaskRepository();
-        controller = new CardController(cardRepo,tagRepo,taskRepo, boardRepo);
+        listRepo = new TestCardListRepository();
+        controller = new CardController(listRepo, cardRepo,tagRepo,taskRepo);
 
         this.hasErrorResult = Mockito.mock(BindingResult.class);
         this.noErrorResult = Mockito.mock(BindingResult.class);
@@ -112,7 +119,7 @@ class CardControllerTest {
         final Tag tag = new Tag("ADS", 0);
         tag.setId(10);
         tagRepo.save(tag);
-        this.controller.assignTag(1, 1, noErrorResult);
+        this.controller.assignTag(1, 1);
         assertTrue(tagRepo.existsById(1));
         assertEquals(tag, tagRepo.getById(1));
     }
@@ -122,14 +129,14 @@ class CardControllerTest {
     public void createTagNoCardTest() {
         Tag tag = new Tag("I hate conflicts", 0);
         tag.setId(1);
-        Assertions.assertThrows(EntityNotFoundException.class, () -> this.controller.assignTag(10, 1, noErrorResult));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.controller.assignTag(10, 1));
     }
 
     @Test
     public void createTagFaultyTest() {
         cardRepo.save(new Card("Study ADS", "Weblav"));
         Tag faulty1 = new Tag(null, 23);
-        Assertions.assertThrows(InvalidRequestException.class, () -> controller.assignTag(1, 1, hasErrorResult));
+        Assertions.assertThrows(NoSuchElementException.class, () -> controller.assignTag(1, 1));
     }
 
     @Test
@@ -138,7 +145,7 @@ class CardControllerTest {
         Tag toAdd =  new Tag("ADS", 0);
         toAdd.setId(1);
         tagRepo.save(toAdd);
-        this.controller.assignTag(1, 1, noErrorResult);
+        this.controller.assignTag(1, 1);
         Assertions.assertTrue(cardRepo.getById(1).getTags().size() > 0);
         this.controller.deleteTag(1,1);
         Assertions.assertEquals(0, cardRepo.getById(1).getTags().size());
@@ -156,7 +163,7 @@ class CardControllerTest {
         Tag tag = new Tag("ADS", 0);
         tag.setId(1);
         tagRepo.save(tag);
-        this.controller.assignTag(1,1, noErrorResult);
+        this.controller.assignTag(1,1);
         Assertions.assertThrows(EntityNotFoundException.class, () -> controller.deleteTag(2,1));
     }
 
@@ -206,5 +213,41 @@ class CardControllerTest {
         cardRepo.save(new Card("Study OOPP", "Do Git"));
         this.controller.createTask(1, new Task("OOPP", true), noErrorResult);
         Assertions.assertThrows(EntityNotFoundException.class, () -> controller.deleteTask(2,1));
+    }
+
+    @Test
+    public void moveTest() {
+        final Card card = this.cardRepo.save(new Card());
+        CardList deleteList = new CardList("title");
+        deleteList.addCard(card);
+        this.listRepo.save(deleteList);
+        final CardList addList = this.listRepo.save(new CardList("title"));
+
+        Assertions.assertTrue(this.listRepo.findById(deleteList.getId()).get().getCards().size() > 0);
+        this.controller.move(card.getId(), addList.getId(), 0);
+        Assertions.assertTrue(this.listRepo.findById(deleteList.getId()).get().getCards().size() == 0);
+        Assertions.assertTrue(this.listRepo.findById(addList.getId()).get().getCards().size() > 0);
+    }
+
+    @Test
+    public void moveNoCardFoundTest() {
+        final CardList deleteList = this.listRepo.save(new CardList("title"));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> controller.move(12,
+            deleteList.getId(), 0));
+    }
+
+    @Test
+    public void moveCardNotInListTest() {
+        final Card card = this.cardRepo.save(new Card());
+        final CardList deleteList = this.listRepo.save(new CardList("title"));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> controller.move(card.getId(),
+            deleteList.getId(), 0));
+    }
+
+    @Test
+    public void moveListNotFoundTest() {
+        final Card card = this.cardRepo.save(new Card());
+        Assertions.assertThrows(EntityNotFoundException.class, () -> controller.move(card.getId(),
+            12, 0));
     }
 }

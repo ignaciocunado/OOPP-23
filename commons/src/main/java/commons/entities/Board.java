@@ -142,10 +142,19 @@ public final class Board {
 
     /** Removes a given tag from this board
      * @param tag the tag that will be deleted
-     * @return a boolean value whether the card has been deleted or not
+     * @return a boolean value whether the tag has been deleted or not
      */
     public boolean removeTag(Tag tag) {
         return tags.remove(tag);
+    }
+
+    /**
+     * Removes a given tag from this board
+     * @param tagId id of the tag that is going to be deleted
+     * @return a boolean value whether the tag has been deleted or not
+     */
+    public boolean removeTagById(final int tagId){
+        return tags.removeIf(tag -> tag.getId() == tagId);
     }
     /**
      * Removes a given CardList from this board
