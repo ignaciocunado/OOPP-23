@@ -191,7 +191,7 @@ public class CardEditorCtrl {
      * @param isTaskCompleted boolean representing completeness of the task
      */
     public void editTask(int taskId, String title, boolean isTaskCompleted) {
-        this.serverUtils.editTask(this.currentCard.getId(),taskId, title,
+        this.serverUtils.editTask(taskId, title,
             isTaskCompleted);
     }
 }

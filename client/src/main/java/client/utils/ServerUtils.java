@@ -316,10 +316,10 @@ public class ServerUtils {
      * @param name new name of the task
      * @param completed new boolean for completeness of the task
      */
-    public void editTask(final int cardId, final int taskId, final String name, final boolean completed) {
+    public void editTask(final int taskId, final String name, final boolean completed) {
         try{
             final HttpClient client = HttpClients.createDefault();
-            final HttpPatch req = new HttpPatch(this.server + "api/card/" + cardId + "/task/" + taskId);
+            final HttpPatch req = new HttpPatch(this.server + "api/task/" + taskId);
             final StringEntity entity =
                 new StringEntity(
                     String.format("{\"name\": \"%s\", \"completed\": \"%b\"}",
