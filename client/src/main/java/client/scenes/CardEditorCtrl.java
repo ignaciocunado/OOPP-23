@@ -172,7 +172,7 @@ public class CardEditorCtrl {
      */
     public void removeTag(int id) {
         tags.getChildren().removeIf(pane -> Integer.parseInt(pane.getId()) == id);
-        this.currentCard = serverUtils.removeTagFromCard(id, currentCard.getId());
+        this.currentCard = serverUtils.removeTagFromCard(currentCard.getId(), id);
     }
 
     /**
