@@ -23,7 +23,7 @@ public final class Board {
     @OneToMany
     private List<Tag> tags;
     @OneToMany
-    private List<CardList> listsOnBoard;
+    private List<CardList> lists;
 
     /**
      * Empty constructor for JPA
@@ -38,7 +38,7 @@ public final class Board {
     public Board(String key, String password) {
         this.key = key;
         this.password = password;
-        this.listsOnBoard = new ArrayList<>();
+        this.lists = new ArrayList<>();
         this.tags = new ArrayList<>();
     }
 
@@ -86,23 +86,41 @@ public final class Board {
      * Gets the list of CardList on this board
      * @return the list of CardList as an ArrayList
      */
-    public List<CardList> getListsOnBoard() {
-        return listsOnBoard;
+    public List<CardList> getLists() {
+        return lists;
     }
 
-    /** Gets the tags that are on this board
+    /**
+     * Sets the lists on the board
+     * @param lists the lists to replace them with
+     */
+    public void setLists(final List<CardList> lists) {
+        this.lists = lists;
+    }
+
+    /**
+     * Gets the tags that are on this board
      * @return the list of tags as an ArrayList
      */
-    public List<Tag> getTagsOnBoard() {
+    public List<Tag> getTags() {
         return tags;
     }
+
+    /**
+     * Sets the tags on the board
+     * @param tags the tags to replace with
+     */
+    public void setTags(final List<Tag> tags) {
+        this.tags = tags;
+    }
+
     /**
      * Adds a new CardList on this board
      * @param newList the new CardList to be added
      * @return boolean for whether the CardList has been added successfully
      */
     public boolean addList(CardList newList) {
-        return listsOnBoard.add(newList);
+        return lists.add(newList);
     }
 
     /** Adds a new Tag on this board
@@ -119,7 +137,7 @@ public final class Board {
      * @return boolean for whether the CardList has been deleted successfully
      */
     public boolean removeList(CardList listToDelete) {
-        return listsOnBoard.remove(listToDelete);
+        return lists.remove(listToDelete);
     }
 
     /** Removes a given tag from this board
@@ -144,7 +162,7 @@ public final class Board {
      * @return boolean for whether the CardList has been deleted successfully
      */
     public boolean removeListById(final int id) {
-        return this.listsOnBoard.removeIf(cardList -> cardList.getId() == id);
+        return this.lists.removeIf(cardList -> cardList.getId() == id);
     }
 
     /**
@@ -159,7 +177,7 @@ public final class Board {
         Board board = (Board) o;
         return id == board.id && Objects.equals(key, board.key) &&
             Objects.equals(password, board.password) &&
-            Objects.equals(listsOnBoard, board.listsOnBoard);
+            Objects.equals(lists, board.lists);
     }
 
     /**
@@ -168,7 +186,7 @@ public final class Board {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, key, password, listsOnBoard);
+        return Objects.hash(id, key, password, lists);
     }
 
     /**

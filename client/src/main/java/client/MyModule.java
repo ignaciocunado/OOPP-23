@@ -31,5 +31,6 @@ public class MyModule implements Module {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(LandingOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(BoardOverviewCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(CardEditorCtrl.class).in(Scopes.SINGLETON);
     }
 }

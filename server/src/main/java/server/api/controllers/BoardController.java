@@ -32,7 +32,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.BoardRepository;
 import server.database.CardListRepository;
-
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -45,15 +45,14 @@ public class BoardController {
     private final CardRepository cardRepository;
     private final TextService textService;
 
-
     /**
      * RestAPI Controller for the board route
      *
      * @param boardRepo          repository for boards
-     * @param cardListRepository repository for cards
      * @param cardRepository     repository for cards
+     * @param cardListRepository repository for cardLists
      * @param textService        service for generating random keys
-     * @param tagRepo repository for tags
+     * @param tagRepo            repository for tags
      */
     public BoardController(final BoardRepository boardRepo,
                            final CardListRepository cardListRepository,
@@ -82,16 +81,17 @@ public class BoardController {
     /**
      * Handler for getting the board
      *
-     * @param id the board id
+     * @param key the board key
      * @return the board
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<Board> getBoard(@PathVariable final Integer id) {
-        if (!this.boardRepo.existsById(id)) {
-            throw new EntityNotFoundException("No board with id " + id);
+    @GetMapping("/{key}")
+    public ResponseEntity<Board> getBoard(@PathVariable final String key) {
+        if (this.boardRepo.findBoardByKey(key).isEmpty()) {
+            throw new EntityNotFoundException("No board with key " + key);
         }
 
-        return new ResponseEntity<>(this.boardRepo.getById(id), new HttpHeaders(), 200);
+        return new ResponseEntity<>(
+                this.boardRepo.findBoardByKey(key).get(),new HttpHeaders(), 200);
     }
 
     /** Hnadler for creating a tag
@@ -178,8 +178,8 @@ public class BoardController {
      * @return the board without the list
      */
     @DeleteMapping("/{id}/list/{listId}")
-    public ResponseEntity<Board> deleteList(@PathVariable final Integer id,
-                                            @PathVariable final Integer listId) {
+    public ResponseEntity<Board> deleteList (@PathVariable final Integer id,
+                                             @PathVariable final Integer listId) {
         if (!this.boardRepo.existsById(id)) {
             throw new EntityNotFoundException("No board with id " + id);
         }
@@ -189,23 +189,27 @@ public class BoardController {
             throw new EntityNotFoundException("Board contains no list with id " + listId);
         }
 
+        final List<Card> cards =
+                new ArrayList<>(this.cardListRepository.getById(listId).getCards());
         this.cardListRepository.deleteById(listId);
+        cards.forEach(card -> this.cardRepository.deleteById(card.getId()));
+
         return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), HttpStatus.OK);
     }
 
-    /** endpoint for editing the title of a card list
+    /**
+     * endpoint for editing the title of a card list
      *
-     * @param id int value representing the id of a Board
-     * @param board the Board being edited
+     * @param id     int value representing the id of a Board
+     * @param board  the Board being edited
      * @param errors wrapping object for potential validating errors
      * @return the card list with the changed new title
      */
     @PatchMapping("/{id}")
     public ResponseEntity<Board> editPassword(@PathVariable final Integer id,
-                                              @Validated @RequestBody
-                                              final Board board,
+                                              @Validated @RequestBody final Board board,
                                               final BindingResult errors) {
-        if(errors.hasErrors()) {
+        if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
         if (!this.boardRepo.existsById(id)) {
