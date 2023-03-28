@@ -139,6 +139,10 @@ public final class CardListCtrl {
         });
     }
 
+    /**
+     * getter for key of board
+     * @return key of board
+     */
     public String getKeyOfBoard() {
         return boardOverviewCtrl.getkey();
     }

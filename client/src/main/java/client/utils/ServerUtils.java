@@ -27,9 +27,7 @@ import org.apache.hc.client5.http.classic.methods.HttpPatch;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.glassfish.jersey.client.ClientConfig;
-
 import java.io.IOException;
-import java.util.List;
 
 @Singleton
 public class ServerUtils {
@@ -250,6 +248,8 @@ public class ServerUtils {
      * Adds a tag to the specified card
      * @param tagId if of the tag to add
      * @param cardId id of the car where the tag will be added
+     * @param tag tag to add
+     * @return the card
      */
     public Card addTag(final int tagId, final int cardId, final Tag tag) {
         try{
@@ -311,7 +311,6 @@ public class ServerUtils {
 
     /**
      * Edits a task from the server
-     * @param cardId id of the card which contains the task
      * @param taskId id of the task
      * @param name new name of the task
      * @param completed new boolean for completeness of the task
@@ -335,6 +334,12 @@ public class ServerUtils {
         }
     }
 
+    /**
+     * Deletes a task
+     * @param taskId id of the task to delete
+     * @param cardId id of the card from which to remove the task
+     * @return the new card
+     */
     public Card removeTaskFromCard(int taskId, int cardId) {
         try {
             return client.target(this.server).path("api/card/{cardId}/task/{taskId}")
