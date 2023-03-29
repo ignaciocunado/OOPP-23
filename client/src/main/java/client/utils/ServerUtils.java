@@ -148,6 +148,7 @@ public class ServerUtils {
      * Sends a request to edit the list in the board
      * @param id the list id
      * @param title the new title
+     * @return the renamed list
      */
     public CardList renameList(final int id, final String title) {
         try {
@@ -225,6 +226,7 @@ public class ServerUtils {
      * @param id the card to edit
      * @param title the new title
      * @param description the new description
+     * @return the edited card
      */
     public Card editCard(final int id, final String title, final String description) {
         try {
@@ -232,7 +234,8 @@ public class ServerUtils {
                     .resolveTemplate("id", id)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
-                    .method(HttpMethod.PATCH, Entity.json(new Card(title, description)), Card.class);
+                    .method(HttpMethod.PATCH,
+                            Entity.json(new Card(title, description)), Card.class);
         } catch (NotFoundException e) {
             return null;
         }
