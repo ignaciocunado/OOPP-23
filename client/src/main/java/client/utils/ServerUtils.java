@@ -254,7 +254,7 @@ public class ServerUtils {
                 .resolveTemplate("tagId", tagId)
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .put(Entity.entity(tag, MediaType.APPLICATION_JSON), Card.class);
+                .put(Entity.json(tag), Card.class);
         }
         catch (NotFoundException e) {
             return null;
@@ -296,7 +296,7 @@ public class ServerUtils {
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(
-                    Entity.entity(new Task(name, completed), MediaType.APPLICATION_JSON),
+                    Entity.json(new Task(name, completed)),
                     Card.class
                 );
         }
