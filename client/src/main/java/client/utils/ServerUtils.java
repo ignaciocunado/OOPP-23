@@ -82,7 +82,7 @@ public class ServerUtils {
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(
-                        Entity.entity(new Board("", password), MediaType.APPLICATION_JSON),
+                        Entity.json(new Board("", password)),
                         Board.class
                 );
     }
@@ -117,7 +117,7 @@ public class ServerUtils {
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .post(
-                            Entity.entity(new CardList(title), MediaType.APPLICATION_JSON),
+                            Entity.json(new CardList(title)),
                             Board.class
                     );
         } catch (NotFoundException e) {
@@ -156,7 +156,8 @@ public class ServerUtils {
                     .resolveTemplate("id", id)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
-                    .method(HttpMethod.PATCH, Entity.json(new CardList(title)), CardList.class);
+                    .method(HttpMethod.PATCH,
+                            Entity.json(new CardList(title)), CardList.class);
         } catch (NotFoundException e) {
             return null;
         }
@@ -176,7 +177,7 @@ public class ServerUtils {
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .post(
-                            Entity.entity(new Card(title, description), MediaType.APPLICATION_JSON),
+                            Entity.json(new Card(title, description)),
                             CardList.class
                     );
         } catch (NotFoundException e) {
