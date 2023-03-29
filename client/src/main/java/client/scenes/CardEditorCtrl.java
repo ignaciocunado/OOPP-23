@@ -55,14 +55,13 @@ public class CardEditorCtrl {
 
     /**
      * Refreshes card editor info
-     *
      * @param cardCtrl current Card
      */
     public void refresh(final CardCtrl cardCtrl) {
         this.currentCard = cardCtrl.getCard();
         this.cardCtrl = cardCtrl;
         combo.getItems().clear();
-        combo.getItems().addAll(serverUtils.getBoard(this.cardCtrl.getKeyOfBoard()).getTags());
+        combo.getItems().addAll(this.cardCtrl.getBoard().getTags());
         this.title.setText(this.currentCard.getTitle());
         this.description.setText(this.currentCard.getDescription());
         try {

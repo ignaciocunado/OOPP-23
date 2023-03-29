@@ -105,10 +105,10 @@ public class BoardOverviewCtrl implements Initializable {
     }
 
     /**
-     * Getter for Board key
-     * @return key of the board
+     * Getter for Board
+     * @return board
      */
-    public String getkey() {
-        return this.currentBoard.getKey();
+    public Board getBoard() {
+        return this.currentBoard;
     }
 }

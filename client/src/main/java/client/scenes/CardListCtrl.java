@@ -3,6 +3,7 @@ package client.scenes;
 import client.Main;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.entities.Board;
 import commons.entities.Card;
 import commons.entities.CardList;
 import javafx.beans.Observable;
@@ -136,10 +137,10 @@ public final class CardListCtrl {
     }
 
     /**
-     * getter for key of board
-     * @return key of board
+     * getter for board
+     * @return board
      */
-    public String getKeyOfBoard() {
-        return boardOverviewCtrl.getkey();
+    public Board getBoard() {
+        return boardOverviewCtrl.getBoard();
     }
 }
