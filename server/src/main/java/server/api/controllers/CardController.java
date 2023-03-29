@@ -1,18 +1,21 @@
 package server.api.controllers;
 
 import commons.entities.Card;
+import commons.entities.Tag;
 import commons.entities.Task;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import server.database.BoardRepository;
 import server.database.CardRepository;
 import server.database.TagRepository;
 import server.database.TaskRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
+import server.exceptions.ServerException;
+
+import java.rmi.ServerError;
 
 
 @RestController
@@ -22,21 +25,18 @@ public class CardController {
     private final CardRepository cardRepository;
     private final TagRepository tagRepository;
     private final TaskRepository taskRepository;
-    private final BoardRepository boardRepository;
 
     /**
      * Constructor
      * @param cardRepository  card DB
      * @param tagRepository   tag DB
      * @param taskRepository  task DB
-     * @param boardRepository board DB
      */
     public CardController(final CardRepository cardRepository, final TagRepository tagRepository,
-                          final TaskRepository taskRepository, BoardRepository boardRepository) {
+                          final TaskRepository taskRepository) {
         this.cardRepository = cardRepository;
         this.tagRepository = tagRepository;
         this.taskRepository = taskRepository;
-        this.boardRepository = boardRepository;
     }
 
     /**
@@ -80,7 +80,11 @@ public class CardController {
             throw new EntityNotFoundException("No tag with id " + tagId);
         }
         Card card = cardRepository.getById(id);
-        card.addTag(tagRepository.getById(tagId));
+        Tag tag = tagRepository.getById(tagId);
+        if(card.getTags().contains(tag)) {
+            return ResponseEntity.badRequest().build();
+        }
+        card.addTag(tag);
         return new ResponseEntity<>(cardRepository.save(card), new HttpHeaders(),
             200);
     }

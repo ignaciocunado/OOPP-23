@@ -34,7 +34,7 @@ class CardControllerTest {
         cardRepo = new TestCardRepository();
         tagRepo = new TestTagRepository();
         taskRepo = new TestTaskRepository();
-        controller = new CardController(cardRepo,tagRepo,taskRepo, boardRepo);
+        controller = new CardController(cardRepo,tagRepo,taskRepo);
 
         this.hasErrorResult = Mockito.mock(BindingResult.class);
         this.noErrorResult = Mockito.mock(BindingResult.class);
