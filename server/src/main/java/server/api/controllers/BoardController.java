@@ -33,6 +33,11 @@ public class BoardController {
 
     private final BoardService boardService;
 
+    /**
+     * Creates the board controller with a service
+     *
+     * @param boardService the service with the main business logic
+     */
     public BoardController(final BoardService boardService) {
         this.boardService = boardService;
     }
@@ -45,7 +50,8 @@ public class BoardController {
      */
     @PostMapping(path = {"", "/"})
     public ResponseEntity<Board> createBoard(@RequestBody final Board board) {
-        return new ResponseEntity<>(this.boardService.createBoard(board.getPassword()), new HttpHeaders(), 200);
+        return new ResponseEntity<>(this.boardService.createBoard(board.getPassword()),
+                new HttpHeaders(), 200);
     }
     /**
      * Handler for getting the board
@@ -62,6 +68,7 @@ public class BoardController {
     /** Handler for creating a tag
      * @param id unique id of the board
      * @param tag the new tag that we are creating
+     * @param errors wrapping object for potential validating errors
      * @return the board with the new tag
      */
     @PostMapping("/{id}/tag")
@@ -71,7 +78,8 @@ public class BoardController {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        return new ResponseEntity<>(this.boardService.addTagToBoard(id, tag), new HttpHeaders(), 200);
+        return new ResponseEntity<>(this.boardService.addTagToBoard(id, tag),
+                new HttpHeaders(), 200);
     }
 
     /**
@@ -84,7 +92,8 @@ public class BoardController {
     @DeleteMapping("/{id}/tag/{tagId}")
     public ResponseEntity<Board> deleteTag(@PathVariable final int id,
                                            @PathVariable final int tagId) {
-        return new ResponseEntity<>(this.boardService.deleteTagFromBoard(id, tagId), new HttpHeaders(), 200);
+        return new ResponseEntity<>(this.boardService.deleteTagFromBoard(id, tagId),
+                new HttpHeaders(), 200);
     }
 
     /**
@@ -102,7 +111,8 @@ public class BoardController {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        return new ResponseEntity<>(this.boardService.createListInBoard(id, cardList), new HttpHeaders(), 200);
+        return new ResponseEntity<>(this.boardService.createListInBoard(id, cardList),
+                new HttpHeaders(), 200);
     }
 
     /**
@@ -115,7 +125,8 @@ public class BoardController {
     @DeleteMapping("/{id}/list/{listId}")
     public ResponseEntity<Board> deleteList(@PathVariable final int id,
                                             @PathVariable final int listId) {
-        return new ResponseEntity<>(this.boardService.deleteListFromBoard(id, listId), new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>(this.boardService.deleteListFromBoard(id, listId),
+                new HttpHeaders(), HttpStatus.OK);
     }
 
     /**
@@ -133,7 +144,8 @@ public class BoardController {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        return new ResponseEntity<>(this.boardService.changePassword(id, board), new HttpHeaders(), 200);
+        return new ResponseEntity<>(this.boardService.changePassword(id, board),
+                new HttpHeaders(), 200);
     }
 
 }
