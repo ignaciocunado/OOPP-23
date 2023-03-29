@@ -16,9 +16,7 @@
 package client.utils;
 
 import com.google.inject.Singleton;
-import commons.entities.Board;
-import commons.entities.Card;
-import commons.entities.CardList;
+import commons.entities.*;
 import jakarta.ws.rs.HttpMethod;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.client.Client;
@@ -309,26 +307,20 @@ public class ServerUtils {
 
     /**
      * Edits a task from the server
-     * @param taskId id of the task
+     * @param id id of the task
      * @param name new name of the task
      * @param completed new boolean for completeness of the task
      */
-    public void editTask(final int taskId, final String name, final boolean completed) {
-        try{
-            final HttpClient client = HttpClients.createDefault();
-            final HttpPatch req = new HttpPatch(this.server + "api/task/" + taskId);
-            final StringEntity entity =
-                new StringEntity(
-                    String.format("{\"name\": \"%s\", \"completed\": \"%b\"}",
-                        name,completed)
-                );
-            req.setEntity(entity);
-            req.setHeader("content-type", "application/json");
-            client.execute(req, response -> null);
-
-        }
-        catch (NotFoundException | IOException e) {
-            return;
+    public Task editTask(final int id, final String name, final boolean completed) {
+        try {
+            return client.target(this.server).path("api/task/{id}")
+                    .resolveTemplate("id", id)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .method(HttpMethod.PATCH,
+                            Entity.json(new Task(name, completed)), Task.class);
+        } catch (NotFoundException e) {
+            return null;
         }
     }
 
