@@ -1,0 +1,9 @@
+.texts {
+    -fx-fill: white;
+    -fx-text-alignment: center;
+    -fx-font-size: 13.5;
+}
+
+.rejoin {
+    -fx-underline: true;
+}

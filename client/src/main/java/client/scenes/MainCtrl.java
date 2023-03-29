@@ -46,25 +46,28 @@ public class MainCtrl {
      * @param landingOverview the landing overview
      * @param boardOverview the main board overview
      * @param cardEditor card editor view
-     * @param boardHistoryOverview board history overview
+     * @param boardHistory board history overview
      */
     public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
             Pair<BoardOverviewCtrl, Parent> boardOverview, Pair<CardEditorCtrl, Parent> cardEditor,
-                           Pair<BoardHistoryOverviewCtrl, Parent> boardHistoryOverview) {
+                           Pair<BoardHistoryOverviewCtrl, Parent> boardHistory) {
         this.primaryStage = primaryStage;
         this.cardEditorStage = new Stage();
         this.boardHistoryStage = new Stage();
         this.landingOverviewCtrl = landingOverview.getKey();
         this.landingOverview = new Scene(landingOverview.getValue());
 
-        this.boardHistoryOverviewCtrl = boardHistoryOverview.getKey();
-        this.boardHistoryOverview = new Scene(boardHistoryOverview.getValue());
+        this.boardHistoryOverviewCtrl = boardHistory.getKey();
+        this.boardHistoryOverview = new Scene(boardHistory.getValue());
 
         this.boardOverviewCtrl = boardOverview.getKey();
         this.boardOverview = new Scene(boardOverview.getValue());
 
         this.cardEditorCtrl = cardEditor.getKey();
         this.cardEditorScene = new Scene(cardEditor.getValue());
+
+        boardHistoryOverview.getStylesheets().add(getClass().getResource("textStyle.css")
+            .toExternalForm());
 
         cardEditorStage.initModality(Modality.APPLICATION_MODAL);
         cardEditorStage.setTitle("Card Editor");
