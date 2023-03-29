@@ -241,4 +241,114 @@ public class ServerUtils {
             return null;
         }
     }
+
+    /**
+     * Adds a tag to the specified card
+     * @param tagId if of the tag to add
+     * @param cardId id of the car where the tag will be added
+     * @param tag tag to add
+     * @return the card
+     */
+    public Card addTag(final int tagId, final int cardId, final Tag tag) {
+        try{
+            return client.target(this.server).path("api/card/{cardId}/tag/{tagId}")
+                .resolveTemplate("cardId", cardId)
+                .resolveTemplate("tagId", tagId)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(tag, MediaType.APPLICATION_JSON), Card.class);
+        }
+        catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Method to remove an existing tag from a card
+     * @param cardId id of the card
+     * @param tagId id of the tag to remove
+     * @return the new card without the tag
+     */
+    public Card removeTagFromCard(final int cardId, final int tagId) {
+        try{
+            return client.target(this.server).path("api/card/{cardId}/tag/{tagId}")
+                .resolveTemplate("cardId", cardId)
+                .resolveTemplate("tagId", tagId)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .delete(Card.class);
+        }
+        catch (NotFoundException e) {
+            return null;
+        }
+
+    }
+
+    /**
+     * Creates a new task and adds it to a card
+     * @param cardId id of the card in which to add the task
+     * @param name name of the task
+     * @param completed is the task completed?
+     * @return the new card containing the task
+     */
+    public Card addTaskToCard(final int cardId, final String name, final boolean completed) {
+        try{
+            return client.target(this.server).path("api/card/{cardId}/task")
+                .resolveTemplate("cardId", cardId)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(
+                    Entity.entity(new Task(name, completed), MediaType.APPLICATION_JSON),
+                    Card.class
+                );
+        }
+        catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Edits a task from the server
+     * @param taskId id of the task
+     * @param name new name of the task
+     * @param completed new boolean for completeness of the task
+     */
+    public void editTask(final int taskId, final String name, final boolean completed) {
+        try{
+            final HttpClient client = HttpClients.createDefault();
+            final HttpPatch req = new HttpPatch(this.server + "api/task/" + taskId);
+            final StringEntity entity =
+                new StringEntity(
+                    String.format("{\"name\": \"%s\", \"completed\": \"%b\"}",
+                        name,completed)
+                );
+            req.setEntity(entity);
+            req.setHeader("content-type", "application/json");
+            client.execute(req, response -> null);
+
+        }
+        catch (NotFoundException | IOException e) {
+            return;
+        }
+    }
+
+    /**
+     * Deletes a task
+     * @param taskId id of the task to delete
+     * @param cardId id of the card from which to remove the task
+     * @return the new card
+     */
+    public Card removeTaskFromCard(int taskId, int cardId) {
+        try {
+            return client.target(this.server).path("api/card/{cardId}/task/{taskId}")
+                .resolveTemplate("cardId", cardId)
+                .resolveTemplate("taskId", taskId)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .delete(Card.class);
+        }
+        catch(NotFoundException e) {
+            return null;
+        }
+    }
 }

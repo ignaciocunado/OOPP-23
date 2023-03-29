@@ -1,9 +1,6 @@
 package commons.entities;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -23,7 +20,7 @@ public final class Card {
     private String description;
     @OneToMany
     private List<Task> nestedTaskList;
-    @OneToMany
+    @ManyToMany
     private List<Tag> tags;
 
     /**
