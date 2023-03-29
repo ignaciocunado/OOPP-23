@@ -17,14 +17,32 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.entities.Board;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.TextField;
+
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class LandingOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+
+    @FXML
+    private TextField joinKey;
+    @FXML
+    private PasswordField joinPassword;
+    @FXML
+    private PasswordField createPassword;
+    @FXML
+    private PasswordField createConfirmPassword;
 
     /**
      * Constructor to inject necessary classes into the controller
@@ -50,6 +68,7 @@ public class LandingOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh();
+        this.server.setServer("http://localhost:8080/"); // TODO: temporary
     }
 
     /**
@@ -57,7 +76,15 @@ public class LandingOverviewCtrl implements Initializable {
      * and loads it with the board's information
      */
     public void joinBoard() {
-        this.mainCtrl.showExistingBoardOverview();
+        final Board board = this.server.getBoard(this.joinKey.getText());
+        if (board == null) {
+            final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("This board wasn't recognised");
+            alert.show();
+            return;
+        }
+        this.mainCtrl.showBoardOverview(board);
     }
 
     /**
@@ -66,7 +93,28 @@ public class LandingOverviewCtrl implements Initializable {
      * board's information
      */
     public void createBoard() {
-        this.mainCtrl.showNewBoardOverview();
+        if (!this.createPassword.getText().equals(this.createConfirmPassword.getText())) {
+            final Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("The passwords don't match");
+            alert.show();
+            return;
+        }
+
+        final Board board = this.server.createBoard(this.createPassword.getText());
+        final ButtonType copyButton = new ButtonType("Copy", ButtonBar.ButtonData.OK_DONE);
+        final ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
+        final Alert creationAlert = new Alert(Alert.AlertType.INFORMATION,
+                "", copyButton, closeButton);
+        creationAlert.setTitle("New Board Created");
+        creationAlert.setHeaderText("You've created a new board with key: " + board.getKey());
+        final Optional<ButtonType> res = creationAlert.showAndWait();
+        if (res.orElse(closeButton) == copyButton) {
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(new StringSelection(board.getKey()), null);
+        }
+
+        this.mainCtrl.showBoardOverview(board);
     }
 
     /**

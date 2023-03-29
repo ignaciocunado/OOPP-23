@@ -31,7 +31,7 @@ import javafx.util.Pair;
 public class Main extends Application {
 
     private static final Injector INJECTOR = createInjector(new MyModule());
-    private static final MyFXML FXML = new MyFXML(INJECTOR);
+    public static final MyFXML FXML = new MyFXML(INJECTOR);
 
     /**
      * main
@@ -61,8 +61,10 @@ public class Main extends Application {
                 FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
         final Pair<BoardSettingsCtrl, Parent> boardSettings =
                 FXML.load(BoardSettingsCtrl.class, "client", "scenes", "BoardSettings.fxml");
+        final Pair<CardEditorCtrl, Parent> cardEditor =
+                FXML.load(CardEditorCtrl.class, "client", "scenes", "CardEditor.fxml");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, landingOverview, boardOverview, boardSettings);
+        mainCtrl.initialize(primaryStage, landingOverview, boardOverview, boardSettings, cardEditor);
     }
 }
