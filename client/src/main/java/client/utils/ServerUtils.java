@@ -228,7 +228,7 @@ public class ServerUtils {
      */
     public Card editCard(final int id, final String title, final String description) {
         try {
-            return client.target(this.server).path("api/list/{id}")
+            return client.target(this.server).path("api/card/{id}")
                     .resolveTemplate("id", id)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
