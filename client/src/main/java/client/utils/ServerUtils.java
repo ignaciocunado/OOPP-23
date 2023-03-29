@@ -19,18 +19,14 @@ import com.google.inject.Singleton;
 import commons.entities.Board;
 import commons.entities.Card;
 import commons.entities.CardList;
+import jakarta.ws.rs.HttpMethod;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.MediaType;
-import org.apache.hc.client5.http.classic.HttpClient;
-import org.apache.hc.client5.http.classic.methods.HttpPatch;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
-
-import java.io.IOException;
 
 @Singleton
 public class ServerUtils {
@@ -42,7 +38,8 @@ public class ServerUtils {
      * Empty constructor
      */
     public ServerUtils() {
-        this.client = ClientBuilder.newClient(new ClientConfig());
+        final ClientConfig cc = new ClientConfig().connectorProvider(new ApacheConnectorProvider());
+        this.client = ClientBuilder.newClient(cc);
     }
 
     /**
@@ -50,7 +47,8 @@ public class ServerUtils {
      * @param server the server string
      */
     public ServerUtils(final String server) {
-        this.client = ClientBuilder.newClient(new ClientConfig());
+        final ClientConfig cc = new ClientConfig().connectorProvider(new ApacheConnectorProvider());
+        this.client = ClientBuilder.newClient(cc);
         this.server = server;
     }
 
@@ -147,21 +145,19 @@ public class ServerUtils {
     }
 
     /**
-     * TODO: Acutally properly implement with JAX RS WS client
-     * @param id
-     * @param title
+     * Sends a request to edit the list in the board
+     * @param id the list id
+     * @param title the new title
      */
-    public void renameList(final int id, final String title) {
+    public CardList renameList(final int id, final String title) {
         try {
-            final HttpClient client = HttpClients.createDefault();
-            final HttpPatch request = new HttpPatch(this.server+"api/list/"+id);
-            final StringEntity entity =
-                    new StringEntity(String.format("{\"title\": \"%s\"}", title));
-            request.setEntity(entity);
-            request.setHeader("content-type", "application/json");
-            client.execute(request, response -> null);
-        } catch (NotFoundException | IOException e) {
-            return;
+            return client.target(this.server).path("api/list/{id}")
+                    .resolveTemplate("id", id)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .method(HttpMethod.PATCH, Entity.json(new CardList(title)), CardList.class);
+        } catch (NotFoundException e) {
+            return null;
         }
     }
 
@@ -225,25 +221,20 @@ public class ServerUtils {
     }
 
     /**
-     * TODO: Acutally properly implement with JAX RS WS client
-     * @param id
-     * @param title
-     * @param description
+     * Sends a request to edit the card in a list
+     * @param id the card to edit
+     * @param title the new title
+     * @param description the new description
      */
-    public void editCard(final int id, final String title, final String description) {
+    public Card editCard(final int id, final String title, final String description) {
         try {
-            final HttpClient client = HttpClients.createDefault();
-            final HttpPatch request = new HttpPatch(this.server+"api/card/"+id);
-            final StringEntity entity =
-                    new StringEntity(
-                            String.format("{\"title\": \"%s\", \"description\": \"%s\"}",
-                                    title,description)
-                    );
-            request.setEntity(entity);
-            request.setHeader("content-type", "application/json");
-            client.execute(request, response -> null);
-        } catch (NotFoundException | IOException e) {
-            return;
+            return client.target(this.server).path("api/list/{id}")
+                    .resolveTemplate("id", id)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .method(HttpMethod.PATCH, Entity.json(new Card(title, description)), Card.class);
+        } catch (NotFoundException e) {
+            return null;
         }
     }
 }
