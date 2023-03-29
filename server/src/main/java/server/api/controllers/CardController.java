@@ -154,7 +154,7 @@ public class CardController {
         }
 
         taskRepository.deleteById(taskId);
-        return new ResponseEntity(cardRepository.save(deleteTaskFrom), new HttpHeaders(), 200);
+        return new ResponseEntity<>(cardRepository.save(deleteTaskFrom), new HttpHeaders(), 200);
     }
 
     /**
