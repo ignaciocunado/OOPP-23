@@ -13,7 +13,9 @@ import server.api.repositories.TestCardListRepository;
 import server.api.repositories.TestTaskRepository;
 import server.api.repositories.TestCardRepository;
 import server.api.repositories.TestTagRepository;
+import server.database.BoardRepository;
 import static org.junit.jupiter.api.Assertions.*;
+
 import server.database.CardListRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
@@ -36,8 +38,8 @@ class CardControllerTest {
         cardRepo = new TestCardRepository();
         tagRepo = new TestTagRepository();
         taskRepo = new TestTaskRepository();
-        controller = new CardController(listRepo,cardRepo,tagRepo,taskRepo);
         listRepo = new TestCardListRepository();
+        controller = new CardController(listRepo, cardRepo,tagRepo,taskRepo);
 
         this.hasErrorResult = Mockito.mock(BindingResult.class);
         this.noErrorResult = Mockito.mock(BindingResult.class);
@@ -92,7 +94,7 @@ class CardControllerTest {
     @Test
     public void editCardTitleNotFoundTest() {
         Assertions.assertThrows(EntityNotFoundException.class, () -> controller.editCard(0,
-                new Card("Test",  "Test"), noErrorResult));
+            new Card("Test",  "Test"), noErrorResult));
     }
 
     @Test
@@ -108,7 +110,7 @@ class CardControllerTest {
     @Test
     public void editCardDescriptionNotFoundTest() {
         Assertions.assertThrows(EntityNotFoundException.class, () -> controller.editCard(0,
-                new Card("Test", "Test"), noErrorResult));
+            new Card("Test", "Test"), noErrorResult));
     }
 
     @Test
@@ -134,7 +136,7 @@ class CardControllerTest {
     public void createTagFaultyTest() {
         cardRepo.save(new Card("Study ADS", "Weblav"));
         Tag faulty1 = new Tag(null, 23);
-        Assertions.assertThrows(EntityNotFoundException .class, () -> controller.assignTag(1, 1));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> controller.assignTag(1, 1));
     }
 
     @Test
