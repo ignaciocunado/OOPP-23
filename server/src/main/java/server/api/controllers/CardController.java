@@ -13,9 +13,6 @@ import server.database.TagRepository;
 import server.database.TaskRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
-import server.exceptions.ServerException;
-
-import java.rmi.ServerError;
 
 
 @RestController
