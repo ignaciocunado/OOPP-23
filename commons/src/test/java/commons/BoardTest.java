@@ -122,6 +122,17 @@ class BoardTest {
         assertEquals(0, board.getTags().size());
         assertEquals(board.getTags(), tags);
     }
+
+    @Test
+    void removeTagByIdTest (){
+        Tag tag = new Tag("tag", 0);
+        tag.setId(1);
+        board.addTag(tag);
+        board.removeTagById(tag.getId());
+        assertEquals(0, board.getTags().size());
+        assertTrue(board.getTags().size() == 0);
+    }
+
     @Test
     public void removeListByIdTest() {
         CardList l1 = new CardList("cardList");

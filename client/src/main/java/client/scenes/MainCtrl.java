@@ -79,19 +79,10 @@ public class MainCtrl {
     }
 
     /**
-     * Shows a new board overview scene
-     */
-    public void showNewBoardOverview() {
-        primaryStage.setTitle("Talio: Task List Organiser");
-        primaryStage.setScene(this.boardOverview);
-        boardOverviewCtrl.refresh(new Board("",""));
-    }
-
-    /**
-     * Shows an existing board overview scene
+     * Shows the board overview scene
      * @param board the board
      */
-    public void showExistingBoardOverview(final Board board) {
+    public void showBoardOverview(final Board board) {
         primaryStage.setTitle("Talio: Task List Organiser");
         primaryStage.setScene(this.boardOverview);
         boardOverviewCtrl.refresh(board);

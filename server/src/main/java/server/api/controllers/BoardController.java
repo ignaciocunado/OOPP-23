@@ -16,9 +16,11 @@
 package server.api.controllers;
 
 import commons.entities.Board;
+import commons.entities.Card;
 import commons.entities.CardList;
 import commons.entities.Tag;
 import org.springframework.http.HttpStatus;
+import server.database.CardRepository;
 import server.database.TagRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
@@ -30,6 +32,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.database.BoardRepository;
 import server.database.CardListRepository;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/board")
@@ -38,22 +42,26 @@ public class BoardController {
     private final BoardRepository boardRepo;
     private final TagRepository tagRepo;
     private final CardListRepository cardListRepository;
+    private final CardRepository cardRepository;
     private final TextService textService;
 
     /**
      * RestAPI Controller for the board route
      *
      * @param boardRepo          repository for boards
-     * @param cardListRepository repository for cards
+     * @param cardRepository     repository for cards
+     * @param cardListRepository repository for cardLists
      * @param textService        service for generating random keys
      * @param tagRepo            repository for tags
      */
     public BoardController(final BoardRepository boardRepo,
                            final CardListRepository cardListRepository,
+                           final CardRepository cardRepository,
                            final TextService textService,
                            final TagRepository tagRepo) {
         this.boardRepo = boardRepo;
         this.cardListRepository = cardListRepository;
+        this.cardRepository = cardRepository;
         this.textService = textService;
         this.tagRepo = tagRepo;
     }
@@ -70,7 +78,6 @@ public class BoardController {
         final Board board = new Board(newKey, request.getPassword());
         return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), 200);
     }
-
     /**
      * Handler for getting the board
      *
@@ -87,22 +94,14 @@ public class BoardController {
                 this.boardRepo.findBoardByKey(key).get(),new HttpHeaders(), 200);
     }
 
-
-    /**
-     * Hnadler for creating a tag
-     *
-     * @param id     unique id of the board
-     * @param tag    the new tag that we are creating
-     * @param errors wrapping for potential validating errors
+    /** Hnadler for creating a tag
+     * @param id unique id of the board
+     * @param tag the new tag that we are creating
      * @return the board with the new tag
      */
     @PostMapping("/{id}/tag")
     public ResponseEntity<Board> createTag(@PathVariable final int id,
-                                           @Validated @RequestBody Tag tag,
-                                           final BindingResult errors) {
-        if (errors.hasErrors()) {
-            throw new InvalidRequestException(errors);
-        }
+                                           @Validated @RequestBody Tag tag){
         if (!boardRepo.existsById(id)) {
             throw new EntityNotFoundException("No board with id " + id);
         }
@@ -113,11 +112,42 @@ public class BoardController {
     }
 
     /**
+     * Handler for deleting a tag on a board
+     *
+     * @param id an id of a board on which this tag exists
+     * @param tagId an id of a tag to be deleted
+     * @return the board without this tag
+     */
+    @DeleteMapping("/{id}/tag/{tagId}")
+    public ResponseEntity<Board> deleteTag(@PathVariable final int id,
+                                           @PathVariable final int tagId) {
+        if (!boardRepo.existsById(id)){
+            throw new EntityNotFoundException("No board with id " + id);
+        }
+        Board board = boardRepo.getById(id);
+        if (!tagRepo.existsById(tagId)){
+            throw new EntityNotFoundException("No tag with id " + tagId);
+        }
+        if (cardRepository.count() != 0) {
+            List<Integer> cardsId = cardRepository.selectCardsWithTag(tagId);
+            for (int cardId : cardsId) {
+                Card card = this.cardRepository.getById(cardId);
+                card.removeTagById(tagId);
+                cardRepository.save(card);
+            }
+        }
+        board.removeTagById(tagId);
+        boardRepo.save(board);
+        this.tagRepo.deleteById(tagId);
+
+        return new ResponseEntity<>(board, new HttpHeaders(), 200);
+    }
+    /**
      * Handler for creating the list in a board
      *
-     * @param id      the board to create a list for
+     * @param id the board to create a list for
      * @param payload the data for the new list
-     * @param errors  wrapping object for potential validating errors
+     * @param errors wrapping object for potential validating errors
      * @return the board with its new list
      */
     @PostMapping("/{id}/list")
@@ -148,8 +178,8 @@ public class BoardController {
      * @return the board without the list
      */
     @DeleteMapping("/{id}/list/{listId}")
-    public ResponseEntity<Board> deleteList(@PathVariable final Integer id,
-                                            @PathVariable final Integer listId) {
+    public ResponseEntity<Board> deleteList (@PathVariable final Integer id,
+                                             @PathVariable final Integer listId) {
         if (!this.boardRepo.existsById(id)) {
             throw new EntityNotFoundException("No board with id " + id);
         }
@@ -159,7 +189,11 @@ public class BoardController {
             throw new EntityNotFoundException("Board contains no list with id " + listId);
         }
 
+        final List<Card> cards =
+                new ArrayList<>(this.cardListRepository.getById(listId).getCards());
         this.cardListRepository.deleteById(listId);
+        cards.forEach(card -> this.cardRepository.deleteById(card.getId()));
+
         return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), HttpStatus.OK);
     }
 
