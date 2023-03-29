@@ -310,6 +310,7 @@ public class ServerUtils {
      * @param id id of the task
      * @param name new name of the task
      * @param completed new boolean for completeness of the task
+     * @return the edited task
      */
     public Task editTask(final int id, final String name, final boolean completed) {
         try {
