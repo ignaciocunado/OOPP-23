@@ -68,6 +68,7 @@ public class MainCtrl {
 
         boardHistoryOverview.getStylesheets().add(getClass().
             getResource("assets/style/textStyle.css").toExternalForm());
+        boardHistoryStage.initModality(Modality.APPLICATION_MODAL);
 
         cardEditorStage.initModality(Modality.APPLICATION_MODAL);
         cardEditorStage.setTitle("Card Editor");
@@ -114,7 +115,7 @@ public class MainCtrl {
     public void showHistory() {
         boardHistoryStage.setTitle("Board Visitation History");
         boardHistoryStage.setScene(boardHistoryOverview);
-        boardHistoryStage.show();
+        boardHistoryStage.showAndWait();
 
     }
 
