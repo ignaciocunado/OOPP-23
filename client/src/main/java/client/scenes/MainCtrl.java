@@ -31,6 +31,9 @@ public class MainCtrl {
     private BoardHistoryOverviewCtrl boardHistoryOverviewCtrl;
     private Scene boardHistoryOverview;
 
+    private ServerOverviewCtrl serverOverviewCtrl;
+    private Scene serverOverview;
+
     private LandingOverviewCtrl landingOverviewCtrl;
     private Scene landingOverview;
 
@@ -42,18 +45,28 @@ public class MainCtrl {
 
     /**
      * Initialize main controller with all FXML controllers
-     * @param primaryStage main stage for FXML views
+     *
+     * @param primaryStage    main stage for FXML views
+     * @param serverOverview  the server overview
      * @param landingOverview the landing overview
-     * @param boardOverview the main board overview
-     * @param cardEditor card editor view
-     * @param boardHistory board history overview
+     * @param boardOverview   the main board overview
+     * @param cardEditor      card editor view
+     * @param boardHistory    board history overview
      */
-    public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
-            Pair<BoardOverviewCtrl, Parent> boardOverview, Pair<CardEditorCtrl, Parent> cardEditor,
-                           Pair<BoardHistoryOverviewCtrl, Parent> boardHistory) {
+    public void initialize(Stage primaryStage,
+                           Pair<ServerOverviewCtrl, Parent> serverOverview,
+                           Pair<LandingOverviewCtrl, Parent> landingOverview,
+                           Pair<BoardOverviewCtrl, Parent> boardOverview,
+                           Pair<CardEditorCtrl, Parent> cardEditor,
+                           Pair<BoardHistoryOverviewCtrl, Parent> boardHistory
+    ) {
         this.primaryStage = primaryStage;
         this.cardEditorStage = new Stage();
         this.boardHistoryStage = new Stage();
+
+        this.serverOverviewCtrl = serverOverview.getKey();
+        this.serverOverview = new Scene(serverOverview.getValue());
+
         this.landingOverviewCtrl = landingOverview.getKey();
         this.landingOverview = new Scene(landingOverview.getValue());
 
@@ -67,18 +80,26 @@ public class MainCtrl {
         this.cardEditorScene = new Scene(cardEditor.getValue());
 
         boardHistoryOverview.getStylesheets().add(getClass().
-            getResource("assets/style/textStyle.css").toExternalForm());
+                getResource("assets/style/textStyle.css").toExternalForm());
         boardHistoryStage.initModality(Modality.APPLICATION_MODAL);
 
         cardEditorStage.initModality(Modality.APPLICATION_MODAL);
         cardEditorStage.setTitle("Card Editor");
         cardEditorStage.setScene(cardEditorScene);
         cardEditorScene.getStylesheets().add(getClass().getResource("assets/style/comboBox.css")
-            .toExternalForm());
+                .toExternalForm());
 
         primaryStage.initStyle(StageStyle.DECORATED);
-        showLandingOverview();
+        showServerOverview();
         primaryStage.show();
+    }
+
+    /**
+     * Shows the server landing overview scene
+     */
+    public void showServerOverview() {
+        primaryStage.setTitle("Talio: Task List Organiser");
+        primaryStage.setScene(this.serverOverview);
     }
 
     /**
@@ -92,6 +113,7 @@ public class MainCtrl {
 
     /**
      * Shows the board overview scene
+     *
      * @param board the board
      */
     public void showBoardOverview(final Board board) {
@@ -102,6 +124,7 @@ public class MainCtrl {
 
     /**
      * render card view
+     *
      * @param cardCtrl
      */
     public void showCardEditor(final CardCtrl cardCtrl) {
@@ -113,10 +136,10 @@ public class MainCtrl {
      * Shows the overview of the board history
      */
     public void showHistory() {
+        boardHistoryOverviewCtrl.refresh();
         boardHistoryStage.setTitle("Board Visitation History");
         boardHistoryStage.setScene(boardHistoryOverview);
         boardHistoryStage.showAndWait();
-
     }
 
     /**
