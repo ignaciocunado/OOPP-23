@@ -1,4 +1,4 @@
-package client;
+package client.config;
 
 public final class RecentBoard {
     private String key;
@@ -28,11 +28,4 @@ public final class RecentBoard {
         return key;
     }
 
-    /**
-     * Gets the server string of the RecentBoard
-     * @return the server string of the RecentBoard
-     */
-    public String getServer() {
-        return server;
-    }
 }

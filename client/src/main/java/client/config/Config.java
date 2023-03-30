@@ -1,4 +1,4 @@
-package client;
+package client.config;
 
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,11 +9,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Singleton
 public final class Config {
 
-    private List<RecentBoard> recentBoards = new ArrayList<>();
+    private Workspace currentWorkspace;
+    private List<Workspace> workspaces = new ArrayList<>();
     private final File configFile;
 
     /**
@@ -31,43 +33,38 @@ public final class Config {
         final TypeFactory typeFactory = mapper.getTypeFactory();
 
         try {
-            this.recentBoards = mapper.readValue(this.configFile,
-                typeFactory.constructCollectionType(List.class, RecentBoard.class));
+            this.workspaces = mapper.readValue(this.configFile,
+                typeFactory.constructCollectionType(List.class, Workspace.class));
         } catch (IOException e) {
             e.printStackTrace();
-            this.recentBoards = new ArrayList<>();
+            this.workspaces = new ArrayList<>();
         }
     }
 
-    /**
-     * Adds a RecentBoard to the recentBoards list
-     * @param key of the Board
-     * @param server of the Board
-     */
-    public void addBoard(String key, String server) {
-        for (RecentBoard recentBoard:this.recentBoards) {
-            if (recentBoard.getKey().equals(key) && recentBoard.getServer().equals(server)) {
-                return;
-            }
+    public Workspace setCurrentWorkspace(final String connectionUri) {
+        final Optional<Workspace> workspaceOpt =
+                this.workspaces.stream().filter(workspace -> workspace.getConnectionUri().equals(connectionUri)).findAny();
+        if (workspaceOpt.isEmpty()) {
+            final Workspace workspace = new Workspace(connectionUri);
+            this.workspaces.add(workspace);
+            this.currentWorkspace = workspace;
+            return workspace;
         }
-        this.recentBoards.add(new RecentBoard(key, server));
+
+        this.currentWorkspace = workspaceOpt.get();
+        return this.currentWorkspace;
     }
 
-    /**
-     * Gets the RecentBoards in the recentBoards list
-     * @return the RecentBoards
-     */
-    public List<RecentBoard> getBoards() {
-        return this.recentBoards;
+    public Workspace getCurrentWorkspace() {
+        return this.currentWorkspace;
     }
 
     /**
      * Saves the RecentBoards present in the recentBoards list into the config file
-     * @throws IOException if file is not found
      */
-    public void saveBoard() throws IOException {
+    public void saveConfig() throws IOException {
         final ObjectMapper mapper = new ObjectMapper();
         final ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-        writer.writeValue(this.configFile, this.recentBoards);
+        writer.writeValue(this.configFile, this.workspaces);
     }
 }
