@@ -108,7 +108,6 @@ public class MainCtrl {
     public void showLandingOverview() {
         primaryStage.setTitle("Talio: Task List Organiser");
         primaryStage.setScene(this.landingOverview);
-        landingOverviewCtrl.refresh();
     }
 
     /**
