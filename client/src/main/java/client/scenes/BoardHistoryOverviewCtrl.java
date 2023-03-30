@@ -3,14 +3,13 @@ package client.scenes;
 import client.config.Config;
 import client.config.RecentBoard;
 import client.utils.ServerUtils;
+import com.google.inject.Inject;
 import commons.entities.Board;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-
-import javax.inject.Inject;
 
 import static javafx.scene.paint.Color.WHITE;
 import static javafx.scene.paint.Color.rgb;
