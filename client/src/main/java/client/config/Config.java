@@ -58,6 +58,10 @@ public final class Config {
     public Workspace getCurrentWorkspace() {
         return this.currentWorkspace;
     }
+    public List<Workspace> getWorkspaces() {
+        return this.workspaces;
+    }
+
 
     /**
      * Saves the RecentBoards present in the recentBoards list into the config file

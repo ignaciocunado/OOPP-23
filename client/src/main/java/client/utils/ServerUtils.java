@@ -19,6 +19,7 @@ import com.google.inject.Singleton;
 import commons.entities.*;
 import jakarta.ws.rs.HttpMethod;
 import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.ProcessingException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -67,9 +68,23 @@ public class ServerUtils {
     }
 
     /**
-     * Gets board from the given server by the given id
-     * @return the relevant board, or null
+     * Checks the existence of a server on the connection uri
+     * @param connectionUri the connectionUri to check the existence of
+     * @return whether it exists
      */
+    public boolean ping(final String connectionUri) {
+        try {
+            client.target(connectionUri)
+                    .request()
+                    .get();
+        } catch (final NotFoundException e) {
+            return true;
+        } catch (final Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Creates a new board in the given server with the given password
      * @param password the password to create the board with
