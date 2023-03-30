@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: rgb(1,35,69);" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.LandingOverviewCtrl">
+<Pane fx:id="newPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: rgb(1,35,69);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.LandingOverviewCtrl">
    <children>
       <TextField fx:id="joinKey" layoutX="123.0" layoutY="249.0" onAction="#joinBoard" prefHeight="40.0" prefWidth="200.0" promptText="Key" />
       <PasswordField fx:id="joinPassword" layoutX="123.0" layoutY="300.0" onAction="#joinBoard" prefHeight="40.0" prefWidth="200.0" promptText="Password (Optional)" />
@@ -29,5 +28,6 @@
             <Font size="26.0" />
          </font>
       </Text>
+      <Button layoutX="14.0" layoutY="561.0" mnemonicParsing="false" onAction="#openHistory" style="-fx-background-color: rgb(52,86,120);" text="History" textFill="WHITE" />
    </children>
 </Pane>
