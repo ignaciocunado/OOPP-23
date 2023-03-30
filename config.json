@@ -1,7 +1,1 @@
-[ {
-  "key" : "hd",
-  "server" : "http://localhost:8080/"
-}, {
-  "key" : "brd",
-  "server" : "http://localhost:8080/"
-} ]
+[ ]
