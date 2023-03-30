@@ -1,7 +1,7 @@
 package client.scenes;
 
-import client.Config;
-import client.RecentBoard;
+import client.config.Config;
+import client.config.RecentBoard;
 import client.utils.ServerUtils;
 import commons.entities.Board;
 import javafx.fxml.FXML;
@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 import static javafx.scene.paint.Color.WHITE;
 import static javafx.scene.paint.Color.rgb;
 
-public class BoardHistoryOverviewCtrl implements Initializable {
+public class BoardHistoryOverviewCtrl {
 
     private final Config config;
     private final MainCtrl mainCtrl;
@@ -42,19 +42,10 @@ public class BoardHistoryOverviewCtrl implements Initializable {
         this.config = config;
     }
 
-    /**
-     * Initialisation method initialising FXML objects
-     *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  {@code null} if the location is not known.
-     * @param resources The resources used to localize the root object, or {@code null} if
-     *                  the root object was not localized.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        for (RecentBoard recent:config.getBoards()) {
+    public void refresh() {
+        for (RecentBoard recent : config.getCurrentWorkspace().getBoards()) {
             addAndConfigureText(recent.getKey(), keyVBox, recent.getKey());
-            addAndConfigureText(recent.getServer(), serverVBox, recent.getKey());
+            addAndConfigureText(config.getCurrentWorkspace().getConnectionUri(), serverVBox, recent.getKey());
             addAndConfigureText("Rejoin", actionsVBox, recent.getKey());
         }
     }
