@@ -128,7 +128,7 @@ public class LandingOverviewCtrl implements Initializable {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(board.getKey()), null);
         }
-
+        config.addBoard(board.getKey(), this.server.getServer());
         this.mainCtrl.showBoardOverview(board);
     }
 
