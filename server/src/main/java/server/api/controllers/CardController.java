@@ -1,6 +1,7 @@
 package server.api.controllers;
 
 import commons.entities.Card;
+import commons.entities.Tag;
 import commons.entities.CardList;
 import commons.entities.Task;
 import org.springframework.http.HttpHeaders;
@@ -8,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import server.database.CardRepository;
+import server.database.TagRepository;
+import server.database.TaskRepository;
 import server.database.*;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
@@ -26,11 +30,10 @@ public class CardController {
 
     /**
      * Constructor
-     *
-     * @param cardListRepository cardList DB
-     * @param cardRepository     card DB
-     * @param tagRepository      tag DB
-     * @param taskRepository     task DB
+     * @param cardListRepository cardlist DB
+     * @param cardRepository  card DB
+     * @param tagRepository   tag DB
+     * @param taskRepository  task DB
      */
     public CardController(final CardListRepository cardListRepository,
                           final CardRepository cardRepository,
@@ -44,7 +47,6 @@ public class CardController {
 
     /**
      * Edits a Card
-     *
      * @param id   id of the Card to edit
      * @param card new Card to take the info from
      * @param errors wrapping object for potential validating errors
@@ -74,22 +76,28 @@ public class CardController {
      * @param tagId the id of the tag that is assigned to the board and card
      * @return ResponseEntity for status
      */
-    @PostMapping("/{id}/tag/{tagId}")
+    @PutMapping("/{id}/tag/{tagId}")
     public ResponseEntity<Card> assignTag(@PathVariable final int id,
                                           @PathVariable final int tagId) {
 
         if (!cardRepository.existsById(id)) {
             throw new EntityNotFoundException("No card with id " + id);
         }
+        if(!tagRepository.existsById(tagId)) {
+            throw new EntityNotFoundException("No tag with id " + tagId);
+        }
         Card card = cardRepository.getById(id);
-        card.addTag(tagRepository.getById(tagId));
+        Tag tag = tagRepository.getById(tagId);
+        if(card.getTags().contains(tag)) {
+            return ResponseEntity.badRequest().build();
+        }
+        card.addTag(tag);
         return new ResponseEntity<>(cardRepository.save(card), new HttpHeaders(),
             200);
     }
 
     /**
      * deletes a Tag iff it exists
-     *
      * @param id    id of the Card
      * @param tagId id of the Tag
      * @return ResponseEntity for status
@@ -100,18 +108,19 @@ public class CardController {
         if (!cardRepository.existsById(id)) {
             throw new EntityNotFoundException("No card with id " + id);
         }
+        if(!tagRepository.existsById(tagId)) {
+            throw new EntityNotFoundException("No tag with id " + tagId);
+        }
         Card deleteTagFrom = cardRepository.getById(id);
         if (!deleteTagFrom.removeTagById(tagId)) {
-            throw new EntityNotFoundException("No tag with id " + id);
+            throw new EntityNotFoundException("No tag with id " + tagId + " in card " + id);
         }
-
         return new ResponseEntity<>(cardRepository.save(deleteTagFrom), new HttpHeaders(),
                 200);
     }
 
     /**
      * creates a Task and stores it in a Card
-     *
      * @param id   id of the Card in which to store the Task
      * @param task the Task to create and add
      * @param errors wrapping object for potential validating errors
@@ -154,7 +163,7 @@ public class CardController {
         }
 
         taskRepository.deleteById(taskId);
-        return new ResponseEntity(cardRepository.save(deleteTaskFrom), new HttpHeaders(), 200);
+        return new ResponseEntity<>(cardRepository.save(deleteTaskFrom), new HttpHeaders(), 200);
     }
 
     /**
@@ -178,7 +187,7 @@ public class CardController {
             throw new EntityNotFoundException("No card list associated with card id " + id);
         }
 
-        if(destOpt.isEmpty()){
+        if (destOpt.isEmpty()){
             throw new EntityNotFoundException("No card list with id " + listId);
         }
 

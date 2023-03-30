@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(1,35,69);" stylesheets="@/client/scenes/assets/style/scrollbar.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardHistoryOverviewCtrl">
+   <children>
+      <Text fill="WHITE" layoutX="237.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="History" textAlignment="CENTER" underline="true" wrappingWidth="127.0">
+         <font>
+            <Font size="39.0" />
+         </font>
+      </Text>
+      <Pane layoutX="66.0" layoutY="82.0" prefHeight="52.0" prefWidth="468.0" style="-fx-background-radius: 10; -fx-background-color: rgb(52,86,120);">
+         <children>
+            <Text fill="WHITE" layoutX="48.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Key" textAlignment="CENTER" wrappingWidth="35.8466796875">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="204.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server" textAlignment="CENTER" wrappingWidth="59.8466796875">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="370.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Actions" textAlignment="CENTER" wrappingWidth="70.8466796875">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <ScrollPane hbarPolicy="NEVER" layoutX="66.0" layoutY="148.0" prefViewportHeight="238.0" prefViewportWidth="127.0" style="-fx-background-color: transparent; -fx-padding: 0px;">
+         <content>
+            <VBox fx:id="keyVBox" alignment="TOP_CENTER" layoutX="66.0" layoutY="148.0" prefHeight="238.0" prefWidth="127.0" style="-fx-spacing: 9px; -fx-background-color: rgb(1,35,69); -fx-padding: 0px;" />
+         </content>
+      </ScrollPane>
+      <ScrollPane hbarPolicy="NEVER" layoutX="215.0" layoutY="146.0" prefHeight="240.0" prefViewportHeight="240.0" prefViewportWidth="127.0" prefWidth="170.0" style="-fx-background-color: transparent; -fx-padding: 0px;">
+         <content>
+            <VBox fx:id="serverVBox" alignment="TOP_CENTER" layoutX="237.0" layoutY="146.0" prefHeight="240.0" prefWidth="172.0" style="-fx-spacing: 9px; -fx-background-color: rgb(1,35,69); -fx-padding: 0px;" />
+         </content>
+      </ScrollPane>
+      <ScrollPane hbarPolicy="NEVER" layoutX="407.0" layoutY="146.0" prefViewportHeight="240.0" prefViewportWidth="127.0" style="-fx-background-color: transparent; -fx-padding: 0px;">
+         <content>
+            <VBox fx:id="actionsVBox" alignment="TOP_CENTER" layoutX="407.0" layoutY="146.0" prefHeight="240.0" prefWidth="127.0" style="-fx-spacing: 9px; -fx-background-color: rgb(1,35,69); -fx-padding: 0px;" />
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

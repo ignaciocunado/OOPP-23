@@ -15,25 +15,37 @@
  */
 package client.scenes;
 
+import client.Config;
+import client.MyFXML;
+import client.MyModule;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import commons.entities.Board;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
-
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import javafx.scene.layout.Pane;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static com.google.inject.Guice.createInjector;
+
 public class LandingOverviewCtrl implements Initializable {
+
+    private static final Injector INJECTOR = createInjector(new MyModule());
+    public static final MyFXML FXML = new MyFXML(INJECTOR);
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final Config config;
+    @FXML
+    private Pane newPane;
 
     @FXML
     private TextField joinKey;
@@ -48,11 +60,13 @@ public class LandingOverviewCtrl implements Initializable {
      * Constructor to inject necessary classes into the controller
      * @param server
      * @param mainCtrl
+     * @param config
      */
     @Inject
-    public LandingOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public LandingOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, Config config) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.config = config;
     }
 
     /**
@@ -84,6 +98,7 @@ public class LandingOverviewCtrl implements Initializable {
             alert.show();
             return;
         }
+        config.addBoard(this.joinKey.getText(),this.server.getServer());
         this.mainCtrl.showBoardOverview(board);
     }
 
@@ -113,7 +128,7 @@ public class LandingOverviewCtrl implements Initializable {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(board.getKey()), null);
         }
-
+        config.addBoard(board.getKey(), this.server.getServer());
         this.mainCtrl.showBoardOverview(board);
     }
 
@@ -127,5 +142,14 @@ public class LandingOverviewCtrl implements Initializable {
      */
     public void closeApp() {
         mainCtrl.closeApp();
+    }
+
+    /**
+     * EventHandler for the button of the board history overview
+     */
+    public void openHistory(){
+        newPane.getChildren().get(10).setOnMouseClicked(event -> {
+            this.mainCtrl.showHistory();
+        });
     }
 }

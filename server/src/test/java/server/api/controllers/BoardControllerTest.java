@@ -17,6 +17,9 @@ import server.api.services.TestTextService;
 import server.database.CardRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
+import server.services.BoardService;
+import server.services.CardListService;
+import server.services.TagService;
 import server.services.TextService;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,7 +42,17 @@ public final class BoardControllerTest {
         this.cardRepo = new TestCardRepository();
         this.cardListRepo = new TestCardListRepository();
         this.tagRepo = new TestTagRepository();
-        this.boardController = new BoardController(this.boardRepo, this.cardListRepo, this.cardRepo, this.textService, this.tagRepo);
+
+        final TagService tagService = new TagService(this.tagRepo, this.cardRepo);
+        final CardListService cardListService = new CardListService(this.cardListRepo);
+        final BoardService boardService = new BoardService(this.textService,
+                tagService,
+                cardListService,
+                this.boardRepo
+        );
+
+
+        this.boardController = new BoardController(boardService);
         this.hasErrorResult = Mockito.mock(BindingResult.class);
         this.noErrorResult = Mockito.mock(BindingResult.class);
 
@@ -55,6 +68,7 @@ public final class BoardControllerTest {
 
         Assertions.assertEquals(this.boardRepo.getById(1), board);
     }
+
     @Test
     public void getBoardTest() {
         this.boardRepo.save(new Board("aaaaaaaaab", "password"));
@@ -117,11 +131,12 @@ public final class BoardControllerTest {
 
         Assertions.assertThrows(EntityNotFoundException.class, () -> this.boardController.deleteList(1, 1000));
     }
+
     @Test
-    public void deleteListWithCardsTest(){
+    public void deleteListWithCardsTest() {
         this.boardRepo.save(new Board("aaaaaaaaab", "password"));
         final CardList list = this.boardController.createList(1, new CardList("New List"), noErrorResult).getBody().getLists().get(0);
-        Card card = new Card("title","desc");
+        Card card = new Card("title", "desc");
         list.addCard(card);
 
         assertTrue(this.boardRepo.findById(1).get().getLists().size() > 0);
@@ -136,7 +151,7 @@ public final class BoardControllerTest {
     @Test
     public void createTagTest() {
         boardRepo.save(new Board("aa", "aaa"));
-        this.boardController.createTag(1,new Tag("New Tag", 0));
+        this.boardController.createTag(1, new Tag("New Tag", 0), noErrorResult);
         final Tag tag = new Tag("New Tag", 0);
         tag.setId(1);
         assertTrue(tagRepo.existsById(1));
@@ -145,7 +160,7 @@ public final class BoardControllerTest {
 
     @Test
     public void createTagBoardNotFoundTest() {
-        assertThrows(EntityNotFoundException.class, () -> boardController.createTag(10, new Tag()));
+        assertThrows(EntityNotFoundException.class, () -> boardController.createTag(10, new Tag(), noErrorResult));
     }
 
     @Test
@@ -153,23 +168,24 @@ public final class BoardControllerTest {
         boardRepo.save(new Board("aa", "aaa"));
         final Tag tag = new Tag("New Tag", -1);
 
-        assertThrows(EntityNotFoundException.class, () -> boardController.createTag(2, tag));
+        assertThrows(InvalidRequestException.class, () -> boardController.createTag(1, tag, hasErrorResult));
     }
+
     @Test
-    public void deleteTagTest(){
+    public void deleteTagTest() {
         boardRepo.save(new Board("aaa", "aaa"));
-        this.boardController.createTag(1,new Tag("New Tag", 0));
+        this.boardController.createTag(1, new Tag("New Tag", 0), noErrorResult);
         final Tag tag = new Tag("New Tag", 0);
         tag.setId(1);
-        boardController.deleteTag(1,1);
+        boardController.deleteTag(1, 1);
 
-        assertTrue(tagRepo.count() == 0);
-        assertFalse(tagRepo.existsById(1));
+        assertEquals(0, this.boardRepo.getById(1).getTags().size());
     }
+
     @Test
-    public void deleteTagWithCardsTest(){
+    public void deleteTagWithCardsTest() {
         boardRepo.save(new Board("aaa", "aaa"));
-        this.boardController.createTag(1,new Tag("New Tag", 0));
+        this.boardController.createTag(1, new Tag("New Tag", 0), noErrorResult);
         final CardList list = this.boardController.createList(1, new CardList("New List"), noErrorResult).getBody().getLists().get(0);
         final Tag tag = new Tag("New Tag", 0);
         tag.setId(1);
@@ -179,12 +195,10 @@ public final class BoardControllerTest {
         list.getCards().get(0).addTag(tag);
         this.cardRepo.save(card);
 
-        boardController.deleteTag(1,1);
-        assertTrue(tagRepo.count() == 0);
-        assertFalse(tagRepo.existsById(1));
-
+        boardController.deleteTag(1, 1);
         assertEquals(0, this.cardRepo.getById(1).getTags().size());
     }
+
     @Test
     public void deleteTagThrowNoBoardTest() {
         boardRepo.save(new Board("aa", "aaa"));
@@ -192,14 +206,16 @@ public final class BoardControllerTest {
 
         assertThrows(EntityNotFoundException.class, () -> boardController.deleteTag(2, 1));
     }
+
     @Test
     public void deleteTagThrowNoTagTest() {
         boardRepo.save(new Board("aa", "aaa"));
-        this.boardController.createTag(1,new Tag("New Tag", 0));
+        this.boardController.createTag(1, new Tag("New Tag", 0), noErrorResult);
         final Tag tag = new Tag("New Tag", -1);
 
         assertThrows(EntityNotFoundException.class, () -> boardController.deleteTag(1, 2));
     }
+
     @Test
     public void editPasswordTest() {
         this.boardRepo.save(new Board("title", "password"));
@@ -209,17 +225,17 @@ public final class BoardControllerTest {
         board2.setId(1);
 
         Assertions.assertEquals(this.boardRepo.findById(1).get(), board1);
-        this.boardController.editPassword(1, new Board("title","new password"), noErrorResult);
+        this.boardController.editPassword(1, new Board("title", "new password"), noErrorResult);
         Assertions.assertEquals(this.boardRepo.findById(1).get(), board2);
     }
 
     @Test
     public void editInvalidBoardTest() {
-        Assertions.assertThrows(InvalidRequestException.class, () -> this.boardController.editPassword(5, new Board("",""), hasErrorResult));
+        Assertions.assertThrows(InvalidRequestException.class, () -> this.boardController.editPassword(5, new Board("", ""), hasErrorResult));
     }
 
     @Test
     public void editBoardNotFoundTest() {
-        Assertions.assertThrows(EntityNotFoundException.class, () -> this.boardController.editPassword(5, new Board("title","password"), noErrorResult));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.boardController.editPassword(5, new Board("title", "password"), noErrorResult));
     }
 }

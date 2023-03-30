@@ -1,8 +1,7 @@
-package server.api.services;
+package server.services;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import server.services.TextService;
 
 import java.util.Random;
 
