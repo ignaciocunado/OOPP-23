@@ -18,7 +18,7 @@ public final class Card {
 
     @NotNull
     private String description;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Task> nestedTaskList;
     @ManyToMany
     private List<Tag> tags;

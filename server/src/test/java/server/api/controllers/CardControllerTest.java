@@ -246,7 +246,10 @@ class CardControllerTest {
 
     @Test
     public void moveListNotFoundTest() {
+        final CardList cardList = new CardList("");
         final Card card = this.cardRepo.save(new Card());
+        cardList.addCard(card);
+        this.listRepo.save(cardList);
         Assertions.assertThrows(EntityNotFoundException.class, () -> controller.move(card.getId(),
             12, 0));
     }
