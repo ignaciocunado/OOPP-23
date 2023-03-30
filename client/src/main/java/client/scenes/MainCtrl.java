@@ -66,8 +66,8 @@ public class MainCtrl {
         this.cardEditorCtrl = cardEditor.getKey();
         this.cardEditorScene = new Scene(cardEditor.getValue());
 
-        boardHistoryOverview.getStylesheets().add(getClass().getResource("assets/style/textStyle.css")
-            .toExternalForm());
+        boardHistoryOverview.getStylesheets().add(getClass().
+            getResource("assets/style/textStyle.css").toExternalForm());
 
         cardEditorStage.initModality(Modality.APPLICATION_MODAL);
         cardEditorStage.setTitle("Card Editor");
