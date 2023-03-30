@@ -19,7 +19,6 @@ import com.google.inject.Singleton;
 import commons.entities.*;
 import jakarta.ws.rs.HttpMethod;
 import jakarta.ws.rs.NotFoundException;
-import jakarta.ws.rs.ProcessingException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;

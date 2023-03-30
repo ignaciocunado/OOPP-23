@@ -5,14 +5,12 @@ import client.config.RecentBoard;
 import client.utils.ServerUtils;
 import commons.entities.Board;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+
 import javax.inject.Inject;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import static javafx.scene.paint.Color.WHITE;
 import static javafx.scene.paint.Color.rgb;
@@ -42,10 +40,17 @@ public class BoardHistoryOverviewCtrl {
         this.config = config;
     }
 
+    /**
+     * Refreshes the board history and inserts the recent boards
+     */
     public void refresh() {
+        this.keyVBox.getChildren().clear();
+        this.serverVBox.getChildren().clear();
+        this.actionsVBox.getChildren().clear();
         for (RecentBoard recent : config.getCurrentWorkspace().getBoards()) {
             addAndConfigureText(recent.getKey(), keyVBox, recent.getKey());
-            addAndConfigureText(config.getCurrentWorkspace().getConnectionUri(), serverVBox, recent.getKey());
+            addAndConfigureText(config.getCurrentWorkspace().getConnectionUri(),
+                    serverVBox, recent.getKey());
             addAndConfigureText("Rejoin", actionsVBox, recent.getKey());
         }
     }

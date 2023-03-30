@@ -41,9 +41,16 @@ public final class Config {
         }
     }
 
+    /**
+     * Sets the current workspace to the one matching the connection uri
+     * or creates a new one with the appropriate uri
+     * @param connectionUri the uri
+     * @return the newly created or the existing workspace
+     */
     public Workspace setCurrentWorkspace(final String connectionUri) {
         final Optional<Workspace> workspaceOpt =
-                this.workspaces.stream().filter(workspace -> workspace.getConnectionUri().equals(connectionUri)).findAny();
+                this.workspaces.stream().filter(workspace ->
+                        workspace.getConnectionUri().equals(connectionUri)).findAny();
         if (workspaceOpt.isEmpty()) {
             final Workspace workspace = new Workspace(connectionUri);
             this.workspaces.add(workspace);
@@ -55,9 +62,18 @@ public final class Config {
         return this.currentWorkspace;
     }
 
+    /**
+     * Gets the current workspace
+     * @return the workspace or null
+     */
     public Workspace getCurrentWorkspace() {
         return this.currentWorkspace;
     }
+
+    /**
+     * Gets all existing workspaces
+     * @return a list of workspaces
+     */
     public List<Workspace> getWorkspaces() {
         return this.workspaces;
     }

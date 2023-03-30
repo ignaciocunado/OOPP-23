@@ -1,7 +1,5 @@
 package client.config;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +8,10 @@ public final class Workspace {
     private String connectionUri;
     private List<RecentBoard> boards;
 
+    /**
+     * Creates a workspace based on a connection uri
+     * @param connectionUri the connection uri
+     */
     public Workspace(final String connectionUri) {
         this.connectionUri = connectionUri;
         this.boards = new ArrayList<>();
@@ -20,7 +22,10 @@ public final class Workspace {
     public Workspace() {}
 
 
-
+    /**
+     * Gets the connection uri of the workspace
+     * @return the connection uri
+     */
     public String getConnectionUri() {
         return connectionUri;
     }

@@ -20,6 +20,13 @@ public final class ServerOverviewCtrl {
     private final MainCtrl ctrl;
     private final ServerUtils utils;
     private final Config config;
+
+    /**
+     * Creates a new instance of the server overview controller
+     * @param ctrl the main controller for scene information
+     * @param utils the server utilities to use
+     * @param config the config file with local data
+     */
     @Inject
     public ServerOverviewCtrl(final MainCtrl ctrl, final ServerUtils utils, final Config config) {
         this.ctrl = ctrl;
@@ -27,6 +34,9 @@ public final class ServerOverviewCtrl {
         this.config = config;
     }
 
+    /**
+     * Initializes the server menu with all saved servers
+     */
     @FXML
     public void initialize() {
         this.config.getWorkspaces().forEach(workspace -> {
@@ -41,6 +51,11 @@ public final class ServerOverviewCtrl {
         });
     }
 
+    /**
+     * Sets the current workspace to the one matching the uri
+     * and sets the server uri in the server utils
+     * then sends the user to the landing overview
+     */
     public void connect() {
         if (!this.utils.ping(this.connectionUriField.getText())) {
             final Alert alert = new Alert(Alert.AlertType.INFORMATION);
