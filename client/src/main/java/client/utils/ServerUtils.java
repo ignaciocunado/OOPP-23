@@ -16,21 +16,15 @@
 package client.utils;
 
 import com.google.inject.Singleton;
-import commons.entities.Board;
-import commons.entities.Card;
-import commons.entities.CardList;
+import commons.entities.*;
+import jakarta.ws.rs.HttpMethod;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.MediaType;
-import org.apache.hc.client5.http.classic.HttpClient;
-import org.apache.hc.client5.http.classic.methods.HttpPatch;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
-
-import java.io.IOException;
 
 @Singleton
 public class ServerUtils {
@@ -42,7 +36,8 @@ public class ServerUtils {
      * Empty constructor
      */
     public ServerUtils() {
-        this.client = ClientBuilder.newClient(new ClientConfig());
+        final ClientConfig cc = new ClientConfig().connectorProvider(new ApacheConnectorProvider());
+        this.client = ClientBuilder.newClient(cc);
     }
 
     /**
@@ -50,7 +45,8 @@ public class ServerUtils {
      * @param server the server string
      */
     public ServerUtils(final String server) {
-        this.client = ClientBuilder.newClient(new ClientConfig());
+        final ClientConfig cc = new ClientConfig().connectorProvider(new ApacheConnectorProvider());
+        this.client = ClientBuilder.newClient(cc);
         this.server = server;
     }
 
@@ -84,7 +80,7 @@ public class ServerUtils {
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(
-                        Entity.entity(new Board("", password), MediaType.APPLICATION_JSON),
+                        Entity.json(new Board("", password)),
                         Board.class
                 );
     }
@@ -119,7 +115,7 @@ public class ServerUtils {
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .post(
-                            Entity.entity(new CardList(title), MediaType.APPLICATION_JSON),
+                            Entity.json(new CardList(title)),
                             Board.class
                     );
         } catch (NotFoundException e) {
@@ -147,21 +143,21 @@ public class ServerUtils {
     }
 
     /**
-     * TODO: Acutally properly implement with JAX RS WS client
-     * @param id
-     * @param title
+     * Sends a request to edit the list in the board
+     * @param id the list id
+     * @param title the new title
+     * @return the renamed list
      */
-    public void renameList(final int id, final String title) {
+    public CardList renameList(final int id, final String title) {
         try {
-            final HttpClient client = HttpClients.createDefault();
-            final HttpPatch request = new HttpPatch(this.server+"api/list/"+id);
-            final StringEntity entity =
-                    new StringEntity(String.format("{\"title\": \"%s\"}", title));
-            request.setEntity(entity);
-            request.setHeader("content-type", "application/json");
-            client.execute(request, response -> null);
-        } catch (NotFoundException | IOException e) {
-            return;
+            return client.target(this.server).path("api/list/{id}")
+                    .resolveTemplate("id", id)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .method(HttpMethod.PATCH,
+                            Entity.json(new CardList(title)), CardList.class);
+        } catch (NotFoundException e) {
+            return null;
         }
     }
 
@@ -179,7 +175,7 @@ public class ServerUtils {
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .post(
-                            Entity.entity(new Card(title, description), MediaType.APPLICATION_JSON),
+                            Entity.json(new Card(title, description)),
                             CardList.class
                     );
         } catch (NotFoundException e) {
@@ -225,25 +221,127 @@ public class ServerUtils {
     }
 
     /**
-     * TODO: Acutally properly implement with JAX RS WS client
-     * @param id
-     * @param title
-     * @param description
+     * Sends a request to edit the card in a list
+     * @param id the card to edit
+     * @param title the new title
+     * @param description the new description
+     * @return the edited card
      */
-    public void editCard(final int id, final String title, final String description) {
+    public Card editCard(final int id, final String title, final String description) {
         try {
-            final HttpClient client = HttpClients.createDefault();
-            final HttpPatch request = new HttpPatch(this.server+"api/card/"+id);
-            final StringEntity entity =
-                    new StringEntity(
-                            String.format("{\"title\": \"%s\", \"description\": \"%s\"}",
-                                    title,description)
-                    );
-            request.setEntity(entity);
-            request.setHeader("content-type", "application/json");
-            client.execute(request, response -> null);
-        } catch (NotFoundException | IOException e) {
-            return;
+            return client.target(this.server).path("api/card/{id}")
+                    .resolveTemplate("id", id)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .method(HttpMethod.PATCH,
+                            Entity.json(new Card(title, description)), Card.class);
+        } catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Adds a tag to the specified card
+     * @param tagId if of the tag to add
+     * @param cardId id of the car where the tag will be added
+     * @param tag tag to add
+     * @return the card
+     */
+    public Card addTag(final int tagId, final int cardId, final Tag tag) {
+        try{
+            return client.target(this.server).path("api/card/{cardId}/tag/{tagId}")
+                .resolveTemplate("cardId", cardId)
+                .resolveTemplate("tagId", tagId)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .put(Entity.json(tag), Card.class);
+        }
+        catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Method to remove an existing tag from a card
+     * @param cardId id of the card
+     * @param tagId id of the tag to remove
+     * @return the new card without the tag
+     */
+    public Card removeTagFromCard(final int cardId, final int tagId) {
+        try{
+            return client.target(this.server).path("api/card/{cardId}/tag/{tagId}")
+                .resolveTemplate("cardId", cardId)
+                .resolveTemplate("tagId", tagId)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .delete(Card.class);
+        }
+        catch (NotFoundException e) {
+            return null;
+        }
+
+    }
+
+    /**
+     * Creates a new task and adds it to a card
+     * @param cardId id of the card in which to add the task
+     * @param name name of the task
+     * @param completed is the task completed?
+     * @return the new card containing the task
+     */
+    public Card addTaskToCard(final int cardId, final String name, final boolean completed) {
+        try{
+            return client.target(this.server).path("api/card/{cardId}/task")
+                .resolveTemplate("cardId", cardId)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(
+                    Entity.json(new Task(name, completed)),
+                    Card.class
+                );
+        }
+        catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Edits a task from the server
+     * @param id id of the task
+     * @param name new name of the task
+     * @param completed new boolean for completeness of the task
+     * @return the edited task
+     */
+    public Task editTask(final int id, final String name, final boolean completed) {
+        try {
+            return client.target(this.server).path("api/task/{id}")
+                    .resolveTemplate("id", id)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .method(HttpMethod.PATCH,
+                            Entity.json(new Task(name, completed)), Task.class);
+        } catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Deletes a task
+     * @param taskId id of the task to delete
+     * @param cardId id of the card from which to remove the task
+     * @return the new card
+     */
+    public Card removeTaskFromCard(int taskId, int cardId) {
+        try {
+            return client.target(this.server).path("api/card/{cardId}/task/{taskId}")
+                .resolveTemplate("cardId", cardId)
+                .resolveTemplate("taskId", taskId)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .delete(Card.class);
+        }
+        catch(NotFoundException e) {
+            return null;
         }
     }
 }

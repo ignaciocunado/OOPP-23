@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 quizzzz.mv.db
 config.json
+quizzzz.trace.db
 
 **/*.mv.db
 
