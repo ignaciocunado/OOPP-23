@@ -79,6 +79,7 @@ public class BoardHistoryOverviewCtrl {
      */
     public void setOnMouseClicked(Text rejoinText, String boardKey) {
         rejoinText.setOnMouseClicked(event -> {
+            this.config.getCurrentWorkspace().addBoard(boardKey);
             final Board board = this.server.getBoard(boardKey);
             if (board == null) {
                 final Alert alert = new Alert(Alert.AlertType.INFORMATION);

@@ -2,17 +2,14 @@ package client.config;
 
 public final class RecentBoard {
     private String key;
-    private String server;
 
 
     /**
      * RecentBoard constructor
      * @param key of the RecentBoard
-     * @param server of the RecentBoard
      */
-    public RecentBoard(final String key, final String server) {
+    public RecentBoard(final String key) {
         this.key = key;
-        this.server = server;
     }
 
     /**

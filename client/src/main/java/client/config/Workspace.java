@@ -41,15 +41,16 @@ public final class Workspace {
     /**
      * Adds a RecentBoard to the recentBoards list
      * @param key of the Board
-     * @param server of the Board
      */
-    public void addBoard(String key, String server) {
+    public void addBoard(String key) {
         for (RecentBoard recentBoard:this.boards) {
             if (recentBoard.getKey().equals(key)) {
+                this.boards.removeIf(board -> board.getKey().equals(key));
+                this.boards.add(0, new RecentBoard(key));
                 return;
             }
         }
-        this.boards.add(new RecentBoard(key, server));
+        this.boards.add(0, new RecentBoard(key));
     }
 
 }

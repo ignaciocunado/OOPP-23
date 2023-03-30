@@ -72,7 +72,7 @@ public class LandingOverviewCtrl {
             alert.show();
             return;
         }
-        config.getCurrentWorkspace().addBoard(this.joinKey.getText(),this.server.getServer());
+        config.getCurrentWorkspace().addBoard(this.joinKey.getText());
         this.mainCtrl.showBoardOverview(board);
     }
 
@@ -102,7 +102,7 @@ public class LandingOverviewCtrl {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(board.getKey()), null);
         }
-        config.getCurrentWorkspace().addBoard(board.getKey(), this.server.getServer());
+        config.getCurrentWorkspace().addBoard(board.getKey());
         this.mainCtrl.showBoardOverview(board);
     }
 
