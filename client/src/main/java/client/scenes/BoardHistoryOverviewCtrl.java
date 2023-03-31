@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javax.inject.Inject;
@@ -23,11 +24,7 @@ public class BoardHistoryOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
     @FXML
-    private VBox keyVBox;
-    @FXML
-    private VBox serverVBox;
-    @FXML
-    private VBox actionsVBox;
+    private VBox servers;
 
 
     /** Constructor to inject necessary classes into the controller
@@ -53,9 +50,25 @@ public class BoardHistoryOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         for (RecentBoard recent:config.getBoards()) {
-            addAndConfigureText(recent.getKey(), keyVBox, recent.getKey());
-            addAndConfigureText(recent.getServer(), serverVBox, recent.getKey());
-            addAndConfigureText("Rejoin", actionsVBox, recent.getKey());
+            final HBox serverBox = new HBox();
+            final Text key = new Text(recent.getKey());
+            final Text server = new Text(recent.getServer());
+            final Text rejoin = new Text("rejoin");
+            key.getStyleClass().add("texts");
+            server.getStyleClass().add("texts");
+            rejoin.getStyleClass().add("texts");
+            key.setWrappingWidth(150);
+            server.setWrappingWidth(150);
+            rejoin.setWrappingWidth(150);
+
+            rejoin.getStyleClass().add("rejoin");
+            setOnMouseClicked(rejoin, recent.getKey());
+            setOnMouseHovered(rejoin);
+
+
+            serverBox.setSpacing(15);
+            serverBox.getChildren().addAll(key, server, rejoin);
+            this.servers.getChildren().add(serverBox);
         }
     }
 

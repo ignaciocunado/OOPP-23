@@ -16,7 +16,8 @@ public final class Board {
 
     @NotBlank
     private String key;
-
+    @NotNull
+    private String name;
     @NotNull
     private String password;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -31,11 +32,14 @@ public final class Board {
 
     /**
      * Constructor for a new board
-     * @param key to enter the board (view-only if board is secured with password)
+     *
+     * @param key      to enter the board (view-only if board is secured with password)
+     * @param name
      * @param password to enter and edit the board
      */
-    public Board(String key, String password) {
+    public Board(String key, String name, String password) {
         this.key = key;
+        this.name = name;
         this.password = password;
         this.lists = new ArrayList<>();
         this.tags = new ArrayList<>();
@@ -58,6 +62,14 @@ public final class Board {
     }
 
     /**
+     * Gets the name of the board
+     * @return name of the board
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
      * Gets the password of the board
      * @return password of the board
      */
@@ -71,6 +83,14 @@ public final class Board {
      */
     public void setId(final int id) {
         this.id = id;
+    }
+
+    /**
+     * Sets the name for the board
+     * @param name the new name
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -175,6 +195,7 @@ public final class Board {
         if (!(o instanceof Board)) return false;
         Board board = (Board) o;
         return id == board.id && Objects.equals(key, board.key) &&
+            Objects.equals(name, board.name) &&
             Objects.equals(password, board.password) &&
             Objects.equals(lists, board.lists);
     }
@@ -185,7 +206,7 @@ public final class Board {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, key, password, lists);
+        return Objects.hash(id, key, name, password, lists);
     }
 
     /**
@@ -194,6 +215,6 @@ public final class Board {
      */
     @Override
     public String toString() {
-        return String.format("<Board id=%d key=%s password=%s>", this.id, this.key, this.password);
+        return String.format("<Board id=%d key=%s name=%s password=%s>", this.id, this.key, this.name, this.password);
     }
 }

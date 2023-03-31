@@ -20,7 +20,7 @@ class BoardTest {
 
     @BeforeEach
     public void setup() {
-        board = new Board("abc", "def");
+        board = new Board("abc", , "def");
         card = new Card("Card1", "This is a card");
         list = new CardList();
     }
@@ -145,8 +145,8 @@ class BoardTest {
 
     @Test
     public void equalsHashCodeTest() {
-        Board b1 = new Board("BoardEquals", "pword");
-        Board b2 = new Board("BoardEquals", "pword");
+        Board b1 = new Board("BoardEquals", , "pword");
+        Board b2 = new Board("BoardEquals", , "pword");
 
         assertEquals(b1, b2);
         assertEquals(b1.hashCode(), b2.hashCode());
@@ -154,8 +154,8 @@ class BoardTest {
 
     @Test
     public void notEqualsTest() {
-        Board b1 = new Board("BoardEquals", "pword");
-        Board b2 = new Board("BoardNotEquals", "pword");
+        Board b1 = new Board("BoardEquals", , "pword");
+        Board b2 = new Board("BoardNotEquals", , "pword");
 
         assertNotEquals(b1, b2);
     }
