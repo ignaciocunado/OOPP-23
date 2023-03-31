@@ -19,7 +19,11 @@ import commons.entities.Board;
 import commons.entities.Card;
 import commons.entities.CardList;
 import commons.entities.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import server.database.CardRepository;
 import server.database.TagRepository;
 import server.exceptions.EntityNotFoundException;
@@ -38,12 +42,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/board")
 public class BoardController {
-
     private final BoardRepository boardRepo;
     private final TagRepository tagRepo;
     private final CardListRepository cardListRepository;
     private final CardRepository cardRepository;
     private final TextService textService;
+
+    @Autowired
+    private SimpMessagingTemplate template;
 
     /**
      * RestAPI Controller for the board route
@@ -93,8 +99,31 @@ public class BoardController {
         return new ResponseEntity<>(
                 this.boardRepo.findBoardByKey(key).get(),new HttpHeaders(), 200);
     }
+    @MessageMapping("/card/update")
+    @SendTo("/topic/card")
+    public Card updateCard(Card card) {
+        return card;
+    }
 
-    /** Hnadler for creating a tag
+    @MessageMapping("/cardlist/update")
+    @SendTo("/topic/cardlist")
+    public CardList updateCardList(CardList cardList) {
+        return cardList;
+    }
+
+    @MessageMapping("/topic/board")
+    @SendTo("/topic/board")
+    public Board updateBoard(Board board) {
+        template.convertAndSend("", board);
+        System.out.println(board);
+        return board;
+    }
+    @MessageMapping("/tag/update")
+    @SendTo("/topic/tag")
+    public Tag updateTag(Tag tag){
+        return tag;
+    }
+    /** Handler for creating a tag
      * @param id unique id of the board
      * @param tag the new tag that we are creating
      * @return the board with the new tag
@@ -108,6 +137,7 @@ public class BoardController {
         tagRepo.save(tag);
         Board board = boardRepo.getById(id);
         board.addTag(tag);
+        this.updateBoard(board);
         return new ResponseEntity<>(boardRepo.save(board), new HttpHeaders(), 200);
     }
 
@@ -169,7 +199,6 @@ public class BoardController {
         board.addList(cardList);
         return new ResponseEntity<>(this.boardRepo.save(board), new HttpHeaders(), 200);
     }
-
     /**
      * Handler for deleting the list of a board
      *

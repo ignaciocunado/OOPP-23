@@ -19,7 +19,9 @@ import client.Main;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
+import commons.entities.Card;
 import commons.entities.CardList;
+import commons.entities.Tag;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
@@ -59,6 +61,22 @@ public class BoardOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh(new Board("", ""));
+    }
+
+    public void setWebSockets(){
+        server.registerForUpdates("/topic/board", Board.class, board -> {
+
+        });
+        server.registerForUpdates("/topic/cardlist", CardList.class, cardList -> {
+
+        });
+        server.registerForUpdates("/topic/card", Card.class, cardList -> {
+
+        });
+        server.registerForUpdates("/topic/tag", Tag.class, cardList -> {
+
+        });
+
     }
 
 

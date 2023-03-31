@@ -2,17 +2,15 @@ package server;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.*;
-import server.api.controllers.WebSocketController;
 
-@EnableWebSocket
+@EnableWebSocketMessageBroker
 @Configuration
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/websocket");
+        registry.addEndpoint("/websocket", "/board/update");
     }
 
     @Override
@@ -20,8 +18,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
         config.enableSimpleBroker("/topic");
         config.setApplicationDestinationPrefixes("/app");
     }
-
-
-
-
 }
