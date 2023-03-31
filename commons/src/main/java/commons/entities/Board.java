@@ -215,6 +215,7 @@ public final class Board {
      */
     @Override
     public String toString() {
-        return String.format("<Board id=%d key=%s name=%s password=%s>", this.id, this.key, this.name, this.password);
+        return String.format("<Board id=%d key=%s name=%s password=%s>", this.id, this.key,
+                this.name, this.password);
     }
 }

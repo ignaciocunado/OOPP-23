@@ -72,6 +72,7 @@ public class ServerUtils {
      */
     /**
      * Creates a new board in the given server with the given password
+     * @param name the name to create the board with
      * @param password the password to create the board with
      * @return the newly created board
      */
