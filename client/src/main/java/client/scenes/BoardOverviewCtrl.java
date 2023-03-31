@@ -70,7 +70,7 @@ public class BoardOverviewCtrl implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         refresh(new Board("","", ""));
         this.websocket.addBoardListener(board -> {
-            if (board == null || board.getKey().equals(this.currentBoard.getKey())) return;
+            if (board == null || !board.getKey().equals(this.currentBoard.getKey())) return;
             Platform.runLater(() -> this.refresh(board));
         });
     }

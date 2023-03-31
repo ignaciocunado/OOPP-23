@@ -2,10 +2,12 @@ package client.scenes;
 
 import client.Main;
 import client.utils.ServerUtils;
+import client.utils.WebsocketUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
 import commons.entities.Card;
 import commons.entities.CardList;
+import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
@@ -28,15 +30,17 @@ public final class CardListCtrl {
 
     private CardList cardList;
     private BoardOverviewCtrl boardOverviewCtrl;
-
+    private WebsocketUtils websocket;
 
     /**
      * The wrapping controller for a card list
      * @param server the server functions
      * @param ctrl the board controller
+     * @param websocket
      */
     @Inject
-    public CardListCtrl(final ServerUtils server, final BoardOverviewCtrl ctrl) {
+    public CardListCtrl(final WebsocketUtils websocket, final ServerUtils server, final BoardOverviewCtrl ctrl) {
+        this.websocket = websocket;
         this.server = server;
         this.boardOverviewCtrl = ctrl;
     }
@@ -48,6 +52,10 @@ public final class CardListCtrl {
     public void initialize() {
         this.listTitleField.focusedProperty().addListener(this::handleTitleChanged);
         this.setupDragAndDrop();
+        this.websocket.addCardListListener(cardList -> {
+            if (cardList == null || this.cardList.getId() != cardList.getId()) return;
+            Platform.runLater(() -> this.refresh(cardList));
+        });
     }
 
     /**

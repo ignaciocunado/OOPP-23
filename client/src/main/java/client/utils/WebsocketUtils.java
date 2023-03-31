@@ -1,7 +1,7 @@
 package client.utils;
 
 import com.google.inject.Singleton;
-import commons.entities.Board;
+import commons.entities.*;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -21,13 +21,33 @@ public final class WebsocketUtils {
 
     private StompSession stompSession;
     private List<Consumer<Board>> boardListeners;
+    private List<Consumer<CardList>> cardListListeners;
+    private List<Consumer<Card>> cardListeners;
+    private List<Consumer<Tag>> tagListeners;
+    private List<Consumer<Task>> taskListeners;
 
     public WebsocketUtils() {
         this.boardListeners = new ArrayList<>();
+        this.cardListListeners = new ArrayList<>();
+        this.cardListeners = new ArrayList<>();
+        this.tagListeners = new ArrayList<>();
+        this.taskListeners = new ArrayList<>();
     }
 
     public void addBoardListener(final Consumer<Board> boardListener) {
         this.boardListeners.add(boardListener);
+    }
+    public void addCardListListener(final Consumer<CardList> cardListConsumer) {
+        this.cardListListeners.add(cardListConsumer);
+    }
+    public void addCardListener(final Consumer<Card> cardConsumer) {
+        this.cardListeners.add(cardConsumer);
+    }
+    public void addTagListener(final Consumer<Tag> tagConsumer) {
+        this.tagListeners.add(tagConsumer);
+    }
+    public void addTaskListener(final Consumer<Task> taskConsumer) {
+        this.taskListeners.add(taskConsumer);
     }
 
     public void connect(final String connectionUri) {
@@ -39,6 +59,19 @@ public final class WebsocketUtils {
             }).get();
             registerForUpdates("/topic/board", Board.class, board -> {
                 this.boardListeners.forEach(listener -> listener.accept(board));
+            });
+            registerForUpdates("/topic/cardlist", CardList.class, cardList -> {
+                System.out.println(cardList);
+                this.cardListListeners.forEach(listener -> listener.accept(cardList));
+            });
+            registerForUpdates("/topic/card", Card.class, card -> {
+                this.cardListeners.forEach(listener -> listener.accept(card));
+            });
+            registerForUpdates("/topic/tag", Tag.class, tag -> {
+                this.tagListeners.forEach(listener -> listener.accept(tag));
+            });
+            registerForUpdates("/topic/task", Task.class, task -> {
+                this.taskListeners.forEach(listener -> listener.accept(task));
             });
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
