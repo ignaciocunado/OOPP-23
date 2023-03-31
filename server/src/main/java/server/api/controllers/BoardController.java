@@ -21,6 +21,7 @@ import commons.entities.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import server.database.CardRepository;
 import server.database.TagRepository;
 import server.exceptions.EntityNotFoundException;
@@ -37,14 +38,18 @@ import org.springframework.web.bind.annotation.*;
 public class BoardController {
 
     private final BoardService boardService;
+    private final SimpMessagingTemplate msgs;
 
     /**
      * Creates the board controller with a service
      *
      * @param boardService the service with the main business logic
+     * @param msgs object to send messages to connected websockets
      */
-    public BoardController(final BoardService boardService) {
+    public BoardController(final BoardService boardService,
+                           final SimpMessagingTemplate msgs) {
         this.boardService = boardService;
+        this.msgs = msgs;
     }
 
     /**
@@ -83,7 +88,9 @@ public class BoardController {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        return new ResponseEntity<>(this.boardService.addTagToBoard(id, tag),
+        final Board addedTagToBoard = this.boardService.addTagToBoard(id, tag);
+        msgs.convertAndSend("/topic/board", addedTagToBoard);
+        return new ResponseEntity<>(addedTagToBoard,
                 new HttpHeaders(), 200);
     }
 
@@ -97,7 +104,9 @@ public class BoardController {
     @DeleteMapping("/{id}/tag/{tagId}")
     public ResponseEntity<Board> deleteTag(@PathVariable final int id,
                                            @PathVariable final int tagId) {
-        return new ResponseEntity<>(this.boardService.deleteTagFromBoard(id, tagId),
+        final Board deletedTagFromBoard = this.boardService.deleteTagFromBoard(id, tagId);
+        msgs.convertAndSend("/topic/board");
+        return new ResponseEntity<>(deletedTagFromBoard,
                 new HttpHeaders(), 200);
     }
 
@@ -116,7 +125,9 @@ public class BoardController {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        return new ResponseEntity<>(this.boardService.createListInBoard(id, cardList),
+        final Board createdListToBoard = this.boardService.createListInBoard(id, cardList);
+        msgs.convertAndSend("/topic/board", createdListToBoard);
+        return new ResponseEntity<>(createdListToBoard,
                 new HttpHeaders(), 200);
     }
 
@@ -130,7 +141,9 @@ public class BoardController {
     @DeleteMapping("/{id}/list/{listId}")
     public ResponseEntity<Board> deleteList(@PathVariable final int id,
                                             @PathVariable final int listId) {
-        return new ResponseEntity<>(this.boardService.deleteListFromBoard(id, listId),
+        final Board deleteListFromBoard = this.boardService.deleteListFromBoard(id, listId);
+        msgs.convertAndSend("/topic/board", deleteListFromBoard);
+        return new ResponseEntity<>(deleteListFromBoard,
                 new HttpHeaders(), HttpStatus.OK);
     }
 
@@ -149,7 +162,9 @@ public class BoardController {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        return new ResponseEntity<>(this.boardService.changePassword(id, board),
+        final Board editedPasswordBoard = this.boardService.changePassword(id, board);
+        msgs.convertAndSend("/topic/board", editedPasswordBoard);
+        return new ResponseEntity<>(editedPasswordBoard,
                 new HttpHeaders(), 200);
     }
 

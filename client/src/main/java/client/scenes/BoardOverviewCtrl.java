@@ -17,11 +17,13 @@ package client.scenes;
 
 import client.Main;
 import client.utils.ServerUtils;
+import client.utils.WebsocketUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
 import commons.entities.Card;
 import commons.entities.CardList;
 import commons.entities.Tag;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
@@ -32,6 +34,7 @@ import java.util.ResourceBundle;
 
 public class BoardOverviewCtrl implements Initializable {
 
+    private final WebsocketUtils websocket;
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
@@ -49,7 +52,8 @@ public class BoardOverviewCtrl implements Initializable {
      * @param mainCtrl the main controller
      */
     @Inject
-    public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public BoardOverviewCtrl(WebsocketUtils websocket, ServerUtils server, MainCtrl mainCtrl) {
+        this.websocket = websocket;
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
@@ -65,27 +69,11 @@ public class BoardOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh(new Board("","", ""));
+        this.websocket.addBoardListener(board -> {
+            if (board == null || board.getKey().equals(this.currentBoard.getKey())) return;
+            Platform.runLater(() -> this.refresh(board));
+        });
     }
-
-    /**
-     * Handler for setting web sockets compatible with frontend
-     */
-    public void setWebSockets(){
-        server.registerForUpdates("/topic/board", Board.class, board -> {
-
-        });
-        server.registerForUpdates("/topic/cardlist", CardList.class, cardList -> {
-
-        });
-        server.registerForUpdates("/topic/card", Card.class, cardList -> {
-
-        });
-        server.registerForUpdates("/topic/tag", Tag.class, cardList -> {
-
-        });
-
-    }
-
 
     /**
      * Refreshes the Board and the lists in it.

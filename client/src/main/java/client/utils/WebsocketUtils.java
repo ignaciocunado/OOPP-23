@@ -1,0 +1,77 @@
+package client.utils;
+
+import com.google.inject.Singleton;
+import commons.entities.Board;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+
+@Singleton
+public final class WebsocketUtils {
+
+    private StompSession stompSession;
+    private List<Consumer<Board>> boardListeners;
+
+    public WebsocketUtils() {
+        this.boardListeners = new ArrayList<>();
+    }
+
+    public void addBoardListener(final Consumer<Board> boardListener) {
+        this.boardListeners.add(boardListener);
+    }
+
+    public void connect(final String connectionUri) {
+        var client = new StandardWebSocketClient();
+        var stomp = new WebSocketStompClient(client);
+        stomp.setMessageConverter(new MappingJackson2MessageConverter());
+        try {
+            this.stompSession = stomp.connect(connectionUri, new StompSessionHandlerAdapter() {
+            }).get();
+            registerForUpdates("/topic/board", Board.class, board -> {
+                this.boardListeners.forEach(listener -> listener.accept(board));
+            });
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void disconnect () {
+        if (this.stompSession != null) this.stompSession.disconnect();
+    }
+
+    /**
+     * Registers a subscription for updates on a specified destination
+     * using the STOMP protocol.The subscription is registered with a consumer
+     * that will handle the updates received from the destination.
+     *
+     * @param dest     The destination to subscribe to.
+     * @param type     The expected class type of the payload received from the destination.
+     * @param consumer The consumer that will handle the updates received from the destination.
+     * @param <T>      The type of the payload received from the destination.
+     */
+    private <T> void registerForUpdates (String dest, Class<T> type, Consumer<T> consumer) {
+        stompSession.subscribe(dest, new StompFrameHandler() {
+            @Override
+            public Type getPayloadType (StompHeaders headers) {
+                return type;
+            }
+
+            @Override
+            public void handleFrame (StompHeaders headers, Object payload) {
+                consumer.accept((T) payload);
+            }
+
+        });
+    }
+
+}
