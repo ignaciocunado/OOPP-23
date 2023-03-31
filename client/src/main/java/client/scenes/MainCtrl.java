@@ -26,6 +26,7 @@ import javafx.util.Pair;
 public class MainCtrl {
 
     private Stage primaryStage;
+    private Stage boardSettingsStage;
     private Stage cardEditorStage;
     private Stage boardHistoryStage;
     private BoardHistoryOverviewCtrl boardHistoryOverviewCtrl;
@@ -40,6 +41,9 @@ public class MainCtrl {
     private BoardOverviewCtrl boardOverviewCtrl;
     private Scene boardOverview;
 
+    private BoardSettingsCtrl boardSettingsCtrl;
+    private Scene boardSettings;
+
     private CardEditorCtrl cardEditorCtrl;
     private Scene cardEditorScene;
 
@@ -52,15 +56,18 @@ public class MainCtrl {
      * @param boardOverview   the main board overview
      * @param cardEditor      card editor view
      * @param boardHistory    board history overview
+     * @param boardSettings the board settings overview
      */
     public void initialize(Stage primaryStage,
                            Pair<ServerOverviewCtrl, Parent> serverOverview,
                            Pair<LandingOverviewCtrl, Parent> landingOverview,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<CardEditorCtrl, Parent> cardEditor,
+                           Pair<BoardSettingsCtrl, Parent> boardSettings,
                            Pair<BoardHistoryOverviewCtrl, Parent> boardHistory
     ) {
         this.primaryStage = primaryStage;
+        this.boardSettingsStage = new Stage();
         this.cardEditorStage = new Stage();
         this.boardHistoryStage = new Stage();
 
@@ -76,6 +83,13 @@ public class MainCtrl {
         this.boardOverviewCtrl = boardOverview.getKey();
         this.boardOverview = new Scene(boardOverview.getValue());
 
+        this.boardSettingsCtrl = boardSettings.getKey();
+        this.boardSettings = new Scene(boardSettings.getValue());
+
+        this.boardSettingsStage.setScene(this.boardSettings);
+        this.boardSettingsStage.initModality(Modality.APPLICATION_MODAL);
+        this.boardSettingsStage.initOwner(this.primaryStage);
+
         this.cardEditorCtrl = cardEditor.getKey();
         this.cardEditorScene = new Scene(cardEditor.getValue());
 
@@ -83,6 +97,7 @@ public class MainCtrl {
                 getResource("assets/style/textStyle.css").toExternalForm());
         boardHistoryStage.initModality(Modality.APPLICATION_MODAL);
 
+        cardEditorStage.setScene(cardEditorScene);
         cardEditorStage.initModality(Modality.APPLICATION_MODAL);
         cardEditorStage.setTitle("Card Editor");
         cardEditorStage.setScene(cardEditorScene);
@@ -149,12 +164,19 @@ public class MainCtrl {
     }
 
     /**
+     * Shows an existing board overview scene
+     */
+    public void showBoardSettings() {
+        this.boardSettingsStage.setTitle("Talio: Task List Organiser (Settings)");
+        this.boardSettingsStage.showAndWait();
+    }
+
+    /**
      * closes card editor stage
      */
     public void closeCardEditor() {
         cardEditorStage.close();
     }
-
 
     /**
      * Method to close the app
