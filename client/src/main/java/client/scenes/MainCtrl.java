@@ -116,7 +116,6 @@ public class MainCtrl {
         boardHistoryStage.setTitle("Board Visitation History");
         boardHistoryStage.setScene(boardHistoryOverview);
         boardHistoryStage.showAndWait();
-
     }
 
     /**

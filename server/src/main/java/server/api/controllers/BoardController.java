@@ -50,8 +50,8 @@ public class BoardController {
      */
     @PostMapping(path = {"", "/"})
     public ResponseEntity<Board> createBoard(@RequestBody final Board board) {
-        return new ResponseEntity<>(this.boardService.createBoard(board.getPassword()),
-                new HttpHeaders(), 200);
+        return new ResponseEntity<>(this.boardService.createBoard(board.getName(),
+                board.getPassword()), new HttpHeaders(), 200);
     }
     /**
      * Handler for getting the board
