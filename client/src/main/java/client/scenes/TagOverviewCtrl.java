@@ -105,6 +105,9 @@ public class TagOverviewCtrl implements Initializable{
         vbox.getChildren().removeIf(pane -> Integer.parseInt(pane.getId()) == id);
     }
 
+    /**
+     * method for editing tag
+     */
     public void editTag() {
 
         newTag.getTag().setName(newTitle.getText());
