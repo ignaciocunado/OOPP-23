@@ -187,7 +187,7 @@ public class CardController {
             throw new EntityNotFoundException("No card list associated with card id " + id);
         }
 
-        if(destOpt.isEmpty()){
+        if (destOpt.isEmpty()){
             throw new EntityNotFoundException("No card list with id " + listId);
         }
 
