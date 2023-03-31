@@ -63,6 +63,9 @@ public class BoardOverviewCtrl implements Initializable {
         refresh(new Board("", ""));
     }
 
+    /**
+     * Handler for setting web sockets compatible with frontend
+     */
     public void setWebSockets(){
         server.registerForUpdates("/topic/board", Board.class, board -> {
 

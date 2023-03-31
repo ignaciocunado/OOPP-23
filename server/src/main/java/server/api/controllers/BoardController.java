@@ -19,11 +19,9 @@ import commons.entities.Board;
 import commons.entities.Card;
 import commons.entities.CardList;
 import commons.entities.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import server.database.CardRepository;
 import server.database.TagRepository;
 import server.exceptions.EntityNotFoundException;
@@ -47,9 +45,6 @@ public class BoardController {
     private final CardListRepository cardListRepository;
     private final CardRepository cardRepository;
     private final TextService textService;
-
-    @Autowired
-    private SimpMessagingTemplate template;
 
     /**
      * RestAPI Controller for the board route
@@ -111,11 +106,9 @@ public class BoardController {
         return cardList;
     }
 
-    @MessageMapping("/topic/board")
+    @MessageMapping("/board/update")
     @SendTo("/topic/board")
     public Board updateBoard(Board board) {
-        template.convertAndSend("", board);
-        System.out.println(board);
         return board;
     }
     @MessageMapping("/tag/update")
@@ -137,7 +130,6 @@ public class BoardController {
         tagRepo.save(tag);
         Board board = boardRepo.getById(id);
         board.addTag(tag);
-        this.updateBoard(board);
         return new ResponseEntity<>(boardRepo.save(board), new HttpHeaders(), 200);
     }
 

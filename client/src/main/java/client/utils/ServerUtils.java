@@ -368,8 +368,19 @@ public class ServerUtils {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     Registers a subscription for updates on a specified destination
+     using the STOMP protocol.The subscription is registered with a consumer
+     that will handle the updates received from the destination.
+     @param dest The destination to subscribe to.
+     @param type The expected class type of the payload received from the destination.
+     @param consumer The consumer that will handle the updates received from the destination.
+     @param <T> The type of the payload received from the destination.
+     */
     public <T> void registerForUpdates(String dest, Class<T> type, Consumer<T> consumer){
-        session.subscribe(dest, new StompFrameHandler() {
+        final StompSession.Subscription subscription =
+                session.subscribe(dest, new StompFrameHandler() {
             @Override
             public Type getPayloadType (StompHeaders headers) {
                 return type;
@@ -381,8 +392,5 @@ public class ServerUtils {
             }
 
         });
-    }
-    public void send(String dest, Object o){
-        session.send(dest, o);
     }
 }
