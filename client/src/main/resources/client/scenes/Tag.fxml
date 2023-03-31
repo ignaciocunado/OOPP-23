@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="background" maxHeight="30.0" minHeight="20.0" prefHeight="25.0" style="-fx-background-color: #d05757; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagCtrl">
+<Pane fx:id="background" maxHeight="30.0" minHeight="20.0" onMouseClicked="#updateInfo" prefHeight="25.0" style="-fx-background-color: #d05757; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagCtrl">
    <children>
       <HBox alignment="BASELINE_CENTER" layoutY="3.0" prefHeight="20.0" prefWidth="46.0" style="-fx-spacing: 10;">
          <children>

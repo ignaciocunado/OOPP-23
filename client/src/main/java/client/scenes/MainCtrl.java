@@ -23,6 +23,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
+import java.io.IOException;
+
 
 public class MainCtrl {
 
@@ -88,10 +90,10 @@ public class MainCtrl {
         cardEditorStage.setScene(cardEditorScene);
         cardEditorScene.getStylesheets().add(getClass().getResource("assets/style/comboBox.css")
             .toExternalForm());
+        createTagStage.initModality(Modality.APPLICATION_MODAL);
 
         primaryStage.initStyle(StageStyle.DECORATED);
         showLandingOverview();
-        showTagOverview();
         primaryStage.show();
     }
 
@@ -165,10 +167,11 @@ public class MainCtrl {
     /**
      * Method for the tag overview
      */
-    public void showTagOverview(){
+    public void showTagOverview() {
         createTagStage.setTitle("Talio: Tag list Overview");
         createTagStage.setScene(this.tagOverview);
-        createTagStage.show();
+        tagOverviewCtrl.refresh(boardOverviewCtrl);
+        createTagStage.showAndWait();
     }
 
 }
