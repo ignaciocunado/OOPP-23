@@ -36,6 +36,9 @@ public class BoardHistoryOverviewCtrl {
         this.config = config;
     }
 
+    /**
+     * Refreshes the board history view with old recent boards read from the config
+     */
     public void refresh() {
         this.servers.getChildren().clear();
         for (RecentBoard recent:config.getCurrentWorkspace().getBoards()) {
