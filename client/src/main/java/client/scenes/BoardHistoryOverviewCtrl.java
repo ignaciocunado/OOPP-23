@@ -1,24 +1,21 @@
 package client.scenes;
 
-import client.Config;
-import client.RecentBoard;
+import client.config.Config;
+import client.config.RecentBoard;
 import client.utils.ServerUtils;
+import com.google.inject.Inject;
 import commons.entities.Board;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javax.inject.Inject;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import static javafx.scene.paint.Color.WHITE;
 import static javafx.scene.paint.Color.rgb;
 
-public class BoardHistoryOverviewCtrl implements Initializable {
+public class BoardHistoryOverviewCtrl {
 
     private final Config config;
     private final MainCtrl mainCtrl;
@@ -40,19 +37,14 @@ public class BoardHistoryOverviewCtrl implements Initializable {
     }
 
     /**
-     * Initialisation method initialising FXML objects
-     *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  {@code null} if the location is not known.
-     * @param resources The resources used to localize the root object, or {@code null} if
-     *                  the root object was not localized.
+     * Refreshes the board history view with old recent boards read from the config
      */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        for (RecentBoard recent:config.getBoards()) {
+    public void refresh() {
+        this.servers.getChildren().clear();
+        for (RecentBoard recent:config.getCurrentWorkspace().getBoards()) {
             final HBox serverBox = new HBox();
             final Text key = new Text(recent.getKey());
-            final Text server = new Text(recent.getServer());
+            final Text server = new Text(config.getCurrentWorkspace().getConnectionUri());
             final Text rejoin = new Text("rejoin");
             key.getStyleClass().add("texts");
             server.getStyleClass().add("texts");
@@ -73,29 +65,13 @@ public class BoardHistoryOverviewCtrl implements Initializable {
     }
 
     /**
-     * Configures the value of the Text and adds it to the corresponding VBox
-     * @param stringValue the string displayed by the Text
-     * @param vboxToAddTo the VBox to which the Text will be added
-     * @param boardKey the key of the Board associated to the Text
-     */
-    public void addAndConfigureText(String stringValue, VBox vboxToAddTo, String boardKey) {
-        Text newText = new Text(stringValue);
-        newText.getStyleClass().add("texts");
-        vboxToAddTo.getChildren().add(newText);
-        if (stringValue.equals("Rejoin")) {
-            newText.getStyleClass().add("rejoin");
-            setOnMouseClicked(newText, boardKey);
-            setOnMouseHovered(newText);
-        }
-    }
-
-    /**
      * Displays the correct Board when the "Rejoin" text is pressed
      * @param rejoinText "Rejoin" text
      * @param boardKey the key of the Board which will be joined
      */
     public void setOnMouseClicked(Text rejoinText, String boardKey) {
         rejoinText.setOnMouseClicked(event -> {
+            this.config.getCurrentWorkspace().addBoard(boardKey);
             final Board board = this.server.getBoard(boardKey);
             if (board == null) {
                 final Alert alert = new Alert(Alert.AlertType.INFORMATION);
