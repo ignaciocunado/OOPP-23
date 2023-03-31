@@ -1,6 +1,8 @@
 [ {
   "connectionUri" : "http://localhost:8080/",
   "boards" : [ {
+    "key" : "uty6NTZdbY"
+  }, {
     "key" : "d93eJDGhgp"
   } ]
 } ]

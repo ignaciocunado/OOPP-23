@@ -106,8 +106,7 @@ public class BoardOverviewCtrl implements Initializable {
      */
     @FXML
     private void showBoardSettings() {
-        //this.mainCtrl.showBoardSettings();
-        //remove comment tags when merge request 60 is merged
+        this.mainCtrl.showBoardSettings();
     }
 
     /**
