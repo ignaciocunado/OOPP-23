@@ -16,13 +16,9 @@
 package client;
 
 import static com.google.inject.Guice.createInjector;
-
 import java.io.IOException;
-import java.net.URISyntaxException;
-
 import client.scenes.*;
 import com.google.inject.Injector;
-
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -37,10 +33,11 @@ public class Main extends Application {
      * main
      *
      * @param args
-     * @throws URISyntaxException
-     * @throws IOException
      */
-    public static void main(String[] args) throws URISyntaxException, IOException {
+    public static void main(String[] args) {
+        final Config config = INJECTOR.getInstance(Config.class);
+        config.loadConfiguration();
+
         launch();
     }
 
@@ -51,10 +48,9 @@ public class Main extends Application {
      *                     the application scene can be set.
      *                     Applications may create other stages, if needed, but they will not be
      *                     primary stages.
-     * @throws IOException
      */
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
         final Pair<LandingOverviewCtrl, Parent> landingOverview =
                 FXML.load(LandingOverviewCtrl.class, "client", "scenes", "LandingOverview.fxml");
         final Pair<BoardOverviewCtrl, Parent> boardOverview =
@@ -65,7 +61,21 @@ public class Main extends Application {
         final Pair<TagOverviewCtrl, Parent> tagOverview =
             FXML.load(TagOverviewCtrl.class, "client", "scenes", "TagOverview.fxml");
 
+        final Pair<BoardHistoryOverviewCtrl, Parent> boardHistoryOverview =
+            FXML.load(BoardHistoryOverviewCtrl.class, "client", "scenes", "BoardHistory.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, landingOverview, boardOverview, cardEditor, tagOverview);
+        mainCtrl.initialize(primaryStage, landingOverview, boardOverview, cardEditor,
+            tagOverview,boardHistoryOverview);
     }
+
+    /**
+     * Saves RecentBoards when app is stopped
+     * @throws IOException if file is not found
+     */
+    @Override
+    public void stop() throws IOException {
+        final Config config = INJECTOR.getInstance(Config.class);
+        config.saveBoard();
+    }
+
 }

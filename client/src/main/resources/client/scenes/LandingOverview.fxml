@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: rgb(1,35,69);" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.LandingOverviewCtrl">
+<Pane fx:id="newPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: rgb(1,35,69);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.LandingOverviewCtrl">
    <children>
       <TextField fx:id="joinKey" layoutX="123.0" layoutY="249.0" onAction="#joinBoard" prefHeight="40.0" prefWidth="200.0" promptText="Key" />
       <PasswordField fx:id="joinPassword" layoutX="123.0" layoutY="300.0" onAction="#joinBoard" prefHeight="40.0" prefWidth="200.0" promptText="Password (Optional)" />
@@ -16,9 +15,10 @@
             <Font name="System Bold" size="38.0" />
          </font>
       </Text>
-      <PasswordField fx:id="createPassword" layoutX="573.0" layoutY="249.0" onAction="#createBoard" prefHeight="40.0" prefWidth="200.0" promptText="Password (Optional)" />
-      <PasswordField fx:id="createConfirmPassword" layoutX="573.0" layoutY="300.0" onAction="#createBoard" prefHeight="40.0" prefWidth="200.0" promptText="Confirm Password (Optional)" />
-      <Button layoutX="598.0" layoutY="355.0" mnemonicParsing="false" onAction="#createBoard" prefHeight="30.0" prefWidth="150.0" style="-fx-background-color: rgb(52,86,120);" text="Create" textFill="WHITE" />
+      <TextField fx:id="createName" layoutX="573.0" layoutY="249.0" onAction="#createBoard" prefHeight="40.0" prefWidth="200.0" promptText="Name (Optional)" />
+      <PasswordField fx:id="createPassword" layoutX="573.0" layoutY="300.0" onAction="#createBoard" prefHeight="40.0" prefWidth="200.0" promptText="Password (Optional)" />
+      <PasswordField fx:id="createConfirmPassword" layoutX="573.0" layoutY="351.0" onAction="#createBoard" prefHeight="40.0" prefWidth="200.0" promptText="Confirm Password (Optional)" />
+      <Button layoutX="598.0" layoutY="406.0" mnemonicParsing="false" onAction="#createBoard" prefHeight="30.0" prefWidth="150.0" style="-fx-background-color: rgb(52,86,120);" text="Create" textFill="WHITE" />
       <Text fill="WHITE" layoutX="179.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Join" textAlignment="CENTER" wrappingWidth="87.51171875">
          <font>
             <Font size="26.0" />
@@ -29,5 +29,6 @@
             <Font size="26.0" />
          </font>
       </Text>
+      <Button layoutX="14.0" layoutY="561.0" mnemonicParsing="false" onAction="#openHistory" style="-fx-background-color: rgb(52,86,120);" text="History" textFill="WHITE" />
    </children>
 </Pane>

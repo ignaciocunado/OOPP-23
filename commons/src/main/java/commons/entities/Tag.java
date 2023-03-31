@@ -108,10 +108,18 @@ public final class Tag {
 
     /**
      * To string method for the tag
-     * @return a string representing the tag class
+     * @return displays the name
      */
     @Override
     public String toString() {
+        return this.name;
+    }
+
+    /**
+     * print method for the tag
+     * @return a string representing the tag class
+     */
+    public String print() {
         return String.format("<Tag id=%d name=%s colour=%d>", this.id, this.name, this.colour);
     }
 }

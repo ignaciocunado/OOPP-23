@@ -1,9 +1,6 @@
 package commons.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +14,7 @@ public final class CardList {
 
     @NotBlank
     private String title;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Card> cards;
     /**
      * Empty constructor for JPA
@@ -99,30 +96,6 @@ public final class CardList {
      */
     public boolean removeCardById(final int id){
         return this.cards.removeIf(card -> card.getId() == id);
-    }
-
-    /**
-     * Method for swapping two cads in the Cards list
-     * @param card the card to edit the index of
-     * @param index the new index of the card
-     * @return whether the method has succeeded in switching the index of the card
-     */
-    public boolean editCardIndex(Card card, int index) {
-        if (!cards.contains(card) || index >= cards.size()) {
-            return false;
-        }
-        if (cards.indexOf(card) < index) {
-            for (int i = cards.indexOf(card); i < index; i++) {
-                cards.set(i, cards.get(i+1));
-            }
-        }
-        else {
-            for (int i = cards.indexOf(card); i > index; i--) {
-                cards.set(i, cards.get(i-1));
-            }
-        }
-        cards.set(index, card);
-        return true;
     }
 
     /**

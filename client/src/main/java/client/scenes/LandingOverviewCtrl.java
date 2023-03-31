@@ -15,30 +15,43 @@
  */
 package client.scenes;
 
+import client.Config;
+import client.MyFXML;
+import client.MyModule;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import commons.entities.Board;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
-
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import javafx.scene.layout.Pane;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static com.google.inject.Guice.createInjector;
+
 public class LandingOverviewCtrl implements Initializable {
+
+    private static final Injector INJECTOR = createInjector(new MyModule());
+    public static final MyFXML FXML = new MyFXML(INJECTOR);
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-
+    private final Config config;
+    @FXML
+    private Pane newPane;
     @FXML
     private TextField joinKey;
     @FXML
     private PasswordField joinPassword;
+    @FXML
+    private TextField createName;
     @FXML
     private PasswordField createPassword;
     @FXML
@@ -48,11 +61,13 @@ public class LandingOverviewCtrl implements Initializable {
      * Constructor to inject necessary classes into the controller
      * @param server
      * @param mainCtrl
+     * @param config
      */
     @Inject
-    public LandingOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public LandingOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, Config config) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.config = config;
     }
 
     /**
@@ -84,6 +99,7 @@ public class LandingOverviewCtrl implements Initializable {
             alert.show();
             return;
         }
+        config.addBoard(this.joinKey.getText(),this.server.getServer());
         this.mainCtrl.showBoardOverview(board);
     }
 
@@ -101,19 +117,21 @@ public class LandingOverviewCtrl implements Initializable {
             return;
         }
 
-        final Board board = this.server.createBoard(this.createPassword.getText());
+        final Board board = this.server.createBoard(this.createName.getText(),
+                this.createPassword.getText());
         final ButtonType copyButton = new ButtonType("Copy", ButtonBar.ButtonData.OK_DONE);
         final ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
         final Alert creationAlert = new Alert(Alert.AlertType.INFORMATION,
                 "", copyButton, closeButton);
         creationAlert.setTitle("New Board Created");
-        creationAlert.setHeaderText("You've created a new board with key: " + board.getKey());
+        creationAlert.setHeaderText("You've created a new board with key: " + board.getKey() +
+                " and with name: " + board.getName());
         final Optional<ButtonType> res = creationAlert.showAndWait();
         if (res.orElse(closeButton) == copyButton) {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(board.getKey()), null);
         }
-
+        config.addBoard(board.getKey(), this.server.getServer());
         this.mainCtrl.showBoardOverview(board);
     }
 
@@ -127,5 +145,12 @@ public class LandingOverviewCtrl implements Initializable {
      */
     public void closeApp() {
         mainCtrl.closeApp();
+    }
+
+    /**
+     * EventHandler for the button of the board history overview
+     */
+    public void openHistory(){
+        this.mainCtrl.showHistory();
     }
 }

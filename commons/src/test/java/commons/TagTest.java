@@ -69,7 +69,7 @@ public class TagTest {
 	}
 
 	@Test
-	public void equalsHashCode() {
+	public void equalsHashCodeTest() {
 		final Tag tag1 = new Tag("Bugfix", 16744576);
 		final Tag tag2 = new Tag("Bugfix", 16744576);
 
@@ -78,7 +78,12 @@ public class TagTest {
 	}
 
 	@Test
-	public void hasToString() {
-		assertEquals(tag.toString(), "<Tag id=0 name=Bugfix colour=16744576>");
+	public void printTest() {
+		assertEquals(tag.print(), "<Tag id=0 name=Bugfix colour=16744576>");
+	}
+
+	@Test
+	public void toStringTest() {
+		assertEquals(tag.toString(), "Bugfix");
 	}
 }

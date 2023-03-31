@@ -29,6 +29,9 @@ public class MainCtrl {
     private Stage primaryStage;
     private Stage createTagStage;
     private Stage cardEditorStage;
+    private Stage boardHistoryStage;
+    private BoardHistoryOverviewCtrl boardHistoryOverviewCtrl;
+    private Scene boardHistoryOverview;
 
 
     private LandingOverviewCtrl landingOverviewCtrl;
@@ -55,12 +58,17 @@ public class MainCtrl {
     public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<CardEditorCtrl, Parent> cardEditor,
-                           Pair<TagOverviewCtrl, Parent> tagOverview) {
+                           Pair<TagOverviewCtrl, Parent> tagOverview, Pair<BoardHistoryOverviewCtrl, Parent> boardHistory) {
+
         this.primaryStage = primaryStage;
         this.createTagStage =  new Stage();
         this.cardEditorStage = new Stage();
+        this.boardHistoryStage = new Stage();
         this.landingOverviewCtrl = landingOverview.getKey();
         this.landingOverview = new Scene(landingOverview.getValue());
+
+        this.boardHistoryOverviewCtrl = boardHistory.getKey();
+        this.boardHistoryOverview = new Scene(boardHistory.getValue());
 
         this.boardOverviewCtrl = boardOverview.getKey();
         this.boardOverview = new Scene(boardOverview.getValue());
@@ -71,10 +79,14 @@ public class MainCtrl {
         this.cardEditorCtrl = cardEditor.getKey();
         this.cardEditorScene = new Scene(cardEditor.getValue());
 
+        boardHistoryOverview.getStylesheets().add(getClass().
+            getResource("assets/style/textStyle.css").toExternalForm());
+        boardHistoryStage.initModality(Modality.APPLICATION_MODAL);
+
         cardEditorStage.initModality(Modality.APPLICATION_MODAL);
         cardEditorStage.setTitle("Card Editor");
         cardEditorStage.setScene(cardEditorScene);
-        cardEditorScene.getStylesheets().add(getClass().getResource("comboBox.css")
+        cardEditorScene.getStylesheets().add(getClass().getResource("assets/style/comboBox.css")
             .toExternalForm());
 
         primaryStage.initStyle(StageStyle.DECORATED);
@@ -112,6 +124,22 @@ public class MainCtrl {
     }
 
     /**
+     * Shows the overview of the board history
+     */
+    public void showHistory() {
+        boardHistoryStage.setTitle("Board Visitation History");
+        boardHistoryStage.setScene(boardHistoryOverview);
+        boardHistoryStage.showAndWait();
+    }
+
+    /**
+     * Closes the overview of the board history
+     */
+    public void closeHistory() {
+        boardHistoryStage.close();
+    }
+
+    /**
      * closes card editor stage
      */
     public void closeCardEditor() {
@@ -142,7 +170,5 @@ public class MainCtrl {
         createTagStage.setScene(this.tagOverview);
         createTagStage.show();
     }
-
-
 
 }

@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.entities.Board;
 import commons.entities.Card;
 import javafx.fxml.FXML;
 import javafx.scene.input.ClipboardContent;
@@ -52,9 +53,8 @@ public final class CardCtrl {
      *
      * @param card the data
      */
-    public void refresh(final Card card) {
+    public void refresh(Card card) {
         this.card = card;
-
         this.cardTitle.setText(this.card.getTitle());
         this.cardDescription.setText(this.card.getDescription());
     }
@@ -91,4 +91,11 @@ public final class CardCtrl {
         this.mainCtrl.showCardEditor(this);
     }
 
+    /**
+     * getter for board
+     * @return board
+     */
+    public Board getBoard() {
+        return cardListCtrl.getBoard();
+    }
 }
