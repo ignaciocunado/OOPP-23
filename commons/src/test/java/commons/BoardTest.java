@@ -171,6 +171,6 @@ class BoardTest {
 
     @Test
     public void toStringTest() {
-        assertEquals(board.toString(), "<Board id=0 key=abc password=def>");
+        assertEquals(board.toString(), "<Board id=0 key=abc name=def password=ghi>");
     }
 }
