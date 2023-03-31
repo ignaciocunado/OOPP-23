@@ -104,7 +104,8 @@ public class ServerUtils {
     }
 
     /**
-     * Gets all boards
+     * Gets all boards on this server
+     * @return all the boars on this server
      */
     public List<Board> getAllBoards() {
         return client.target(this.server).path("api/board/all")

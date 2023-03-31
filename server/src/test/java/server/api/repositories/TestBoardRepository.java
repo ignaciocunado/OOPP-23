@@ -62,7 +62,12 @@ public final class TestBoardRepository implements BoardRepository {
 
     @Override
     public void deleteById(Integer integer) {
-
+        for (Board board:boards) {
+            if (board.getId()==integer){
+                boards.remove(board);
+                return;
+            }
+        }
     }
 
     @Override

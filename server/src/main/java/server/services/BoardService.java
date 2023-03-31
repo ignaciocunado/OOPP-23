@@ -185,6 +185,12 @@ public final class BoardService {
         return this.boardRepository.save(editedBoard);
     }
 
+    /**
+     * Deletes an existing board
+     *
+     * @param key the key of the board
+     * @return the board which has just been deleted
+     */
     public Board deleteBoard(String key) {
         final Optional<Board> boardOpt = this.boardRepository.findBoardByKey(key);
         if (boardOpt.isEmpty()) {

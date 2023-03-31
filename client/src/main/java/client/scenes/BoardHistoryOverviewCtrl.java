@@ -35,6 +35,10 @@ public class BoardHistoryOverviewCtrl {
         this.server = server;
         this.config = config;
     }
+
+    /**
+     * Initialisation method initialising FXML objects
+     */
     @FXML
     public void initialize() {
 
@@ -67,6 +71,9 @@ public class BoardHistoryOverviewCtrl {
         }
     }
 
+    /**
+     * Refreshes the board for the admin, thus also allowing a user to delete a board
+     */
     public void refreshAdmin() {
         this.servers.getChildren().clear();
         for (Board recent:this.server.getAllBoards()) {
@@ -99,10 +106,15 @@ public class BoardHistoryOverviewCtrl {
         }
     }
 
-    private void setOnMouseClickedDelete(Text delete, String key) {
+    /**
+     * Deletes the correct Board when the "Delete" text is pressed
+     * @param delete "Delete" text
+     * @param boardKey the key of the Board which will be joined
+     */
+    private void setOnMouseClickedDelete(Text delete, String boardKey) {
         delete.setOnMouseClicked(event -> {
-            this.server.deleteBoard(key);
-            config.getCurrentWorkspace().deleteBoard(key);
+            this.server.deleteBoard(boardKey);
+            config.getCurrentWorkspace().deleteBoard(boardKey);
             refreshAdmin();
         });
     }
@@ -129,8 +141,8 @@ public class BoardHistoryOverviewCtrl {
     }
 
     /**
-     * Sets visual feedback for when mouse is hovering over the "Rejoin" text
-     * @param txt the "Rejoin" text
+     * Sets visual feedback for when mouse is hovering over the "Rejoin" and "Delete" text
+     * @param txt the "Rejoin" or "Delete" text
      */
     public void setOnMouseHovered(Text txt) {
         txt.setOnMouseEntered(event -> {

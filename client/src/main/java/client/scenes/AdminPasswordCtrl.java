@@ -26,11 +26,17 @@ public class AdminPasswordCtrl {
         this.mainCtrl = mainCtrl;
     }
 
+    /**
+     * Initialisation method initialising FXML objects
+     */
     @FXML
     public void initialize() {
 
     }
 
+    /**
+     * Checks the password in the passwordField when the "Enter" button is pressed
+     */
     public void checkPassword() {
         if (adminPassword.equals(passwordField.getText())) {
             passwordField.setText("");
