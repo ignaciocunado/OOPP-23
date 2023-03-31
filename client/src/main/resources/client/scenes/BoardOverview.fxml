@@ -7,7 +7,7 @@
 
 <BorderPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: rgb(1,35,69);" stylesheets="@/client/scenes/assets/style/scrollbar.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardOverviewCtrl">
    <top>
-      <Pane maxHeight="60.0" minHeight="60.0" prefHeight="60.0" style="-fx-background-color: rgb(0,128,0);" BorderPane.alignment="TOP_CENTER">
+      <Pane maxHeight="60.0" minHeight="60.0" prefHeight="60.0" style="-fx-background-color: rgb(1,20,40);" BorderPane.alignment="TOP_CENTER">
          <children>
             <Text fx:id="Talio" fill="WHITE" layoutX="25.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 26;" text="Talio" />
             <Text fx:id="Title" fill="WHITE" layoutX="500.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 26;" text="Title" />
@@ -52,9 +52,9 @@
    <bottom>
       <AnchorPane prefHeight="80.0" BorderPane.alignment="CENTER">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="40.0" layoutY="25.0" mnemonicParsing="false" onAction="#showLandingOverview" style="-fx-padding: 0; -fx-background-color: transparent;" text="back" textAlignment="CENTER" textFill="WHITE">>
+            <Button alignment="CENTER" prefHeight="30.0" prefWidth="46.0" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="40.0" layoutY="15.0" mnemonicParsing="false" onAction="#showLandingOverview" style="-fx-padding: -10; -fx-background-color: rgb(35,69,103)" text="&lt;" textAlignment="CENTER" textFill="WHITE">>
                <font>
-                  <Font size="20.0" />
+                  <Font size="45.0" />
                </font>
             </Button>
          </children>
