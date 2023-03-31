@@ -59,9 +59,11 @@ public class Main extends Application {
             FXML.load(CardEditorCtrl.class, "client", "scenes", "CardEditor.fxml");
         final Pair<BoardHistoryOverviewCtrl, Parent> boardHistoryOverview =
             FXML.load(BoardHistoryOverviewCtrl.class, "client", "scenes", "BoardHistory.fxml");
+        final Pair<AdminPasswordCtrl, Parent> adminPasswordOverview =
+            FXML.load(AdminPasswordCtrl.class, "client", "scenes", "AdminPassword.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, landingOverview, boardOverview, cardEditor,
-            boardHistoryOverview);
+            boardHistoryOverview, adminPasswordOverview);
     }
 
     /**

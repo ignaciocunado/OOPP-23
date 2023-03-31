@@ -153,4 +153,11 @@ public class LandingOverviewCtrl implements Initializable {
     public void openHistory(){
         this.mainCtrl.showHistory();
     }
+
+    /**
+     * EventHandler for the button of the admin password
+     */
+    public void openAdminPassword(){
+        this.mainCtrl.showAdminPassword();
+    }
 }

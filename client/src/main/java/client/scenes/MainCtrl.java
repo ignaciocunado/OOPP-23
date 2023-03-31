@@ -31,6 +31,10 @@ public class MainCtrl {
     private BoardHistoryOverviewCtrl boardHistoryOverviewCtrl;
     private Scene boardHistoryOverview;
 
+    private Stage adminPasswordStage;
+    private AdminPasswordCtrl adminPasswordCtrl;
+    private Scene adminPasswordOverview;
+
     private LandingOverviewCtrl landingOverviewCtrl;
     private Scene landingOverview;
 
@@ -50,10 +54,12 @@ public class MainCtrl {
      */
     public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
             Pair<BoardOverviewCtrl, Parent> boardOverview, Pair<CardEditorCtrl, Parent> cardEditor,
-                           Pair<BoardHistoryOverviewCtrl, Parent> boardHistory) {
+                           Pair<BoardHistoryOverviewCtrl, Parent> boardHistory,
+                           Pair<AdminPasswordCtrl, Parent> adminPassword) {
         this.primaryStage = primaryStage;
         this.cardEditorStage = new Stage();
         this.boardHistoryStage = new Stage();
+        this.adminPasswordStage = new Stage();
         this.landingOverviewCtrl = landingOverview.getKey();
         this.landingOverview = new Scene(landingOverview.getValue());
 
@@ -63,12 +69,17 @@ public class MainCtrl {
         this.boardOverviewCtrl = boardOverview.getKey();
         this.boardOverview = new Scene(boardOverview.getValue());
 
+        this.adminPasswordCtrl = adminPassword.getKey();
+        this.adminPasswordOverview = new Scene(adminPassword.getValue());
+
         this.cardEditorCtrl = cardEditor.getKey();
         this.cardEditorScene = new Scene(cardEditor.getValue());
 
         boardHistoryOverview.getStylesheets().add(getClass().
             getResource("assets/style/textStyle.css").toExternalForm());
         boardHistoryStage.initModality(Modality.APPLICATION_MODAL);
+
+        adminPasswordStage.initModality(Modality.APPLICATION_MODAL);
 
         cardEditorStage.initModality(Modality.APPLICATION_MODAL);
         cardEditorStage.setTitle("Card Editor");
@@ -123,6 +134,22 @@ public class MainCtrl {
      */
     public void closeHistory() {
         boardHistoryStage.close();
+    }
+
+    /**
+     * Shows the admin password pane
+     */
+    public void showAdminPassword() {
+        adminPasswordStage.setTitle("Admin Password");
+        adminPasswordStage.setScene(adminPasswordOverview);
+        adminPasswordStage.showAndWait();
+    }
+
+    /**
+     * Closes the admin password pane
+     */
+    public void closeAdminPassword() {
+        adminPasswordStage.close();
     }
 
     /**
