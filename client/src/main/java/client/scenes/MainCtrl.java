@@ -37,7 +37,7 @@ public class MainCtrl {
     private Scene adminPasswordOverview;
 
     private ServerOverviewCtrl serverOverviewCtrl;
-    private Scene serverOverview;
+    private Scene serverOverviewScene;
 
     private LandingOverviewCtrl landingOverviewCtrl;
     private Scene landingOverview;
@@ -79,7 +79,7 @@ public class MainCtrl {
         this.adminPasswordStage = new Stage();
 
         this.serverOverviewCtrl = serverOverview.getKey();
-        this.serverOverview = new Scene(serverOverview.getValue());
+        this.serverOverviewScene = new Scene(serverOverview.getValue());
 
         this.landingOverviewCtrl = landingOverview.getKey();
         this.landingOverview = new Scene(landingOverview.getValue());
@@ -103,6 +103,9 @@ public class MainCtrl {
         this.cardEditorCtrl = cardEditor.getKey();
         this.cardEditorScene = new Scene(cardEditor.getValue());
 
+        serverOverviewScene.getStylesheets().add(getClass().
+            getResource("assets/style/textStyle.css").toExternalForm());
+
         boardHistoryOverview.getStylesheets().add(getClass().
                 getResource("assets/style/textStyle.css").toExternalForm());
         boardHistoryStage.initModality(Modality.APPLICATION_MODAL);
@@ -125,7 +128,7 @@ public class MainCtrl {
      */
     public void showServerOverview() {
         primaryStage.setTitle("Talio: Task List Organiser");
-        primaryStage.setScene(this.serverOverview);
+        primaryStage.setScene(this.serverOverviewScene);
     }
 
     /**

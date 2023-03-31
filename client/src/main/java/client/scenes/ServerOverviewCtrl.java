@@ -41,6 +41,7 @@ public final class ServerOverviewCtrl {
     public void initialize() {
         this.config.getWorkspaces().forEach(workspace -> {
             final Text server = new Text(workspace.getConnectionUri());
+            server.getStyleClass().add("texts");
             server.setCursor(Cursor.HAND);
             server.setOnMouseClicked((event) -> {
                 this.config.setCurrentWorkspace(workspace.getConnectionUri());
