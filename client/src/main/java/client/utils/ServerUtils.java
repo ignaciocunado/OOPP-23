@@ -79,20 +79,35 @@ public class ServerUtils {
     }
 
     /**
-     * Gets board from the given server by the given id
-     * @return the relevant board, or null
+     * Checks the existence of a server on the connection uri
+     * @param connectionUri the connectionUri to check the existence of
+     * @return whether it exists
      */
+    public boolean ping(final String connectionUri) {
+        try {
+            client.target(connectionUri)
+                    .request()
+                    .get();
+        } catch (final NotFoundException e) {
+            return true;
+        } catch (final Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Creates a new board in the given server with the given password
+     * @param name the name to create the board with
      * @param password the password to create the board with
      * @return the newly created board
      */
-    public Board createBoard(final String password) {
+    public Board createBoard(final String name, final String password) {
         return client.target(this.server).path("api/board")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(
-                        Entity.json(new Board("", password)),
+                        Entity.json(new Board("", name, password)),
                         Board.class
                 );
     }

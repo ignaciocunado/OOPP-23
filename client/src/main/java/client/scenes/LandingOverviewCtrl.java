@@ -15,30 +15,33 @@
  */
 package client.scenes;
 
+import client.config.Config;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.net.URL;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
-public class LandingOverviewCtrl implements Initializable {
+public class LandingOverviewCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-
+    private final Config config;
+    @FXML
+    private Pane newPane;
     @FXML
     private TextField joinKey;
     @FXML
     private PasswordField joinPassword;
+    @FXML
+    private TextField createName;
     @FXML
     private PasswordField createPassword;
     @FXML
@@ -48,27 +51,13 @@ public class LandingOverviewCtrl implements Initializable {
      * Constructor to inject necessary classes into the controller
      * @param server
      * @param mainCtrl
+     * @param config
      */
     @Inject
-    public LandingOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public LandingOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, Config config) {
         this.server = server;
         this.mainCtrl = mainCtrl;
-    }
-
-    /**
-     * Initialisation method initialising FXML objects
-     * @param location
-     * The location used to resolve relative paths for the root object, or
-     * {@code null} if the location is not known.
-     *
-     * @param resources
-     * The resources used to localize the root object, or {@code null} if
-     * the root object was not localized.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        refresh();
-        this.server.setServer("http://localhost:8080/"); // TODO: temporary
+        this.config = config;
     }
 
     /**
@@ -84,6 +73,7 @@ public class LandingOverviewCtrl implements Initializable {
             alert.show();
             return;
         }
+        config.getCurrentWorkspace().addBoard(this.joinKey.getText());
         this.mainCtrl.showBoardOverview(board);
     }
 
@@ -101,31 +91,28 @@ public class LandingOverviewCtrl implements Initializable {
             return;
         }
 
-        final Board board = this.server.createBoard(this.createPassword.getText());
+        final Board board = this.server.createBoard(this.createName.getText(),
+                this.createPassword.getText());
         final ButtonType copyButton = new ButtonType("Copy", ButtonBar.ButtonData.OK_DONE);
         final ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
         final Alert creationAlert = new Alert(Alert.AlertType.INFORMATION,
                 "", copyButton, closeButton);
         creationAlert.setTitle("New Board Created");
-        creationAlert.setHeaderText("You've created a new board with key: " + board.getKey());
+        creationAlert.setHeaderText("You've created a new board with key: " + board.getKey() +
+                " and with name: " + board.getName());
         final Optional<ButtonType> res = creationAlert.showAndWait();
         if (res.orElse(closeButton) == copyButton) {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(board.getKey()), null);
         }
-
+        config.getCurrentWorkspace().addBoard(board.getKey());
         this.mainCtrl.showBoardOverview(board);
     }
 
     /**
-     * Stub method for refreshing boards
+     * EventHandler for the button of the board history overview
      */
-    public void refresh() {}
-
-    /**
-     * Method to close the app
-     */
-    public void closeApp() {
-        mainCtrl.closeApp();
+    public void openHistory(){
+        this.mainCtrl.showHistory();
     }
 }

@@ -25,6 +25,7 @@ import commons.entities.Tag;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,6 +34,9 @@ public class BoardOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+
+    @FXML
+    private Text title;
     @FXML
     private HBox lists;
     private Board currentBoard;
@@ -60,7 +64,7 @@ public class BoardOverviewCtrl implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        refresh(new Board("", ""));
+        refresh(new Board("","", ""));
     }
 
     /**
@@ -90,6 +94,8 @@ public class BoardOverviewCtrl implements Initializable {
      */
     public void refresh(Board currentBoard) {
         this.currentBoard = currentBoard;
+
+        this.title.setText(this.currentBoard.getName());
         this.lists.getChildren().clear();
         for (final CardList list : this.currentBoard.getLists()) {
             var pair = Main.FXML.load(CardListCtrl.class, "client", "scenes", "ListTemplate.fxml");
@@ -114,6 +120,32 @@ public class BoardOverviewCtrl implements Initializable {
     private void addList() {
         final Board board = this.server.createList(this.currentBoard.getId(), "New List");
         this.refresh(board);
+    }
+
+    /**
+     * Shows the board settings
+     */
+    @FXML
+    private void showBoardSettings() {
+        //this.mainCtrl.showBoardSettings();
+        //remove comment tags when merge request 60 is merged
+    }
+
+    /**
+     * Shows the board settings
+     */
+    @FXML
+    private void showTagOverview() {
+        //this.mainCtrl.showTagOverview();
+        //remove comment tags when merge request 63 is merged
+    }
+
+    /**
+     * Shows the main landing overview scene
+     */
+    @FXML
+    private void showLandingOverview(){
+        mainCtrl.showLandingOverview();
     }
 
     /**

@@ -16,13 +16,11 @@
 package client;
 
 import static com.google.inject.Guice.createInjector;
-
 import java.io.IOException;
-import java.net.URISyntaxException;
 
+import client.config.Config;
 import client.scenes.*;
 import com.google.inject.Injector;
-
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -37,10 +35,11 @@ public class Main extends Application {
      * main
      *
      * @param args
-     * @throws URISyntaxException
-     * @throws IOException
      */
-    public static void main(String[] args) throws URISyntaxException, IOException {
+    public static void main(String[] args) {
+        final Config config = INJECTOR.getInstance(Config.class);
+        config.loadConfiguration();
+
         launch();
     }
 
@@ -51,18 +50,38 @@ public class Main extends Application {
      *                     the application scene can be set.
      *                     Applications may create other stages, if needed, but they will not be
      *                     primary stages.
-     * @throws IOException
      */
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
+        final Pair<ServerOverviewCtrl, Parent> serverOverview =
+                FXML.load(ServerOverviewCtrl.class, "client", "scenes", "ServerOverview.fxml");
         final Pair<LandingOverviewCtrl, Parent> landingOverview =
                 FXML.load(LandingOverviewCtrl.class, "client", "scenes", "LandingOverview.fxml");
         final Pair<BoardOverviewCtrl, Parent> boardOverview =
                 FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
         final Pair<CardEditorCtrl, Parent> cardEditor =
             FXML.load(CardEditorCtrl.class, "client", "scenes", "CardEditor.fxml");
-
+        final Pair<BoardHistoryOverviewCtrl, Parent> boardHistoryOverview =
+            FXML.load(BoardHistoryOverviewCtrl.class, "client", "scenes", "BoardHistory.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, landingOverview, boardOverview, cardEditor);
+        mainCtrl.initialize(
+                primaryStage,
+                serverOverview,
+                landingOverview,
+                boardOverview,
+                cardEditor,
+                boardHistoryOverview
+        );
     }
+
+    /**
+     * Saves Workspaces when app is stopped
+     * @throws IOException if file is not found
+     */
+    @Override
+    public void stop() throws IOException {
+        final Config config = INJECTOR.getInstance(Config.class);
+        config.saveConfig();
+    }
+
 }
