@@ -77,20 +77,15 @@
                         <Color />
                      </value>
                   </ColorPicker>
-                  <Circle fx:id="circle" layoutX="118.0" layoutY="356.0" radius="44.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Button alignment="CENTER" layoutX="50.0" layoutY="409.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#editTag" prefHeight="43.0" prefWidth="146.0" style="-fx-background-color: gray;" text="Update" textAlignment="CENTER" textFill="WHITE">
+                  <Circle fx:id="circle" layoutX="118.0" layoutY="349.0" radius="44.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Button alignment="CENTER" layoutX="50.0" layoutY="400.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#createTag" prefHeight="44.0" prefWidth="136.0" style="-fx-background-color: rgb(35,69,103);" text="+" textAlignment="CENTER" textFill="WHITE">
                      <font>
-                        <Font size="20.0" />
+                        <Font size="25.0" />
                      </font>
                   </Button>
                </children>
             </Pane>
-            <Button alignment="CENTER" layoutX="162.0" layoutY="247.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#createTag" prefHeight="13.0" prefWidth="74.0" style="-fx-background-color: #123456;" text="+" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font size="34.0" />
-               </font>
-            </Button>
-            <VBox fx:id="vbox" alignment="CENTER" layoutX="56.0" layoutY="58.0" prefHeight="459.0" prefWidth="88.0" style="-fx-background-color: transparent;" />
+            <VBox fx:id="vbox" alignment="CENTER" layoutX="56.0" layoutY="58.0" prefHeight="459.0" prefWidth="194.0" style="-fx-background-color: transparent;" />
          </children>
       </AnchorPane>
    </children>

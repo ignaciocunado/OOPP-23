@@ -84,8 +84,8 @@ public class TagOverviewCtrl implements Initializable{
      */
     public void createTag() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        Pane tagPane = loader.load(getClass().getResource("Tag.fxml").openStream());
-        TagCtrl ctrl = loader.getController();
+        Pane tagPane = loader.load(getClass().getResource("TagCopy.fxml").openStream());
+        TagEditorCtrl ctrl = loader.getController();
         String name = newTitle.getText();
         int colour = colourToInt();
         board = server.createTag(board.getId(), name,colour);
@@ -109,12 +109,13 @@ public class TagOverviewCtrl implements Initializable{
      * @param boardOverviewCtrl ctrl
      */
     public void refresh(BoardOverviewCtrl boardOverviewCtrl){
+        vbox.getChildren().clear();
         this.board = boardOverviewCtrl.getBoard();
         try{
             for(Tag tag : board.getTags())  {
                 FXMLLoader loader = new FXMLLoader();
-                Pane tagPane = loader.load(getClass().getResource("Tag.fxml").openStream());
-                TagCtrl ctrl = loader.getController();
+                Pane tagPane = loader.load(getClass().getResource("TagCopy.fxml").openStream());
+                TagEditorCtrl ctrl = loader.getController();
                 tagPane.setId(Integer.toString(tag.getId()));
                 ctrl.update(tag.getId(), this, tag.getName(), tag.getColour(), tag);
                 vbox.getChildren().add(tagPane);
@@ -122,25 +123,5 @@ public class TagOverviewCtrl implements Initializable{
         }
         catch (IOException e) {
         }
-    }
-
-    /**
-     * fefef
-     * @param tag fefef
-     */
-    public void updateEditorPane(Tag tag) {
-        tagEditor.setId(Integer.toString(tag.getId()));
-        newTitle.setText(tag.getName());
-        Color tagColour = Color.web(Integer.toHexString(tag.getColour()));
-        circle.setFill(tagColour);
-    }
-
-    /**
-     * feefef
-     */
-    public void editTag() {
-        server.editTag(Integer.parseInt(this.tagEditor.getId()), newTitle.getText(),
-                                        colourToIntForColor((Color) circle.getFill()));
-        //tagEditor.setId(Integer.toString(-1));
     }
 }
