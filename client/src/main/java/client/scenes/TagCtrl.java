@@ -2,12 +2,8 @@ package client.scenes;
 
 import commons.entities.Tag;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-
-import java.util.HashSet;
 
 
 public class TagCtrl {
@@ -59,6 +55,7 @@ public class TagCtrl {
      * @param tagOverviewCtrl ctrl of tagoverview
      * @param name name of the tag
      * @param color color of the tag
+     * @param tag the updated tag
      */
     public void update(int id,TagOverviewCtrl tagOverviewCtrl, String name, int color, Tag tag){
         this.id = id;
@@ -69,6 +66,9 @@ public class TagCtrl {
         this.tag = tag;
     }
 
+    /**
+     * method to update the tag with new info
+     */
     public void updateInfo() {
         tagOverviewCtrl.updateEditorPane(tag);
     }

@@ -1,6 +1,5 @@
 package client.scenes;
 
-import client.MyFXML;
 import client.utils.ServerUtils;
 import commons.entities.Board;
 import commons.entities.Tag;
@@ -69,7 +68,11 @@ public class TagOverviewCtrl implements Initializable{
             (int)( color.getBlue() * 255 )));
     }
 
-    public int colourToInt2(Color color){
+    /** method for converting from type color to type int, but with a parameter given
+     * @param color the color we want to convert to int
+     * @return an int value representing the color
+     */
+    public int colourToIntForColor(Color color){
         return Integer.decode(String.format( "0x%02X%02X%02X",
                 (int)( color.getRed() * 255 ),
                 (int)( color.getGreen() * 255 ),
@@ -136,7 +139,8 @@ public class TagOverviewCtrl implements Initializable{
      * feefef
      */
     public void editTag() {
-        server.editTag(Integer.parseInt(this.tagEditor.getId()), newTitle.getText(), colourToInt2((Color) circle.getFill()));
+        server.editTag(Integer.parseInt(this.tagEditor.getId()), newTitle.getText(),
+                                        colourToIntForColor((Color) circle.getFill()));
         //tagEditor.setId(Integer.toString(-1));
     }
 }

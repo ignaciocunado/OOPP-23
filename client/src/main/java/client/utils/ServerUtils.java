@@ -267,7 +267,7 @@ public class ServerUtils {
      * Deletes a tag
      * @param boardId id of the board where the tag is
      * @param tagId id of the tag
-     * @return
+     * @return returns a board without the tag
      */
     public Board deleteTag(int boardId,int tagId) {
         try{
@@ -408,4 +408,4 @@ public class ServerUtils {
             return null;
         }
     }
- }
+}

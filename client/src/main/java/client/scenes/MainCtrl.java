@@ -23,7 +23,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
-import java.io.IOException;
 
 
 public class MainCtrl {
@@ -56,11 +55,13 @@ public class MainCtrl {
      * @param boardOverview   the main board overview
      * @param tagOverview the tag overview
      * @param cardEditor stage for the card editor
+     * @param boardHistory board history overview
      */
     public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<CardEditorCtrl, Parent> cardEditor,
-                           Pair<TagOverviewCtrl, Parent> tagOverview, Pair<BoardHistoryOverviewCtrl, Parent> boardHistory) {
+                           Pair<TagOverviewCtrl, Parent> tagOverview,
+                           Pair<BoardHistoryOverviewCtrl, Parent> boardHistory) {
 
         this.primaryStage = primaryStage;
         this.createTagStage =  new Stage();
