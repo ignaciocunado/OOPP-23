@@ -56,9 +56,7 @@ public class MainCtrl {
      * @param boardOverview   the main board overview
      * @param cardEditor      card editor view
      * @param boardHistory    board history overview
-     * @param boardOverview the main board overview
      * @param boardSettings the board settings overview
-     * @param cardEditor card editor view
      */
     public void initialize(Stage primaryStage,
                            Pair<ServerOverviewCtrl, Parent> serverOverview,
