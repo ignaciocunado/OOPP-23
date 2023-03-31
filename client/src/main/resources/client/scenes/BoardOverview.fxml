@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: rgb(1,35,69);" stylesheets="@/client/scenes/assets/style/scrollbar.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardOverviewCtrl">
+<BorderPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: rgb(1,35,69);" stylesheets="@/client/scenes/assets/style/scrollbar.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardOverviewCtrl">
    <top>
       <Pane maxHeight="60.0" minHeight="60.0" prefHeight="60.0" style="-fx-background-color: rgb(0,128,0);" BorderPane.alignment="TOP_CENTER">
-         <Text fx:id="Talio" fill="WHITE" layoutX="25.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 26;" text="Talio" />
-         <ComboBox layoutX="413.0" layoutY="10.0" prefHeight="40.0" prefWidth="175.0" promptText="Title" />
+         <children>
+            <Text fx:id="Talio" fill="WHITE" layoutX="25.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 26;" text="Talio" />
+            <Text fx:id="Title" fill="WHITE" layoutX="500.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 26;" text="Title" />
+            <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="425.0" layoutY="15.0" mnemonicParsing="false" onAction="#showTagOverview" style="-fx-padding: 0; -fx-background-color: transparent;" text="tags" textAlignment="CENTER" textFill="WHITE">>
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="585.0" layoutY="15.0" mnemonicParsing="false" onAction="#showBoardSettings" style="-fx-padding: 0; -fx-background-color: transparent;" text="settings" textAlignment="CENTER" textFill="WHITE">>
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+         </children>
       </Pane>
    </top>
    <right>

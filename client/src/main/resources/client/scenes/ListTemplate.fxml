@@ -12,7 +12,7 @@
                     <content>
                         <VBox fx:id="cards" style="-fx-background-color: rgb(35,69,103); -fx-spacing: 10;">
                             <children>
-                                <Button fx:id="addCardButton" minHeight="32.0" mnemonicParsing="false" onAction="#handleAddCard" prefHeight="32.0" prefWidth="235.0" style="-fx-background-color: rgb(1,35,69);">
+                                <Button fx:id="addCardButton" minHeight="32.0" mnemonicParsing="false" onAction="#handleAddCard" prefHeight="32.0" prefWidth="235.0" style="-fx-padding: -10; -fx-background-color: rgb(1,35,69); -fx-font-size: 30; -fx-text-fill: white;" text="+">
                                 </Button>
                             </children></VBox>
                     </content>
@@ -21,7 +21,7 @@
         <Pane layoutX="5.0" prefHeight="60.0" prefWidth="250.0" AnchorPane.topAnchor="0.0">
             <children>
                 <TextField fx:id="listTitleField" layoutY="2.0" prefHeight="15.0" prefWidth="200.0" promptText="Title" style="-fx-background-color: transparent; -fx-font-size: 25; -fx-text-fill: white;" text="Title" />
-                <Button fx:id="removeListButton" layoutX="200.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleDeleteList" style="-fx-background-color: transparent;">
+                <Button fx:id="removeListButton" layoutX="200.0" layoutY="4.0" mnemonicParsing="false" onAction="#handleDeleteList" style="-fx-background-color: transparent; -fx-font-size: 25; -fx-text-fill: white;" text="-">
                 </Button>
             </children></Pane>
     </children>

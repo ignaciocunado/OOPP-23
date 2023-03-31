@@ -95,6 +95,27 @@ public class BoardOverviewCtrl implements Initializable {
         this.refresh(board);
     }
 
+    /**
+     * Shows the board settings
+     */
+    @FXML
+    private void showBoardSettings() {
+        //this.mainCtrl.showBoardSettings();
+        //remove comment tags when merge request 60 is merged
+    }
+
+    /**
+     * Shows the board settings
+     */
+    @FXML
+    private void showTagOverview() {
+        //this.mainCtrl.showTagOverview();
+        //remove comment tags when merge request 63 is merged
+    }
+
+    /**
+     * Shows the main landing overview scene
+     */
     @FXML
     private void showLandingOverview(){
         mainCtrl.showLandingOverview();
