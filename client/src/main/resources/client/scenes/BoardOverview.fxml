@@ -41,7 +41,7 @@
    <bottom>
       <AnchorPane prefHeight="80.0" BorderPane.alignment="CENTER">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="40.0" layoutY="15.0" mnemonicParsing="false" onAction="#showLandingOverview" prefHeight="30.0" prefWidth="46.0" style="-fx-padding: -10; -fx-background-color: rgb(35,69,103)" text="&lt;" textAlignment="CENTER" textFill="WHITE">>
+            <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="14.0" layoutY="16.0" mnemonicParsing="false" onAction="#showLandingOverview" prefHeight="30.0" prefWidth="46.0" style="-fx-padding: -10; -fx-background-color: rgb(35,69,103)" text="&lt;" textAlignment="CENTER" textFill="WHITE">>
                <font>
                   <Font size="45.0" />
                </font>
@@ -52,23 +52,9 @@
    <top>
       <AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="50.0" style="-fx-background-color: rgb(1,20,40);" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-spacing: 300;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Text fx:id="title" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 26;" text="Title" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 26;" text="Talio" wrappingWidth="54.6787109375">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Text>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_RIGHT" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#showTagOverview" style="-fx-padding: 0; -fx-background-color: transparent;" text="tags" textAlignment="CENTER" textFill="WHITE">>
+                  <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#showBoardSettings" style="-fx-padding: 0; -fx-background-color: transparent;" text="Settings" textAlignment="CENTER" textFill="WHITE">>
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -76,7 +62,8 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#showBoardSettings" style="-fx-padding: 0; -fx-background-color: transparent;" text="settings" textAlignment="CENTER" textFill="WHITE">>
+                  <Text fx:id="title" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 26;" text="Title" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#showTagOverview" style="-fx-padding: 0; -fx-background-color: transparent; -fx-spacing: 50;" text="Tags" textAlignment="CENTER" textFill="WHITE">>
                      <font>
                         <Font size="20.0" />
                      </font>
