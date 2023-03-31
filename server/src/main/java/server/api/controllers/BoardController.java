@@ -27,6 +27,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/board")
 public class BoardController {
@@ -53,8 +56,19 @@ public class BoardController {
         return new ResponseEntity<>(this.boardService.createBoard(board.getName(),
                 board.getPassword()), new HttpHeaders(), 200);
     }
+
     /**
-     * Handler for getting the board
+     * Handler for getting all boards
+     *
+     * @return the boards
+     */
+    @GetMapping("/all")
+    public ResponseEntity<List<Board>> getAllBoards() {
+        return new ResponseEntity<>(this.boardService.getAllBoards(), new HttpHeaders(), 200);
+    }
+
+    /**
+     * Handler for getting a boards
      *
      * @param key the board key
      * @return the board
@@ -62,7 +76,17 @@ public class BoardController {
     @GetMapping("/{key}")
     public ResponseEntity<Board> getBoard(@PathVariable final String key) {
         return new ResponseEntity<>(
-                this.boardService.getBoard(key), new HttpHeaders(), 200);
+            this.boardService.getBoard(key), new HttpHeaders(), 200);
+    }
+
+    /**
+     * Handler deleting a board
+     *
+     * @return the boards
+     */
+    @DeleteMapping("/{key}")
+    public ResponseEntity<Board> deleteBoard(@PathVariable final String key) {
+        return new ResponseEntity<>(this.boardService.deleteBoard(key), new HttpHeaders(), HttpStatus.OK);
     }
 
     /** Handler for creating a tag

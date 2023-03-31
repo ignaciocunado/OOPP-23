@@ -17,6 +17,8 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 import java.io.IOException;
+
+import client.config.Config;
 import client.scenes.*;
 import com.google.inject.Injector;
 import javafx.application.Application;
@@ -51,6 +53,8 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
+        final Pair<ServerOverviewCtrl, Parent> serverOverview =
+                FXML.load(ServerOverviewCtrl.class, "client", "scenes", "ServerOverview.fxml");
         final Pair<LandingOverviewCtrl, Parent> landingOverview =
                 FXML.load(LandingOverviewCtrl.class, "client", "scenes", "LandingOverview.fxml");
         final Pair<BoardOverviewCtrl, Parent> boardOverview =
@@ -62,18 +66,25 @@ public class Main extends Application {
         final Pair<AdminPasswordCtrl, Parent> adminPasswordOverview =
             FXML.load(AdminPasswordCtrl.class, "client", "scenes", "AdminPassword.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, landingOverview, boardOverview, cardEditor,
-            boardHistoryOverview, adminPasswordOverview);
+        mainCtrl.initialize(
+                primaryStage,
+                serverOverview,
+                landingOverview,
+                boardOverview,
+                cardEditor,
+                boardHistoryOverview,
+                adminPasswordOverview
+        );
     }
 
     /**
-     * Saves RecentBoards when app is stopped
+     * Saves Workspaces when app is stopped
      * @throws IOException if file is not found
      */
     @Override
     public void stop() throws IOException {
         final Config config = INJECTOR.getInstance(Config.class);
-        config.saveBoard();
+        config.saveConfig();
     }
 
 }

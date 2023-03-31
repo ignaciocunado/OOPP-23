@@ -22,9 +22,12 @@ import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
+
+import java.util.List;
 
 @Singleton
 public class ServerUtils {
@@ -67,9 +70,23 @@ public class ServerUtils {
     }
 
     /**
-     * Gets board from the given server by the given id
-     * @return the relevant board, or null
+     * Checks the existence of a server on the connection uri
+     * @param connectionUri the connectionUri to check the existence of
+     * @return whether it exists
      */
+    public boolean ping(final String connectionUri) {
+        try {
+            client.target(connectionUri)
+                    .request()
+                    .get();
+        } catch (final NotFoundException e) {
+            return true;
+        } catch (final Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Creates a new board in the given server with the given password
      * @param name the name to create the board with
@@ -84,6 +101,28 @@ public class ServerUtils {
                         Entity.json(new Board("", name, password)),
                         Board.class
                 );
+    }
+
+    /**
+     * Gets all boards
+     */
+    public List<Board> getAllBoards() {
+        return client.target(this.server).path("api/board/all")
+            .request(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .get(new GenericType<List<Board>>() {});
+    }
+
+    /**
+     * Creates a new board in the given server with the given password
+     * @param key the key of the Board
+     */
+    public void deleteBoard(final String key) {
+        client.target(this.server).path("api/board/{key}")
+            .resolveTemplate("key", key)
+            .request(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .delete().close();
     }
 
     /**

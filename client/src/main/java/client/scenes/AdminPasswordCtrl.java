@@ -35,6 +35,7 @@ public class AdminPasswordCtrl {
         if (adminPassword.equals(passwordField.getText())) {
             passwordField.setText("");
             this.mainCtrl.closeAdminPassword();
+            this.mainCtrl.showHistoryAdmin();
         }
         else {
             final Alert alert = new Alert(Alert.AlertType.ERROR);
