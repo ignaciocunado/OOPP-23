@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+
 import java.util.HashSet;
 
 
@@ -13,12 +15,10 @@ public class TagCtrl {
     @FXML
     private Pane background;
     @FXML
-    private TextField name;
+    private Text name;
     private int id;
     private CardEditorCtrl cardEditorCtrl;
     private TagOverviewCtrl tagOverviewCtrl;
-    private VBox tags;
-    private HashSet<Integer> ids = new HashSet<>();
     private Tag tag;
 
 
@@ -43,9 +43,6 @@ public class TagCtrl {
 
     }
 
-    public Tag getTag(){
-        return this.tag;
-    }
 
     /**
      * Update methods
@@ -63,11 +60,17 @@ public class TagCtrl {
      * @param name name of the tag
      * @param color color of the tag
      */
-    public void update(int id,TagOverviewCtrl tagOverviewCtrl, String name, int color){
+    public void update(int id,TagOverviewCtrl tagOverviewCtrl, String name, int color, Tag tag){
         this.id = id;
+        System.out.println(id);
         this.tagOverviewCtrl = tagOverviewCtrl;
         this.name.setText(name);
         this.background.setStyle("-fx-background-color:#" + Integer.toHexString(color));
+        this.tag = tag;
+    }
+
+    public void updateInfo() {
+        tagOverviewCtrl.updateEditorPane(tag);
     }
 
 }

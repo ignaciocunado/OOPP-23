@@ -242,6 +242,49 @@ public class ServerUtils {
     }
 
     /**
+     * Creates a new tag
+     * @param boardId id of the board to add the tag to
+     * @param name name of the tag
+     * @param colour colour of the tag
+     * @return the board
+     */
+    public Board createTag(int boardId, String name, int colour) {
+        try{
+            return client.target(this.server).path("api/board/{id}/tag")
+                    .resolveTemplate("id", boardId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .post(
+                            Entity.json(new Tag(name, colour)),
+                            Board.class);
+        }
+        catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Deletes a tag
+     * @param boardId id of the board where the tag is
+     * @param tagId id of the tag
+     * @return
+     */
+    public Board deleteTag(int boardId,int tagId) {
+        try{
+            return client.target(this.server).path("api/board/{id}/tag/{tagid}")
+                    .resolveTemplate("id", boardId)
+                    .resolveTemplate("tagid", tagId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .delete(
+                            Board.class);
+        }
+        catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
      * Adds a tag to the specified card
      * @param tagId if of the tag to add
      * @param cardId id of the car where the tag will be added
@@ -258,6 +301,26 @@ public class ServerUtils {
                 .put(Entity.json(tag), Card.class);
         }
         catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Edits a new tag
+     * @param tagId id of the tag
+     * @param newName name
+     * @param newColour colour
+     * @return dn
+     */
+    public Tag editTag(final int tagId, final String newName, final int newColour) {
+        try {
+            return client.target(this.server).path("api/tag/{id}")
+                    .resolveTemplate("id", tagId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .method(HttpMethod.PATCH,
+                            Entity.json(new Tag(newName, newColour)), Tag.class);
+        } catch (NotFoundException e) {
             return null;
         }
     }
@@ -345,4 +408,4 @@ public class ServerUtils {
             return null;
         }
     }
-}
+ }

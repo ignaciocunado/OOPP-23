@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.MyFXML;
 import client.utils.ServerUtils;
+import commons.entities.Board;
 import commons.entities.Tag;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,22 +13,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Path;
-import java.util.HashSet;
 import java.util.ResourceBundle;
 
 public class TagOverviewCtrl implements Initializable{
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-    @FXML
-    private Pane newPane;
-
-    private final HashSet<Integer> ids = new HashSet<>();
     @FXML
     private ColorPicker colorPicker;
     @FXML
@@ -36,7 +30,9 @@ public class TagOverviewCtrl implements Initializable{
     private TextField newTitle;
     @FXML
     private VBox vbox;
-    private TagCtrl newTag;
+    private Board board;
+    @FXML
+    Pane tagEditor;
 
     /** Constructor to inject necessary classes into the controller
      * @param server serverUtils
@@ -50,12 +46,6 @@ public class TagOverviewCtrl implements Initializable{
         this.vbox = vbox;
     }
 
-    /**
-     * cancel method so you can go back to the board by accessing a button
-     */
-    public void cancel(){
-//        mainCtrl.showBoardOverview();
-    }
 
     /** ethod used to show the color picked in the color picker by filling a circle
      * @param location  The location used to resolve relative paths for the root object, or
@@ -79,23 +69,26 @@ public class TagOverviewCtrl implements Initializable{
             (int)( color.getBlue() * 255 )));
     }
 
+    public int colourToInt2(Color color){
+        return Integer.decode(String.format( "0x%02X%02X%02X",
+                (int)( color.getRed() * 255 ),
+                (int)( color.getGreen() * 255 ),
+                (int)( color.getBlue() * 255 )));
+    }
+
     /** method to create a tag and add it to the list of tags (vbox)
      * @throws IOException
      */
     public void createTag() throws IOException {
-        int counter = 1;
-        while(ids.contains(counter)){
-            counter++;
-        }
-        ids.add(counter);
         FXMLLoader loader = new FXMLLoader();
         Pane tagPane = loader.load(getClass().getResource("Tag.fxml").openStream());
         TagCtrl ctrl = loader.getController();
-        Tag newTag = new Tag(newTitle.getText(), colourToInt());
-        System.out.println(colourToInt());
-        newTag.setId(counter);
+        String name = newTitle.getText();
+        int colour = colourToInt();
+        board = server.createTag(board.getId(), name,colour);
+        Tag newTag = board.getTags().get(board.getTags().size() - 1);
         tagPane.setId(Integer.toString(newTag.getId()));
-        ctrl.update(newTag.getId(), this, newTitle.getText(), colourToInt());
+        ctrl.update(newTag.getId(), this, newTitle.getText(), colourToInt(), newTag);
         vbox.getChildren().add(tagPane);
     }
     /** method to remove a tag by id
@@ -103,26 +96,47 @@ public class TagOverviewCtrl implements Initializable{
      */
     public void removeTag(int id){
         vbox.getChildren().removeIf(pane -> Integer.parseInt(pane.getId()) == id);
+        server.deleteTag(board.getId(), id);
+    }
+
+
+
+    /**
+     * Refreshes this scene with the right info and renders the tags
+     * @param boardOverviewCtrl ctrl
+     */
+    public void refresh(BoardOverviewCtrl boardOverviewCtrl){
+        this.board = boardOverviewCtrl.getBoard();
+        try{
+            for(Tag tag : board.getTags())  {
+                FXMLLoader loader = new FXMLLoader();
+                Pane tagPane = loader.load(getClass().getResource("Tag.fxml").openStream());
+                TagCtrl ctrl = loader.getController();
+                tagPane.setId(Integer.toString(tag.getId()));
+                ctrl.update(tag.getId(), this, tag.getName(), tag.getColour(), tag);
+                vbox.getChildren().add(tagPane);
+            }
+        }
+        catch (IOException e) {
+        }
     }
 
     /**
-     * method for editing tag
+     * fefef
+     * @param tag fefef
+     */
+    public void updateEditorPane(Tag tag) {
+        tagEditor.setId(Integer.toString(tag.getId()));
+        newTitle.setText(tag.getName());
+        Color tagColour = Color.web(Integer.toHexString(tag.getColour()));
+        circle.setFill(tagColour);
+    }
+
+    /**
+     * feefef
      */
     public void editTag() {
-
-        newTag.getTag().setName(newTitle.getText());
-        newTag.getTag().setColour(colourToInt());
+        server.editTag(Integer.parseInt(this.tagEditor.getId()), newTitle.getText(), colourToInt2((Color) circle.getFill()));
+        //tagEditor.setId(Integer.toString(-1));
     }
-
-
-    /**
-     * Gets the location of a resource with the given String elements
-     * @param parts Strings of where to find the resource
-     * @return the URL of the requested resource
-     */
-    private URL getLocation(String... parts) {
-        var path = Path.of("", parts).toString();
-        return MyFXML.class.getClassLoader().getResource(path);
-    }
-
 }
