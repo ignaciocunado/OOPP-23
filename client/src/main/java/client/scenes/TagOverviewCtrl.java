@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
@@ -35,6 +36,7 @@ public class TagOverviewCtrl implements Initializable{
     private TextField newTitle;
     @FXML
     private VBox vbox;
+    private TagCtrl newTag;
 
     /** Constructor to inject necessary classes into the controller
      * @param server serverUtils
@@ -102,6 +104,13 @@ public class TagOverviewCtrl implements Initializable{
     public void removeTag(int id){
         vbox.getChildren().removeIf(pane -> Integer.parseInt(pane.getId()) == id);
     }
+
+    public void editTag() {
+
+        newTag.getTag().setName(newTitle.getText());
+        newTag.getTag().setColour(colourToInt());
+    }
+
 
     /**
      * Gets the location of a resource with the given String elements

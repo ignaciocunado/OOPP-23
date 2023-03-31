@@ -19,6 +19,7 @@ public class TagCtrl {
     private TagOverviewCtrl tagOverviewCtrl;
     private VBox tags;
     private HashSet<Integer> ids = new HashSet<>();
+    private Tag tag;
 
 
     /**
@@ -40,6 +41,10 @@ public class TagCtrl {
         this.background.setStyle("-fx-background-color:#" + Integer.toHexString(tag.getColour()) +
             ";-fx-background-radius: 10");
 
+    }
+
+    public Tag getTag(){
+        return this.tag;
     }
 
     /**
