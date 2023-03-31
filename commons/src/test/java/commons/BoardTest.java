@@ -20,7 +20,7 @@ class BoardTest {
 
     @BeforeEach
     public void setup() {
-        board = new Board("abc", "def");
+        board = new Board("abc","def", "ghi");
         card = new Card("Card1", "This is a card");
         list = new CardList();
     }
@@ -41,8 +41,11 @@ class BoardTest {
     }
 
     @Test
+    public void getNameTest() {assertEquals(board.getName(), "def");}
+
+    @Test
     public void getPasswordTest() {
-        assertEquals(board.getPassword(), "def");
+        assertEquals(board.getPassword(), "ghi");
     }
 
     @Test
@@ -76,6 +79,12 @@ class BoardTest {
     public void setIdTest() {
         board.setId(10);
         assertEquals(board.getId(), 10);
+    }
+
+    @Test
+    public void setNameTest() {
+        board.setName("NewName");
+        assertEquals(board.getName(), "NewName");
     }
 
     @Test
@@ -145,8 +154,8 @@ class BoardTest {
 
     @Test
     public void equalsHashCodeTest() {
-        Board b1 = new Board("BoardEquals", "pword");
-        Board b2 = new Board("BoardEquals", "pword");
+        Board b1 = new Board("BoardEquals","name", "pword");
+        Board b2 = new Board("BoardEquals","name", "pword");
 
         assertEquals(b1, b2);
         assertEquals(b1.hashCode(), b2.hashCode());
@@ -154,14 +163,14 @@ class BoardTest {
 
     @Test
     public void notEqualsTest() {
-        Board b1 = new Board("BoardEquals", "pword");
-        Board b2 = new Board("BoardNotEquals", "pword");
+        Board b1 = new Board("BoardEquals","name", "pword");
+        Board b2 = new Board("BoardNotEquals","name", "pword");
 
         assertNotEquals(b1, b2);
     }
 
     @Test
     public void toStringTest() {
-        assertEquals(board.toString(), "<Board id=0 key=abc password=def>");
+        assertEquals(board.toString(), "<Board id=0 key=abc name=def password=ghi>");
     }
 }

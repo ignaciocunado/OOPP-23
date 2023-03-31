@@ -36,11 +36,12 @@ public class LandingOverviewCtrl {
     private final Config config;
     @FXML
     private Pane newPane;
-
     @FXML
     private TextField joinKey;
     @FXML
     private PasswordField joinPassword;
+    @FXML
+    private TextField createName;
     @FXML
     private PasswordField createPassword;
     @FXML
@@ -90,13 +91,15 @@ public class LandingOverviewCtrl {
             return;
         }
 
-        final Board board = this.server.createBoard(this.createPassword.getText());
+        final Board board = this.server.createBoard(this.createName.getText(),
+                this.createPassword.getText());
         final ButtonType copyButton = new ButtonType("Copy", ButtonBar.ButtonData.OK_DONE);
         final ButtonType closeButton = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
         final Alert creationAlert = new Alert(Alert.AlertType.INFORMATION,
                 "", copyButton, closeButton);
         creationAlert.setTitle("New Board Created");
-        creationAlert.setHeaderText("You've created a new board with key: " + board.getKey());
+        creationAlert.setHeaderText("You've created a new board with key: " + board.getKey() +
+                " and with name: " + board.getName());
         final Optional<ButtonType> res = creationAlert.showAndWait();
         if (res.orElse(closeButton) == copyButton) {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -110,8 +113,6 @@ public class LandingOverviewCtrl {
      * EventHandler for the button of the board history overview
      */
     public void openHistory(){
-        newPane.getChildren().get(10).setOnMouseClicked(event -> {
-            this.mainCtrl.showHistory();
-        });
+        this.mainCtrl.showHistory();
     }
 }

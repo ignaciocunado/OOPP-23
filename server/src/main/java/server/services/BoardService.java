@@ -38,12 +38,14 @@ public final class BoardService {
     /**
      * Creates a new board with a randomly generated key and the specified password
      *
+     * @param name the name for the new board, or null if no password is required
      * @param password the password for the new board, or null if no password is required
      * @return the new board
      */
-    public Board createBoard(final String password) {
+    public Board createBoard(final String name, final String password) {
         final String newKey = this.textService.randomAlphanumericalString(10);
-        final Board board = new Board(newKey, password == null ? "" : password);
+        final Board board = new Board(newKey, name == null ? "" : name,
+                password == null ? "" : password);
         return this.boardRepository.save(board);
     }
 

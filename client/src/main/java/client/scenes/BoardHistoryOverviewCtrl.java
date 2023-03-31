@@ -8,6 +8,7 @@ import commons.entities.Board;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -20,11 +21,7 @@ public class BoardHistoryOverviewCtrl {
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
     @FXML
-    private VBox keyVBox;
-    @FXML
-    private VBox serverVBox;
-    @FXML
-    private VBox actionsVBox;
+    private VBox servers;
 
 
     /** Constructor to inject necessary classes into the controller
@@ -39,35 +36,28 @@ public class BoardHistoryOverviewCtrl {
         this.config = config;
     }
 
-    /**
-     * Refreshes the board history and inserts the recent boards
-     */
     public void refresh() {
-        this.keyVBox.getChildren().clear();
-        this.serverVBox.getChildren().clear();
-        this.actionsVBox.getChildren().clear();
-        for (RecentBoard recent : config.getCurrentWorkspace().getBoards()) {
-            addAndConfigureText(recent.getKey(), keyVBox, recent.getKey());
-            addAndConfigureText(config.getCurrentWorkspace().getConnectionUri(),
-                    serverVBox, recent.getKey());
-            addAndConfigureText("Rejoin", actionsVBox, recent.getKey());
-        }
-    }
+        this.servers.getChildren().clear();
+        for (RecentBoard recent:config.getCurrentWorkspace().getBoards()) {
+            final HBox serverBox = new HBox();
+            final Text key = new Text(recent.getKey());
+            final Text server = new Text(config.getCurrentWorkspace().getConnectionUri());
+            final Text rejoin = new Text("rejoin");
+            key.getStyleClass().add("texts");
+            server.getStyleClass().add("texts");
+            rejoin.getStyleClass().add("texts");
+            key.setWrappingWidth(150);
+            server.setWrappingWidth(150);
+            rejoin.setWrappingWidth(150);
 
-    /**
-     * Configures the value of the Text and adds it to the corresponding VBox
-     * @param stringValue the string displayed by the Text
-     * @param vboxToAddTo the VBox to which the Text will be added
-     * @param boardKey the key of the Board associated to the Text
-     */
-    public void addAndConfigureText(String stringValue, VBox vboxToAddTo, String boardKey) {
-        Text newText = new Text(stringValue);
-        newText.getStyleClass().add("texts");
-        vboxToAddTo.getChildren().add(newText);
-        if (stringValue.equals("Rejoin")) {
-            newText.getStyleClass().add("rejoin");
-            setOnMouseClicked(newText, boardKey);
-            setOnMouseHovered(newText);
+            rejoin.getStyleClass().add("rejoin");
+            setOnMouseClicked(rejoin, recent.getKey());
+            setOnMouseHovered(rejoin);
+
+
+            serverBox.setSpacing(15);
+            serverBox.getChildren().addAll(key, server, rejoin);
+            this.servers.getChildren().add(serverBox);
         }
     }
 
