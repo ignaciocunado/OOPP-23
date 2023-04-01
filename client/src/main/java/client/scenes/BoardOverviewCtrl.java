@@ -16,15 +16,19 @@
 package client.scenes;
 
 import client.Main;
+import client.config.Config;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
 import commons.entities.CardList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -32,6 +36,7 @@ public class BoardOverviewCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final Config config;
 
     @FXML
     private Text title;
@@ -47,9 +52,10 @@ public class BoardOverviewCtrl implements Initializable {
      * @param mainCtrl the main controller
      */
     @Inject
-    public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, Config config) {
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.config = config;
     }
 
     /**
@@ -106,7 +112,7 @@ public class BoardOverviewCtrl implements Initializable {
      */
     @FXML
     private void showBoardSettings() {
-        this.mainCtrl.showBoardSettings();
+        this.mainCtrl.showBoardSettings(this.getBoard());
     }
 
     /**
