@@ -9,15 +9,15 @@
 
 <Pane fx:id="cardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="128.0" prefWidth="235.0" style="-fx-background-color: rgb(35,69,103);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardCtrl">
    <children>
-      <Pane prefHeight="128.0" prefWidth="235.0" style="-fx-background-color: #123456; -fx-background-radius: 10;" onMouseClicked="#handleEditCard">
+      <Pane onMouseClicked="#handleEditCard" prefHeight="128.0" prefWidth="235.0" style="-fx-background-color: #123456; -fx-background-radius: 10;">
          <children>
             <Line endX="80.0" layoutX="104.0" layoutY="110.0" startX="-60.0" stroke="WHITE" strokeWidth="3.0" />
-            <Button onAction="#handleDeleteCard" layoutX="203.0" layoutY="1.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" style="-fx-background-color: #123456; -fx-label-padding: -5px; -fx-padding: 0px;" text="X" textFill="WHITE">
+            <Button layoutX="203.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleDeleteCard" prefHeight="25.0" prefWidth="26.0" style="-fx-background-color: #123456; -fx-label-padding: -5px; -fx-padding: 0px;" text="X" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <HBox fx:id="tagList" layoutX="13.0" layoutY="62.0" prefHeight="25.0" prefWidth="181.0" />
+            <HBox fx:id="tagList" layoutX="13.0" layoutY="75.0" prefHeight="19.0" prefWidth="214.0" />
             <Text fx:id="cardTitle" fill="WHITE" layoutX="10.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 18;" text="Title" />
             <Text fx:id="cardDescription" fill="#949494" layoutX="10.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 12; -fx-font-fill: gray;" text="Description" />
          </children>
