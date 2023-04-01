@@ -105,7 +105,6 @@ public class MainCtrl {
 
         serverOverviewScene.getStylesheets().add(getClass().
             getResource("assets/style/textStyle.css").toExternalForm());
-
         boardHistoryOverview.getStylesheets().add(getClass().
                 getResource("assets/style/textStyle.css").toExternalForm());
         boardHistoryStage.initModality(Modality.APPLICATION_MODAL);
