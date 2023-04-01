@@ -25,9 +25,9 @@ public class BoardHistoryOverviewCtrl {
 
 
     /** Constructor to inject necessary classes into the controller
-     * @param mainCtrl
-     * @param server
-     * @param config
+     * @param mainCtrl the main controller
+     * @param server the server functions
+     * @param config the config file
      */
     @Inject
     public BoardHistoryOverviewCtrl(MainCtrl mainCtrl, ServerUtils server, Config config) {

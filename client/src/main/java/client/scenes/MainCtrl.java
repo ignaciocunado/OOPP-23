@@ -204,6 +204,7 @@ public class MainCtrl {
 
     /**
      * Shows an existing board overview scene
+     * @param currentBoard the board from which the settings are called
      */
     public void showBoardSettings(Board currentBoard) {
         this.boardSettingsStage.setTitle("Talio: Task List Organiser (Settings)");
@@ -211,6 +212,9 @@ public class MainCtrl {
         this.boardSettingsStage.showAndWait();
     }
 
+    /**
+     * Closes the board settings window
+     */
     public void closeBoardSettings() {
         boardSettingsStage.close();
     }

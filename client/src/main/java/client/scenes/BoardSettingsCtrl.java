@@ -17,6 +17,7 @@ public final class BoardSettingsCtrl {
      *
      * @param server the server functions
      * @param mainCtrl the main controller
+     * @param config the config file
      */
     @Inject
     public BoardSettingsCtrl(ServerUtils server, MainCtrl mainCtrl, Config config) {
@@ -33,10 +34,17 @@ public final class BoardSettingsCtrl {
 
     }
 
+    /**
+     * Refreshes the currentBoard to the Board which the settings are called from
+     * @param currentBoard the current board
+     */
     public void refresh(Board currentBoard) {
         this.currentBoard = currentBoard;
     }
 
+    /**
+     * Deletes the current board which the user is in
+     */
     public void deleteBoard() {
         this.server.deleteBoard(this.currentBoard.getKey());
         config.getCurrentWorkspace().deleteBoard(this.currentBoard.getKey());
