@@ -4,12 +4,17 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
 import commons.entities.Card;
+import commons.entities.Tag;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+
+import java.io.IOException;
 
 public final class CardCtrl {
 
@@ -24,6 +29,8 @@ public final class CardCtrl {
     private Text cardTitle;
     @FXML
     private Text cardDescription;
+    @FXML
+    private HBox tagList;
 
     private Card card;
 
@@ -57,6 +64,20 @@ public final class CardCtrl {
         this.card = card;
         this.cardTitle.setText(this.card.getTitle());
         this.cardDescription.setText(this.card.getDescription());
+        tagList.getChildren().clear();
+        try {
+            for (Tag tag : card.getTags()) {
+                FXMLLoader loader = new FXMLLoader();
+                Pane tagPane = loader.load(getClass().getResource("TagInBoardOverview.fxml")
+                        .openStream());
+                TagInBoardCtrl ctrl = loader.getController();
+                ctrl.update(tag);
+                tagList.getChildren().add(tagPane);
+            }
+        }
+        catch (IOException e) {
+
+        }
     }
 
     /**
