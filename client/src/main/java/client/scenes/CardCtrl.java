@@ -68,7 +68,8 @@ public final class CardCtrl {
         try {
             for (Tag tag : card.getTags()) {
                 FXMLLoader loader = new FXMLLoader();
-                Pane tagPane = loader.load(getClass().getResource("TagInBoardOverview.fxml").openStream());
+                Pane tagPane = loader.load(getClass().getResource("TagInBoardOverview.fxml")
+                        .openStream());
                 TagInBoardCtrl ctrl = loader.getController();
                 ctrl.update(tag);
                 tagList.getChildren().add(tagPane);
