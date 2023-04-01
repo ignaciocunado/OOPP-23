@@ -50,60 +50,51 @@ public class BoardHistoryOverviewCtrl {
     public void refresh() {
         this.servers.getChildren().clear();
         for (RecentBoard recent:config.getCurrentWorkspace().getBoards()) {
-            final HBox serverBox = new HBox();
-            final Text key = new Text(recent.getKey());
-            final Text server = new Text(config.getCurrentWorkspace().getConnectionUri());
-            final Text rejoin = new Text("Rejoin");
-            key.getStyleClass().add("texts");
-            server.getStyleClass().add("texts");
-            rejoin.getStyleClass().add("texts");
-            key.setWrappingWidth(150);
-            server.setWrappingWidth(150);
-            rejoin.setWrappingWidth(150);
-
-            rejoin.getStyleClass().add("rejoin");
-            setOnMouseClickedRejoin(rejoin, recent.getKey());
-            setOnMouseHovered(rejoin);
-
-            serverBox.setSpacing(15);
-            serverBox.getChildren().addAll(key, server, rejoin);
-            this.servers.getChildren().add(serverBox);
+            addTexts(recent.getKey());
         }
     }
 
     /**
-     * Refreshes the board for the admin, thus also allowing a user to delete a board
+     * Refreshes the board for the admin, thus allowing the user to see all board on the server
      */
     public void refreshAdmin() {
         this.servers.getChildren().clear();
         for (Board recent:this.server.getAllBoards()) {
-            final HBox serverBox = new HBox();
-            final Text key = new Text(recent.getKey());
-            final Text server = new Text(config.getCurrentWorkspace().getConnectionUri());
-            final Text rejoin = new Text("Rejoin");
-            final Text delete = new Text("Delete");
-            final Text empty = new Text("");
-            key.getStyleClass().add("texts");
-            server.getStyleClass().add("texts");
-            rejoin.getStyleClass().add("texts");
-            delete.getStyleClass().add("texts");
-            key.setWrappingWidth(150);
-            server.setWrappingWidth(150);
-            empty.setWrappingWidth(7);
-            rejoin.setWrappingWidth(50);
-            delete.setWrappingWidth(50);
-
-            rejoin.getStyleClass().add("rejoin");
-            delete.getStyleClass().add("rejoin");
-            setOnMouseClickedRejoin(rejoin, recent.getKey());
-            setOnMouseClickedDelete(delete, recent.getKey());
-            setOnMouseHovered(rejoin);
-            setOnMouseHovered(delete);
-
-            serverBox.setSpacing(15);
-            serverBox.getChildren().addAll(key, server, empty, rejoin, delete);
-            this.servers.getChildren().add(serverBox);
+            addTexts(recent.getKey());
         }
+    }
+
+    /**
+     * Adds all the Texts and the appropriate actions for each Board
+     * @param recentKey the key of the Board being added to the history
+     */
+    public void addTexts(String recentKey) {
+        final HBox serverBox = new HBox();
+        final Text key = new Text(recentKey);
+        final Text server = new Text(config.getCurrentWorkspace().getConnectionUri());
+        final Text rejoin = new Text("Rejoin");
+        final Text delete = new Text("Delete");
+        final Text empty = new Text("");
+        key.getStyleClass().add("texts");
+        server.getStyleClass().add("texts");
+        rejoin.getStyleClass().add("texts");
+        delete.getStyleClass().add("texts");
+        key.setWrappingWidth(150);
+        server.setWrappingWidth(150);
+        empty.setWrappingWidth(7);
+        rejoin.setWrappingWidth(50);
+        delete.setWrappingWidth(50);
+
+        rejoin.getStyleClass().add("interactiveHistoryTexts");
+        delete.getStyleClass().add("interactiveHistoryTexts");
+        setOnMouseClickedRejoin(rejoin, recentKey);
+        setOnMouseClickedDelete(delete, recentKey);
+        setOnMouseHovered(rejoin);
+        setOnMouseHovered(delete);
+
+        serverBox.setSpacing(15);
+        serverBox.getChildren().addAll(key, server, empty, rejoin, delete);
+        this.servers.getChildren().add(serverBox);
     }
 
     /**
