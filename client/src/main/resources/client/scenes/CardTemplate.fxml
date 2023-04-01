@@ -17,7 +17,7 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <HBox fx:id="tagList" layoutX="13.0" layoutY="75.0" prefHeight="19.0" prefWidth="214.0" />
+            <HBox fx:id="tagList" layoutX="13.0" layoutY="82.0" prefHeight="12.0" prefWidth="216.0" />
             <Text fx:id="cardTitle" fill="WHITE" layoutX="10.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 18;" text="Title" />
             <Text fx:id="cardDescription" fill="#949494" layoutX="10.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 12; -fx-font-fill: gray;" text="Description" />
          </children>

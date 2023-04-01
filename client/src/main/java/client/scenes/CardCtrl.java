@@ -64,6 +64,7 @@ public final class CardCtrl {
         this.card = card;
         this.cardTitle.setText(this.card.getTitle());
         this.cardDescription.setText(this.card.getDescription());
+        tagList.getChildren().clear();
         try {
             for (Tag tag : card.getTags()) {
                 FXMLLoader loader = new FXMLLoader();
