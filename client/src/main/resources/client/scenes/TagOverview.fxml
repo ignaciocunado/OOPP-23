@@ -22,32 +22,32 @@
                         <Font size="30.0" />
                      </font>
                   </TextField>
-                  <Button alignment="CENTER" layoutX="24.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #000000;" textAlignment="CENTER" textFill="WHITE">
+                  <Button alignment="CENTER" layoutX="24.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorBlack" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #000000;" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Button>
-                  <Button alignment="CENTER" layoutX="79.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #ffc0cb;" textAlignment="CENTER" textFill="WHITE">
+                  <Button alignment="CENTER" layoutX="79.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorPink" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #ffc0cb;" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Button>
-                  <Button alignment="CENTER" layoutX="134.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00008b;" textAlignment="CENTER" textFill="WHITE">
+                  <Button alignment="CENTER" layoutX="134.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorDarkBlue" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00008b;" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Button>
-                  <Button alignment="CENTER" layoutX="188.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #CCFFFF;" textAlignment="CENTER" textFill="WHITE">
+                  <Button alignment="CENTER" layoutX="188.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorSkyBlue" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #CCFFFF;" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Button>
-                  <Button alignment="CENTER" layoutX="24.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: CCFFE5;" textAlignment="CENTER" textFill="WHITE">
+                  <Button alignment="CENTER" layoutX="24.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorLightGreen" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: CCFFE5;" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="13.0" />
                      </font>
                   </Button>
-                  <Button alignment="CENTER" layoutX="79.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00CC00;" textAlignment="CENTER" textFill="WHITE">
+                  <Button alignment="CENTER" layoutX="79.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorBrightGreen" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00CC00;" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="13.0" />
                      </font>
@@ -57,7 +57,7 @@
                         <Font size="13.0" />
                      </font>
                   </Button>
-                  <Button alignment="CENTER" layoutX="188.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #009999;" textAlignment="CENTER" textFill="WHITE">
+                  <Button alignment="CENTER" layoutX="188.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorYellow" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #FEFF19;" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="13.0" />
                      </font>

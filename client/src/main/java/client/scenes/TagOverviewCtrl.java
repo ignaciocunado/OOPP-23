@@ -115,10 +115,66 @@ public class TagOverviewCtrl implements Initializable{
     }
 
     /**
+     * method to access the color black
+     */
+    public void colorBlack() {
+        this.colorPicker.setValue(Color.rgb(0,0,0));
+        circle.setFill(colorPicker.getValue());
+    }
+
+    /**
+     * method to access the color pink
+     */
+    public void colorPink() {
+        this.colorPicker.setValue(Color.rgb(255,192,203));
+        circle.setFill(colorPicker.getValue());
+    }
+
+    /**
+     * method to access the color dark blue
+     */
+    public void colorDarkBlue() {
+        this.colorPicker.setValue(Color.rgb(0,0,139));
+        circle.setFill(colorPicker.getValue());
+    }
+
+    /**
+     * method to access the color sky blue
+     */
+    public void colorSkyBlue() {
+        this.colorPicker.setValue(Color.rgb(204,255,255));
+        circle.setFill(colorPicker.getValue());
+    }
+
+    /**
+     * method to access the light green
+     */
+    public void colorLightGreen() {
+        this.colorPicker.setValue(Color.rgb(204,255,229));
+        circle.setFill(colorPicker.getValue());
+    }
+
+    /**
+     * method to access the color bright green
+     */
+    public void colorBrightGreen() {
+        this.colorPicker.setValue(Color.rgb(0,204,0));
+        circle.setFill(colorPicker.getValue());
+    }
+
+    /**
      * method to access the color red
      */
     public void colorRed() {
         this.colorPicker.setValue(Color.rgb(255,0,0));
+        circle.setFill(colorPicker.getValue());
+    }
+
+    /**
+     * method to access the color yellow
+     */
+    public void colorYellow() {
+        this.colorPicker.setValue(Color.rgb(254,255,25));
         circle.setFill(colorPicker.getValue());
     }
 
