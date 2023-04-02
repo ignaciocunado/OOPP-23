@@ -118,7 +118,7 @@ public class TagOverviewCtrl implements Initializable{
      * method to access the color black
      */
     public void colorBlack() {
-        this.colorPicker.setValue(Color.rgb(0,0,0));
+        this.colorPicker.setValue(Color.rgb(26,26,26));
         circle.setFill(colorPicker.getValue());
     }
 
@@ -134,7 +134,7 @@ public class TagOverviewCtrl implements Initializable{
      * method to access the color dark blue
      */
     public void colorDarkBlue() {
-        this.colorPicker.setValue(Color.rgb(0,0,139));
+        this.colorPicker.setValue(Color.rgb(25,51,153));
         circle.setFill(colorPicker.getValue());
     }
 
@@ -150,7 +150,7 @@ public class TagOverviewCtrl implements Initializable{
      * method to access the light green
      */
     public void colorLightGreen() {
-        this.colorPicker.setValue(Color.rgb(204,255,229));
+        this.colorPicker.setValue(Color.rgb(187,255,148));
         circle.setFill(colorPicker.getValue());
     }
 
@@ -158,7 +158,7 @@ public class TagOverviewCtrl implements Initializable{
      * method to access the color bright green
      */
     public void colorBrightGreen() {
-        this.colorPicker.setValue(Color.rgb(0,204,0));
+        this.colorPicker.setValue(Color.rgb(33,166,33));
         circle.setFill(colorPicker.getValue());
     }
 

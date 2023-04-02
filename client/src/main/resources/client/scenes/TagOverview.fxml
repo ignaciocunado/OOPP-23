@@ -42,7 +42,7 @@
                         <Font size="13.0" />
                      </font>
                   </Button>
-                  <Button alignment="CENTER" layoutX="24.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorLightGreen" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: CCFFE5;" textAlignment="CENTER" textFill="WHITE">
+                  <Button alignment="CENTER" layoutX="24.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorLightGreen" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: BBFF94;" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="13.0" />
                      </font>
