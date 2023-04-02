@@ -56,7 +56,7 @@ public class TagEditorCtrl {
             return;
         }
         tag.setName(name.getText());
-        tagOverviewCtrl.editTag(this.tag.getId(), name.getText(), tagOverviewCtrl.colourToInt());
+        tagOverviewCtrl.editTag(this.tag.getId(), name.getText(), tag.getColour());
     }
 
     /**
