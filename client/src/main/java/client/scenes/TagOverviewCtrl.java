@@ -28,10 +28,9 @@ public class TagOverviewCtrl implements Initializable{
     @FXML
     private TextField newTitle;
     @FXML
-    private VBox vbox;
+    public VBox vbox;
     private Board board;
-    @FXML
-    Pane tagEditor;
+    private TagEditorCtrl tagEditorCtrl;
 
     /** Constructor to inject necessary classes into the controller
      * @param server serverUtils
@@ -45,6 +44,19 @@ public class TagOverviewCtrl implements Initializable{
         this.vbox = vbox;
     }
 
+    /** getter for color
+     * @return the color
+     */
+    public ColorPicker getColorPicker() {
+        return colorPicker;
+    }
+
+    /** getter for title
+     * @return the new title
+     */
+    public TextField getNewTitle() {
+        return newTitle;
+    }
 
     /** ethod used to show the color picked in the color picker by filling a circle
      * @param location  The location used to resolve relative paths for the root object, or
@@ -102,7 +114,23 @@ public class TagOverviewCtrl implements Initializable{
         server.deleteTag(board.getId(), id);
     }
 
+    /**
+     * method to access the color red
+     */
+    public void colorRed() {
+        this.colorPicker.setValue(Color.rgb(255,0,0));
+        circle.setFill(colorPicker.getValue());
+    }
 
+    /** method to edit a tag from the server
+     * @param tagId int value representing the id of the tag
+     * @param title string representing the title of the tag
+     * @param colour int color representing the color of the tag
+     */
+    public void editTag(int tagId, String title, int colour) {
+        this.server.editTag(tagId, title,
+            colour);
+    }
 
     /**
      * Refreshes this scene with the right info and renders the tags
@@ -117,6 +145,7 @@ public class TagOverviewCtrl implements Initializable{
                 Pane tagPane = loader.load(getClass().getResource("TagCopy.fxml").openStream());
                 TagEditorCtrl ctrl = loader.getController();
                 tagPane.setId(Integer.toString(tag.getId()));
+                ctrl.editTag(tag);
                 ctrl.update(tag.getId(), this, tag.getName(), tag.getColour(), tag);
                 vbox.getChildren().add(tagPane);
             }
