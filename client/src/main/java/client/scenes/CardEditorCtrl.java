@@ -38,7 +38,7 @@ public class CardEditorCtrl {
     private CardCtrl cardCtrl;
     private Card currentCard;
     @FXML
-    ComboBox combo;
+    ComboBox<Tag> combo;
 
 
     /**

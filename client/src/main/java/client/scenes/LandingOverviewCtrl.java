@@ -115,4 +115,11 @@ public class LandingOverviewCtrl {
     public void openHistory(){
         this.mainCtrl.showHistory();
     }
+
+    /**
+     * EventHandler for the button of the server overview
+     */
+    public void openServers(){
+        this.mainCtrl.showServerOverview();
+    }
 }
