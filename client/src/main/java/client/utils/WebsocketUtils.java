@@ -25,7 +25,9 @@ public final class WebsocketUtils {
     private List<Consumer<Card>> cardListeners;
     private List<Consumer<Tag>> tagListeners;
     private List<Consumer<Task>> taskListeners;
-
+    /**
+     * Constructs a new WebsocketUtils instance with empty listener lists.
+     */
     public WebsocketUtils() {
         this.boardListeners = new ArrayList<>();
         this.cardListListeners = new ArrayList<>();
@@ -33,23 +35,52 @@ public final class WebsocketUtils {
         this.tagListeners = new ArrayList<>();
         this.taskListeners = new ArrayList<>();
     }
-
+    /**
+     * Adds a listener for updates on board entities.
+     *
+     * @param boardListener The listener to be added.
+     */
     public void addBoardListener(final Consumer<Board> boardListener) {
         this.boardListeners.add(boardListener);
     }
+    /**
+     * Adds a listener for updates on card list entities.
+     *
+     * @param cardListConsumer The listener to be added.
+     */
     public void addCardListListener(final Consumer<CardList> cardListConsumer) {
         this.cardListListeners.add(cardListConsumer);
     }
+    /**
+     * Adds a listener for updates on card entities.
+     *
+     * @param cardConsumer The listener to be added.
+     */
     public void addCardListener(final Consumer<Card> cardConsumer) {
         this.cardListeners.add(cardConsumer);
     }
+    /**
+     * Adds a listener for updates on tag entities.
+     *
+     * @param tagConsumer The listener to be added.
+     */
     public void addTagListener(final Consumer<Tag> tagConsumer) {
         this.tagListeners.add(tagConsumer);
     }
+    /**
+     * Adds a listener for updates on task entities.
+     *
+     * @param taskConsumer The listener to be added.
+     */
     public void addTaskListener(final Consumer<Task> taskConsumer) {
         this.taskListeners.add(taskConsumer);
     }
 
+    /**
+     * Connects to a websocket endpoint using the STOMP protocol.
+     *
+     * @param connectionUri The URI of the endpoint to connect to.
+     */
     public void connect(final String connectionUri) {
         var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
@@ -61,7 +92,6 @@ public final class WebsocketUtils {
                 this.boardListeners.forEach(listener -> listener.accept(board));
             });
             registerForUpdates("/topic/cardlist", CardList.class, cardList -> {
-                System.out.println(cardList);
                 this.cardListListeners.forEach(listener -> listener.accept(cardList));
             });
             registerForUpdates("/topic/card", Card.class, card -> {
@@ -77,7 +107,9 @@ public final class WebsocketUtils {
             throw new RuntimeException(e);
         }
     }
-
+    /**
+     * Disconnects from the websocket endpoint, if connected.
+     */
     public void disconnect () {
         if (this.stompSession != null) this.stompSession.disconnect();
     }

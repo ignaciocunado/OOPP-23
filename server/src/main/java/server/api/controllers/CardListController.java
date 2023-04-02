@@ -23,9 +23,9 @@ public class CardListController {
     private final SimpMessagingTemplate msgs;
 
     /** Controller for the CardList route
-     * @param cardListRepo repository for card list
-     * @param cardRepo repository for card
-     *
+     * @param cardListRepo  repository for card list
+     * @param cardRepo      repository for card
+     * @param msgs          object to send messages to connected websockets
      */
     public CardListController(final CardListRepository cardListRepo,
                               final CardRepository cardRepo, final SimpMessagingTemplate msgs) {

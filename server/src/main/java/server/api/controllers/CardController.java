@@ -6,6 +6,7 @@ import commons.entities.CardList;
 import commons.entities.Task;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import java.util.Optional;
 @RequestMapping("/api/card")
 public class CardController {
 
+    private final SimpMessagingTemplate msgs;
     private final CardListRepository cardListRepository;
     private final CardRepository cardRepository;
     private final TagRepository tagRepository;
@@ -34,15 +36,17 @@ public class CardController {
      * @param cardRepository  card DB
      * @param tagRepository   tag DB
      * @param taskRepository  task DB
+     * @param msgs            object to send messages to connected websockets
      */
     public CardController(final CardListRepository cardListRepository,
                           final CardRepository cardRepository,
                           final TagRepository tagRepository,
-                          final TaskRepository taskRepository) {
+                          final TaskRepository taskRepository, final SimpMessagingTemplate msgs) {
         this.cardListRepository = cardListRepository;
         this.cardRepository = cardRepository;
         this.tagRepository = tagRepository;
         this.taskRepository = taskRepository;
+        this.msgs = msgs;
     }
 
     /**
@@ -66,7 +70,9 @@ public class CardController {
         Card toEdit = cardRepository.getById(id);
         toEdit.setTitle(card.getTitle());
         toEdit.setDescription(card.getDescription());
-        return new ResponseEntity<>(cardRepository.save(toEdit), new HttpHeaders(), 200);
+        cardRepository.save(toEdit);
+        msgs.convertAndSend("/topic/card", toEdit);
+        return new ResponseEntity<>(toEdit, new HttpHeaders(), 200);
     }
 
 
@@ -92,7 +98,9 @@ public class CardController {
             return ResponseEntity.badRequest().build();
         }
         card.addTag(tag);
-        return new ResponseEntity<>(cardRepository.save(card), new HttpHeaders(),
+        cardRepository.save(card);
+        msgs.convertAndSend("/topic/card", card);
+        return new ResponseEntity<>(card, new HttpHeaders(),
             200);
     }
 
@@ -115,7 +123,9 @@ public class CardController {
         if (!deleteTagFrom.removeTagById(tagId)) {
             throw new EntityNotFoundException("No tag with id " + tagId + " in card " + id);
         }
-        return new ResponseEntity<>(cardRepository.save(deleteTagFrom), new HttpHeaders(),
+        cardRepository.save(deleteTagFrom);
+        msgs.convertAndSend("/topic/card", deleteTagFrom);
+        return new ResponseEntity<>(deleteTagFrom, new HttpHeaders(),
                 200);
     }
 
@@ -141,7 +151,9 @@ public class CardController {
 
         Card containsTask = cardRepository.getById(id);
         containsTask.addTask(task);
-        return new ResponseEntity<>(cardRepository.save(containsTask), new HttpHeaders(),
+        cardRepository.save(containsTask);
+        msgs.convertAndSend("/topic/card", containsTask);
+        return new ResponseEntity<>(containsTask, new HttpHeaders(),
                 200);
     }
 
@@ -161,9 +173,10 @@ public class CardController {
         if (!deleteTaskFrom.removeTaskById(taskId)) {
             throw new EntityNotFoundException("No task with id in this card " + id);
         }
-
         taskRepository.deleteById(taskId);
-        return new ResponseEntity<>(cardRepository.save(deleteTaskFrom), new HttpHeaders(), 200);
+        cardRepository.save(deleteTaskFrom);
+        msgs.convertAndSend("/topic/card", deleteTaskFrom);
+        return new ResponseEntity<>(deleteTaskFrom, new HttpHeaders(), 200);
     }
 
     /**
@@ -180,6 +193,7 @@ public class CardController {
             throw new EntityNotFoundException("No card with id " + id);
         }
         final Card card = this.cardRepository.getById(id);
+        final CardList srcCardList = this.cardListRepository.getById(listId);
         final Optional<CardList> srcOpt = this.cardListRepository.findByCardId(id);
         final Optional<CardList> destOpt = this.cardListRepository.findById(listId);
 
@@ -196,6 +210,13 @@ public class CardController {
         destOpt.get().getCards().add(Math.min(destOpt.get().getCards().size(), position), card);
         this.cardListRepository.save(srcOpt.get());
         this.cardListRepository.save(destOpt.get());
+//        System.out.println(srcOpt.get().getCards());
+//        System.out.println(destOpt.get().getCards());
+//        System.out.println(card);
+//        //TO DO - proper socket setup for transferring cards
+//        msgs.convertAndSend("/topic/cardlist", srcOpt.get());
+//        msgs.convertAndSend("/topic/cardlist", destOpt.get());
+
     }
 
 

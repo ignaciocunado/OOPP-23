@@ -22,7 +22,6 @@ import java.io.IOException;
  * When connected to server, these will work.
  */
 public class CardEditorCtrl {
-
     private ServerUtils serverUtils;
     private MainCtrl mainCtrl;
 

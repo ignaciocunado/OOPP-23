@@ -20,9 +20,7 @@ import client.utils.ServerUtils;
 import client.utils.WebsocketUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
-import commons.entities.Card;
 import commons.entities.CardList;
-import commons.entities.Tag;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -48,6 +46,7 @@ public class BoardOverviewCtrl implements Initializable {
     /**
      * The wrapping controller for a card list
      *
+     * @param websocket websocket setup
      * @param server the server functions
      * @param mainCtrl the main controller
      */

@@ -39,7 +39,8 @@ public final class CardListCtrl {
      * @param websocket
      */
     @Inject
-    public CardListCtrl(final WebsocketUtils websocket, final ServerUtils server, final BoardOverviewCtrl ctrl) {
+    public CardListCtrl(final WebsocketUtils websocket,
+                        final ServerUtils server, final BoardOverviewCtrl ctrl) {
         this.websocket = websocket;
         this.server = server;
         this.boardOverviewCtrl = ctrl;
