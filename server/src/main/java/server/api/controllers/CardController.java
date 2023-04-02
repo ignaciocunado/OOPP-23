@@ -193,7 +193,6 @@ public class CardController {
             throw new EntityNotFoundException("No card with id " + id);
         }
         final Card card = this.cardRepository.getById(id);
-        final CardList srcCardList = this.cardListRepository.getById(listId);
         final Optional<CardList> srcOpt = this.cardListRepository.findByCardId(id);
         final Optional<CardList> destOpt = this.cardListRepository.findById(listId);
 
@@ -210,12 +209,9 @@ public class CardController {
         destOpt.get().getCards().add(Math.min(destOpt.get().getCards().size(), position), card);
         this.cardListRepository.save(srcOpt.get());
         this.cardListRepository.save(destOpt.get());
-//        System.out.println(srcOpt.get().getCards());
-//        System.out.println(destOpt.get().getCards());
-//        System.out.println(card);
-//        //TO DO - proper socket setup for transferring cards
-//        msgs.convertAndSend("/topic/cardlist", srcOpt.get());
-//        msgs.convertAndSend("/topic/cardlist", destOpt.get());
+
+        msgs.convertAndSend("/topic/cardlist", srcOpt.get());
+        msgs.convertAndSend("/topic/cardlist", destOpt.get());
 
     }
 
