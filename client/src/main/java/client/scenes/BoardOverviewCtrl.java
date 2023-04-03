@@ -17,9 +17,11 @@ package client.scenes;
 
 import client.Main;
 import client.utils.ServerUtils;
+import client.utils.WebsocketUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
 import commons.entities.CardList;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,9 +33,9 @@ import java.util.ResourceBundle;
 
 public class BoardOverviewCtrl implements Initializable {
 
+    private final WebsocketUtils websocket;
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-
     @FXML
     private TextField title;
     @FXML
@@ -44,11 +46,13 @@ public class BoardOverviewCtrl implements Initializable {
     /**
      * The wrapping controller for a card list
      *
+     * @param websocket websocket setup
      * @param server the server functions
      * @param mainCtrl the main controller
      */
     @Inject
-    public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public BoardOverviewCtrl(WebsocketUtils websocket, ServerUtils server, MainCtrl mainCtrl) {
+        this.websocket = websocket;
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
@@ -64,7 +68,6 @@ public class BoardOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh(new Board("","", ""));
-
         title.focusedProperty().addListener(observable -> {
             if (!(observable instanceof ReadOnlyBooleanProperty)) return; // Doesn't happen
             final ReadOnlyBooleanProperty focused = (ReadOnlyBooleanProperty) observable;
@@ -72,8 +75,11 @@ public class BoardOverviewCtrl implements Initializable {
             this.currentBoard.setName(this.title.getText());
             this.server.editBoard(this.currentBoard.getId(), this.currentBoard);
         });
+        this.websocket.addBoardListener(board -> {
+            if (board == null || !board.getKey().equals(this.currentBoard.getKey())) return;
+            Platform.runLater(() -> this.refresh(board));
+        });
     }
-
 
     /**
      * Refreshes the Board and the lists in it.

@@ -1,9 +1,11 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
+import client.utils.WebsocketUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
 import commons.entities.Card;
+import javafx.application.Platform;
 import commons.entities.Tag;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +20,7 @@ import java.io.IOException;
 
 public final class CardCtrl {
 
+    private WebsocketUtils websocket;
     private ServerUtils server;
     private MainCtrl mainCtrl;
 
@@ -37,11 +40,14 @@ public final class CardCtrl {
     /**
      * The wrapping controller for a card
      *
+     * @param websocket websocket setup
      * @param server   the server functions
      * @param mainCtrl
      */
     @Inject
-    public CardCtrl(final ServerUtils server, final MainCtrl mainCtrl) {
+    public CardCtrl(final WebsocketUtils websocket,
+                    final ServerUtils server, final MainCtrl mainCtrl) {
+        this.websocket = websocket;
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
@@ -99,6 +105,10 @@ public final class CardCtrl {
             content.putString(Integer.toString(this.card.getId()));
             db.setContent(content);
             event.consume();
+        });
+        this.websocket.addCardListener(changedCard -> {
+            if (changedCard == null || changedCard.getId() != (card.getId())) return;
+            Platform.runLater(() -> this.refresh(changedCard));
         });
     }
 

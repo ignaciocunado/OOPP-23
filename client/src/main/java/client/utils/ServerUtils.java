@@ -267,8 +267,7 @@ public class ServerUtils {
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .get().close();
-        } catch (NotFoundException e) {
-        }
+        } catch (NotFoundException e) {}
     }
 
     /**
