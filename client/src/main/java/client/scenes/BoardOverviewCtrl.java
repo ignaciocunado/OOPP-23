@@ -19,7 +19,6 @@ import client.Main;
 import client.utils.ServerUtils;
 import client.utils.WebsocketUtils;
 import com.google.inject.Inject;
-import com.google.inject.Key;
 import commons.entities.Board;
 import commons.entities.Card;
 import commons.entities.CardList;
@@ -169,6 +168,7 @@ public class BoardOverviewCtrl implements Initializable {
 
     /**
      * Sets the keyboard shortcuts for moving the hover with the arrow keys
+     * @param ke the keyEvent passed on from setPressed()
      */
     public void setArrows(KeyEvent ke) {
         if (ke.getCode().equals(KeyCode.DOWN)) {
