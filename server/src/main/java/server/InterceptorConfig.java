@@ -8,9 +8,13 @@ import server.api.interceptors.AdminInterceptor;
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
-        @Override
-        public void addInterceptors(InterceptorRegistry registry) {
-            registry.addInterceptor(new AdminInterceptor()).addPathPatterns("/api/admin/**");
-        }
+    /**
+     * Adds an interceptor
+     * @param registry the interceptor
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AdminInterceptor()).addPathPatterns("/api/admin/**");
+    }
 
 }

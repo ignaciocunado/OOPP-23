@@ -1,8 +1,6 @@
 package server.exceptions;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-import java.util.stream.Collectors;
 
 public class UnauthorisedException extends ServerException{
     /**
