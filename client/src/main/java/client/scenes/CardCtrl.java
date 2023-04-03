@@ -87,6 +87,8 @@ public final class CardCtrl {
         catch (IOException e) {
 
         }
+        System.out.println(this.card.getNestedTaskList());
+        System.out.println(this.card.calculateProgress());
         progress.setProgress(this.card.calculateProgress());
     }
 

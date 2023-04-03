@@ -176,10 +176,10 @@ public final class Card {
 
     public double calculateProgress() {
         if(nestedTaskList.isEmpty()) {
-            return 0;
+            return 1;
         }
-        return Math.floor(nestedTaskList.stream().filter(task ->
-                task.isCompleted() == true).toList().size() / nestedTaskList.size());
+        return (double) nestedTaskList.stream().filter(task ->
+                task.isCompleted() == true).toList().size() / (double) nestedTaskList.size();
     }
 
     /**
