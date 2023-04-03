@@ -22,10 +22,11 @@ import com.google.inject.Inject;
 import commons.entities.Board;
 import commons.entities.CardList;
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -35,9 +36,8 @@ public class BoardOverviewCtrl implements Initializable {
     private final WebsocketUtils websocket;
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-
     @FXML
-    private Text title;
+    private TextField title;
     @FXML
     private HBox lists;
     private Board currentBoard;
@@ -68,6 +68,13 @@ public class BoardOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh(new Board("","", ""));
+        title.focusedProperty().addListener(observable -> {
+            if (!(observable instanceof ReadOnlyBooleanProperty)) return; // Doesn't happen
+            final ReadOnlyBooleanProperty focused = (ReadOnlyBooleanProperty) observable;
+            if (focused.getValue()) return; // If focuses then don't save yet
+            this.currentBoard.setName(this.title.getText());
+            this.server.editBoard(this.currentBoard.getId(), this.currentBoard);
+        });
         this.websocket.addBoardListener(board -> {
             if (board == null || !board.getKey().equals(this.currentBoard.getKey())) return;
             Platform.runLater(() -> this.refresh(board));
@@ -114,8 +121,7 @@ public class BoardOverviewCtrl implements Initializable {
      */
     @FXML
     private void showBoardSettings() {
-        //this.mainCtrl.showBoardSettings();
-        //remove comment tags when merge request 60 is merged
+        this.mainCtrl.showBoardSettings();
     }
 
     /**

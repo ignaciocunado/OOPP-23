@@ -187,8 +187,8 @@ public class CardController {
      */
     @GetMapping("/{id}/move/{listId}/{position}")
     public void move(@PathVariable final Integer id,
-                      @PathVariable final Integer listId,
-                      @PathVariable final Integer position) {
+                     @PathVariable final Integer listId,
+                     @PathVariable Integer position) {
         if(!this.cardRepository.existsById((id))){
             throw new EntityNotFoundException("No card with id " + id);
         }
@@ -204,15 +204,20 @@ public class CardController {
             throw new EntityNotFoundException("No card list with id " + listId);
         }
 
-        srcOpt.get().removeCard(card);
+        final CardList src = srcOpt.get();
+        final CardList dest = destOpt.get();
+
+        position = Math.min(dest.getCards().size(), position);
+        if (src.getId() == dest.getId()) {
+            final int currentPosition = src.getCards().indexOf(card);
+            if (currentPosition < position) position--;
+        }
+
+        src.removeCard(card);
         // Rounded to closest and can be maximum the amount of children already there.
-        destOpt.get().getCards().add(Math.min(destOpt.get().getCards().size(), position), card);
-        this.cardListRepository.save(srcOpt.get());
-        this.cardListRepository.save(destOpt.get());
-
-        msgs.convertAndSend("/topic/cardlist", srcOpt.get());
-        msgs.convertAndSend("/topic/cardlist", destOpt.get());
-
+        dest.getCards().add(position, card);
+        this.cardListRepository.save(src);
+        this.cardListRepository.save(dest);
     }
 
 

@@ -104,7 +104,6 @@ public class BoardController {
         return new ResponseEntity<>(deletedTagFromBoard,
                 new HttpHeaders(), 200);
     }
-
     /**
      * Handler for creating the list in a board
      *
@@ -143,23 +142,23 @@ public class BoardController {
     }
 
     /**
-     * endpoint for editing the title of a card list
+     * endpoint for editing the board
      *
      * @param id     int value representing the id of a Board
-     * @param board  the Board being edited
+     * @param board  the Board data
      * @param errors wrapping object for potential validating errors
      * @return the card list with the changed new title
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<Board> editPassword(@PathVariable final int id,
+    public ResponseEntity<Board> editBoard(@PathVariable final int id,
                                               @RequestBody final Board board,
                                               final BindingResult errors) {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        final Board editedPasswordBoard = this.boardService.changePassword(id, board);
-        msgs.convertAndSend("/topic/board", editedPasswordBoard);
-        return new ResponseEntity<>(editedPasswordBoard,
+        this.boardService.editBoard(id, board);
+        msgs.convertAndSend("/topic/board", board);
+        return new ResponseEntity<>(board,
                 new HttpHeaders(), 200);
     }
 

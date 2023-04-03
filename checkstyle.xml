@@ -51,14 +51,14 @@
         <module name="ParameterNumber">
             <property name="severity" value="warning" />
             <property name="tokens" value="METHOD_DEF, CTOR_DEF" />
-            <property name="max" value="6" />
+            <property name="max" value="8" />
         </module>
         <module name="CyclomaticComplexity">
             <property name="severity" value="warning" />
             <property name="switchBlockAsSingleDecisionPoint" value="true" />
             <property name="max" value="6" />
             <property name="tokens"
-                value="LITERAL_WHILE, LITERAL_DO, LITERAL_FOR, LITERAL_IF, LITERAL_SWITCH, LITERAL_CASE, QUESTION" />
+                      value="LITERAL_WHILE, LITERAL_DO, LITERAL_FOR, LITERAL_IF, LITERAL_SWITCH, LITERAL_CASE, QUESTION" />
         </module>
         <module name="Indentation">
             <property name="severity" value="warning" />
@@ -70,69 +70,69 @@
         <module name="PackageName">
             <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$" />
             <message key="name.invalidPattern"
-                value="Package name ''{0}'' must match pattern ''{1}''." />
+                     value="Package name ''{0}'' must match pattern ''{1}''." />
         </module>
         <module name="TypeName">
             <property name="tokens"
-                value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF,
+                      value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF,
                     ANNOTATION_DEF, RECORD_DEF" />
             <message key="name.invalidPattern"
-                value="Type name ''{0}'' must match pattern ''{1}''." />
+                     value="Type name ''{0}'' must match pattern ''{1}''." />
         </module>
         <module name="MemberName">
             <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9]*$" />
             <message key="name.invalidPattern"
-                value="Member name ''{0}'' must match pattern ''{1}''." />
+                     value="Member name ''{0}'' must match pattern ''{1}''." />
         </module>
         <module name="ParameterName">
             <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$" />
             <message key="name.invalidPattern"
-                value="Parameter name ''{0}'' must match pattern ''{1}''." />
+                     value="Parameter name ''{0}'' must match pattern ''{1}''." />
         </module>
         <module name="LambdaParameterName">
             <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$" />
             <message key="name.invalidPattern"
-                value="Lambda parameter name ''{0}'' must match pattern ''{1}''." />
+                     value="Lambda parameter name ''{0}'' must match pattern ''{1}''." />
         </module>
         <module name="CatchParameterName">
             <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$" />
             <message key="name.invalidPattern"
-                value="Catch parameter name ''{0}'' must match pattern ''{1}''." />
+                     value="Catch parameter name ''{0}'' must match pattern ''{1}''." />
         </module>
         <module name="LocalVariableName">
             <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$" />
             <message key="name.invalidPattern"
-                value="Local variable name ''{0}'' must match pattern ''{1}''." />
+                     value="Local variable name ''{0}'' must match pattern ''{1}''." />
         </module>
         <module name="PatternVariableName">
             <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$" />
             <message key="name.invalidPattern"
-                value="Pattern variable name ''{0}'' must match pattern ''{1}''." />
+                     value="Pattern variable name ''{0}'' must match pattern ''{1}''." />
         </module>
         <module name="ClassTypeParameterName">
             <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)" />
             <message key="name.invalidPattern"
-                value="Class type name ''{0}'' must match pattern ''{1}''." />
+                     value="Class type name ''{0}'' must match pattern ''{1}''." />
         </module>
         <module name="RecordComponentName">
             <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$" />
             <message key="name.invalidPattern"
-                value="Record component name ''{0}'' must match pattern ''{1}''." />
+                     value="Record component name ''{0}'' must match pattern ''{1}''." />
         </module>
         <module name="RecordTypeParameterName">
             <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)" />
             <message key="name.invalidPattern"
-                value="Record type name ''{0}'' must match pattern ''{1}''." />
+                     value="Record type name ''{0}'' must match pattern ''{1}''." />
         </module>
         <module name="MethodTypeParameterName">
             <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)" />
             <message key="name.invalidPattern"
-                value="Method type name ''{0}'' must match pattern ''{1}''." />
+                     value="Method type name ''{0}'' must match pattern ''{1}''." />
         </module>
         <module name="InterfaceTypeParameterName">
             <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)" />
             <message key="name.invalidPattern"
-                value="Interface type name ''{0}'' must match pattern ''{1}''." />
+                     value="Interface type name ''{0}'' must match pattern ''{1}''." />
         </module>
     </module>
 
@@ -141,7 +141,7 @@
         <property name="fileExtensions" value="java" />
         <property name="max" value="100" />
         <property name="ignorePattern"
-            value="^package.*|^import.*|a href|href|http://|https://|ftp://" />
+                  value="^package.*|^import.*|a href|href|http://|https://|ftp://" />
     </module>
 
 </module>

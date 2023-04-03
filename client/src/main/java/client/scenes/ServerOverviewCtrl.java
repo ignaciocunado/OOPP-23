@@ -46,7 +46,7 @@ public final class ServerOverviewCtrl {
      * Initializes the server menu with all saved servers
      */
     @FXML
-    public void initialize () {
+    public void initialize() {
         this.config.getWorkspaces().forEach(workspace -> {
             final Text server = new Text(workspace.getConnectionUri());
             server.setCursor(Cursor.HAND);
