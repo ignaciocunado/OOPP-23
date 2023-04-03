@@ -44,7 +44,7 @@ public final class BoardService {
      */
     public Board createBoard(final String name, final String password) {
         final String newKey = this.textService.randomAlphanumericalString(10);
-        final Board board = new Board(newKey, name == null ? "" : name,
+        final Board board = new Board(newKey, name.equals("") ? "New Board" : name,
                 password == null ? "" : password);
         return this.boardRepository.save(board);
     }
