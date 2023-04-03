@@ -1,18 +1,26 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
+import client.utils.WebsocketUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
 import commons.entities.Card;
+import javafx.application.Platform;
+import commons.entities.Tag;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+
 public final class CardCtrl {
 
+    private WebsocketUtils websocket;
     private ServerUtils server;
     private MainCtrl mainCtrl;
 
@@ -24,17 +32,22 @@ public final class CardCtrl {
     private Text cardTitle;
     @FXML
     private Text cardDescription;
+    @FXML
+    private HBox tagList;
 
     private Card card;
 
     /**
      * The wrapping controller for a card
      *
+     * @param websocket websocket setup
      * @param server   the server functions
      * @param mainCtrl
      */
     @Inject
-    public CardCtrl(final ServerUtils server, final MainCtrl mainCtrl) {
+    public CardCtrl(final WebsocketUtils websocket,
+                    final ServerUtils server, final MainCtrl mainCtrl) {
+        this.websocket = websocket;
         this.server = server;
         this.mainCtrl = mainCtrl;
     }
@@ -57,6 +70,20 @@ public final class CardCtrl {
         this.card = card;
         this.cardTitle.setText(this.card.getTitle());
         this.cardDescription.setText(this.card.getDescription());
+        tagList.getChildren().clear();
+        try {
+            for (Tag tag : card.getTags()) {
+                FXMLLoader loader = new FXMLLoader();
+                Pane tagPane = loader.load(getClass().getResource("TagInBoardOverview.fxml")
+                        .openStream());
+                TagInBoardCtrl ctrl = loader.getController();
+                ctrl.update(tag);
+                tagList.getChildren().add(tagPane);
+            }
+        }
+        catch (IOException e) {
+
+        }
     }
 
     /**
@@ -78,6 +105,10 @@ public final class CardCtrl {
             content.putString(Integer.toString(this.card.getId()));
             db.setContent(content);
             event.consume();
+        });
+        this.websocket.addCardListener(changedCard -> {
+            if (changedCard == null || changedCard.getId() != (card.getId())) return;
+            Platform.runLater(() -> this.refresh(changedCard));
         });
     }
 

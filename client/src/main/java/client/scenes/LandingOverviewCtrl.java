@@ -15,31 +15,21 @@
  */
 package client.scenes;
 
-import client.Config;
-import client.MyFXML;
-import client.MyModule;
+import client.config.Config;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import commons.entities.Board;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
+
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import javafx.scene.layout.Pane;
-import java.net.URL;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
-import static com.google.inject.Guice.createInjector;
-
-public class LandingOverviewCtrl implements Initializable {
-
-    private static final Injector INJECTOR = createInjector(new MyModule());
-    public static final MyFXML FXML = new MyFXML(INJECTOR);
+public class LandingOverviewCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -71,22 +61,6 @@ public class LandingOverviewCtrl implements Initializable {
     }
 
     /**
-     * Initialisation method initialising FXML objects
-     * @param location
-     * The location used to resolve relative paths for the root object, or
-     * {@code null} if the location is not known.
-     *
-     * @param resources
-     * The resources used to localize the root object, or {@code null} if
-     * the root object was not localized.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        refresh();
-        this.server.setServer("http://localhost:8080/"); // TODO: temporary
-    }
-
-    /**
      * Swaps the current view to the boards
      * and loads it with the board's information
      */
@@ -99,7 +73,7 @@ public class LandingOverviewCtrl implements Initializable {
             alert.show();
             return;
         }
-        config.addBoard(this.joinKey.getText(),this.server.getServer());
+        config.getCurrentWorkspace().addBoard(this.joinKey.getText());
         this.mainCtrl.showBoardOverview(board);
     }
 
@@ -131,20 +105,8 @@ public class LandingOverviewCtrl implements Initializable {
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(new StringSelection(board.getKey()), null);
         }
-        config.addBoard(board.getKey(), this.server.getServer());
+        config.getCurrentWorkspace().addBoard(board.getKey());
         this.mainCtrl.showBoardOverview(board);
-    }
-
-    /**
-     * Stub method for refreshing boards
-     */
-    public void refresh() {}
-
-    /**
-     * Method to close the app
-     */
-    public void closeApp() {
-        mainCtrl.closeApp();
     }
 
     /**
@@ -152,5 +114,12 @@ public class LandingOverviewCtrl implements Initializable {
      */
     public void openHistory(){
         this.mainCtrl.showHistory();
+    }
+
+    /**
+     * EventHandler for the button of the server overview
+     */
+    public void openServers(){
+        this.mainCtrl.showServerOverview();
     }
 }

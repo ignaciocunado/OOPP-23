@@ -29,11 +29,15 @@ public class MainCtrl {
 
     private Stage primaryStage;
     private Stage createTagStage;
+    private Stage boardSettingsStage;
     private Stage cardEditorStage;
     private Stage boardHistoryStage;
+
     private BoardHistoryOverviewCtrl boardHistoryOverviewCtrl;
     private Scene boardHistoryOverview;
 
+    private ServerOverviewCtrl serverOverviewCtrl;
+    private Scene serverOverview;
 
     private LandingOverviewCtrl landingOverviewCtrl;
     private Scene landingOverview;
@@ -43,6 +47,9 @@ public class MainCtrl {
 
     private TagOverviewCtrl tagOverviewCtrl;
     private Scene tagOverview;
+
+    private BoardSettingsCtrl boardSettingsCtrl;
+    private Scene boardSettings;
 
     private CardEditorCtrl cardEditorCtrl;
     private Scene cardEditorScene;
@@ -56,17 +63,26 @@ public class MainCtrl {
      * @param tagOverview the tag overview
      * @param cardEditor stage for the card editor
      * @param boardHistory board history overview
+     * @param boardSettings board settings ctrl
+     * @param serverOverview server overview
      */
     public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<CardEditorCtrl, Parent> cardEditor,
                            Pair<TagOverviewCtrl, Parent> tagOverview,
-                           Pair<BoardHistoryOverviewCtrl, Parent> boardHistory) {
+                           Pair<BoardHistoryOverviewCtrl, Parent> boardHistory,
+                           Pair<BoardSettingsCtrl, Parent> boardSettings,
+                           Pair<ServerOverviewCtrl, Parent> serverOverview) {
 
         this.primaryStage = primaryStage;
         this.createTagStage =  new Stage();
+        this.boardSettingsStage = new Stage();
         this.cardEditorStage = new Stage();
         this.boardHistoryStage = new Stage();
+
+        this.serverOverviewCtrl = serverOverview.getKey();
+        this.serverOverview = new Scene(serverOverview.getValue());
+
         this.landingOverviewCtrl = landingOverview.getKey();
         this.landingOverview = new Scene(landingOverview.getValue());
 
@@ -79,13 +95,21 @@ public class MainCtrl {
         this.tagOverviewCtrl = tagOverview.getKey();
         this.tagOverview = new Scene(tagOverview.getValue());
 
+        this.boardSettingsCtrl = boardSettings.getKey();
+        this.boardSettings = new Scene(boardSettings.getValue());
+
+        this.boardSettingsStage.setScene(this.boardSettings);
+        this.boardSettingsStage.initModality(Modality.APPLICATION_MODAL);
+        this.boardSettingsStage.initOwner(this.primaryStage);
+
         this.cardEditorCtrl = cardEditor.getKey();
         this.cardEditorScene = new Scene(cardEditor.getValue());
 
         boardHistoryOverview.getStylesheets().add(getClass().
-            getResource("assets/style/textStyle.css").toExternalForm());
+                getResource("assets/style/textStyle.css").toExternalForm());
         boardHistoryStage.initModality(Modality.APPLICATION_MODAL);
 
+        cardEditorStage.setScene(cardEditorScene);
         cardEditorStage.initModality(Modality.APPLICATION_MODAL);
         cardEditorStage.setTitle("Card Editor");
         cardEditorStage.setScene(cardEditorScene);
@@ -94,8 +118,16 @@ public class MainCtrl {
         createTagStage.initModality(Modality.APPLICATION_MODAL);
 
         primaryStage.initStyle(StageStyle.DECORATED);
-        showLandingOverview();
+        showServerOverview();
         primaryStage.show();
+    }
+
+    /**
+     * Shows the server landing overview scene
+     */
+    public void showServerOverview() {
+        primaryStage.setTitle("Talio: Task List Organiser");
+        primaryStage.setScene(this.serverOverview);
     }
 
     /**
@@ -104,11 +136,11 @@ public class MainCtrl {
     public void showLandingOverview() {
         primaryStage.setTitle("Talio: Task List Organiser");
         primaryStage.setScene(this.landingOverview);
-        landingOverviewCtrl.refresh();
     }
 
     /**
      * Shows the board overview scene
+     *
      * @param board the board
      */
     public void showBoardOverview(final Board board) {
@@ -119,6 +151,7 @@ public class MainCtrl {
 
     /**
      * render card view
+     *
      * @param cardCtrl
      */
     public void showCardEditor(final CardCtrl cardCtrl) {
@@ -130,6 +163,7 @@ public class MainCtrl {
      * Shows the overview of the board history
      */
     public void showHistory() {
+        boardHistoryOverviewCtrl.refresh();
         boardHistoryStage.setTitle("Board Visitation History");
         boardHistoryStage.setScene(boardHistoryOverview);
         boardHistoryStage.showAndWait();
@@ -143,12 +177,19 @@ public class MainCtrl {
     }
 
     /**
+     * Shows an existing board overview scene
+     */
+    public void showBoardSettings() {
+        this.boardSettingsStage.setTitle("Talio: Task List Organiser (Settings)");
+        this.boardSettingsStage.showAndWait();
+    }
+
+    /**
      * closes card editor stage
      */
     public void closeCardEditor() {
         cardEditorStage.close();
     }
-
 
     /**
      * Method to close the app

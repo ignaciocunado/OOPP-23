@@ -1,28 +1,6 @@
 [ {
-  "key" : "hd",
-  "server" : "http://localhost:8080/"
-}, {
-  "key" : "JMraQiDT2J",
-  "server" : "http://localhost:8080/"
-}, {
-  "key" : "AoSvQHWbBe",
-  "server" : "http://localhost:8080/"
-}, {
-  "key" : "7KU9EeSilX",
-  "server" : "http://localhost:8080/"
-}, {
-  "key" : "1mqjcHQR0t",
-  "server" : "http://localhost:8080/"
-}, {
-  "key" : "ZQYi9VSsSU",
-  "server" : "http://localhost:8080/"
-}, {
-  "key" : "gwQU1Lv6DD",
-  "server" : "http://localhost:8080/"
-}, {
-  "key" : "6J6kqeqwxg",
-  "server" : "http://localhost:8080/"
-}, {
-  "key" : "rgJtfJiVTx",
-  "server" : "http://localhost:8080/"
+  "connectionUri" : "localhost:8080/",
+  "boards" : [ {
+    "key" : "XwamdE00u3"
+  } ]
 } ]

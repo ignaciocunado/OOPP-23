@@ -19,6 +19,7 @@ import commons.entities.Tag;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +32,14 @@ import server.exceptions.InvalidRequestException;
 public class TagController {
 
     private final TagRepository tagRepo;
-
+    private final SimpMessagingTemplate msgs;
     /**
      * RestAPI Controller for the tags route
      * @param tagRepo repository for tags
+     * @param msgs      object to send messages to connected websockets
      */
-    public TagController(final TagRepository tagRepo) {
+    public TagController(final TagRepository tagRepo, final SimpMessagingTemplate msgs) {
+        this.msgs = msgs;
         this.tagRepo = tagRepo;
     }
 
@@ -61,8 +64,9 @@ public class TagController {
         final Tag savedTag = this.tagRepo.getById(id);
         savedTag.setName(tag.getName());
         savedTag.setColour(tag.getColour());
-
-        return new ResponseEntity<>(this.tagRepo.save(savedTag), new HttpHeaders(), HttpStatus.OK);
+        this.tagRepo.save(savedTag);
+        msgs.convertAndSend("topic/tag", savedTag);
+        return new ResponseEntity<>(savedTag, new HttpHeaders(), HttpStatus.OK);
     }
 
 }

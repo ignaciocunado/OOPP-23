@@ -2,6 +2,7 @@ package server.api.controllers;
 
 import commons.entities.Card;
 import commons.entities.CardList;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import server.database.CardRepository;
@@ -19,17 +20,19 @@ public class CardListController {
 
     private final CardListRepository cardListRepo;
     private final CardRepository cardRepo;
+    private final SimpMessagingTemplate msgs;
 
     /** Controller for the CardList route
-     * @param cardListRepo repository for card list
-     * @param cardRepo repository for card
+     * @param cardListRepo  repository for card list
+     * @param cardRepo      repository for card
+     * @param msgs          object to send messages to connected websockets
      */
     public CardListController(final CardListRepository cardListRepo,
-                              final CardRepository cardRepo) {
+                              final CardRepository cardRepo, final SimpMessagingTemplate msgs) {
         this.cardListRepo = cardListRepo;
         this.cardRepo = cardRepo;
+        this.msgs = msgs;
     }
-
     /**
      * endpoint for creating a card into a list
      *
@@ -54,7 +57,9 @@ public class CardListController {
 
         final CardList cardList = this.cardListRepo.getById(id);
         cardList.addCard(card);
-        return new ResponseEntity<>(this.cardListRepo.save(cardList), new HttpHeaders(), 200);
+        this.cardListRepo.save(cardList);
+        msgs.convertAndSend("/topic/cardlist", cardList);
+        return new ResponseEntity<>(cardList, new HttpHeaders(), 200);
 
     }
 
@@ -76,6 +81,7 @@ public class CardListController {
         }
 
         this.cardRepo.deleteById(cardId);
+        msgs.convertAndSend("/topic/cardlist", cardList);
         return new ResponseEntity<>(cardList, new HttpHeaders(), 200);
     }
 
@@ -99,6 +105,8 @@ public class CardListController {
 
         final CardList editedCardList = this.cardListRepo.getById(id);
         editedCardList.setTitle(cardList.getTitle());
-        return new ResponseEntity<>(cardListRepo.save(editedCardList), new HttpHeaders(), 200);
+        cardListRepo.save(editedCardList);
+        msgs.convertAndSend("/topic/cardlist", editedCardList);
+        return new ResponseEntity<>(editedCardList, new HttpHeaders(), 200);
     }
 }
