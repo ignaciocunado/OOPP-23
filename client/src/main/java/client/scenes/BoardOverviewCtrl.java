@@ -135,7 +135,7 @@ public class BoardOverviewCtrl implements Initializable {
     @FXML
     private void showTagOverview() {
         this.mainCtrl.showTagOverview();
-
+        this.refresh(this.server.getBoard(currentBoard.getKey()));
     }
 
     /**
