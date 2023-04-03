@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import commons.entities.Tag;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -34,6 +35,8 @@ public final class CardCtrl {
     private Text cardDescription;
     @FXML
     private HBox tagList;
+    @FXML
+    private ProgressBar progress;
 
     private Card card;
 
