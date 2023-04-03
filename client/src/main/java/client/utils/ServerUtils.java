@@ -75,7 +75,8 @@ public class ServerUtils {
         try {
             client.target(connectionUri)
                     .request()
-                    .get();
+                    .get()
+                    .close();
         } catch (final NotFoundException e) {
             return true;
         } catch (final Exception e) {
