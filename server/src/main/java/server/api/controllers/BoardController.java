@@ -130,21 +130,21 @@ public class BoardController {
     }
 
     /**
-     * endpoint for editing the title of a card list
+     * endpoint for editing the board
      *
      * @param id     int value representing the id of a Board
-     * @param board  the Board being edited
+     * @param board  the Board data
      * @param errors wrapping object for potential validating errors
      * @return the card list with the changed new title
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<Board> editPassword(@PathVariable final int id,
+    public ResponseEntity<Board> editBoard(@PathVariable final int id,
                                               @RequestBody final Board board,
                                               final BindingResult errors) {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        return new ResponseEntity<>(this.boardService.changePassword(id, board),
+        return new ResponseEntity<>(this.boardService.editBoard(id, board),
                 new HttpHeaders(), 200);
     }
 

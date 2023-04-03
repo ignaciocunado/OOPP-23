@@ -158,11 +158,11 @@ public final class BoardService {
      * Changes the password of a board
      *
      * @param id The id of the board
-     * @param board The updated board with the new password
-     * @return The updated board after the password has been changed
+     * @param board The updated board with the new data
+     * @return The updated board after the data has been changed
      * @throws EntityNotFoundException If the board with the specified id cannot be found
      */
-    public Board changePassword(final int id, final Board board) {
+    public Board editBoard(final int id, final Board board) {
         final Optional<Board> boardOpt = this.boardRepository.findById(id);
         if (boardOpt.isEmpty()) {
             throw new EntityNotFoundException("No board with id " + id);
@@ -170,6 +170,7 @@ public final class BoardService {
 
         final Board editedBoard = boardOpt.get();
         editedBoard.setPassword(board.getPassword());
+        editedBoard.setName(board.getName());
         return this.boardRepository.save(editedBoard);
     }
 }
