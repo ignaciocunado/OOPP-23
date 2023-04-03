@@ -47,7 +47,7 @@
                         <Font size="13.0" />
                      </font>
                   </Button>
-                  <Button alignment="CENTER" layoutX="79.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorBrightGreen" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00CC00;" textAlignment="CENTER" textFill="WHITE">
+                  <Button alignment="CENTER" layoutX="79.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorBrightGreen" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #21a621;" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="13.0" />
                      </font>
@@ -85,7 +85,7 @@
                   </Button>
                </children>
             </Pane>
-            <VBox fx:id="vbox" alignment="CENTER" layoutX="56.0" layoutY="58.0" prefHeight="459.0" prefWidth="194.0" style="-fx-background-color: transparent;" />
+            <VBox fx:id="vbox" alignment="CENTER" layoutX="56.0" layoutY="58.0" prefHeight="459.0" prefWidth="178.0" style="-fx-background-color: transparent;" />
          </children>
       </AnchorPane>
    </children>

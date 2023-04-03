@@ -174,5 +174,4 @@ public class MainCtrl {
         tagOverviewCtrl.refresh(boardOverviewCtrl);
         createTagStage.showAndWait();
     }
-
 }
