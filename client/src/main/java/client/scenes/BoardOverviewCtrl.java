@@ -129,8 +129,8 @@ public class BoardOverviewCtrl implements Initializable {
      */
     @FXML
     private void showTagOverview() {
-        //this.mainCtrl.showTagOverview();
-        //remove comment tags when merge request 63 is merged
+        this.mainCtrl.showTagOverview();
+
     }
 
     /**

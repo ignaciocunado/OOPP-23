@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+
+<Pane fx:id="background" maxHeight="30.0" minHeight="20.0" prefHeight="25.0" prefWidth="183.0" style="-fx-background-color: #d05757; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagEditorCtrl">
+   <children>
+      <HBox alignment="BASELINE_CENTER" prefHeight="25.0" prefWidth="183.0" style="-fx-spacing: 10;">
+         <children>
+            <TextField fx:id="name" style="-fx-background-color: transparent;" text="               Tag" />
+            <Text fill="WHITE" onMouseClicked="#removeTag" strokeType="OUTSIDE" strokeWidth="0.0" text="X" wrappingWidth="14.478134155273438" />
+         </children>
+      </HBox>
+   </children>
+</Pane>

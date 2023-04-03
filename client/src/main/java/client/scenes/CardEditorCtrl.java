@@ -33,7 +33,6 @@ public class CardEditorCtrl {
     private HBox tags;
     @FXML
     private VBox nestedTaskList;
-
     private CardCtrl cardCtrl;
     private Card currentCard;
     @FXML
@@ -42,9 +41,8 @@ public class CardEditorCtrl {
 
     /**
      * Constructor
-     *
+     * @param mainCtrl mainCtrl
      * @param serverUtils serverUtils
-     * @param mainCtrl    mainCtrl
      */
     @Inject
     public CardEditorCtrl(final ServerUtils serverUtils, final MainCtrl mainCtrl) {
