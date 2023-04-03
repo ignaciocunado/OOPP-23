@@ -23,6 +23,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
+import java.io.IOException;
+
 public class MainCtrl {
 
     private Stage primaryStage;
@@ -35,6 +37,10 @@ public class MainCtrl {
     private Stage adminPasswordStage;
     private AdminPasswordCtrl adminPasswordCtrl;
     private Scene adminPasswordOverview;
+
+    private Stage adminOverviewStage;
+    private AdminOverviewCtrl adminOverviewCtrl;
+    private Scene adminOverview;
 
     private ServerOverviewCtrl serverOverviewCtrl;
     private Scene serverOverviewScene;
@@ -62,6 +68,7 @@ public class MainCtrl {
      * @param boardHistory    board history overview
      * @param adminPassword    admin password overview
      * @param boardSettings the board settings overview
+     * @param adminBoardOverview the overview of all boards on the server for admin
      */
     public void initialize(Stage primaryStage,
                            Pair<ServerOverviewCtrl, Parent> serverOverview,
@@ -70,29 +77,28 @@ public class MainCtrl {
                            Pair<CardEditorCtrl, Parent> cardEditor,
                            Pair<BoardHistoryOverviewCtrl, Parent> boardHistory,
                            Pair<AdminPasswordCtrl, Parent> adminPassword,
-                           Pair<BoardSettingsCtrl, Parent> boardSettings
+                           Pair<BoardSettingsCtrl, Parent> boardSettings,
+                           Pair<AdminOverviewCtrl, Parent> adminBoardOverview
     ) {
         this.primaryStage = primaryStage;
         this.boardSettingsStage = new Stage();
         this.cardEditorStage = new Stage();
         this.boardHistoryStage = new Stage();
         this.adminPasswordStage = new Stage();
+        this.adminOverviewStage = new Stage();
 
         this.serverOverviewCtrl = serverOverview.getKey();
         this.serverOverviewScene = new Scene(serverOverview.getValue());
-
         this.landingOverviewCtrl = landingOverview.getKey();
         this.landingOverview = new Scene(landingOverview.getValue());
-
         this.boardHistoryOverviewCtrl = boardHistory.getKey();
         this.boardHistoryOverview = new Scene(boardHistory.getValue());
-
         this.boardOverviewCtrl = boardOverview.getKey();
         this.boardOverview = new Scene(boardOverview.getValue());
-
         this.adminPasswordCtrl = adminPassword.getKey();
         this.adminPasswordOverview = new Scene(adminPassword.getValue());
-
+        this.adminOverviewCtrl = adminBoardOverview.getKey();
+        this.adminOverview = new Scene(adminBoardOverview.getValue());
         this.boardSettingsCtrl = boardSettings.getKey();
         this.boardSettings = new Scene(boardSettings.getValue());
 
@@ -108,9 +114,9 @@ public class MainCtrl {
         boardHistoryOverview.getStylesheets().add(getClass().
                 getResource("assets/style/textStyle.css").toExternalForm());
         boardHistoryStage.initModality(Modality.APPLICATION_MODAL);
-
         adminPasswordStage.initModality(Modality.APPLICATION_MODAL);
-
+        adminOverview.getStylesheets().add(getClass().
+            getResource("assets/style/textStyle.css").toExternalForm());
         cardEditorStage.initModality(Modality.APPLICATION_MODAL);
         cardEditorStage.setTitle("Card Editor");
         cardEditorStage.setScene(cardEditorScene);
@@ -172,11 +178,11 @@ public class MainCtrl {
     /**
      * Shows the overview of the board history
      */
-    public void showHistoryAdmin() {
-        boardHistoryOverviewCtrl.refreshAdmin();
-        boardHistoryStage.setTitle("Board Visitation History");
-        boardHistoryStage.setScene(boardHistoryOverview);
-        boardHistoryStage.show();
+    public void showHistoryAdmin() throws IOException {
+        adminOverviewCtrl.refresh();
+        adminOverviewStage.setTitle("Board History");
+        adminOverviewStage.setScene(adminOverview);
+        adminOverviewStage.show();
     }
 
     /**

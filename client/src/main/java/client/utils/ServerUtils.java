@@ -27,6 +27,7 @@ import jakarta.ws.rs.core.MediaType;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 
+import java.util.Base64;
 import java.util.List;
 
 @Singleton
@@ -107,10 +108,12 @@ public class ServerUtils {
      * Gets all boards on this server
      * @return all the boars on this server
      */
-    public List<Board> getAllBoards() {
-        return client.target(this.server).path("api/board/all")
+    public List<Board> getAllBoards(String password) {
+        return client.target(this.server).path("api/admin/board/all")
             .request(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
+            .header("authorization", "Basic "+ Base64.getEncoder().
+                encodeToString(("admin:"+password).getBytes()))
             .get(new GenericType<List<Board>>() {});
     }
 

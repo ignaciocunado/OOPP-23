@@ -56,16 +56,6 @@ public class BoardController {
     }
 
     /**
-     * Handler for getting all boards
-     *
-     * @return the list boards
-     */
-    @GetMapping("/all")
-    public ResponseEntity<List<Board>> getAllBoards() {
-        return new ResponseEntity<>(this.boardService.getAllBoards(), new HttpHeaders(), 200);
-    }
-
-    /**
      * Handler for getting a boards
      *
      * @param key the board key
