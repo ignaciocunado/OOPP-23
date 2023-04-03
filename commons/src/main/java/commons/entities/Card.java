@@ -174,9 +174,13 @@ public final class Card {
         return nestedTaskList.removeIf(task -> task.getId() == id);
     }
 
+    /**
+     * Calculates how many subtasks have been completed
+     * @return decimal
+     */
     public double calculateProgress() {
         if(nestedTaskList.isEmpty()) {
-            return 1;
+            return 0;
         }
         return (double) nestedTaskList.stream().filter(task ->
                 task.isCompleted() == true).toList().size() / (double) nestedTaskList.size();
