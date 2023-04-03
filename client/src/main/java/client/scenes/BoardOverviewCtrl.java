@@ -28,7 +28,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -55,7 +54,6 @@ public class BoardOverviewCtrl implements Initializable {
      * @param config the config file
      */
     @Inject
-    public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, Config config) {
     public BoardOverviewCtrl(WebsocketUtils websocket, ServerUtils server, MainCtrl mainCtrl, Config config) {
         this.websocket = websocket;
         this.server = server;

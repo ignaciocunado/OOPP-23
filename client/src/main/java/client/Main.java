@@ -76,14 +76,15 @@ public class Main extends Application {
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(
                 primaryStage,
-                serverOverview,
                 landingOverview,
                 boardOverview,
                 cardEditor,
                 boardHistoryOverview,
                 adminPasswordOverview,
                 boardSettingsOverview,
-                adminOverview
+                adminOverview,
+                tagOverview,
+                serverOverview
         );
     }
 
