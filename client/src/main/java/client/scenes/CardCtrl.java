@@ -7,12 +7,13 @@ import commons.entities.Board;
 import commons.entities.Card;
 import javafx.application.Platform;
 import commons.entities.Tag;
+import javafx.beans.Observable;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -129,29 +130,20 @@ public final class CardCtrl {
             if (changedCard == null || changedCard.getId() != (card.getId())) return;
             Platform.runLater(() -> this.refresh(changedCard));
         });
-        setEditTitle();
+        cardTitle.focusedProperty().addListener(this::titleOrDescriptionEdited);
     }
 
-    public void setEditTitle() {
-        cardPane.setOnKeyTyped(event -> {
-            if (event.getCharacter().equals("e")) {
-                Pane temp = (Pane) cardPane.getChildren().get(0);
-                TextField field = (TextField) temp.getChildren().get(4);
-                field.requestFocus();
-                field.setOnKeyPressed(event1 -> {
-                    if (event1.getCode().equals(KeyCode.ENTER)) {
-                        this.editTitle();
-                    }
-                });
-            }
-        });
-    }
-
+    /**
+     * Handler to delete a card
+     */
     @FXML
     public void handleDeleteCard() {
         this.cardListCtrl.removeCard(this.card.getId());
     }
 
+    /**
+     * Handler to edit a card
+     */
     @FXML
     public void handleEditCard() {
         this.mainCtrl.showCardEditor(this);
@@ -203,10 +195,13 @@ public final class CardCtrl {
     }
 
     /**
-     * Edits and saves the title of a card
+     * Checks whether any of the fields lost focus and calls the editCard endpoint
+     * @param observable lame ass parameter
      */
-    public void editTitle() {
-        card.setTitle(cardTitle.getText());
+    public void titleOrDescriptionEdited(Observable observable) {
+        if (!(observable instanceof ReadOnlyBooleanProperty)) return; // Doesn't happen
+        final ReadOnlyBooleanProperty focused = (ReadOnlyBooleanProperty) observable;
+        if (focused.getValue()) return; // If focuses then don't save yet
         this.server.editCard(this.card.getId(), cardTitle.getText(), cardDescription.getText());
     }
 }

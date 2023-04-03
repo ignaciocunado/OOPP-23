@@ -38,7 +38,7 @@
                   <Font size="20.0" />
                </font>
             </Text>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="e: edit card title, press ENTER when finished">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="e: edit card title, press CNTRL when finished">
                <font>
                   <Font size="20.0" />
                </font>

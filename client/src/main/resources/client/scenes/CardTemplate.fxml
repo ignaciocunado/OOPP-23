@@ -24,7 +24,7 @@
                </font>
             </Button>
             <HBox fx:id="tagList" layoutX="13.0" layoutY="82.0" prefHeight="12.0" prefWidth="210.0" />
-            <TextField fx:id="cardTitle" layoutX="11.0" layoutY="6.0" onKeyTyped="#editTitle" prefHeight="25.0" prefWidth="78.0" promptText="Title" style="-fx-background-color: #123456; -fx-font-size: 18; -fx-text-fill: white; -fx-padding: 0;">
+            <TextField fx:id="cardTitle" layoutX="11.0" layoutY="6.0" prefHeight="25.0" prefWidth="78.0" promptText="Title" style="-fx-background-color: #123456; -fx-font-size: 18; -fx-text-fill: white; -fx-padding: 0;">
             </TextField>
             <Text fx:id="cardDescription" fill="#949494" layoutX="10.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 12; -fx-font-fill: gray;" text="Description" />
          </children>

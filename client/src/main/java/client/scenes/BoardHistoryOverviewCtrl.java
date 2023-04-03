@@ -55,6 +55,11 @@ public class BoardHistoryOverviewCtrl {
         }
     }
 
+    /**
+     * Gets the board given a key
+     * @param key the key used to look for the board
+     * @return the Board corresponding to the key
+     */
     public Board getBoard(String key) {
         return this.server.getBoard(key);
     }

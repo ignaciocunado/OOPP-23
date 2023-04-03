@@ -19,6 +19,7 @@ import client.Main;
 import client.utils.ServerUtils;
 import client.utils.WebsocketUtils;
 import com.google.inject.Inject;
+import com.google.inject.Key;
 import commons.entities.Board;
 import commons.entities.Card;
 import commons.entities.CardList;
@@ -106,7 +107,7 @@ public class BoardOverviewCtrl implements Initializable {
         this.currentBoard = currentBoard;
         this.setTyped();
         this.setPressed();
-        this.setArrows();
+        //this.setArrows();
         this.title.setText(this.currentBoard.getName());
         this.lists.getChildren().clear();
         for (final CardList list : this.currentBoard.getLists()) {
@@ -125,6 +126,18 @@ public class BoardOverviewCtrl implements Initializable {
             if (event.getCharacter().equals("?")) {
                 this.mainCtrl.showShortcuts();
             }
+            else if (event.getCharacter().equals("e")) {
+                Pane temp = (Pane) hoverCardPane.getChildren().get(0);
+                TextField field = (TextField) temp.getChildren().get(3);
+                field.requestFocus();
+                field.setOnKeyPressed(event1 -> {
+                    if (event1.getCode().equals(KeyCode.CONTROL)) {
+                        this.getCardCtrl().titleOrDescriptionEdited(
+                            field.focusTraversableProperty());
+                        mainPane.requestFocus();
+                    }
+                });
+            }
         });
     }
 
@@ -133,7 +146,6 @@ public class BoardOverviewCtrl implements Initializable {
      */
     public void setPressed() {
         mainPane.setOnKeyPressed(ke -> {
-            System.out.println(ke.getCode().getName());
             if (ke.getCode().equals(KeyCode.F1)) {
                 startShortcuts();
             }
@@ -149,20 +161,21 @@ public class BoardOverviewCtrl implements Initializable {
                 ke.getCode().equals(KeyCode.DELETE)) {
                 deleteCard();
             }
+            else {
+                setArrows(ke);
+            }
         });
     }
 
     /**
      * Sets the keyboard shortcuts for moving the hover with the arrow keys
      */
-    public void setArrows() {
-        mainPane.setOnKeyPressed(ke -> {
-            if (ke.getCode().equals(KeyCode.DOWN)) {
-                moveDown();
-            } else if (ke.getCode().equals(KeyCode.UP)) {
-                moveUp();
-            }
-        });
+    public void setArrows(KeyEvent ke) {
+        if (ke.getCode().equals(KeyCode.DOWN)) {
+            moveDown();
+        } else if (ke.getCode().equals(KeyCode.UP)) {
+            moveUp();
+        }
     }
 
     /**
@@ -226,11 +239,10 @@ public class BoardOverviewCtrl implements Initializable {
 //        cardListCtrl.removeCard(card.getId());
     }
 
-
-        /**
-         * Refreshes the Board and the lists in it by using the key
-         * to get the board details.
-         */
+    /**
+     * Refreshes the Board and the lists in it by using the key
+     * to get the board details.
+     */
     public void refresh() {
         this.refresh(this.server.getBoard(this.currentBoard.getKey()));
     }
@@ -316,9 +328,5 @@ public class BoardOverviewCtrl implements Initializable {
      */
     public CardCtrl getCardCtrl() {
         return this.cardCtrl;
-    }
-
-    public void requestFocus(){
-        this.mainPane.requestFocus();
     }
 }

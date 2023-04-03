@@ -91,13 +91,7 @@ public class MainCtrl {
                            Pair<ServerOverviewCtrl, Parent> serverOverview,
                            Pair<ShortcutsCtrl, Parent> shortcutsOverview) {
         this.primaryStage = primaryStage;
-        this.createTagStage =  new Stage();
-        this.boardSettingsStage = new Stage();
-        this.cardEditorStage = new Stage();
-        this.boardHistoryStage = new Stage();
-        this.adminPasswordStage = new Stage();
-        this.adminOverviewStage = new Stage();
-        this.shortcutsStage = new Stage();
+        initialiseStages();
 
         this.serverOverviewCtrl = serverOverview.getKey();
         this.serverOverviewScene = new Scene(serverOverview.getValue());
@@ -143,6 +137,19 @@ public class MainCtrl {
         primaryStage.initStyle(StageStyle.DECORATED);
         showServerOverview();
         primaryStage.show();
+    }
+
+    /**
+     * Initialises all the stages
+     */
+    public void initialiseStages() {
+        this.createTagStage =  new Stage();
+        this.boardSettingsStage = new Stage();
+        this.cardEditorStage = new Stage();
+        this.boardHistoryStage = new Stage();
+        this.adminPasswordStage = new Stage();
+        this.adminOverviewStage = new Stage();
+        this.shortcutsStage = new Stage();
     }
 
     /**
