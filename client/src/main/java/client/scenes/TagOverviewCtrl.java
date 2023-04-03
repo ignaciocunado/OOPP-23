@@ -5,7 +5,6 @@ import commons.entities.Board;
 import commons.entities.Tag;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -14,10 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javax.inject.Inject;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class TagOverviewCtrl implements Initializable{
+public class TagOverviewCtrl{
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -58,16 +54,6 @@ public class TagOverviewCtrl implements Initializable{
         return newTitle;
     }
 
-    /** ethod used to show the color picked in the color picker by filling a circle
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  {@code null} if the location is not known.
-     * @param resources The resources used to localize the root object, or {@code null} if
-     *                  the root object was not localized.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        colorPicker.setOnAction(event -> this.circle.setFill(colorPicker.getValue()));
-    }
 
     /** method to convert from type color to type int
      * @return the colour in int values
@@ -193,6 +179,7 @@ public class TagOverviewCtrl implements Initializable{
      * @param boardOverviewCtrl ctrl
      */
     public void refresh(BoardOverviewCtrl boardOverviewCtrl){
+        colorPicker.setOnAction(event -> this.circle.setFill(colorPicker.getValue()));
         vbox.getChildren().clear();
         this.board = boardOverviewCtrl.getBoard();
         try{
