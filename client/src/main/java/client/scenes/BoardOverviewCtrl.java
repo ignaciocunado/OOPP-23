@@ -20,6 +20,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
 import commons.entities.CardList;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -63,6 +64,14 @@ public class BoardOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         refresh(new Board("","", ""));
+
+        title.focusedProperty().addListener(observable -> {
+            if (!(observable instanceof ReadOnlyBooleanProperty)) return; // Doesn't happen
+            final ReadOnlyBooleanProperty focused = (ReadOnlyBooleanProperty) observable;
+            if (focused.getValue()) return; // If focuses then don't save yet
+            this.currentBoard.setName(this.title.getText());
+            this.server.editBoard(this.currentBoard.getId(), this.currentBoard);
+        });
     }
 
 
