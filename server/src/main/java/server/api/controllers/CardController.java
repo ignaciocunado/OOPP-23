@@ -216,6 +216,8 @@ public class CardController {
         src.removeCard(card);
         // Rounded to closest and can be maximum the amount of children already there.
         dest.getCards().add(position, card);
+        msgs.convertAndSend("/topic/cardlist", src);
+        msgs.convertAndSend("/topic/cardlist", dest);
         this.cardListRepository.save(src);
         this.cardListRepository.save(dest);
     }

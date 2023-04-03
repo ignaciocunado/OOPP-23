@@ -81,6 +81,7 @@ public class CardListController {
         }
 
         this.cardRepo.deleteById(cardId);
+        cardListRepo.save(cardList);
         msgs.convertAndSend("/topic/cardlist", cardList);
         return new ResponseEntity<>(cardList, new HttpHeaders(), 200);
     }
