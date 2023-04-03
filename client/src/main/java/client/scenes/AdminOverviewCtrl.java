@@ -23,7 +23,6 @@ public class AdminOverviewCtrl {
     private final UserState state;
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
-    private String password;
     @FXML
     private VBox boards;
 
