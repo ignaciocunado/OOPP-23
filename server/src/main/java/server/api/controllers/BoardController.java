@@ -156,9 +156,9 @@ public class BoardController {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        this.boardService.editBoard(id, board);
-        msgs.convertAndSend("/topic/board", board);
-        return new ResponseEntity<>(board,
+        final Board editedBoard = this.boardService.editBoard(id, board);
+        msgs.convertAndSend("/topic/board", editedBoard);
+        return new ResponseEntity<>(editedBoard,
                 new HttpHeaders(), 200);
     }
 
