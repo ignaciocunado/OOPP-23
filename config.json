@@ -1,1 +1,6 @@
-[ ]
+[ {
+  "connectionUri" : "localhost:8080/",
+  "boards" : [ {
+    "key" : "bTJdyBf09D"
+  } ]
+} ]

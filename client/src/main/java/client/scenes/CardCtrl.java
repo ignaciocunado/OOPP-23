@@ -9,8 +9,10 @@ import javafx.application.Platform;
 import commons.entities.Tag;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -29,12 +31,12 @@ public final class CardCtrl {
     @FXML
     private Pane cardPane;
     @FXML
-    private Text cardTitle;
+    private TextField cardTitle;
     @FXML
     private Text cardDescription;
     @FXML
     private HBox tagList;
-
+    private BoardOverviewCtrl boardOverviewCtrl;
     private Card card;
 
     /**
@@ -59,6 +61,23 @@ public final class CardCtrl {
      */
     public void setCardListCtrl(final CardListCtrl cardListCtrl) {
         this.cardListCtrl = cardListCtrl;
+    }
+
+    /**
+     * Gets the cardList controller to which this card us associated
+     * @return the CardListCtrl
+     */
+    public CardListCtrl getCardListCtrl() {
+        return this.cardListCtrl;
+    }
+
+    /**
+     * Sets the controller of the BoardOverview
+     * @param boardOverviewCtrl the controller
+     */
+    public void setBoardOverviewCtrl(final BoardOverviewCtrl boardOverviewCtrl) {
+        this.boardOverviewCtrl = boardOverviewCtrl;
+        this.boardOverviewCtrl.setCardCtrl(this);
     }
 
     /**
@@ -110,15 +129,31 @@ public final class CardCtrl {
             if (changedCard == null || changedCard.getId() != (card.getId())) return;
             Platform.runLater(() -> this.refresh(changedCard));
         });
+        setEditTitle();
+    }
+
+    public void setEditTitle() {
+        cardPane.setOnKeyTyped(event -> {
+            if (event.getCharacter().equals("e")) {
+                Pane temp = (Pane) cardPane.getChildren().get(0);
+                TextField field = (TextField) temp.getChildren().get(4);
+                field.requestFocus();
+                field.setOnKeyPressed(event1 -> {
+                    if (event1.getCode().equals(KeyCode.ENTER)) {
+                        this.editTitle();
+                    }
+                });
+            }
+        });
     }
 
     @FXML
-    private void handleDeleteCard() {
+    public void handleDeleteCard() {
         this.cardListCtrl.removeCard(this.card.getId());
     }
 
     @FXML
-    private void handleEditCard() {
+    public void handleEditCard() {
         this.mainCtrl.showCardEditor(this);
     }
 
@@ -128,5 +163,50 @@ public final class CardCtrl {
      */
     public Board getBoard() {
         return cardListCtrl.getBoard();
+    }
+
+    /**
+     * Sets appropriate visual feedback when hovering over a card
+     */
+    public void mouseHover() {
+        this.boardOverviewCtrl.setHoverCard(this.getCardPane());
+        cardPane.setOpacity(0.75);
+        Pane childPane = (Pane) cardPane.getChildren().get(0);
+        childPane.setStyle("-fx-background-color: #123456; -fx-background-radius: 10;" +
+            "-fx-border-color: rgb(1,35,69); -fx-border-width: 3px");
+    }
+
+    /**
+     * Stops visual feedback for hovering over a card
+     */
+    public void mouseStopHover() {
+        cardPane.setOpacity(1);
+        Pane childPane = (Pane) cardPane.getChildren().get(0);
+        childPane.setStyle("-fx-background-color: #123456; " +
+            "-fx-background-radius: 10; -fx-border-width: 0px");
+    }
+
+    /**
+     * Sets the cardPane
+     * @param cardPane the Pane being assigned to it
+     */
+    public void setCardPane(Pane cardPane) {
+        this.cardPane = cardPane;
+    }
+
+    /**
+     * Gets the cardPane
+     * @return the Pane of the current card
+     */
+    public Pane getCardPane() {
+        return this.cardPane;
+    }
+
+    /**
+     * Edits and saves the title of a card
+     */
+    public void editTitle() {
+        card.setTitle(cardTitle.getText());
+        this.server.editCard(this.card.getId(), cardTitle.getText(), cardDescription.getText());
     }
 }
