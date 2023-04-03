@@ -22,15 +22,16 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
-
 import java.io.IOException;
 
 public class MainCtrl {
 
     private Stage primaryStage;
+    private Stage createTagStage;
     private Stage boardSettingsStage;
     private Stage cardEditorStage;
     private Stage boardHistoryStage;
+
     private BoardHistoryOverviewCtrl boardHistoryOverviewCtrl;
     private Scene boardHistoryOverview;
 
@@ -51,6 +52,9 @@ public class MainCtrl {
     private BoardOverviewCtrl boardOverviewCtrl;
     private Scene boardOverview;
 
+    private TagOverviewCtrl tagOverviewCtrl;
+    private Scene tagOverview;
+
     private BoardSettingsCtrl boardSettingsCtrl;
     private Scene boardSettings;
 
@@ -61,7 +65,6 @@ public class MainCtrl {
      * Initialize main controller with all FXML controllers
      *
      * @param primaryStage    main stage for FXML views
-     * @param serverOverview  the server overview
      * @param landingOverview the landing overview
      * @param boardOverview   the main board overview
      * @param cardEditor      card editor view
@@ -69,18 +72,20 @@ public class MainCtrl {
      * @param adminPassword    admin password overview
      * @param boardSettings the board settings overview
      * @param adminBoardOverview the overview of all boards on the server for admin
+     * @param tagOverview the tag overview
+     * @param serverOverview server overview
      */
-    public void initialize(Stage primaryStage,
-                           Pair<ServerOverviewCtrl, Parent> serverOverview,
-                           Pair<LandingOverviewCtrl, Parent> landingOverview,
+    public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<CardEditorCtrl, Parent> cardEditor,
                            Pair<BoardHistoryOverviewCtrl, Parent> boardHistory,
                            Pair<AdminPasswordCtrl, Parent> adminPassword,
                            Pair<BoardSettingsCtrl, Parent> boardSettings,
-                           Pair<AdminOverviewCtrl, Parent> adminBoardOverview
-    ) {
+                           Pair<AdminOverviewCtrl, Parent> adminBoardOverview,
+                           Pair<TagOverviewCtrl, Parent> tagOverview,
+                           Pair<ServerOverviewCtrl, Parent> serverOverview) {
         this.primaryStage = primaryStage;
+        this.createTagStage =  new Stage();
         this.boardSettingsStage = new Stage();
         this.cardEditorStage = new Stage();
         this.boardHistoryStage = new Stage();
@@ -99,9 +104,11 @@ public class MainCtrl {
         this.adminPasswordOverview = new Scene(adminPassword.getValue());
         this.adminOverviewCtrl = adminBoardOverview.getKey();
         this.adminOverview = new Scene(adminBoardOverview.getValue());
+        this.tagOverviewCtrl = tagOverview.getKey();
+        this.tagOverview = new Scene(tagOverview.getValue());
         this.boardSettingsCtrl = boardSettings.getKey();
         this.boardSettings = new Scene(boardSettings.getValue());
-
+        
         this.boardSettingsStage.setScene(this.boardSettings);
         this.boardSettingsStage.initModality(Modality.APPLICATION_MODAL);
         this.boardSettingsStage.initOwner(this.primaryStage);
@@ -121,7 +128,8 @@ public class MainCtrl {
         cardEditorStage.setTitle("Card Editor");
         cardEditorStage.setScene(cardEditorScene);
         cardEditorScene.getStylesheets().add(getClass().getResource("assets/style/comboBox.css")
-                .toExternalForm());
+            .toExternalForm());
+        createTagStage.initModality(Modality.APPLICATION_MODAL);
 
         primaryStage.initStyle(StageStyle.DECORATED);
         showServerOverview();
@@ -230,5 +238,16 @@ public class MainCtrl {
      */
     public void closeCardEditor() {
         cardEditorStage.close();
+    }
+
+
+    /**
+     * Method for the tag overview
+     */
+    public void showTagOverview() {
+        createTagStage.setTitle("Talio: Tag list Overview");
+        createTagStage.setScene(this.tagOverview);
+        tagOverviewCtrl.refresh(boardOverviewCtrl);
+        createTagStage.showAndWait();
     }
 }

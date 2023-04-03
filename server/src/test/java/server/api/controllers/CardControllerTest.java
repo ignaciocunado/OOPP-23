@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.BindingResult;
 import server.api.repositories.TestCardListRepository;
 import server.api.repositories.TestTaskRepository;
@@ -39,7 +40,7 @@ class CardControllerTest {
         tagRepo = new TestTagRepository();
         taskRepo = new TestTaskRepository();
         listRepo = new TestCardListRepository();
-        controller = new CardController(listRepo, cardRepo,tagRepo,taskRepo);
+        controller = new CardController(listRepo, cardRepo,tagRepo,taskRepo, Mockito.mock(SimpMessagingTemplate.class));
 
         this.hasErrorResult = Mockito.mock(BindingResult.class);
         this.noErrorResult = Mockito.mock(BindingResult.class);

@@ -22,7 +22,6 @@ import java.io.IOException;
  * When connected to server, these will work.
  */
 public class CardEditorCtrl {
-
     private ServerUtils serverUtils;
     private MainCtrl mainCtrl;
 
@@ -34,18 +33,16 @@ public class CardEditorCtrl {
     private HBox tags;
     @FXML
     private VBox nestedTaskList;
-
     private CardCtrl cardCtrl;
     private Card currentCard;
     @FXML
-    ComboBox combo;
+    ComboBox<Tag> combo;
 
 
     /**
      * Constructor
-     *
+     * @param mainCtrl mainCtrl
      * @param serverUtils serverUtils
-     * @param mainCtrl    mainCtrl
      */
     @Inject
     public CardEditorCtrl(final ServerUtils serverUtils, final MainCtrl mainCtrl) {

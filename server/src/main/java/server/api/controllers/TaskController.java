@@ -3,6 +3,7 @@ package server.api.controllers;
 import commons.entities.Task;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +14,15 @@ import server.exceptions.InvalidRequestException;
 @RestController
 @RequestMapping("/api/task")
 public class TaskController {
-
+    private final SimpMessagingTemplate msgs;
     private final TaskRepository taskRepo;
 
     /** controller for the task route
      * @param taskRepo repository for task
+     * @param msgs     object to send messages to connected websockets
      */
-    public TaskController(final TaskRepository taskRepo){
+    public TaskController(final TaskRepository taskRepo, SimpMessagingTemplate msgs){
+        this.msgs = msgs;
         this.taskRepo = taskRepo;
     }
 
@@ -44,7 +47,9 @@ public class TaskController {
         final Task editedTask = taskRepo.getById(id);
         editedTask.setName(task.getName());
         editedTask.setCompleted(task.isCompleted());
-        return new ResponseEntity<>(taskRepo.save(editedTask), new HttpHeaders(), 200);
+        taskRepo.save(editedTask);
+        msgs.convertAndSend("/topic/task", editedTask);
+        return new ResponseEntity<>(editedTask, new HttpHeaders(), 200);
     }
 
 

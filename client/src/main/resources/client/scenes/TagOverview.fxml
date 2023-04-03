@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="567.0" prefWidth="780.0" style="-fx-background-color: #123456;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagOverviewCtrl">
+   <children>
+      <AnchorPane fx:id="custo" prefHeight="567.0" prefWidth="780.0" style="-fx-background-color: rgb(35,69,103);">
+         <children>
+            <Pane layoutX="507.0" layoutY="51.0" prefHeight="459.0" prefWidth="236.0" style="-fx-background-color: #123456;">
+               <children>
+                  <TextField fx:id="newTitle" alignment="CENTER" layoutX="18.0" layoutY="14.0" prefHeight="7.0" prefWidth="200.0" style="-fx-background-color: #123456; -fx-font-size: 20; -fx-text-fill: #c6c6c6;" text="Title">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </TextField>
+                  <Button alignment="CENTER" layoutX="24.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorBlack" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #000000;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="79.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorPink" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #ffc0cb;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="134.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorDarkBlue" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #00008b;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="188.0" layoutY="114.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorSkyBlue" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #CCFFFF;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="24.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorLightGreen" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: BBFF94;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="79.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorBrightGreen" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #21a621;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="134.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorRed" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #FF0000;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" layoutX="188.0" layoutY="177.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#colorYellow" prefHeight="20.0" prefWidth="30.0" style="-fx-background-color: #FEFF19;" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Text fx:id="name" fill="WHITE" layoutX="81.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Colours" wrappingWidth="74.39999999999998">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="name1" fill="WHITE" layoutX="88.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Custom" wrappingWidth="105.458984375">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <ColorPicker fx:id="colorPicker" layoutX="56.0" layoutY="270.0" style="-fx-background-color: #0492C2;">
+                     <value>
+                        <Color />
+                     </value>
+                  </ColorPicker>
+                  <Circle fx:id="circle" layoutX="118.0" layoutY="349.0" radius="44.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Button alignment="CENTER" layoutX="50.0" layoutY="400.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#createTag" prefHeight="44.0" prefWidth="136.0" style="-fx-background-color: rgb(35,69,103);" text="+" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+            <VBox fx:id="vbox" alignment="CENTER" layoutX="56.0" layoutY="58.0" prefHeight="459.0" prefWidth="178.0" style="-fx-background-color: transparent;" />
+         </children>
+      </AnchorPane>
+   </children>
+</Pane>

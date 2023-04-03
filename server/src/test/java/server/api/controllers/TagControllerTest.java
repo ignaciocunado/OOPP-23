@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.BindingResult;
 import server.api.repositories.TestTagRepository;
 import server.exceptions.EntityNotFoundException;
@@ -22,7 +23,7 @@ public final class TagControllerTest {
     @BeforeEach
     public void setup() {
         this.tagRepo = new TestTagRepository();
-        this.tagController = new TagController(tagRepo);
+        this.tagController = new TagController(tagRepo, Mockito.mock(SimpMessagingTemplate.class));
 
         this.hasErrorResult = Mockito.mock(BindingResult.class);
         this.noErrorResult = Mockito.mock(BindingResult.class);

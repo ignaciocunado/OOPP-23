@@ -61,6 +61,10 @@ public class Main extends Application {
                 FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
         final Pair<CardEditorCtrl, Parent> cardEditor =
             FXML.load(CardEditorCtrl.class, "client", "scenes", "CardEditor.fxml");
+
+        final Pair<TagOverviewCtrl, Parent> tagOverview =
+            FXML.load(TagOverviewCtrl.class, "client", "scenes", "TagOverview.fxml");
+
         final Pair<BoardHistoryOverviewCtrl, Parent> boardHistoryOverview =
             FXML.load(BoardHistoryOverviewCtrl.class, "client", "scenes", "BoardHistory.fxml");
         final Pair<AdminPasswordCtrl, Parent> adminPasswordOverview =

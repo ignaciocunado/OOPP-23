@@ -14,6 +14,8 @@ public class TagCtrl {
     private Text name;
     private int id;
     private CardEditorCtrl cardEditorCtrl;
+    private Tag tag;
+
 
     /**
      * Removes a tag from a card
@@ -33,6 +35,7 @@ public class TagCtrl {
 
     }
 
+
     /**
      * Update methods
      * @param id id of the rendered object
@@ -42,4 +45,6 @@ public class TagCtrl {
         this.id = id;
         this.cardEditorCtrl = cardEditorCtrl;
     }
+
+
 }

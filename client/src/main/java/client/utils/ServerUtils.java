@@ -46,6 +46,7 @@ public class ServerUtils {
 
     /**
      * Object that has utility methods for accessing the server
+     *
      * @param server the server string
      */
     public ServerUtils(final String server) {
@@ -56,6 +57,7 @@ public class ServerUtils {
 
     /**
      * Gets current server string
+     *
      * @return the server
      */
     public String getServer() {
@@ -64,6 +66,7 @@ public class ServerUtils {
 
     /**
      * Sets current server string
+     *
      * @param server the new server
      */
     public void setServer(String server) {
@@ -72,6 +75,7 @@ public class ServerUtils {
 
     /**
      * Checks the existence of a server on the connection uri
+     *
      * @param connectionUri the connectionUri to check the existence of
      * @return whether it exists
      */
@@ -79,7 +83,8 @@ public class ServerUtils {
         try {
             client.target(connectionUri)
                     .request()
-                    .get();
+                    .get()
+                    .close();
         } catch (final NotFoundException e) {
             return true;
         } catch (final Exception e) {
@@ -90,7 +95,8 @@ public class ServerUtils {
 
     /**
      * Creates a new board in the given server with the given password
-     * @param name the name to create the board with
+     *
+     * @param name     the name to create the board with
      * @param password the password to create the board with
      * @return the newly created board
      */
@@ -131,6 +137,7 @@ public class ServerUtils {
 
     /**
      * Gets board from the given server by the given key
+     *
      * @param key the key
      * @return the relevant board, or null
      */
@@ -147,8 +154,31 @@ public class ServerUtils {
     }
 
     /**
+     * Gets board from the given server by the given key
+     *
+     * @param id    the board id
+     * @param board the board data
+     * @return the edited board, or null
+     */
+    public Board editBoard(final int id, final Board board) {
+        try {
+            return client.target(this.server).path("api/board/{id}")
+                    .resolveTemplate("id", id)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .method(HttpMethod.PATCH,
+                            Entity.json(new Board(board.getKey(),
+                                    board.getName(), board.getPassword())),
+                            Board.class);
+        } catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
      * Sends a request to create a list
-     * @param id the id of the board to create the list in
+     *
+     * @param id    the id of the board to create the list in
      * @param title the title of the list
      * @return the edited board
      */
@@ -169,7 +199,8 @@ public class ServerUtils {
 
     /**
      * Sends a request to delete a list from the board
-     * @param id the board id
+     *
+     * @param id     the board id
      * @param listId the id of the list to delete from the board
      * @return the edited board
      */
@@ -188,7 +219,8 @@ public class ServerUtils {
 
     /**
      * Sends a request to edit the list in the board
-     * @param id the list id
+     *
+     * @param id    the list id
      * @param title the new title
      * @return the renamed list
      */
@@ -207,8 +239,9 @@ public class ServerUtils {
 
     /**
      * Sends a request to create a card
-     * @param id the id of the list to create the card in
-     * @param title the title of the card
+     *
+     * @param id          the id of the list to create the card in
+     * @param title       the title of the card
      * @param description the title of the card
      * @return the edited board
      */
@@ -229,7 +262,8 @@ public class ServerUtils {
 
     /**
      * Sends a request to delete a card
-     * @param id the id of the list to delete the card from
+     *
+     * @param id     the id of the list to delete the card from
      * @param cardId the id of the card
      * @return the edited board
      */
@@ -248,8 +282,9 @@ public class ServerUtils {
 
     /**
      * Sends a request to move a card
-     * @param id the id of the card
-     * @param listId the list to move the card to
+     *
+     * @param id       the id of the card
+     * @param listId   the list to move the card to
      * @param position the position of the card in the new list
      */
     public void moveCard(final int id, final int listId, final int position) {
@@ -266,8 +301,9 @@ public class ServerUtils {
 
     /**
      * Sends a request to edit the card in a list
-     * @param id the card to edit
-     * @param title the new title
+     *
+     * @param id          the card to edit
+     * @param title       the new title
      * @param description the new description
      * @return the edited card
      */
@@ -285,20 +321,21 @@ public class ServerUtils {
     }
 
     /**
-     * Adds a tag to the specified card
-     * @param tagId if of the tag to add
-     * @param cardId id of the car where the tag will be added
-     * @param tag tag to add
-     * @return the card
+     * Creates a new tag
+     * @param boardId id of the board to add the tag to
+     * @param name name of the tag
+     * @param colour colour of the tag
+     * @return the board
      */
-    public Card addTag(final int tagId, final int cardId, final Tag tag) {
+    public Board createTag(int boardId, String name, int colour) {
         try{
-            return client.target(this.server).path("api/card/{cardId}/tag/{tagId}")
-                .resolveTemplate("cardId", cardId)
-                .resolveTemplate("tagId", tagId)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .put(Entity.json(tag), Card.class);
+            return client.target(this.server).path("api/board/{id}/tag")
+                    .resolveTemplate("id", boardId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .post(
+                            Entity.json(new Tag(name, colour)),
+                            Board.class);
         }
         catch (NotFoundException e) {
             return null;
@@ -306,21 +343,83 @@ public class ServerUtils {
     }
 
     /**
+     * Deletes a tag
+     * @param boardId id of the board where the tag is
+     * @param tagId id of the tag
+     * @return returns a board without the tag
+     */
+    public Board deleteTag(int boardId,int tagId) {
+        try{
+            return client.target(this.server).path("api/board/{id}/tag/{tagid}")
+                    .resolveTemplate("id", boardId)
+                    .resolveTemplate("tagid", tagId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .delete(
+                            Board.class);
+        }
+        catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Adds a tag to the specified card
+     *
+     * @param tagId  if of the tag to add
+     * @param cardId id of the car where the tag will be added
+     * @param tag    tag to add
+     * @return the card
+     */
+    public Card addTag(final int tagId, final int cardId, final Tag tag) {
+        try {
+            return client.target(this.server).path("api/card/{cardId}/tag/{tagId}")
+                    .resolveTemplate("cardId", cardId)
+                    .resolveTemplate("tagId", tagId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .put(Entity.json(tag), Card.class);
+        } catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Edits a new tag
+     * @param tagId id of the tag
+     * @param newName name
+     * @param newColour colour
+     * @return dn
+     */
+    public Tag editTag(final int tagId, final String newName, final int newColour) {
+        try {
+            return client.target(this.server).path("api/tag/{id}")
+                    .resolveTemplate("id", tagId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .method(HttpMethod.PATCH,
+                            Entity.json(new Tag(newName, newColour)), Tag.class);
+        } catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    /**
      * Method to remove an existing tag from a card
+     *
      * @param cardId id of the card
-     * @param tagId id of the tag to remove
+     * @param tagId  id of the tag to remove
      * @return the new card without the tag
      */
     public Card removeTagFromCard(final int cardId, final int tagId) {
-        try{
+        try {
             return client.target(this.server).path("api/card/{cardId}/tag/{tagId}")
-                .resolveTemplate("cardId", cardId)
-                .resolveTemplate("tagId", tagId)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .delete(Card.class);
-        }
-        catch (NotFoundException e) {
+                    .resolveTemplate("cardId", cardId)
+                    .resolveTemplate("tagId", tagId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .delete(Card.class);
+        } catch (NotFoundException e) {
             return null;
         }
 
@@ -328,31 +427,32 @@ public class ServerUtils {
 
     /**
      * Creates a new task and adds it to a card
-     * @param cardId id of the card in which to add the task
-     * @param name name of the task
+     *
+     * @param cardId    id of the card in which to add the task
+     * @param name      name of the task
      * @param completed is the task completed?
      * @return the new card containing the task
      */
     public Card addTaskToCard(final int cardId, final String name, final boolean completed) {
-        try{
+        try {
             return client.target(this.server).path("api/card/{cardId}/task")
-                .resolveTemplate("cardId", cardId)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .post(
-                    Entity.json(new Task(name, completed)),
-                    Card.class
-                );
-        }
-        catch (NotFoundException e) {
+                    .resolveTemplate("cardId", cardId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .post(
+                            Entity.json(new Task(name, completed)),
+                            Card.class
+                    );
+        } catch (NotFoundException e) {
             return null;
         }
     }
 
     /**
      * Edits a task from the server
-     * @param id id of the task
-     * @param name new name of the task
+     *
+     * @param id        id of the task
+     * @param name      new name of the task
      * @param completed new boolean for completeness of the task
      * @return the edited task
      */
@@ -371,6 +471,7 @@ public class ServerUtils {
 
     /**
      * Deletes a task
+     *
      * @param taskId id of the task to delete
      * @param cardId id of the card from which to remove the task
      * @return the new card
@@ -378,13 +479,12 @@ public class ServerUtils {
     public Card removeTaskFromCard(int taskId, int cardId) {
         try {
             return client.target(this.server).path("api/card/{cardId}/task/{taskId}")
-                .resolveTemplate("cardId", cardId)
-                .resolveTemplate("taskId", taskId)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .delete(Card.class);
-        }
-        catch(NotFoundException e) {
+                    .resolveTemplate("cardId", cardId)
+                    .resolveTemplate("taskId", taskId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .delete(Card.class);
+        } catch (NotFoundException e) {
             return null;
         }
     }
