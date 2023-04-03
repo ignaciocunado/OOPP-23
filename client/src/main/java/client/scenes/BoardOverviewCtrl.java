@@ -22,8 +22,8 @@ import commons.entities.Board;
 import commons.entities.CardList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -34,7 +34,7 @@ public class BoardOverviewCtrl implements Initializable {
     private final MainCtrl mainCtrl;
 
     @FXML
-    private Text title;
+    private TextField title;
     @FXML
     private HBox lists;
     private Board currentBoard;
