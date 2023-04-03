@@ -22,6 +22,9 @@ import server.services.CardListService;
 import server.services.TagService;
 import server.services.TextService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public final class BoardControllerTest {
@@ -66,6 +69,28 @@ public final class BoardControllerTest {
         board.setId(1);
 
         Assertions.assertEquals(this.boardRepo.getById(1), board);
+    }
+
+    @Test
+    public void deleteBoardTest() {
+        Board board = new Board("aaaaaaaaaa","name", "password");
+        Board board2 = new Board("aaaaaaaaaab","name", "password");
+        board.setId(1);
+        this.boardRepo.save(board);
+        this.boardRepo.save(board2);
+        Assertions.assertEquals(this.boardController.deleteBoard("aaaaaaaaaa").getBody(), board);
+        List<Board> list = new ArrayList<>();
+        list.add(board2);
+        Assertions.assertEquals(this.boardRepo.findAll(), list);
+    }
+
+    @Test
+    public void deleteBoardNotFoundText() {
+        this.boardRepo.save(new Board("aaaaaaaaab","name", "password"));
+        this.boardRepo.save(new Board("aaaaaaaaac","name", "password"));
+        this.boardRepo.save(new Board("aaaaaaaaad","name", "password"));
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.boardController.deleteBoard("doesntexist"));
     }
 
     @Test
@@ -224,17 +249,17 @@ public final class BoardControllerTest {
         board2.setId(1);
 
         Assertions.assertEquals(this.boardRepo.findById(1).get(), board1);
-        this.boardController.editPassword(1, new Board("title","name", "new password"), noErrorResult);
+        this.boardController.editBoard(1, new Board("title","name", "new password"), noErrorResult);
         Assertions.assertEquals(this.boardRepo.findById(1).get(), board2);
     }
 
     @Test
     public void editInvalidBoardTest() {
-        Assertions.assertThrows(InvalidRequestException.class, () -> this.boardController.editPassword(5, new Board("","", ""), hasErrorResult));
+        Assertions.assertThrows(InvalidRequestException.class, () -> this.boardController.editBoard(5, new Board("","", ""), hasErrorResult));
     }
 
     @Test
     public void editBoardNotFoundTest() {
-        Assertions.assertThrows(EntityNotFoundException.class, () -> this.boardController.editPassword(5, new Board("title", "name", "password"), noErrorResult));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.boardController.editBoard(5, new Board("title", "name", "password"), noErrorResult));
     }
 }

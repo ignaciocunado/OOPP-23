@@ -2,20 +2,14 @@
 
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(1,35,69);" stylesheets="@/client/scenes/assets/style/scrollbar.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardHistoryOverviewCtrl">
+<AnchorPane id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: rgb(1,35,69);" stylesheets="@/client/scenes/assets/style/scrollbar.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminOverviewCtrl">
    <children>
       <HBox alignment="CENTER" prefHeight="75.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="History" textAlignment="CENTER" underline="true" wrappingWidth="127.0">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Boards" textAlignment="CENTER" underline="true" wrappingWidth="127.0">
                <font>
                   <Font size="39.0" />
                </font>
@@ -43,7 +37,7 @@
       </HBox>
       <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutX="59.0" layoutY="137.0" prefHeight="240.0" prefViewportHeight="238.0" prefViewportWidth="127.0" prefWidth="486.0" style="-fx-background-color: transparent; -fx-padding: 0px;" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="59.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="137.0">
          <content>
-            <VBox fx:id="servers" alignment="TOP_CENTER" layoutX="66.0" layoutY="148.0" prefHeight="240.0" prefWidth="487.0" style="-fx-spacing: 9px; -fx-background-color: rgb(1,35,69); -fx-padding: 0px;" />
+            <VBox fx:id="boards" alignment="TOP_CENTER" layoutX="66.0" layoutY="148.0" prefHeight="240.0" prefWidth="487.0" style="-fx-spacing: 9px; -fx-background-color: rgb(1,35,69); -fx-padding: 0px;" />
          </content>
       </ScrollPane>
    </children>

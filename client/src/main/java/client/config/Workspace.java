@@ -53,4 +53,17 @@ public final class Workspace {
         this.boards.add(0, new RecentBoard(key));
     }
 
+    /**
+     * Deletes a RecentBoard from the recentBoards list
+     * @param key of the Board
+     */
+    public void deleteBoard(String key) {
+        for (RecentBoard recentBoard:this.boards) {
+            if (recentBoard.getKey().equals(key)) {
+                this.boards.removeIf(board -> board.getKey().equals(key));
+                return;
+            }
+        }
+    }
+
 }

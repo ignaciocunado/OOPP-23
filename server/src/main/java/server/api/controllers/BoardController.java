@@ -58,8 +58,9 @@ public class BoardController {
         return new ResponseEntity<>(this.boardService.createBoard(board.getName(),
                 board.getPassword()), new HttpHeaders(), 200);
     }
+
     /**
-     * Handler for getting the board
+     * Handler for getting a boards
      *
      * @param key the board key
      * @return the board
@@ -67,7 +68,18 @@ public class BoardController {
     @GetMapping("/{key}")
     public ResponseEntity<Board> getBoard(@PathVariable final String key) {
         return new ResponseEntity<>(
-                this.boardService.getBoard(key), new HttpHeaders(), 200);
+            this.boardService.getBoard(key), new HttpHeaders(), 200);
+    }
+
+    /**
+     * Handler deleting a board
+     * @param key the key of the board to delete
+     * @return the board which has just been deleted
+     */
+    @DeleteMapping("/{key}")
+    public ResponseEntity<Board> deleteBoard(@PathVariable final String key) {
+        return new ResponseEntity<>(this.boardService.deleteBoard(key),
+            new HttpHeaders(), HttpStatus.OK);
     }
 
     /** Handler for creating a tag

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
 import server.exceptions.EntityNotFoundException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -63,6 +64,17 @@ public final class BoardService {
         }
 
         return boardOpt.get();
+    }
+
+    /**
+     * Gets all boards
+     *
+     * @return the board with the specified key
+     * @throws EntityNotFoundException if no board with the specified key exists
+     */
+    public List<Board> getAllBoards() {
+        final List<Board> boardOpt = this.boardRepository.findAll();
+        return boardOpt;
     }
 
     /**
@@ -172,5 +184,21 @@ public final class BoardService {
         editedBoard.setPassword(board.getPassword());
         editedBoard.setName(board.getName());
         return this.boardRepository.save(editedBoard);
+    }
+
+    /**
+     * Deletes an existing board
+     *
+     * @param key the key of the board
+     * @return the board which has just been deleted
+     */
+    public Board deleteBoard(String key) {
+        final Optional<Board> boardOpt = this.boardRepository.findBoardByKey(key);
+        if (boardOpt.isEmpty()) {
+            throw new EntityNotFoundException("No board with id " + key);
+        }
+        final Board board = boardOpt.get();
+        this.boardRepository.deleteById(board.getId());
+        return board;
     }
 }

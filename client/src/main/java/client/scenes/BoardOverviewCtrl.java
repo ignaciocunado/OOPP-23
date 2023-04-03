@@ -16,6 +16,7 @@
 package client.scenes;
 
 import client.Main;
+import client.config.Config;
 import client.utils.ServerUtils;
 import client.utils.WebsocketUtils;
 import com.google.inject.Inject;
@@ -27,7 +28,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -36,6 +36,8 @@ public class BoardOverviewCtrl implements Initializable {
     private final WebsocketUtils websocket;
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final Config config;
+
     @FXML
     private TextField title;
     @FXML
@@ -49,12 +51,15 @@ public class BoardOverviewCtrl implements Initializable {
      * @param websocket websocket setup
      * @param server the server functions
      * @param mainCtrl the main controller
+     * @param config the config file
      */
     @Inject
-    public BoardOverviewCtrl(WebsocketUtils websocket, ServerUtils server, MainCtrl mainCtrl) {
+    public BoardOverviewCtrl(WebsocketUtils websocket, ServerUtils server,
+                             MainCtrl mainCtrl, Config config) {
         this.websocket = websocket;
         this.server = server;
         this.mainCtrl = mainCtrl;
+        this.config = config;
     }
 
     /**
@@ -121,7 +126,7 @@ public class BoardOverviewCtrl implements Initializable {
      */
     @FXML
     private void showBoardSettings() {
-        this.mainCtrl.showBoardSettings();
+        this.mainCtrl.showBoardSettings(this.getBoard());
     }
 
     /**

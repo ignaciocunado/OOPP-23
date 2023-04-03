@@ -117,6 +117,13 @@ public class LandingOverviewCtrl {
     }
 
     /**
+     * EventHandler for the button of the admin password
+     */
+    public void openAdminPassword(){
+        this.mainCtrl.showAdminPassword();
+    }
+
+    /**
      * EventHandler for the button of the server overview
      */
     public void openServers(){

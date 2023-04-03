@@ -22,9 +22,13 @@ import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
+
+import java.util.Base64;
+import java.util.List;
 
 @Singleton
 public class ServerUtils {
@@ -104,6 +108,32 @@ public class ServerUtils {
                         Entity.json(new Board("", name, password)),
                         Board.class
                 );
+    }
+
+    /**
+     * Gets all boards on this server
+     * @param password the password which has been entered by the use
+     * @return all the boars on this server
+     */
+    public List<Board> getAllBoards(String password) {
+        return client.target(this.server).path("api/admin/board/all")
+            .request(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .header("authorization", "Basic "+ Base64.getEncoder().
+                encodeToString(("admin:"+password).getBytes()))
+            .get(new GenericType<List<Board>>() {});
+    }
+
+    /**
+     * Creates a new board in the given server with the given password
+     * @param key the key of the Board
+     */
+    public void deleteBoard(final String key) {
+        client.target(this.server).path("api/board/{key}")
+            .resolveTemplate("key", key)
+            .request(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .delete().close();
     }
 
     /**

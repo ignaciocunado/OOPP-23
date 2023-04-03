@@ -22,8 +22,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
-
-
+import java.io.IOException;
 
 public class MainCtrl {
 
@@ -36,8 +35,16 @@ public class MainCtrl {
     private BoardHistoryOverviewCtrl boardHistoryOverviewCtrl;
     private Scene boardHistoryOverview;
 
+    private Stage adminPasswordStage;
+    private AdminPasswordCtrl adminPasswordCtrl;
+    private Scene adminPasswordOverview;
+
+    private Stage adminOverviewStage;
+    private AdminOverviewCtrl adminOverviewCtrl;
+    private Scene adminOverview;
+
     private ServerOverviewCtrl serverOverviewCtrl;
-    private Scene serverOverview;
+    private Scene serverOverviewScene;
 
     private LandingOverviewCtrl landingOverviewCtrl;
     private Scene landingOverview;
@@ -60,56 +67,61 @@ public class MainCtrl {
      * @param primaryStage    main stage for FXML views
      * @param landingOverview the landing overview
      * @param boardOverview   the main board overview
+     * @param cardEditor      card editor view
+     * @param boardHistory    board history overview
+     * @param adminPassword    admin password overview
+     * @param boardSettings the board settings overview
+     * @param adminBoardOverview the overview of all boards on the server for admin
      * @param tagOverview the tag overview
-     * @param cardEditor stage for the card editor
-     * @param boardHistory board history overview
-     * @param boardSettings board settings ctrl
      * @param serverOverview server overview
      */
     public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<CardEditorCtrl, Parent> cardEditor,
-                           Pair<TagOverviewCtrl, Parent> tagOverview,
                            Pair<BoardHistoryOverviewCtrl, Parent> boardHistory,
+                           Pair<AdminPasswordCtrl, Parent> adminPassword,
                            Pair<BoardSettingsCtrl, Parent> boardSettings,
+                           Pair<AdminOverviewCtrl, Parent> adminBoardOverview,
+                           Pair<TagOverviewCtrl, Parent> tagOverview,
                            Pair<ServerOverviewCtrl, Parent> serverOverview) {
-
         this.primaryStage = primaryStage;
         this.createTagStage =  new Stage();
         this.boardSettingsStage = new Stage();
         this.cardEditorStage = new Stage();
         this.boardHistoryStage = new Stage();
+        this.adminPasswordStage = new Stage();
+        this.adminOverviewStage = new Stage();
 
         this.serverOverviewCtrl = serverOverview.getKey();
-        this.serverOverview = new Scene(serverOverview.getValue());
-
+        this.serverOverviewScene = new Scene(serverOverview.getValue());
         this.landingOverviewCtrl = landingOverview.getKey();
         this.landingOverview = new Scene(landingOverview.getValue());
-
         this.boardHistoryOverviewCtrl = boardHistory.getKey();
         this.boardHistoryOverview = new Scene(boardHistory.getValue());
-
         this.boardOverviewCtrl = boardOverview.getKey();
         this.boardOverview = new Scene(boardOverview.getValue());
-
+        this.adminPasswordCtrl = adminPassword.getKey();
+        this.adminPasswordOverview = new Scene(adminPassword.getValue());
+        this.adminOverviewCtrl = adminBoardOverview.getKey();
+        this.adminOverview = new Scene(adminBoardOverview.getValue());
         this.tagOverviewCtrl = tagOverview.getKey();
         this.tagOverview = new Scene(tagOverview.getValue());
-
         this.boardSettingsCtrl = boardSettings.getKey();
         this.boardSettings = new Scene(boardSettings.getValue());
-
+        this.cardEditorCtrl = cardEditor.getKey();
+        this.cardEditorScene = new Scene(cardEditor.getValue());
         this.boardSettingsStage.setScene(this.boardSettings);
         this.boardSettingsStage.initModality(Modality.APPLICATION_MODAL);
         this.boardSettingsStage.initOwner(this.primaryStage);
 
-        this.cardEditorCtrl = cardEditor.getKey();
-        this.cardEditorScene = new Scene(cardEditor.getValue());
-
+        serverOverviewScene.getStylesheets().add(getClass().
+            getResource("assets/style/textStyle.css").toExternalForm());
         boardHistoryOverview.getStylesheets().add(getClass().
                 getResource("assets/style/textStyle.css").toExternalForm());
         boardHistoryStage.initModality(Modality.APPLICATION_MODAL);
-
-        cardEditorStage.setScene(cardEditorScene);
+        adminPasswordStage.initModality(Modality.APPLICATION_MODAL);
+        adminOverview.getStylesheets().add(getClass().
+            getResource("assets/style/textStyle.css").toExternalForm());
         cardEditorStage.initModality(Modality.APPLICATION_MODAL);
         cardEditorStage.setTitle("Card Editor");
         cardEditorStage.setScene(cardEditorScene);
@@ -127,7 +139,7 @@ public class MainCtrl {
      */
     public void showServerOverview() {
         primaryStage.setTitle("Talio: Task List Organiser");
-        primaryStage.setScene(this.serverOverview);
+        primaryStage.setScene(this.serverOverviewScene);
     }
 
     /**
@@ -170,6 +182,16 @@ public class MainCtrl {
     }
 
     /**
+     * Shows the overview of the board history
+     */
+    public void showHistoryAdmin() throws IOException {
+        adminOverviewCtrl.refresh();
+        adminOverviewStage.setTitle("Board History");
+        adminOverviewStage.setScene(adminOverview);
+        adminOverviewStage.show();
+    }
+
+    /**
      * Closes the overview of the board history
      */
     public void closeHistory() {
@@ -177,11 +199,36 @@ public class MainCtrl {
     }
 
     /**
-     * Shows an existing board overview scene
+     * Shows the admin password pane
      */
-    public void showBoardSettings() {
+    public void showAdminPassword() {
+        adminPasswordStage.setTitle("Admin Password");
+        adminPasswordStage.setScene(adminPasswordOverview);
+        adminPasswordStage.showAndWait();
+    }
+
+    /**
+     * Closes the admin password pane
+     */
+    public void closeAdminPassword() {
+        adminPasswordStage.close();
+    }
+
+    /**
+     * Shows an existing board overview scene
+     * @param currentBoard the board from which the settings are called
+     */
+    public void showBoardSettings(Board currentBoard) {
         this.boardSettingsStage.setTitle("Talio: Task List Organiser (Settings)");
+        this.boardSettingsCtrl.refresh(currentBoard);
         this.boardSettingsStage.showAndWait();
+    }
+
+    /**
+     * Closes the board settings window
+     */
+    public void closeBoardSettings() {
+        boardSettingsStage.close();
     }
 
     /**
@@ -189,20 +236,6 @@ public class MainCtrl {
      */
     public void closeCardEditor() {
         cardEditorStage.close();
-    }
-
-    /**
-     * Method to close the app
-     */
-    public void closeApp() {
-        System.exit(0);
-    }
-
-    /**
-     * Method to minimize the current window
-     */
-    public void minimizeWindow() {
-        primaryStage.setIconified(true);
     }
 
 

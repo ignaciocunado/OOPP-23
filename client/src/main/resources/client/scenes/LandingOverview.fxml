@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -34,6 +39,7 @@
          </font>
       </Text>
       <Button layoutX="14.0" layoutY="561.0" mnemonicParsing="false" onAction="#openHistory" style="-fx-background-color: rgb(52,86,120);" text="History" textFill="WHITE" />
+      <Button id="adminBtn" layoutX="822.0" layoutY="561.0" mnemonicParsing="false" onAction="#openAdminPassword" style="-fx-background-color: rgb(52,86,120);" text="Admin" textFill="WHITE" />
       <Button layoutX="76.0" layoutY="561.0" mnemonicParsing="false" onAction="#openServers" style="-fx-background-color: rgb(52,86,120);" text="Servers" textFill="WHITE" />
    </children>
 </Pane>

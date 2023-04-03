@@ -1,7 +1,7 @@
 package client.scenes;
 
+import client.UserState;
 import client.config.Config;
-import client.config.RecentBoard;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
@@ -12,45 +12,47 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+
 import static javafx.scene.paint.Color.WHITE;
 import static javafx.scene.paint.Color.rgb;
 
-public class BoardHistoryOverviewCtrl {
+public class AdminOverviewCtrl {
 
     private final Config config;
+    private final UserState state;
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
     @FXML
-    private VBox servers;
+    private VBox boards;
 
 
     /** Constructor to inject necessary classes into the controller
      * @param mainCtrl the main controller
      * @param server the server functions
      * @param config the config file
+     * @param state the state of the user (admin or not)
      */
     @Inject
-    public BoardHistoryOverviewCtrl(MainCtrl mainCtrl, ServerUtils server, Config config) {
+    public AdminOverviewCtrl(MainCtrl mainCtrl, ServerUtils server,
+                             Config config, UserState state) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.config = config;
-    }
-
-    /**
-     * Initialisation method initialising FXML objects
-     */
-    @FXML
-    public void initialize() {
-
+        this.state = state;
     }
 
     /**
      * Refreshes the board history view with old recent boards read from the config
      */
-    public void refresh() {
-        this.servers.getChildren().clear();
-        for (RecentBoard recent:config.getCurrentWorkspace().getBoards()) {
-            addTexts(recent.getKey());
+    public void refresh() throws IOException {
+        this.boards.getChildren().clear();
+
+
+        if (this.server.getAllBoards(this.state.getPassword()) != null) {
+            for (Board recent:this.server.getAllBoards(this.state.getPassword())) {
+                addTexts(recent.getKey());
+            }
         }
     }
 
@@ -84,7 +86,7 @@ public class BoardHistoryOverviewCtrl {
 
         serverBox.setSpacing(15);
         serverBox.getChildren().addAll(key, server, empty, rejoin, delete);
-        this.servers.getChildren().add(serverBox);
+        this.boards.getChildren().add(serverBox);
     }
 
     /**
@@ -96,7 +98,11 @@ public class BoardHistoryOverviewCtrl {
         delete.setOnMouseClicked(event -> {
             this.server.deleteBoard(boardKey);
             config.getCurrentWorkspace().deleteBoard(boardKey);
-            refresh();
+            try {
+                refresh();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
@@ -135,4 +141,5 @@ public class BoardHistoryOverviewCtrl {
             txt.getScene().setCursor(Cursor.DEFAULT);
         });
     }
+
 }
