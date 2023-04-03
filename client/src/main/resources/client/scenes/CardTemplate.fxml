@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.ProgressBar?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
@@ -25,8 +25,8 @@
                </font></Text>
             <Text fx:id="cardDescription" fill="#949494" layoutX="13.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 12; -fx-font-fill: gray;" text="Description" />
             <Text fill="WHITE" layoutX="12.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress:" />
-            <ProgressBar fx:id="progress" layoutX="13.0" layoutY="92.0" prefHeight="6.0" prefWidth="213.0" progress="0.0" />
             <Text fill="WHITE" layoutX="13.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tags:" />
+            <ProgressBar fx:id="progress" layoutX="17.0" layoutY="89.0" prefHeight="14.0" prefWidth="201.0" progress="0.0" />
          </children>
       </Pane>
    </children>

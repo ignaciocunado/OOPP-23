@@ -174,6 +174,14 @@ public final class Card {
         return nestedTaskList.removeIf(task -> task.getId() == id);
     }
 
+    public double calculateProgress() {
+        if(nestedTaskList.isEmpty()) {
+            return 0;
+        }
+        return Math.floor(nestedTaskList.stream().filter(task ->
+                task.isCompleted() == true).toList().size() / nestedTaskList.size());
+    }
+
     /**
      * Equals method
      * @param o other object to compare this object to

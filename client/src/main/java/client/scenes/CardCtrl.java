@@ -87,6 +87,7 @@ public final class CardCtrl {
         catch (IOException e) {
 
         }
+        progress.setProgress(this.card.calculateProgress());
     }
 
     /**
