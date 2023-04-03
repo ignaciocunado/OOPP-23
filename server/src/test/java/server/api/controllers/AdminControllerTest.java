@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.BindingResult;
 import server.api.repositories.TestBoardRepository;
 import server.api.repositories.TestCardListRepository;
@@ -52,7 +53,7 @@ public final class AdminControllerTest {
         );
 
         this.adminController = new AdminController(boardService);
-        this.boardController = new BoardController(boardService);
+        this.boardController = new BoardController(boardService, Mockito.mock(SimpMessagingTemplate.class));
         this.hasErrorResult = Mockito.mock(BindingResult.class);
         this.noErrorResult = Mockito.mock(BindingResult.class);
 

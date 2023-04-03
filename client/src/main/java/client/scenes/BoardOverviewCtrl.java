@@ -54,7 +54,8 @@ public class BoardOverviewCtrl implements Initializable {
      * @param config the config file
      */
     @Inject
-    public BoardOverviewCtrl(WebsocketUtils websocket, ServerUtils server, MainCtrl mainCtrl, Config config) {
+    public BoardOverviewCtrl(WebsocketUtils websocket, ServerUtils server,
+                             MainCtrl mainCtrl, Config config) {
         this.websocket = websocket;
         this.server = server;
         this.mainCtrl = mainCtrl;

@@ -249,17 +249,17 @@ public final class BoardControllerTest {
         board2.setId(1);
 
         Assertions.assertEquals(this.boardRepo.findById(1).get(), board1);
-        this.boardController.editPassword(1, new Board("title","name", "new password"), noErrorResult);
+        this.boardController.editBoard(1, new Board("title","name", "new password"), noErrorResult);
         Assertions.assertEquals(this.boardRepo.findById(1).get(), board2);
     }
 
     @Test
     public void editInvalidBoardTest() {
-        Assertions.assertThrows(InvalidRequestException.class, () -> this.boardController.editPassword(5, new Board("","", ""), hasErrorResult));
+        Assertions.assertThrows(InvalidRequestException.class, () -> this.boardController.editBoard(5, new Board("","", ""), hasErrorResult));
     }
 
     @Test
     public void editBoardNotFoundTest() {
-        Assertions.assertThrows(EntityNotFoundException.class, () -> this.boardController.editPassword(5, new Board("title", "name", "password"), noErrorResult));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.boardController.editBoard(5, new Board("title", "name", "password"), noErrorResult));
     }
 }

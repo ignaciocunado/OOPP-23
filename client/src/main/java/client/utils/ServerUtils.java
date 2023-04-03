@@ -112,6 +112,7 @@ public class ServerUtils {
 
     /**
      * Gets all boards on this server
+     * @param password the password which has been entered by the use
      * @return all the boars on this server
      */
     public List<Board> getAllBoards(String password) {

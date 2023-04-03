@@ -108,13 +108,11 @@ public class MainCtrl {
         this.tagOverview = new Scene(tagOverview.getValue());
         this.boardSettingsCtrl = boardSettings.getKey();
         this.boardSettings = new Scene(boardSettings.getValue());
-        
+        this.cardEditorCtrl = cardEditor.getKey();
+        this.cardEditorScene = new Scene(cardEditor.getValue());
         this.boardSettingsStage.setScene(this.boardSettings);
         this.boardSettingsStage.initModality(Modality.APPLICATION_MODAL);
         this.boardSettingsStage.initOwner(this.primaryStage);
-
-        this.cardEditorCtrl = cardEditor.getKey();
-        this.cardEditorScene = new Scene(cardEditor.getValue());
 
         serverOverviewScene.getStylesheets().add(getClass().
             getResource("assets/style/textStyle.css").toExternalForm());

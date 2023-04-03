@@ -16,17 +16,9 @@
 package server.api.controllers;
 
 import commons.entities.Board;
-import commons.entities.Tag;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
-import server.database.TagRepository;
-import server.exceptions.EntityNotFoundException;
-import server.exceptions.InvalidRequestException;
 import server.services.BoardService;
 
 import java.util.List;

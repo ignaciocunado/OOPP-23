@@ -18,9 +18,12 @@ public class AdminInterceptor implements HandlerInterceptor {
      * @return whether the request was accepted
      */
     @Override
-    public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) {
+    public boolean preHandle(final HttpServletRequest request,
+                             final HttpServletResponse response, final Object handler) {
         final String authHeader = request.getHeader("authorization");
-        if (authHeader == null || !authHeader.startsWith("Basic ")) throw new UnauthorisedException("Invalid authorisation header");
+        if (authHeader == null || !authHeader.startsWith("Basic ")) {
+            throw new UnauthorisedException("Invalid authorisation header");
+        }
         String base64Credentials = authHeader.substring("Basic ".length());
         byte[] credentialsBytes = Base64.getDecoder().decode(base64Credentials);
         String credentials = new String(credentialsBytes, StandardCharsets.UTF_8);
