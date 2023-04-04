@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 
 import java.io.File;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,21 @@ class ConfigTest {
     @BeforeEach
     void setUp() {
         config = new Config();
+    }
+
+    @Test
+    void loadConfigurationTest() {
+        this.config.loadConfigurationFromReader(new StringReader("[{\n" +
+                "  \"connectionUri\" : \"http://localhost:8080\",\n" +
+                "  \"boards\" : [ {\n" +
+                "    \"key\" : \"kAiIwfNqoV\"\n" +
+                "  } ]\n" +
+                "}]"));
+
+        final Workspace workspace = new Workspace("http://localhost:8080");
+        workspace.addBoard("kAiIwfNqoV");
+        assertEquals(this.config.getWorkspaces().size(), 1);
+        assertEquals(this.config.getWorkspaces().get(0), workspace);
     }
 
     @Test

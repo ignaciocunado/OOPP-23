@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.google.inject.Singleton;
-import java.io.File;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,15 +25,23 @@ public final class Config {
         this.configFile = new File("./config.json");
     }
 
+    public void loadConfiguration() {
+        try {
+            this.loadConfigurationFromReader(new FileReader(this.configFile));
+        } catch (FileNotFoundException e) {
+            // If file not found use empty config
+        }
+    }
+
     /**
      * Loads the RecentBoard objects into the recentBoards list
      */
-    public void loadConfiguration() {
+    public void loadConfigurationFromReader(final Reader reader) {
         final ObjectMapper mapper = new ObjectMapper();
         final TypeFactory typeFactory = mapper.getTypeFactory();
 
         try {
-            this.workspaces = mapper.readValue(this.configFile,
+            this.workspaces = mapper.readValue(reader,
                 typeFactory.constructCollectionType(List.class, Workspace.class));
         } catch (IOException e) {
             e.printStackTrace();
