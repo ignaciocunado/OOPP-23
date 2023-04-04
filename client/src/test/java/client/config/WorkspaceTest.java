@@ -18,12 +18,12 @@ class WorkspaceTest {
     }
 
     @Test
-    void getConnectionUri() {
+    void getConnectionUriTest() {
         assertEquals("connection", workspace.getConnectionUri());
     }
 
     @Test
-    void getBoards() {
+    void getBoardsTest() {
         assertEquals(0, workspace.getBoards().size());
         assertEquals(new ArrayList<>(), workspace.getBoards());
         workspace.addBoard("key");
@@ -33,7 +33,7 @@ class WorkspaceTest {
     }
 
     @Test
-    void addBoard() {
+    void addBoardTest() {
         workspace.addBoard("key");
         assertEquals(1, workspace.getBoards().size());
         workspace.addBoard("key");
@@ -41,12 +41,30 @@ class WorkspaceTest {
     }
 
     @Test
-    void deleteBoard() {
+    void deleteBoardTest() {
         workspace.addBoard("key");
         workspace.addBoard("secondKey");
         workspace.deleteBoard("key");
         assertEquals(1, workspace.getBoards().size());
         assertEquals("secondKey", workspace.getBoards().get(0).getKey());
         assertFalse(workspace.getBoards().contains(new RecentBoard("key")));
+    }
+
+    @Test
+    void equalsTest1() {
+        Workspace workspace1 = new Workspace("connection");
+        assertEquals(workspace1, workspace);
+    }
+
+    @Test
+    void equalsTest2() {
+        Workspace workspace1 = new Workspace("dddd");
+        assertNotEquals(workspace1, workspace);
+    }
+
+    @Test
+    void hashCodeTest() {
+        Workspace workspace1 = new Workspace("connection");
+        assertEquals(workspace1.hashCode(), workspace.hashCode());
     }
 }

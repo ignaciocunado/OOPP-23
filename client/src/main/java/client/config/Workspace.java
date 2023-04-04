@@ -2,6 +2,7 @@ package client.config;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public final class Workspace {
 
@@ -66,4 +67,16 @@ public final class Workspace {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Workspace workspace = (Workspace) o;
+        return connectionUri.equals(workspace.connectionUri) && boards.equals(workspace.boards);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(connectionUri, boards);
+    }
 }
