@@ -84,7 +84,7 @@ public class BoardHistoryOverviewCtrl {
         serverBox.setSpacing(15);
         serverBox.getChildren().addAll(key, boardName, empty, rejoin, delete);
         for (Node child: serverBox.getChildren()) {
-            addSytleClass((Text) child);
+            addStyleClass((Text) child);
         }
         this.servers.getChildren().add(serverBox);
     }
@@ -93,7 +93,7 @@ public class BoardHistoryOverviewCtrl {
      * Adds the styling to the Text
      * @param txt the text to style
      */
-    public void addSytleClass(Text txt) {
+    public void addStyleClass(Text txt) {
         txt.getStyleClass().add("texts");
         if (txt.getText().equals("Rejoin")|| txt.getText().equals("Delete")) {
             txt.setWrappingWidth(50);
