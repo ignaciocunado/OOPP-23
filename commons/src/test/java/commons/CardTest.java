@@ -66,6 +66,19 @@ class CardTest {
     }
 
     @Test
+    public void calculateProgressTestEmptySubtasks() {
+        assertEquals(card.calculateProgress(), 0);
+    }
+
+    @Test
+    public void calculateProgressTestWithSubtasks() {
+        card.addTask(task);
+        card.addTask(new Task("", false));
+        card.addTask(new Task(" ", false));
+        assertEquals((1.0/3.0), card.calculateProgress());
+    }
+
+    @Test
     public void addTagTest() {
         card.addTag(tag);
         ArrayList<Tag> tagsList = new ArrayList<>();
