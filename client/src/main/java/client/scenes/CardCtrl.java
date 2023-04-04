@@ -12,6 +12,7 @@ import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -37,7 +38,13 @@ public final class CardCtrl {
     private Text cardDescription;
     @FXML
     private HBox tagList;
+<<<<<<< client/src/main/java/client/scenes/CardCtrl.java
     private BoardOverviewCtrl boardOverviewCtrl;
+=======
+    @FXML
+    private ProgressBar progress;
+
+>>>>>>> client/src/main/java/client/scenes/CardCtrl.java
     private Card card;
 
     /**
@@ -104,6 +111,9 @@ public final class CardCtrl {
         catch (IOException e) {
 
         }
+        System.out.println(this.card.getNestedTaskList());
+        System.out.println(this.card.calculateProgress());
+        progress.setProgress(this.card.calculateProgress());
     }
 
     /**

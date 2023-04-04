@@ -6,6 +6,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
@@ -13,9 +14,10 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.TextField?>
 
-<Pane fx:id="cardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#mouseHover" onMouseExited="#mouseStopHover" prefHeight="128.0" prefWidth="235.0" style="-fx-background-color: rgb(35,69,103);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardCtrl">
+<<<<<<< client/src/main/resources/client/scenes/CardTemplate.fxml
+<Pane fx:id="cardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#mouseHover" onMouseExited="#mouseStopHover" prefHeight="162.0" prefWidth="237.0" style="-fx-background-color: rgb(35,69,103);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardCtrl">
    <children>
-      <Pane onMouseClicked="#handleEditCard" prefHeight="128.0" prefWidth="235.0" style="-fx-background-color: #123456; -fx-background-radius: 10;">
+      <Pane onMouseClicked="#handleEditCard" prefHeight="162.0" prefWidth="235.0" style="-fx-background-color: #123456; -fx-background-radius: 10;">
          <children>
             <Line endX="80.0" layoutX="104.0" layoutY="110.0" startX="-60.0" stroke="WHITE" strokeWidth="3.0" />
             <Button layoutX="203.0" layoutY="5.0" mnemonicParsing="false" onAction="#handleDeleteCard" prefHeight="25.0" prefWidth="26.0" style="-fx-background-color: #123456; -fx-label-padding: -5px; -fx-padding: 0px;" text="X" textFill="WHITE">
@@ -23,10 +25,15 @@
                   <Font size="16.0" />
                </font>
             </Button>
-            <HBox fx:id="tagList" layoutX="13.0" layoutY="82.0" prefHeight="12.0" prefWidth="210.0" />
-            <TextField fx:id="cardTitle" layoutX="11.0" layoutY="6.0" prefHeight="25.0" prefWidth="78.0" promptText="Title" style="-fx-background-color: #123456; -fx-font-size: 18; -fx-text-fill: white; -fx-padding: 0;">
-            </TextField>
-            <Text fx:id="cardDescription" fill="#949494" layoutX="10.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 12; -fx-font-fill: gray;" text="Description" />
+            <HBox fx:id="tagList" layoutX="13.0" layoutY="126.0" prefHeight="12.0" prefWidth="211.0" />
+            <Text fx:id="cardTitle" fill="WHITE" layoutX="13.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 18;" text="Title">
+               <font>
+                  <Font size="15.0" />
+               </font></Text>
+            <Text fx:id="cardDescription" fill="#949494" layoutX="13.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 12; -fx-font-fill: gray;" text="Description" />
+            <Text fill="WHITE" layoutX="12.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress:" />
+            <Text fill="WHITE" layoutX="13.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tags:" />
+            <ProgressBar fx:id="progress" layoutX="17.0" layoutY="89.0" prefHeight="14.0" prefWidth="201.0" progress="0.0" />
          </children>
       </Pane>
    </children>
