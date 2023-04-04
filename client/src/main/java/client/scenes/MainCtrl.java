@@ -15,9 +15,11 @@
  */
 package client.scenes;
 
+import client.Main;
 import commons.entities.Board;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -133,7 +135,9 @@ public class MainCtrl {
         cardEditorScene.getStylesheets().add(getClass().getResource("assets/style/comboBox.css")
             .toExternalForm());
         createTagStage.initModality(Modality.APPLICATION_MODAL);
-
+        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("logo/logo.png")));
+        createTagStage.getIcons().add(new Image(Main.class.getResourceAsStream("logo/logo.png")));
+        cardEditorStage.getIcons().add(new Image(Main.class.getResourceAsStream("logo/logo.png")));
         primaryStage.initStyle(StageStyle.DECORATED);
         showServerOverview();
         primaryStage.show();
