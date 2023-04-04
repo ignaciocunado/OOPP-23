@@ -67,6 +67,11 @@ public final class Workspace {
         }
     }
 
+    /**
+     * Equals method
+     * @param o other object to compare this to
+     * @return true iff both objects are equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,6 +80,10 @@ public final class Workspace {
         return connectionUri.equals(workspace.connectionUri) && boards.equals(workspace.boards);
     }
 
+    /**
+     * Hashchode method, nobody ever uses it but its here
+     * @return idk a number lol
+     */
     @Override
     public int hashCode() {
         return Objects.hash(connectionUri, boards);
