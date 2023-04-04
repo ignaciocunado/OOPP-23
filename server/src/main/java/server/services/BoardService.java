@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
 import server.exceptions.EntityNotFoundException;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Consumer;
 
 @Service
 public final class BoardService {
@@ -17,6 +17,8 @@ public final class BoardService {
     private final TagService tagService;
     private CardListService cardListService;
     private final BoardRepository boardRepository;
+
+    private final Map<UUID, Runnable> listeners;
 
     /**
      * Creates a board service using some other services
@@ -34,6 +36,7 @@ public final class BoardService {
         this.tagService = tagService;
         this.cardListService = cardListService;
         this.boardRepository = boardRepository;
+        this.listeners = new HashMap<>();
     }
 
     /**
@@ -47,6 +50,7 @@ public final class BoardService {
         final String newKey = this.textService.randomAlphanumericalString(10);
         final Board board = new Board(newKey, name.equals("") ? "New Board" : name,
                 password == null ? "" : password);
+        this.listeners.values().forEach(Runnable::run);
         return this.boardRepository.save(board);
     }
 
@@ -199,6 +203,29 @@ public final class BoardService {
         }
         final Board board = boardOpt.get();
         this.boardRepository.deleteById(board.getId());
+        this.listeners.values().forEach(Runnable::run);
         return board;
     }
+
+    /**
+     * Adds a listener for when boards are added or deleted
+     * @param runnable the event to run
+     * @return the id of the runner for removing this
+     */
+    public UUID addAllBoardListener(final Runnable runnable) {
+        final UUID uuid = UUID.randomUUID();
+        this.listeners.put(uuid, runnable);
+        return uuid;
+    }
+
+    /**
+     * Removes a listener for when boards are added or deleted
+     * @param uuid the id of the runner for removing
+     */
+    public void removeAllBoardListener(final UUID uuid) {
+        this.listeners.remove(uuid);
+    }
+
+
+
 }

@@ -17,11 +17,14 @@ package server.api.controllers;
 
 import commons.entities.Board;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.services.BoardService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -46,6 +49,24 @@ public final class AdminController {
     @GetMapping("/board/all")
     public ResponseEntity<List<Board>> getAllBoards() {
         return new ResponseEntity<>(this.boardService.getAllBoards(), new HttpHeaders(), 200);
+    }
+
+    /**
+     * Handler for getting all boards
+     *
+     * @return the list boards
+     */
+    @GetMapping("/board/all/updates")
+    public DeferredResult<ResponseEntity<List<Board>>> getAllBoardsUpdates() {
+        final ResponseEntity<List<Board>> noContent = new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        final DeferredResult res = new DeferredResult<>(1000L, noContent);
+        final UUID runId = this.boardService.addAllBoardListener(() -> {
+            res.setResult(new ResponseEntity<>(this.boardService.getAllBoards(), new HttpHeaders(), 200));
+        });
+        res.onCompletion(() -> {
+            this.boardService.removeAllBoardListener(runId);
+        });;
+        return res;
     }
 
 }
