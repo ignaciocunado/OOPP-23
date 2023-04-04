@@ -82,7 +82,8 @@ public class MainCtrl {
      * @param serverOverview server overview
      * @param shortcutsOverview the shortcuts overview
      */
-    public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
+    public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent>
+                            landingOverview,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<CardEditorCtrl, Parent> cardEditor,
                            Pair<BoardHistoryOverviewCtrl, Parent> boardHistory,
@@ -120,7 +121,6 @@ public class MainCtrl {
         this.shortcutsScene = new Scene(shortcutsOverview.getValue());
         this.shortcutsStage.initModality(Modality.APPLICATION_MODAL);
         this.shortcutsStage.initOwner(this.primaryStage);
-
         serverOverviewScene.getStylesheets().add(getClass().
             getResource("assets/style/textStyle.css").toExternalForm());
         boardHistoryOverview.getStylesheets().add(getClass().
