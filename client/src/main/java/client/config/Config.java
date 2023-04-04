@@ -25,6 +25,9 @@ public final class Config {
         this.configFile = new File("./config.json");
     }
 
+    /**
+     * Loads the configuration
+     */
     public void loadConfiguration() {
         try {
             this.loadConfigurationFromReader(new FileReader(this.configFile));
@@ -35,6 +38,7 @@ public final class Config {
 
     /**
      * Loads the RecentBoard objects into the recentBoards list
+     * @param reader reader
      */
     public void loadConfigurationFromReader(final Reader reader) {
         final ObjectMapper mapper = new ObjectMapper();
