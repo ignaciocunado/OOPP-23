@@ -1,5 +1,7 @@
 package client.config;
 
+import java.util.Objects;
+
 public final class RecentBoard {
     private String key;
 
@@ -25,4 +27,25 @@ public final class RecentBoard {
         return key;
     }
 
+    /**
+     * Equals method
+     * @param o other object to compare this to
+     * @return true iff both objects are equal
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RecentBoard that = (RecentBoard) o;
+        return key.equals(that.key);
+    }
+
+    /**
+     * Hashchode method, nobody ever uses it but its here
+     * @return idk a number lol
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(key);
+    }
 }
