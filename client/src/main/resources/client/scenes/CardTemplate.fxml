@@ -14,7 +14,6 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.TextField?>
 
-<<<<<<< client/src/main/resources/client/scenes/CardTemplate.fxml
 <Pane fx:id="cardPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#mouseHover" onMouseExited="#mouseStopHover" prefHeight="162.0" prefWidth="237.0" style="-fx-background-color: rgb(35,69,103);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardCtrl">
    <children>
       <Pane onMouseClicked="#handleEditCard" prefHeight="162.0" prefWidth="235.0" style="-fx-background-color: #123456; -fx-background-radius: 10;">
@@ -26,10 +25,10 @@
                </font>
             </Button>
             <HBox fx:id="tagList" layoutX="13.0" layoutY="126.0" prefHeight="12.0" prefWidth="211.0" />
-            <Text fx:id="cardTitle" fill="WHITE" layoutX="13.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 18;" text="Title">
+            <TextField fx:id="cardTitle" layoutX="11.0" layoutY="6.0" prefHeight="25.0" prefWidth="78.0" promptText="Title" style="-fx-background-color: #123456; -fx-font-size: 18; -fx-text-fill: white; -fx-padding: 0;">
                <font>
                   <Font size="15.0" />
-               </font></Text>
+               </font></TextField>
             <Text fx:id="cardDescription" fill="#949494" layoutX="13.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 12; -fx-font-fill: gray;" text="Description" />
             <Text fill="WHITE" layoutX="12.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Progress:" />
             <Text fill="WHITE" layoutX="13.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tags:" />

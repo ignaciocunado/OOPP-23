@@ -168,7 +168,7 @@ public class BoardOverviewCtrl implements Initializable {
 
     /**
      * Sets the keyboard shortcuts for moving the hover with the arrow keys
-     * @param ke the keyEvent passed on from setPressed()
+     * @param ke the keyEvent passed on from setPressed()q
      */
     public void setArrows(KeyEvent ke) {
         if (ke.getCode().equals(KeyCode.DOWN)) {
