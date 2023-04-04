@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import commons.entities.Board;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -50,41 +51,60 @@ public class BoardHistoryOverviewCtrl {
     public void refresh() {
         this.servers.getChildren().clear();
         for (RecentBoard recent:config.getCurrentWorkspace().getBoards()) {
-            addTexts(recent.getKey());
+            addTexts(getBoard(recent.getKey()));
         }
     }
 
     /**
-     * Adds all the Texts and the appropriate actions for each Board
-     * @param recentKey the key of the Board being added to the history
+     * Gets the board given a key
+     * @param key the key used to look for the board
+     * @return the Board corresponding to the key
      */
-    public void addTexts(String recentKey) {
+    public Board getBoard(String key) {
+        return this.server.getBoard(key);
+    }
+
+    /**
+     * Adds all the Texts and the appropriate actions for each Board
+     * @param board the Board being added to the history
+     */
+    public void addTexts(Board board) {
         final HBox serverBox = new HBox();
-        final Text key = new Text(recentKey);
-        final Text server = new Text(config.getCurrentWorkspace().getConnectionUri());
+        final Text key = new Text(board.getKey());
+        final Text boardName = new Text(board.getName());
         final Text rejoin = new Text("Rejoin");
         final Text delete = new Text("Delete");
         final Text empty = new Text("");
-        key.getStyleClass().add("texts");
-        server.getStyleClass().add("texts");
-        rejoin.getStyleClass().add("texts");
-        delete.getStyleClass().add("texts");
-        key.setWrappingWidth(150);
-        server.setWrappingWidth(150);
-        empty.setWrappingWidth(7);
-        rejoin.setWrappingWidth(50);
-        delete.setWrappingWidth(50);
 
-        rejoin.getStyleClass().add("interactiveHistoryTexts");
-        delete.getStyleClass().add("interactiveHistoryTexts");
-        setOnMouseClickedRejoin(rejoin, recentKey);
-        setOnMouseClickedDelete(delete, recentKey);
+        setOnMouseClickedRejoin(rejoin, board.getKey());
+        setOnMouseClickedDelete(delete, board.getKey());
         setOnMouseHovered(rejoin);
         setOnMouseHovered(delete);
 
         serverBox.setSpacing(15);
-        serverBox.getChildren().addAll(key, server, empty, rejoin, delete);
+        serverBox.getChildren().addAll(key, boardName, empty, rejoin, delete);
+        for (Node child: serverBox.getChildren()) {
+            addStyleClass((Text) child);
+        }
         this.servers.getChildren().add(serverBox);
+    }
+
+    /**
+     * Adds the styling to the Text
+     * @param txt the text to style
+     */
+    public void addStyleClass(Text txt) {
+        txt.getStyleClass().add("texts");
+        if (txt.getText().equals("Rejoin")|| txt.getText().equals("Delete")) {
+            txt.setWrappingWidth(50);
+            txt.getStyleClass().add("interactiveHistoryTexts");
+        }
+        else if (txt.getText().equals("")) {
+            txt.setWrappingWidth(7);
+        }
+        else {
+            txt.setWrappingWidth(150);
+        }
     }
 
     /**

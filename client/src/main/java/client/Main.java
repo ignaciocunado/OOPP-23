@@ -73,6 +73,8 @@ public class Main extends Application {
                 FXML.load(BoardSettingsCtrl.class, "client", "scenes", "BoardSettings.fxml");
         final Pair<AdminOverviewCtrl, Parent> adminOverview =
             FXML.load(AdminOverviewCtrl.class, "client", "scenes", "AdminOverview.fxml");
+        final Pair<ShortcutsCtrl, Parent> shortcutsOverview =
+            FXML.load(ShortcutsCtrl.class, "client", "scenes", "ShortcutsOverview.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(
                 primaryStage,
@@ -84,7 +86,8 @@ public class Main extends Application {
                 boardSettingsOverview,
                 adminOverview,
                 tagOverview,
-                serverOverview
+                serverOverview,
+                shortcutsOverview
         );
     }
 

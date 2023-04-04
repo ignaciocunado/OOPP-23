@@ -74,6 +74,7 @@ public final class CardListCtrl {
             this.cards.getChildren().add(pair.getValue());
             final CardCtrl ctrl = pair.getKey();
             ctrl.setCardListCtrl(this);
+            ctrl.setBoardOverviewCtrl(boardOverviewCtrl);
             ctrl.refresh(card);
         }
         this.cards.getChildren().add(addButton);
@@ -151,5 +152,13 @@ public final class CardListCtrl {
      */
     public Board getBoard() {
         return boardOverviewCtrl.getBoard();
+    }
+
+    /**
+     * Gets the cardList of this controller
+     * @return the cardList
+     */
+    public CardList getCardList() {
+        return this.cardList;
     }
 }

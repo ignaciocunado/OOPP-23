@@ -11,6 +11,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -33,6 +35,8 @@ public class CardEditorCtrl {
     private HBox tags;
     @FXML
     private VBox nestedTaskList;
+    @FXML
+    private AnchorPane mainPane;
     private CardCtrl cardCtrl;
     private Card currentCard;
     @FXML
@@ -87,6 +91,11 @@ public class CardEditorCtrl {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        mainPane.setOnKeyPressed(event1 -> {
+            if (event1.getCode().equals(KeyCode.ESCAPE)) {
+                this.mainCtrl.closeCardEditor();
+            }
+        });
         setEditCardMethods();
     }
 

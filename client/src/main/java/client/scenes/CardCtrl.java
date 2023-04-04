@@ -7,8 +7,11 @@ import commons.entities.Board;
 import commons.entities.Card;
 import javafx.application.Platform;
 import commons.entities.Tag;
+import javafx.beans.Observable;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
@@ -30,14 +33,14 @@ public final class CardCtrl {
     @FXML
     private Pane cardPane;
     @FXML
-    private Text cardTitle;
+    private TextField cardTitle;
     @FXML
     private Text cardDescription;
     @FXML
     private HBox tagList;
+    private BoardOverviewCtrl boardOverviewCtrl;
     @FXML
     private ProgressBar progress;
-
     private Card card;
 
     /**
@@ -62,6 +65,23 @@ public final class CardCtrl {
      */
     public void setCardListCtrl(final CardListCtrl cardListCtrl) {
         this.cardListCtrl = cardListCtrl;
+    }
+
+    /**
+     * Gets the cardList controller to which this card us associated
+     * @return the CardListCtrl
+     */
+    public CardListCtrl getCardListCtrl() {
+        return this.cardListCtrl;
+    }
+
+    /**
+     * Sets the controller of the BoardOverview
+     * @param boardOverviewCtrl the controller
+     */
+    public void setBoardOverviewCtrl(final BoardOverviewCtrl boardOverviewCtrl) {
+        this.boardOverviewCtrl = boardOverviewCtrl;
+        this.boardOverviewCtrl.setCardCtrl(this);
     }
 
     /**
@@ -116,15 +136,22 @@ public final class CardCtrl {
             if (changedCard == null || changedCard.getId() != (card.getId())) return;
             Platform.runLater(() -> this.refresh(changedCard));
         });
+        cardTitle.focusedProperty().addListener(this::titleOrDescriptionEdited);
     }
 
+    /**
+     * Handler to delete a card
+     */
     @FXML
-    private void handleDeleteCard() {
+    public void handleDeleteCard() {
         this.cardListCtrl.removeCard(this.card.getId());
     }
 
+    /**
+     * Handler to edit a card
+     */
     @FXML
-    private void handleEditCard() {
+    public void handleEditCard() {
         this.mainCtrl.showCardEditor(this);
     }
 
@@ -134,5 +161,53 @@ public final class CardCtrl {
      */
     public Board getBoard() {
         return cardListCtrl.getBoard();
+    }
+
+    /**
+     * Sets appropriate visual feedback when hovering over a card
+     */
+    public void mouseHover() {
+        this.boardOverviewCtrl.setHoverCard(this.getCardPane());
+        cardPane.setOpacity(0.75);
+        Pane childPane = (Pane) cardPane.getChildren().get(0);
+        childPane.setStyle("-fx-background-color: #123456; -fx-background-radius: 10;" +
+            "-fx-border-color: rgb(1,35,69); -fx-border-width: 3px");
+    }
+
+    /**
+     * Stops visual feedback for hovering over a card
+     */
+    public void mouseStopHover() {
+        cardPane.setOpacity(1);
+        Pane childPane = (Pane) cardPane.getChildren().get(0);
+        childPane.setStyle("-fx-background-color: #123456; " +
+            "-fx-background-radius: 10; -fx-border-width: 0px");
+    }
+
+    /**
+     * Sets the cardPane
+     * @param cardPane the Pane being assigned to it
+     */
+    public void setCardPane(Pane cardPane) {
+        this.cardPane = cardPane;
+    }
+
+    /**
+     * Gets the cardPane
+     * @return the Pane of the current card
+     */
+    public Pane getCardPane() {
+        return this.cardPane;
+    }
+
+    /**
+     * Checks whether any of the fields lost focus and calls the editCard endpoint
+     * @param observable lame ass parameter
+     */
+    public void titleOrDescriptionEdited(Observable observable) {
+        if (!(observable instanceof ReadOnlyBooleanProperty)) return; // Doesn't happen
+        final ReadOnlyBooleanProperty focused = (ReadOnlyBooleanProperty) observable;
+        if (focused.getValue()) return; // If focuses then don't save yet
+        this.server.editCard(this.card.getId(), cardTitle.getText(), cardDescription.getText());
     }
 }

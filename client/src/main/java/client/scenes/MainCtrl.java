@@ -31,6 +31,7 @@ public class MainCtrl {
     private Stage boardSettingsStage;
     private Stage cardEditorStage;
     private Stage boardHistoryStage;
+    private Stage shortcutsStage;
 
     private BoardHistoryOverviewCtrl boardHistoryOverviewCtrl;
     private Scene boardHistoryOverview;
@@ -61,6 +62,9 @@ public class MainCtrl {
     private CardEditorCtrl cardEditorCtrl;
     private Scene cardEditorScene;
 
+    private ShortcutsCtrl shortcutsCtrl;
+    private Scene shortcutsScene;
+
     /**
      * Initialize main controller with all FXML controllers
      *
@@ -74,6 +78,7 @@ public class MainCtrl {
      * @param adminBoardOverview the overview of all boards on the server for admin
      * @param tagOverview the tag overview
      * @param serverOverview server overview
+     * @param shortcutsOverview the shortcuts overview
      */
     public void initialize(Stage primaryStage, Pair<LandingOverviewCtrl, Parent> landingOverview,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
@@ -83,14 +88,10 @@ public class MainCtrl {
                            Pair<BoardSettingsCtrl, Parent> boardSettings,
                            Pair<AdminOverviewCtrl, Parent> adminBoardOverview,
                            Pair<TagOverviewCtrl, Parent> tagOverview,
-                           Pair<ServerOverviewCtrl, Parent> serverOverview) {
+                           Pair<ServerOverviewCtrl, Parent> serverOverview,
+                           Pair<ShortcutsCtrl, Parent> shortcutsOverview) {
         this.primaryStage = primaryStage;
-        this.createTagStage =  new Stage();
-        this.boardSettingsStage = new Stage();
-        this.cardEditorStage = new Stage();
-        this.boardHistoryStage = new Stage();
-        this.adminPasswordStage = new Stage();
-        this.adminOverviewStage = new Stage();
+        initialiseStages();
 
         this.serverOverviewCtrl = serverOverview.getKey();
         this.serverOverviewScene = new Scene(serverOverview.getValue());
@@ -113,6 +114,10 @@ public class MainCtrl {
         this.boardSettingsStage.setScene(this.boardSettings);
         this.boardSettingsStage.initModality(Modality.APPLICATION_MODAL);
         this.boardSettingsStage.initOwner(this.primaryStage);
+        this.shortcutsCtrl = shortcutsOverview.getKey();
+        this.shortcutsScene = new Scene(shortcutsOverview.getValue());
+        this.shortcutsStage.initModality(Modality.APPLICATION_MODAL);
+        this.shortcutsStage.initOwner(this.primaryStage);
 
         serverOverviewScene.getStylesheets().add(getClass().
             getResource("assets/style/textStyle.css").toExternalForm());
@@ -132,6 +137,19 @@ public class MainCtrl {
         primaryStage.initStyle(StageStyle.DECORATED);
         showServerOverview();
         primaryStage.show();
+    }
+
+    /**
+     * Initialises all the stages
+     */
+    public void initialiseStages() {
+        this.createTagStage =  new Stage();
+        this.boardSettingsStage = new Stage();
+        this.cardEditorStage = new Stage();
+        this.boardHistoryStage = new Stage();
+        this.adminPasswordStage = new Stage();
+        this.adminOverviewStage = new Stage();
+        this.shortcutsStage = new Stage();
     }
 
     /**
@@ -247,5 +265,14 @@ public class MainCtrl {
         createTagStage.setScene(this.tagOverview);
         tagOverviewCtrl.refresh(boardOverviewCtrl);
         createTagStage.showAndWait();
+    }
+
+    /**
+     * Shows the overview of the shortcuts
+     */
+    public void showShortcuts() {
+        this.shortcutsStage.setTitle("Talio: Task List Organiser (Shortcuts)");
+        this.shortcutsStage.setScene(shortcutsScene);
+        this.shortcutsStage.showAndWait();
     }
 }
