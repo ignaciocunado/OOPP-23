@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainPane" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: rgb(1,35,69); -fx-padding: 20 20 60 20;" stylesheets="@/client/scenes/assets/style/scrollbar.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardOverviewCtrl">
+<BorderPane fx:id="mainPane" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: rgb(1,35,69);" stylesheets="@/client/scenes/assets/style/scrollbar.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardOverviewCtrl">
    <right>
       <Pane maxWidth="96.0" minWidth="96.0" prefHeight="700.0" prefWidth="96.0" BorderPane.alignment="CENTER">
          <children>
