@@ -38,13 +38,9 @@ public final class CardCtrl {
     private Text cardDescription;
     @FXML
     private HBox tagList;
-<<<<<<< client/src/main/java/client/scenes/CardCtrl.java
     private BoardOverviewCtrl boardOverviewCtrl;
-=======
     @FXML
     private ProgressBar progress;
-
->>>>>>> client/src/main/java/client/scenes/CardCtrl.java
     private Card card;
 
     /**
