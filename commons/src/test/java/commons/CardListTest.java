@@ -108,4 +108,26 @@ class CardListTest {
         list.setColour("w333");
         assertEquals("w333", list.getColour());
     }
+
+    @Test
+    public void setIdTest() {
+        CardList list = new CardList("new");
+        assertEquals(0, list.getId());
+        list.setId(69);
+        assertEquals(69, list.getId());
+    }
+
+    @Test
+    public void removeCardbyIdTest() {
+        CardList list = new CardList("new");
+        Card card = new Card("dd", "dd");
+        card.setId(999);
+        assertEquals(0, list.getCards().size());
+        list.addCard(card);
+        assertEquals(1, list.getCards().size());
+        list.removeCardById(0);
+        assertEquals(1, list.getCards().size());
+        list.removeCardById(999);
+        assertEquals(0, list.getCards().size());
+    }
 }
