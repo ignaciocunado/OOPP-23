@@ -223,16 +223,17 @@ public class ServerUtils {
      *
      * @param id    the list id
      * @param title the new title
+     * @param colour the new colour
      * @return the renamed list
      */
-    public CardList renameList(final int id, final String title) {
+    public CardList editCardList(final int id, final String title, final String colour) {
         try {
             return client.target(this.server).path("api/list/{id}")
                     .resolveTemplate("id", id)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .method(HttpMethod.PATCH,
-                            Entity.json(new CardList(title)), CardList.class);
+                            Entity.json(new CardList(title, colour)), CardList.class);
         } catch (NotFoundException e) {
             return null;
         }

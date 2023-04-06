@@ -101,7 +101,7 @@ public final class CardListCtrl {
         final ReadOnlyBooleanProperty focused = (ReadOnlyBooleanProperty) observable;
         if (focused.getValue()) return; // If focuses then don't save yet
 
-        this.server.renameList(this.cardList.getId(), listTitleField.getText());
+        this.server.editCardList(this.cardList.getId(), listTitleField.getText(), this.cardList.getColour());
     }
 
     /**
