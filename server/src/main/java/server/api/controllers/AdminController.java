@@ -19,7 +19,9 @@ import commons.entities.Board;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 import server.services.BoardService;
 
@@ -60,8 +62,9 @@ public final class AdminController {
     public DeferredResult<ResponseEntity<List<Board>>> getAllBoardsUpdates() {
         final ResponseEntity<List<Board>> noContent = new ResponseEntity<>(HttpStatus.NO_CONTENT);
         final DeferredResult<ResponseEntity<List<Board>>> res = new DeferredResult<>(10000L, noContent);
-        final UUID runId = this.boardService.addAllBoardListener(() -> {
-            res.setResult(new ResponseEntity<>(this.boardService.getAllBoards(), new HttpHeaders(), 200));
+
+        final UUID runId = this.boardService.addAllBoardListener(boards -> {
+            res.setResult(new ResponseEntity<>(boards, new HttpHeaders(), 200));
         });
         res.onCompletion(() -> {
             this.boardService.removeAllBoardListener(runId);
