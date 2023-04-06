@@ -4,6 +4,7 @@ import client.config.Config;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
+import commons.entities.CardList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
@@ -104,7 +105,7 @@ public final class BoardSettingsCtrl {
     public void resetBoardColours() {
         currentBoard.setColour("");
         server.editBoard(currentBoard.getId(), currentBoard);
-        mainCtrl.closeBoardSettings();
+
         this.boardOverviewCtrl.refresh(currentBoard);
     }
 
@@ -123,7 +124,37 @@ public final class BoardSettingsCtrl {
                 blue + ")");
         server.editBoard(currentBoard.getId(), currentBoard);
         this.boardOverviewCtrl.refresh(currentBoard);
-        mainCtrl.closeBoardSettings();
+//        mainCtrl.closeBoardSettings();
+    }
+
+    /**
+     * Resets the colours of the lists
+     */
+    public void resetListColours() {
+        for(CardList cardList : currentBoard.getLists()) {
+            cardList.setColour("");
+            server.editCardList(cardList.getId(), cardList.getTitle(), cardList.getColour());
+        }
+        this.boardOverviewCtrl.refresh(currentBoard);
+    }
+
+    /**
+     * Saves the colour chosen and applies it
+     */
+    public void saveListColours() {
+        Double redDouble =  backgroundColourList.getValue().getRed()*255;
+        Double greenDouble = backgroundColourList.getValue().getGreen()*255;
+        Double blueDouble =  backgroundColourList.getValue().getBlue()*255;
+        int red = redDouble.intValue();
+        int green = greenDouble.intValue();
+        int blue = blueDouble.intValue();
+        for(CardList cardList : currentBoard.getLists()) {
+            cardList.setColour("rgb(" + red  + "," +
+                    green + ", " +
+                    blue + ")");
+            server.editCardList(cardList.getId(), cardList.getTitle(), cardList.getColour());
+        }
+        this.boardOverviewCtrl.refresh(currentBoard);
     }
 
     /**

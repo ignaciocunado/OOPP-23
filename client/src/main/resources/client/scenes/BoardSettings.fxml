@@ -57,12 +57,12 @@
                                  </font>
                               </Text>
                               <ColorPicker fx:id="backgroundColourBoard" layoutX="10.0" layoutY="10.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="42.5" />
-                              <Button fx:id="resetButton" layoutX="14.0" layoutY="272.0" mnemonicParsing="false" onAction="#resetBoardColours" style="-fx-background-color: #123456;" text="Reset" textFill="WHITE" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="14.0">
+                              <Button fx:id="resetButton" layoutX="14.0" layoutY="272.0" mnemonicParsing="false" onAction="#resetListColours" style="-fx-background-color: #123456;" text="Reset" textFill="WHITE" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="14.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="saveButtonColour" layoutX="248.0" layoutY="272.0" mnemonicParsing="false" onAction="#saveAllColours" style="-fx-background-color: #123456;" text="Save" textFill="WHITE">
+                              <Button fx:id="saveButtonColour" layoutX="248.0" layoutY="272.0" mnemonicParsing="false" onAction="#saveListColours" style="-fx-background-color: #123456;" text="Save" textFill="WHITE">
                                  <font>
                                     <Font size="18.0" />
                                  </font>

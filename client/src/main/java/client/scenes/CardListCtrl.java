@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.util.Objects;
@@ -27,6 +28,8 @@ public final class CardListCtrl {
     private TextField listTitleField;
     @FXML
     private VBox cards;
+    @FXML
+    private AnchorPane background;
 
     private CardList cardList;
     private BoardOverviewCtrl boardOverviewCtrl;
@@ -78,6 +81,18 @@ public final class CardListCtrl {
             ctrl.refresh(card);
         }
         this.cards.getChildren().add(addButton);
+        if(cardList.getColour().equals("")) {
+            background.setStyle("-fx-background-color:  rgb(35,69,103); -fx-border-radius: 15;" +
+                    " -fx-background-radius:15;" +
+                    " -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.7), 10, 0, 0, 0)");
+            cards.setStyle("-fx-background-color: rgb(35,69,103); -fx-spacing: 10" );
+        }
+        else {
+            background.setStyle("-fx-background-color: "+ cardList.getColour() + "; -fx-border-radius: 15;" +
+                    " -fx-background-radius:15;" +
+                    " -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.7), 10, 0, 0, 0)");
+            cards.setStyle("-fx-background-color: " + cardList.getColour() +"; -fx-spacing: 10" );
+        }
     }
 
     /**

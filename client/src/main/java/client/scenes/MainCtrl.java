@@ -179,8 +179,8 @@ public class MainCtrl {
      */
     public void showBoardOverview(final Board board) {
         primaryStage.setTitle("Talio: Task List Organiser");
-        primaryStage.setScene(this.boardOverview);
         boardOverviewCtrl.refresh(board);
+        primaryStage.setScene(this.boardOverview);
     }
 
     /**
