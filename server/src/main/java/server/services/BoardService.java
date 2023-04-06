@@ -1,12 +1,10 @@
 package server.services;
 
 import commons.entities.Board;
-import commons.entities.Card;
 import commons.entities.CardList;
 import commons.entities.Tag;
 import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
-import server.database.CardRepository;
 import server.exceptions.EntityNotFoundException;
 
 import java.util.List;
@@ -19,7 +17,6 @@ public final class BoardService {
     private final TagService tagService;
     private CardListService cardListService;
     private final BoardRepository boardRepository;
-    private final CardRepository cardRepository;
 
     /**
      * Creates a board service using some other services
@@ -32,12 +29,11 @@ public final class BoardService {
     public BoardService(final TextService textService,
                         final TagService tagService,
                         final CardListService cardListService,
-                        final BoardRepository boardRepository, final CardRepository cardRepository) {
+                        final BoardRepository boardRepository) {
         this.textService = textService;
         this.tagService = tagService;
         this.cardListService = cardListService;
         this.boardRepository = boardRepository;
-        this.cardRepository = cardRepository;
     }
 
     /**
@@ -203,20 +199,6 @@ public final class BoardService {
         }
         final Board board = boardOpt.get();
         this.boardRepository.deleteById(board.getId());
-        return board;
-    }
-
-    public Board editAllCardsColours(int boardId, String colour) {
-        if(!boardRepository.existsById(boardId)) {
-            throw new EntityNotFoundException("No board with id " + boardId);
-        }
-        final Board board = boardRepository.getById(boardId);
-        for(CardList list : board.getLists()) {
-            for(Card card : list.getCards()) {
-                card.setColour(colour);
-                cardRepository.save(card);
-            }
-        }
         return board;
     }
 }

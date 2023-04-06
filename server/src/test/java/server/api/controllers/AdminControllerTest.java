@@ -49,8 +49,7 @@ public final class AdminControllerTest {
         final BoardService boardService = new BoardService(this.textService,
             tagService,
             cardListService,
-            this.boardRepo,
-                cardRepo
+            this.boardRepo
         );
 
         this.adminController = new AdminController(boardService);
