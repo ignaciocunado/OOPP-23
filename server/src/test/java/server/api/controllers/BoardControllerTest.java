@@ -254,6 +254,15 @@ public final class BoardControllerTest {
     }
 
     @Test
+    public void editColourTest() {
+        boardRepo.save(new Board("aaa", "aaa", ""));
+        final Board board2 = new Board("aaa", "aaa", "");
+        board2.setId(1);
+        board2.setColour("aa");
+        assertEquals(board2, this.boardController.editBoard(1, board2, noErrorResult).getBody());
+    }
+
+    @Test
     public void editInvalidBoardTest() {
         Assertions.assertThrows(InvalidRequestException.class, () -> this.boardController.editBoard(5, new Board("","", ""), hasErrorResult));
     }
