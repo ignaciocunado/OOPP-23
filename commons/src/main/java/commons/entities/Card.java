@@ -47,6 +47,7 @@ public final class Card {
      * Optional Constructor for a new card
      * @param title title of the card
      * @param description description of the card
+     * @param colour background colour of the card
      */
     public Card(String title, String description, String colour) {
         this.title = title;
