@@ -222,7 +222,6 @@ public class TagOverviewCtrl{
      * @return string representing RGB colour
      */
     public String getRGBShade() {
-        System.out.println(board.getColour());
         Color color = Color.web(board.getColour());
         double newRed = color.getRed()*0.75*255;
         double newGreen = color.getGreen()*0.75*255;

@@ -5,8 +5,10 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 
 public final class BoardSettingsCtrl {
     private final MainCtrl mainCtrl;
@@ -21,6 +23,12 @@ public final class BoardSettingsCtrl {
     private ColorPicker textColour;
     @FXML
     private AnchorPane window;
+    @FXML
+    private Button resetButton;
+    @FXML
+    private Button saveButtonColour;
+    @FXML
+    private Button saveButtonPassword;
 
 
     /**
@@ -55,9 +63,16 @@ public final class BoardSettingsCtrl {
         this.boardOverviewCtrl = boardOverviewCtrl;
         if(currentBoard.getColour().equals("")) {
             window.setStyle("-fx-background-color: rgb(35,69,103)");
+            resetButton.setStyle("-fx-background-color:  #123456");
+            saveButtonColour.setStyle("-fx-background-color:  #123456");
+            saveButtonPassword.setStyle("-fx-background-color:  #123456");
+
         }
         else {
             window.setStyle("-fx-background-color: " + currentBoard.getColour());
+            resetButton.setStyle("-fx-background-color: " + getRGBShade());
+            saveButtonPassword.setStyle("-fx-background-color: " + getRGBShade());
+            saveButtonColour.setStyle("-fx-background-color: " + getRGBShade());
         }
     }
 
@@ -97,5 +112,17 @@ public final class BoardSettingsCtrl {
         server.editBoard(currentBoard.getId(), currentBoard);
         this.boardOverviewCtrl.refresh(currentBoard);
         mainCtrl.closeBoardSettings();
+    }
+
+    /**
+     * Gets a shade of RGB to add to panes and buttons
+     * @return string representing RGB colour
+     */
+    public String getRGBShade() {
+        Color color = Color.web(currentBoard.getColour());
+        double newRed = color.getRed()*0.75*255;
+        double newGreen = color.getGreen()*0.75*255;
+        double newBlue = color.getBlue()*0.75*255;
+        return "rgb(" + newRed + "," + newGreen + "," + newBlue + ")";
     }
 }
