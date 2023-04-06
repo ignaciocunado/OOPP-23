@@ -49,6 +49,22 @@ public final class Board {
     }
 
     /**
+     * Optional Constructor for a new board
+     *
+     * @param key      to enter the board (view-only if board is secured with password)
+     * @param name
+     * @param password to enter and edit the board
+     */
+    public Board(String key, String name, String password, String colour) {
+        this.key = key;
+        this.name = name;
+        this.password = password;
+        this.lists = new ArrayList<>();
+        this.tags = new ArrayList<>();
+        this.colour = colour;
+    }
+
+    /**
      * Gets the colour of the board
      * @return colour
      */
