@@ -114,7 +114,8 @@ public final class CardCtrl {
             insidePane.setStyle("-fx-background-color: #123456; -fx-background-radius: 10");
         }
         else {
-            insidePane.setStyle("-fx-background-color: " + card.getColour() + "; -fx-background-radius: 10");
+            insidePane.setStyle("-fx-background-color: " + card.getColour() +
+                    "; -fx-background-radius: 10");
         }
         System.out.println(this.card.getNestedTaskList());
         System.out.println(this.card.calculateProgress());
@@ -222,6 +223,7 @@ public final class CardCtrl {
         if (!(observable instanceof ReadOnlyBooleanProperty)) return; // Doesn't happen
         final ReadOnlyBooleanProperty focused = (ReadOnlyBooleanProperty) observable;
         if (focused.getValue()) return; // If focuses then don't save yet
-        this.server.editCard(this.card.getId(), cardTitle.getText(), cardDescription.getText(), this.card.getColour());
+        this.server.editCard(this.card.getId(), cardTitle.getText(), cardDescription.getText(),
+                this.card.getColour());
     }
 }

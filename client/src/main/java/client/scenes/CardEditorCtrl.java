@@ -118,7 +118,8 @@ public class CardEditorCtrl {
         if (!(observable instanceof ReadOnlyBooleanProperty)) return; // Doesn't happen
         final ReadOnlyBooleanProperty focused = (ReadOnlyBooleanProperty) observable;
         if (focused.getValue()) return; // If focuses then don't save yet
-        this.serverUtils.editCard(this.currentCard.getId(), title.getText(), description.getText(), this.currentCard.getColour());
+        this.serverUtils.editCard(this.currentCard.getId(), title.getText(), description.getText(),
+                this.currentCard.getColour());
     }
 
     /**
@@ -138,8 +139,13 @@ public class CardEditorCtrl {
         return currentCard;
     }
 
+    /**
+     * Converts Colour
+     * @return a string rgb colour
+     */
     public String getColourString() {
-        return "rgb(" + colour.getValue().getRed()*255 + "," + colour.getValue().getGreen()*255 + "," +
+        return "rgb(" + colour.getValue().getRed()*255 + "," +
+                colour.getValue().getGreen()*255 + "," +
                 colour.getValue().getBlue()*255 + ")";
     }
 
@@ -207,8 +213,12 @@ public class CardEditorCtrl {
             isTaskCompleted);
     }
 
+    /**
+     * Resets the colour of the card to its default settings
+     */
     public void resetColour() {
-        serverUtils.editCard(currentCard.getId(), currentCard.getTitle(), currentCard.getDescription(), "");
+        serverUtils.editCard(currentCard.getId(), currentCard.getTitle(),
+                currentCard.getDescription(), "");
         mainCtrl.closeCardEditor();
         this.cardCtrl.refresh(this.currentCard);
     }

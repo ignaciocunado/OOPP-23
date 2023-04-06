@@ -309,7 +309,8 @@ public class ServerUtils {
      * @param colour new colour
      * @return the edited card
      */
-    public Card editCard(final int id, final String title, final String description, final String colour) {
+    public Card editCard(final int id, final String title, final String description,
+                         final String colour) {
         try {
             return client.target(this.server).path("api/card/{id}")
                     .resolveTemplate("id", id)
