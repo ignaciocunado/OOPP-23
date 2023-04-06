@@ -5,12 +5,20 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 
 public final class BoardSettingsCtrl {
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
     private final Config config;
     private Board currentBoard;
+    private BoardOverviewCtrl boardOverviewCtrl;
+
+    @FXML
+    private ColorPicker backgroundColour;
+    @FXML
+    private ColorPicker textColour;
 
     /**
      * The wrapping controller for a card list
@@ -38,8 +46,9 @@ public final class BoardSettingsCtrl {
      * Refreshes the currentBoard to the Board which the settings are called from
      * @param currentBoard the current board
      */
-    public void refresh(Board currentBoard) {
+    public void refresh(Board currentBoard, BoardOverviewCtrl boardOverviewCtrl) {
         this.currentBoard = currentBoard;
+        this.boardOverviewCtrl = boardOverviewCtrl;
     }
 
     /**
@@ -50,5 +59,24 @@ public final class BoardSettingsCtrl {
         config.getCurrentWorkspace().deleteBoard(this.currentBoard.getKey());
         this.mainCtrl.closeBoardSettings();
         this.mainCtrl.showLandingOverview();
+    }
+
+    /**
+     * Resets the colour of the board to default
+     */
+    public void resetBoardColours() {
+        currentBoard.setColour("");
+        server.editBoard(currentBoard.getId(), currentBoard);
+        mainCtrl.closeBoardSettings();
+        this.boardOverviewCtrl.refresh(currentBoard);
+    }
+
+    public void saveBoardColours() {
+        currentBoard.setColour("rgb(" + backgroundColour.getValue().getRed()*255 + "," +
+                backgroundColour.getValue().getGreen()*255 + ", " +
+                backgroundColour.getValue().getBlue()*255 + ")");
+        server.editBoard(currentBoard.getId(), currentBoard);
+        this.boardOverviewCtrl.refresh(currentBoard);
+        mainCtrl.closeBoardSettings();
     }
 }

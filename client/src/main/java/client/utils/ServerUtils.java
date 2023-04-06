@@ -157,7 +157,7 @@ public class ServerUtils {
     /**
      * Gets board from the given server by the given key
      *
-     * @param id    the board id
+     * @param id the board id
      * @param board the board data
      * @return the edited board, or null
      */
@@ -169,7 +169,7 @@ public class ServerUtils {
                     .accept(MediaType.APPLICATION_JSON)
                     .method(HttpMethod.PATCH,
                             Entity.json(new Board(board.getKey(),
-                                    board.getName(), board.getPassword())),
+                                    board.getName(), board.getPassword(), board.getColour())),
                             Board.class);
         } catch (NotFoundException e) {
             return null;

@@ -115,6 +115,14 @@ public class BoardOverviewCtrl implements Initializable {
             final CardListCtrl ctrl = pair.getKey();
             ctrl.refresh(list);
         }
+        if(currentBoard.getColour().equals("")) {
+            lists.setStyle("-fx-spacing: 20; -fx-background-color:  rgb(1,35,69)");
+            mainPane.setStyle("-fx-background-color:  rgb(1,35,69)");
+        }
+        else {
+            lists.setStyle("-fx-spacing: 20; -fx-background-color:" + currentBoard.getColour());
+            mainPane.setStyle("-fx-background-color:" + currentBoard.getColour());
+        }
     }
 
     /**
