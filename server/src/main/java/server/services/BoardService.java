@@ -50,8 +50,9 @@ public final class BoardService {
         final String newKey = this.textService.randomAlphanumericalString(10);
         final Board board = new Board(newKey, name.equals("") ? "New Board" : name,
                 password == null ? "" : password);
+        final Board savedBoard = this.boardRepository.save(board);
         this.listeners.values().forEach(Runnable::run);
-        return this.boardRepository.save(board);
+        return savedBoard;
     }
 
     /**
