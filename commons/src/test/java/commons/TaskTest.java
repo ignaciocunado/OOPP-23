@@ -76,4 +76,11 @@ class TaskTest {
     public void toStringTest() {
         assertEquals(task.toString(), "<Task id=0 name=Task completed=TRUE>");
     }
+
+    @Test
+    public void setIdTest() {
+        assertEquals(0, task.getId());
+        task.setId(1111);
+        assertEquals(1111, task.getId());
+    }
 }
