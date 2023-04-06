@@ -88,7 +88,8 @@ public final class CardListCtrl {
             cards.setStyle("-fx-background-color: rgb(35,69,103); -fx-spacing: 10" );
         }
         else {
-            background.setStyle("-fx-background-color: "+ cardList.getColour() + "; -fx-border-radius: 15;" +
+            background.setStyle("-fx-background-color: "+ cardList.getColour() + ";" +
+                    " -fx-border-radius: 15;" +
                     " -fx-background-radius:15;" +
                     " -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.7), 10, 0, 0, 0)");
             cards.setStyle("-fx-background-color: " + cardList.getColour() +"; -fx-spacing: 10" );
@@ -116,7 +117,8 @@ public final class CardListCtrl {
         final ReadOnlyBooleanProperty focused = (ReadOnlyBooleanProperty) observable;
         if (focused.getValue()) return; // If focuses then don't save yet
 
-        this.server.editCardList(this.cardList.getId(), listTitleField.getText(), this.cardList.getColour());
+        this.server.editCardList(this.cardList.getId(), listTitleField.getText(),
+                this.cardList.getColour());
     }
 
     /**
