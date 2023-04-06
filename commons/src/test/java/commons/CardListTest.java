@@ -88,4 +88,24 @@ class CardListTest {
         CardList list2 = new CardList("newer");
         assertNotEquals(list1.hashCode(), list2.hashCode());
     }
+
+    @Test
+    public void getColourTest() {
+        CardList list = new CardList("new");
+        assertEquals("", list.getColour());
+    }
+
+    @Test
+    public void getColourTest2() {
+        CardList list = new CardList("new");
+        list.setColour("1");
+        assertEquals("1", list.getColour());
+    }
+
+    @Test
+    public void setColourTest() {
+        CardList list = new CardList("new");
+        list.setColour("w333");
+        assertEquals("w333", list.getColour());
+    }
 }

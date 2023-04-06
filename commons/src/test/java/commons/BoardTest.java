@@ -173,4 +173,22 @@ class BoardTest {
     public void toStringTest() {
         assertEquals(board.toString(), "<Board id=0 key=abc name=def password=ghi>");
     }
+
+    @Test
+    public void getColourTest() {
+        assertEquals("", board.getColour());
+    }
+
+    @Test
+    public void getColourTest2() {
+        board.setColour("1");
+        assertEquals("1", board.getColour());
+    }
+
+    @Test
+    public void setColourTest() {
+        board.setColour("w333");
+        assertEquals("w333", board.getColour());
+    }
+
 }

@@ -2,6 +2,7 @@ package commons.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,6 +17,7 @@ public final class CardList {
     private String title;
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Card> cards;
+    @NotNull
     private String colour;
     /**
      * Empty constructor for JPA

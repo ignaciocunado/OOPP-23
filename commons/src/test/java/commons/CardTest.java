@@ -185,4 +185,21 @@ class CardTest {
         card.addTask(task);
         assertFalse(card.removeTaskById(task.getId() + 2));
     }
+
+    @Test
+    public void getColourTest() {
+        assertEquals("", card.getColour());
+    }
+
+    @Test
+    public void getColourTest2() {
+        card.setColour("1");
+        assertEquals("1", card.getColour());
+    }
+
+    @Test
+    public void setColourTest() {
+        card.setColour("w333");
+        assertEquals("w333", card.getColour());
+    }
 }

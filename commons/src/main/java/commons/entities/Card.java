@@ -22,6 +22,7 @@ public final class Card {
     private List<Task> nestedTaskList;
     @ManyToMany
     private List<Tag> tags;
+    @NotNull
     private String colour;
 
     /**

@@ -24,7 +24,7 @@ public final class Board {
     private List<Tag> tags;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CardList> lists;
-
+    @NotNull
     private String colour;
 
     /**
