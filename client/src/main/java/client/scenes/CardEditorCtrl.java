@@ -144,9 +144,15 @@ public class CardEditorCtrl {
      * @return a string rgb colour
      */
     public String getColourString() {
-        return "rgb(" + colour.getValue().getRed()*255 + "," +
-                colour.getValue().getGreen()*255 + "," +
-                colour.getValue().getBlue()*255 + ")";
+        Double redDouble =  colour.getValue().getRed()*255;
+        Double greenDouble = colour.getValue().getGreen()*255;
+        Double blueDouble =  colour.getValue().getBlue()*255;
+        int red = redDouble.intValue();
+        int green = greenDouble.intValue();
+        int blue = blueDouble.intValue();
+        return  "rgb(" + red  + "," +
+                green + ", " +
+                blue + ")";
     }
 
     /**
