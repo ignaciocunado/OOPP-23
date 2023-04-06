@@ -3,11 +3,13 @@ package server.services;
 import commons.entities.Board;
 import commons.entities.CardList;
 import commons.entities.Tag;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
 import server.exceptions.EntityNotFoundException;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 @Service
@@ -18,7 +20,7 @@ public final class BoardService {
     private CardListService cardListService;
     private final BoardRepository boardRepository;
 
-    private final Map<UUID, Runnable> listeners;
+    private final Map<UUID, Consumer<List<Board>>> listeners;
 
     /**
      * Creates a board service using some other services
@@ -36,7 +38,7 @@ public final class BoardService {
         this.tagService = tagService;
         this.cardListService = cardListService;
         this.boardRepository = boardRepository;
-        this.listeners = new HashMap<>();
+        this.listeners = new ConcurrentHashMap<>();
     }
 
     /**
@@ -78,8 +80,33 @@ public final class BoardService {
      * @throws EntityNotFoundException if no board with the specified key exists
      */
     public List<Board> getAllBoards() {
-        final List<Board> boardOpt = this.boardRepository.findAll();
-        return boardOpt;
+        return this.boardRepository.findAll();
+    }
+
+    /**
+     * Gets all boards eagerly by
+     * Initializing all fields
+     *
+     * @return the boards with all fields initialized
+     */
+    public List<Board> getAllBoardsEagerly() {
+        final List<Board> boards = this.boardRepository.findAll();
+        Hibernate.initialize(boards);
+        boards.forEach(board -> {
+            Hibernate.initialize(board);
+            Hibernate.initialize(board.getTags());
+
+            board.getLists().forEach(list -> {
+                Hibernate.initialize(list);
+
+                list.getCards().forEach(card -> {
+                    Hibernate.initialize(card);
+                    Hibernate.initialize(card.getTags());
+                    Hibernate.initialize(card.getNestedTaskList());
+                });
+            });
+        });
+        return boards;
     }
 
     /**
@@ -204,18 +231,17 @@ public final class BoardService {
         }
         final Board board = boardOpt.get();
         this.boardRepository.deleteById(board.getId());
-        this.listeners.values().forEach(Runnable::run);
         return board;
     }
 
     /**
      * Adds a listener for when boards are added or deleted
-     * @param runnable the event to run
+     * @param listener the event to run
      * @return the id of the runner for removing this
      */
-    public UUID addAllBoardListener(final Runnable runnable) {
+    public UUID addAllBoardListener(final Consumer<List<Board>> listener) {
         final UUID uuid = UUID.randomUUID();
-        this.listeners.put(uuid, runnable);
+        this.listeners.put(uuid, listener);
         return uuid;
     }
 
