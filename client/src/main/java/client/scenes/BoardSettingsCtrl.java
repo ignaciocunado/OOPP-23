@@ -5,7 +5,6 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 
 public final class BoardSettingsCtrl {
@@ -45,6 +44,7 @@ public final class BoardSettingsCtrl {
     /**
      * Refreshes the currentBoard to the Board which the settings are called from
      * @param currentBoard the current board
+     * @param boardOverviewCtrl ctrl
      */
     public void refresh(Board currentBoard, BoardOverviewCtrl boardOverviewCtrl) {
         this.currentBoard = currentBoard;
@@ -71,6 +71,9 @@ public final class BoardSettingsCtrl {
         this.boardOverviewCtrl.refresh(currentBoard);
     }
 
+    /**
+     * Saves the colour chosen and applies it
+     */
     public void saveBoardColours() {
         currentBoard.setColour("rgb(" + backgroundColour.getValue().getRed()*255 + "," +
                 backgroundColour.getValue().getGreen()*255 + ", " +

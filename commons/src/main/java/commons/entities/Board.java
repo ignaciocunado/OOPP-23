@@ -54,6 +54,7 @@ public final class Board {
      * @param key      to enter the board (view-only if board is secured with password)
      * @param name
      * @param password to enter and edit the board
+     * @param colour colour
      */
     public Board(String key, String name, String password, String colour) {
         this.key = key;
