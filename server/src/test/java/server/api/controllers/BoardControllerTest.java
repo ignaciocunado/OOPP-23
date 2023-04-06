@@ -51,7 +51,8 @@ public final class BoardControllerTest {
         final BoardService boardService = new BoardService(this.textService,
                 tagService,
                 cardListService,
-                this.boardRepo
+                this.boardRepo,
+                cardRepo
         );
 
         this.boardController = new BoardController(boardService, Mockito.mock(SimpMessagingTemplate.class));
@@ -261,5 +262,26 @@ public final class BoardControllerTest {
     @Test
     public void editBoardNotFoundTest() {
         Assertions.assertThrows(EntityNotFoundException.class, () -> this.boardController.editBoard(5, new Board("title", "name", "password"), noErrorResult));
+    }
+
+    @Test
+    public void editAllCardsColoursTest() {
+        Board board = new Board("title", "aaaa", "aaaa");
+        board.setId(1);
+        CardList list1 = new CardList("list");
+        CardList list2 = new CardList("list2");
+        board.addList(list1);
+        board.addList(list2);
+        list1.addCard(cardRepo.save(new Card("card", "card")));
+        list2.addCard(cardRepo.save(new Card("card", "card")));
+        list1.addCard(cardRepo.save(new Card("card2", "card2")));
+        list2.addCard(cardRepo.save(new Card("card2", "card2")));
+        boardRepo.save(board);
+        Board edited = this.boardController.editAllCardsColours(1, "d").getBody();
+        for(CardList list : edited.getLists()) {
+            for(Card card : list.getCards()) {
+                assertEquals("d", card.getColour());
+            }
+        }
     }
 }

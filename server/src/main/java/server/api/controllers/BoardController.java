@@ -174,4 +174,16 @@ public class BoardController {
                 new HttpHeaders(), 200);
     }
 
+    /**
+     * Changes all the colours of the cards in that board
+     * @param id id of the board
+     * @param colour new colour
+     * @return updated board
+     */
+    @PatchMapping("/{id}/editAllCards")
+    public ResponseEntity<Board> editAllCardsColours(@PathVariable final int id, final String colour) {
+        final Board boardEdited = boardService.editAllCardsColours(id, colour);
+        return new ResponseEntity<>(boardEdited, new HttpHeaders(), 200);
+    }
+
 }
