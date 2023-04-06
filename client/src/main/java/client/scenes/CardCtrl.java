@@ -194,7 +194,6 @@ public final class CardCtrl {
      * Stops visual feedback for hovering over a card
      */
     public void mouseStopHover() {
-        System.out.println(card);
         cardPane.setOpacity(1);
         if(this.card.getColour().equals("")) {
             insidePane.setStyle("-fx-background-color: #123456; " +

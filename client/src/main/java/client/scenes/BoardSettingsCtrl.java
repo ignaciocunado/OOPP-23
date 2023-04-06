@@ -70,6 +70,13 @@ public final class BoardSettingsCtrl {
     public void refresh(Board currentBoard, BoardOverviewCtrl boardOverviewCtrl) {
         this.currentBoard = currentBoard;
         this.boardOverviewCtrl = boardOverviewCtrl;
+        setRightColours();
+    }
+
+    /**
+     * sets the correct colours
+     */
+    private void setRightColours() {
         if(currentBoard.getColour().equals("")) {
             window.setStyle("-fx-background-color: rgb(35,69,103)");
             resetButton.setStyle("-fx-background-color:  #123456");
