@@ -70,6 +70,7 @@ public class CardController {
         Card toEdit = cardRepository.getById(id);
         toEdit.setTitle(card.getTitle());
         toEdit.setDescription(card.getDescription());
+        toEdit.setColour(card.getColour());
         cardRepository.save(toEdit);
         msgs.convertAndSend("/topic/card", toEdit);
         return new ResponseEntity<>(toEdit, new HttpHeaders(), 200);

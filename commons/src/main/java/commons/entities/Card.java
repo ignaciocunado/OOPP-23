@@ -44,6 +44,19 @@ public final class Card {
     }
 
     /**
+     * Optional Constructor for a new card
+     * @param title title of the card
+     * @param description description of the card
+     */
+    public Card(String title, String description, String colour) {
+        this.title = title;
+        this.description = description;
+        this.nestedTaskList = new ArrayList<Task>();
+        this.tags = new ArrayList<Tag>();
+        this.colour = colour;
+    }
+
+    /**
      * Gets the colour of the card
      * @return colour
      */

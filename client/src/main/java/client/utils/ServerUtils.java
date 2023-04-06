@@ -306,16 +306,17 @@ public class ServerUtils {
      * @param id          the card to edit
      * @param title       the new title
      * @param description the new description
+     * @param colour new colour
      * @return the edited card
      */
-    public Card editCard(final int id, final String title, final String description) {
+    public Card editCard(final int id, final String title, final String description, final String colour) {
         try {
             return client.target(this.server).path("api/card/{id}")
                     .resolveTemplate("id", id)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .method(HttpMethod.PATCH,
-                            Entity.json(new Card(title, description)), Card.class);
+                            Entity.json(new Card(title, description, colour)), Card.class);
         } catch (NotFoundException e) {
             return null;
         }
