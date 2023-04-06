@@ -59,7 +59,7 @@ public final class AdminController {
     @GetMapping("/board/all/updates")
     public DeferredResult<ResponseEntity<List<Board>>> getAllBoardsUpdates() {
         final ResponseEntity<List<Board>> noContent = new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        final DeferredResult res = new DeferredResult<>(1000L, noContent);
+        final DeferredResult<ResponseEntity<List<Board>>> res = new DeferredResult<>(10000L, noContent);
         final UUID runId = this.boardService.addAllBoardListener(() -> {
             res.setResult(new ResponseEntity<>(this.boardService.getAllBoards(), new HttpHeaders(), 200));
         });
