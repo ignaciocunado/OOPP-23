@@ -248,8 +248,8 @@ public final class Card {
      */
     @Override
     public String toString() {
-        return String.format("<Card id=%d title=%s description=%s>", this.id, this.title,
-            this.description);
+        return String.format("<Card id=%d title=%s description=%s colour=%s>", this.id, this.title,
+            this.description, this.colour);
 
     }
 }

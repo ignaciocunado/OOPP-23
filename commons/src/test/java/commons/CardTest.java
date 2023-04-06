@@ -133,7 +133,13 @@ class CardTest {
 
     @Test
     public void toStringTest() {
-        assertEquals(card.toString(), "<Card id=0 title=Card description=This is a card>");
+        assertEquals(card.toString(), "<Card id=0 title=Card description=This is a card colour=>");
+    }
+
+    @Test
+    public void toStringTest2() {
+        card.setColour("222");
+        assertEquals(card.toString(), "<Card id=0 title=Card description=This is a card colour=222>");
     }
 
     @Test
