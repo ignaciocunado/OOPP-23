@@ -130,4 +130,10 @@ class CardListTest {
         list.removeCardById(999);
         assertEquals(0, list.getCards().size());
     }
+
+    @Test
+    public void testNewConstructor() {
+        CardList newCardList = new CardList("name", "colour");
+        assertEquals("colour", newCardList.getColour());
+    }
 }

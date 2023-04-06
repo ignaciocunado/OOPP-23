@@ -197,4 +197,10 @@ class BoardTest {
         assertEquals("w333", board.getColour());
     }
 
+    @Test
+    public void testNewConstructor() {
+        Board newboard = new Board("name", "password","password", "colour");
+        assertEquals("colour", newboard.getColour());
+    }
+
 }

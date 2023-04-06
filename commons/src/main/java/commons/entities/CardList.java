@@ -35,6 +35,17 @@ public final class CardList {
     }
 
     /**
+     * Constructor for a new card list
+     * @param title title of a list
+     * @param colour colour
+     */
+    public CardList(String title, String colour) {
+        this.title = title;
+        cards = new ArrayList<>();
+        this.colour = colour;
+    }
+
+    /**
      * Gets the colour of the board
      * @return colour
      */

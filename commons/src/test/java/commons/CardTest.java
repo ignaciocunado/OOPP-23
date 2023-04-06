@@ -1,6 +1,7 @@
 package commons;
 
 import commons.entities.Card;
+import commons.entities.CardList;
 import commons.entities.Tag;
 import commons.entities.Task;
 import org.junit.jupiter.api.BeforeEach;
@@ -207,5 +208,11 @@ class CardTest {
     public void setColourTest() {
         card.setColour("w333");
         assertEquals("w333", card.getColour());
+    }
+
+    @Test
+    public void testNewConstructor() {
+        Card newCard = new Card("name", "des", "colour");
+        assertEquals("colour", newCard.getColour());
     }
 }
