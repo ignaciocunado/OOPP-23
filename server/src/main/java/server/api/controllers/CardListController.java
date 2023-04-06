@@ -93,7 +93,7 @@ public class CardListController {
      * @return the card list with the changed new title
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<CardList> editCardListTitle(@PathVariable final int id,
+    public ResponseEntity<CardList> editCardList(@PathVariable final int id,
                                                       @Validated @RequestBody
                                                       final CardList cardList,
                                                       final BindingResult errors) {
@@ -106,6 +106,7 @@ public class CardListController {
 
         final CardList editedCardList = this.cardListRepo.getById(id);
         editedCardList.setTitle(cardList.getTitle());
+        editedCardList.setColour(cardList.getColour());
         cardListRepo.save(editedCardList);
         msgs.convertAndSend("/topic/cardlist", editedCardList);
         return new ResponseEntity<>(editedCardList, new HttpHeaders(), 200);

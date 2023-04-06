@@ -85,15 +85,18 @@ class CardListControllerTest {
     }
 
     @Test
-    void editCardListTitleTest() {
+    void editCardListTest() {
         this.cardListRepo.save(new CardList("title"));
         final CardList cardList1 = new CardList("title");
         cardList1.setId(1);
         final CardList cardList2 = new CardList("new title");
         cardList2.setId(1);
+        cardList2.setColour("aaa");
 
         Assertions.assertEquals(this.cardListRepo.findById(1).get(), cardList1);
-        this.cardListController.editCardListTitle(1, new CardList("title"), noErrorResult);
+        final CardList toCompare = new CardList("title");
+        toCompare.setColour("aaa");
+        this.cardListController.editCardList(1, toCompare, noErrorResult);
         cardList1.setTitle("new title");
         cardListRepo.save(cardList1);
         Assertions.assertEquals(this.cardListRepo.findById(1).get(), cardList2);
@@ -101,11 +104,11 @@ class CardListControllerTest {
 
     @Test
     public void editInvalidCardListTest() {
-        Assertions.assertThrows(InvalidRequestException.class, () -> this.cardListController.editCardListTitle(5, new CardList(""), hasErrorResult));
+        Assertions.assertThrows(InvalidRequestException.class, () -> this.cardListController.editCardList(5, new CardList(""), hasErrorResult));
     }
 
     @Test
     public void editCardListNotFoundTest() {
-        Assertions.assertThrows(EntityNotFoundException.class, () -> this.cardListController.editCardListTitle(5, new CardList("title"), noErrorResult));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> this.cardListController.editCardList(5, new CardList("title"), noErrorResult));
     }
 }
