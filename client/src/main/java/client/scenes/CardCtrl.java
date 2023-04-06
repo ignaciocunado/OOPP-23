@@ -180,11 +180,13 @@ public final class CardCtrl {
         this.boardOverviewCtrl.setHoverCard(this.getCardPane());
         cardPane.setOpacity(0.75);
         if(card.getColour().equals("")) {
-            insidePane.setStyle("-fx-background-color: #123456;-fx-background-radius:10 ; -fx-border-color: rgb(1,35,69); -fx-border-width: 3px");
+            insidePane.setStyle("-fx-background-color: #123456;-fx-background-radius:10 ;" +
+                    " -fx-border-color: rgb(1,35,69); -fx-border-width: 3px");
         }
         else {
             insidePane.setStyle("-fx-background-color: " + card.getColour() +
-                    ";-fx-background-radius:10 ; -fx-border-color: rgb(1,35,69); -fx-border-width: 3px");
+                    ";-fx-background-radius:10 ; -fx-border-color: rgb(1,35,69);" +
+                    " -fx-border-width: 3px");
         }
     }
 

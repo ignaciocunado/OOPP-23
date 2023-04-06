@@ -210,12 +210,17 @@ public class TagOverviewCtrl{
         }
         else {
             window.setStyle("-fx-background-color: " + board.getColour());
-            inputPane.setStyle("-fx-background-color: " + getRGBShade() + "; -fx-background-radius: 5");
+            inputPane.setStyle("-fx-background-color: " + getRGBShade() + ";" +
+                    " -fx-background-radius: 5");
             createTagButton.setStyle("-fx-background-color: " + board.getColour());
         }
 
     }
 
+    /**
+     * Gets a shade of RGB to add to panes and buttons
+     * @return string representing RGB colour
+     */
     public String getRGBShade() {
         System.out.println(board.getColour());
         Color color = Color.web(board.getColour());
