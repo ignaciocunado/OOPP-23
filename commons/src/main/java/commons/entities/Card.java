@@ -22,6 +22,7 @@ public final class Card {
     private List<Task> nestedTaskList;
     @ManyToMany
     private List<Tag> tags;
+    private String colour;
 
     /**
      * Empty constructor for JPA
@@ -38,6 +39,23 @@ public final class Card {
         this.description = description;
         this.nestedTaskList = new ArrayList<Task>();
         this.tags = new ArrayList<Tag>();
+        this.colour = "";
+    }
+
+    /**
+     * Gets the colour of the card
+     * @return colour
+     */
+    public String getColour() {
+        return colour;
+    }
+
+    /**
+     * Sets the colour of the card
+     * @param colour colour
+     */
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     /**

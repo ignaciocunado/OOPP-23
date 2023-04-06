@@ -25,6 +25,8 @@ public final class Board {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CardList> lists;
 
+    private String colour;
+
     /**
      * Empty constructor for JPA
      */
@@ -43,6 +45,23 @@ public final class Board {
         this.password = password;
         this.lists = new ArrayList<>();
         this.tags = new ArrayList<>();
+        this.colour = "";
+    }
+
+    /**
+     * Gets the colour of the board
+     * @return colour
+     */
+    public String getColour() {
+        return colour;
+    }
+
+    /**
+     * Sets the colour of the board
+     * @param colour colour
+     */
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     /**

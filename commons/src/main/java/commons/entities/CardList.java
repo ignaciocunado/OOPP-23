@@ -16,6 +16,7 @@ public final class CardList {
     private String title;
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Card> cards;
+    private String colour;
     /**
      * Empty constructor for JPA
      */
@@ -28,6 +29,23 @@ public final class CardList {
     public CardList(String title) {
         this.title = title;
         cards = new ArrayList<>();
+        this.colour = "";
+    }
+
+    /**
+     * Gets the colour of the board
+     * @return colour
+     */
+    public String getColour() {
+        return colour;
+    }
+
+    /**
+     * Sets the colour of the board
+     * @param colour colour
+     */
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     /**
