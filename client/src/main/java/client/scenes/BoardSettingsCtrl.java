@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import commons.entities.Board;
 import javafx.fxml.FXML;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.layout.AnchorPane;
 
 public final class BoardSettingsCtrl {
     private final MainCtrl mainCtrl;
@@ -18,6 +19,9 @@ public final class BoardSettingsCtrl {
     private ColorPicker backgroundColour;
     @FXML
     private ColorPicker textColour;
+    @FXML
+    private AnchorPane window;
+
 
     /**
      * The wrapping controller for a card list
@@ -49,6 +53,12 @@ public final class BoardSettingsCtrl {
     public void refresh(Board currentBoard, BoardOverviewCtrl boardOverviewCtrl) {
         this.currentBoard = currentBoard;
         this.boardOverviewCtrl = boardOverviewCtrl;
+        if(currentBoard.getColour().equals("")) {
+            window.setStyle("-fx-background-color: rgb(35,69,103)");
+        }
+        else {
+            window.setStyle("-fx-background-color: " + currentBoard.getColour());
+        }
     }
 
     /**
@@ -75,9 +85,15 @@ public final class BoardSettingsCtrl {
      * Saves the colour chosen and applies it
      */
     public void saveBoardColours() {
-        currentBoard.setColour("rgb(" + backgroundColour.getValue().getRed()*255 + "," +
-                backgroundColour.getValue().getGreen()*255 + ", " +
-                backgroundColour.getValue().getBlue()*255 + ")");
+        Double redDouble =  backgroundColour.getValue().getRed()*255;
+        Double greenDouble = backgroundColour.getValue().getGreen()*255;
+        Double blueDouble =  backgroundColour.getValue().getBlue()*255;
+        int red = redDouble.intValue();
+        int green = greenDouble.intValue();
+        int blue = blueDouble.intValue();
+        currentBoard.setColour("rgb(" + red  + "," +
+               green + ", " +
+                blue + ")");
         server.editBoard(currentBoard.getId(), currentBoard);
         this.boardOverviewCtrl.refresh(currentBoard);
         mainCtrl.closeBoardSettings();
