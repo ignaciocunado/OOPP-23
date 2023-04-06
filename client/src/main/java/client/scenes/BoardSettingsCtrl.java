@@ -18,9 +18,13 @@ public final class BoardSettingsCtrl {
     private BoardOverviewCtrl boardOverviewCtrl;
 
     @FXML
-    private ColorPicker backgroundColour;
+    private ColorPicker backgroundColourBoard;
     @FXML
-    private ColorPicker textColour;
+    private ColorPicker textColourBoard;
+    @FXML
+    private ColorPicker backgroundColourList;
+    @FXML
+    private ColorPicker textColourList;
     @FXML
     private AnchorPane window;
     @FXML
@@ -29,6 +33,10 @@ public final class BoardSettingsCtrl {
     private Button saveButtonColour;
     @FXML
     private Button saveButtonPassword;
+    @FXML
+    private Button saveButtonColour1;
+    @FXML
+    private Button resetButton1;
 
 
     /**
@@ -66,6 +74,8 @@ public final class BoardSettingsCtrl {
             resetButton.setStyle("-fx-background-color:  #123456");
             saveButtonColour.setStyle("-fx-background-color:  #123456");
             saveButtonPassword.setStyle("-fx-background-color:  #123456");
+            saveButtonColour1.setStyle("-fx-background-color:  #123456");
+            resetButton1.setStyle("-fx-background-color:  #123456");
 
         }
         else {
@@ -73,6 +83,8 @@ public final class BoardSettingsCtrl {
             resetButton.setStyle("-fx-background-color: " + getRGBShade());
             saveButtonPassword.setStyle("-fx-background-color: " + getRGBShade());
             saveButtonColour.setStyle("-fx-background-color: " + getRGBShade());
+            saveButtonColour1.setStyle("-fx-background-color: " + getRGBShade());
+            resetButton1.setStyle("-fx-background-color: " + getRGBShade());
         }
     }
 
@@ -100,9 +112,9 @@ public final class BoardSettingsCtrl {
      * Saves the colour chosen and applies it
      */
     public void saveBoardColours() {
-        Double redDouble =  backgroundColour.getValue().getRed()*255;
-        Double greenDouble = backgroundColour.getValue().getGreen()*255;
-        Double blueDouble =  backgroundColour.getValue().getBlue()*255;
+        Double redDouble =  backgroundColourBoard.getValue().getRed()*255;
+        Double greenDouble = backgroundColourBoard.getValue().getGreen()*255;
+        Double blueDouble =  backgroundColourBoard.getValue().getBlue()*255;
         int red = redDouble.intValue();
         int green = greenDouble.intValue();
         int blue = blueDouble.intValue();
