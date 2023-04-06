@@ -9,14 +9,14 @@ import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+
 import java.io.IOException;
 
 
@@ -44,7 +44,10 @@ public class CardEditorCtrl {
     private ComboBox<Tag> combo;
     @FXML
     private ColorPicker colour;
-
+    @FXML
+    private Button resetButton;
+    @FXML
+    private Button saveButton;
 
     /**
      * Constructor
@@ -94,12 +97,31 @@ public class CardEditorCtrl {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        setRightColours();
         mainPane.setOnKeyPressed(event1 -> {
             if (event1.getCode().equals(KeyCode.ESCAPE)) {
                 this.mainCtrl.closeCardEditor();
             }
         });
         setEditCardMethods();
+    }
+
+    /**
+     * Sets colour of nodes
+     */
+    private void setRightColours() {
+        if(currentCard.getColour().equals("")) {
+            mainPane.setStyle("-fx-background-color:  rgb(35,69,103)");
+            nestedTaskList.setStyle("-fx-background-color:  rgb(35,69,103)");
+            resetButton.setStyle("-fx-padding: 0px; -fx-background-color:  #123456");
+            saveButton.setStyle("-fx-padding: 0px; -fx-background-color:  #123456");
+        }
+        else {
+            mainPane.setStyle("-fx-background-color: " + currentCard.getColour());
+            nestedTaskList.setStyle("-fx-background-color: " + currentCard.getColour());
+            resetButton.setStyle("-fx-padding: 0px; -fx-background-color: " + getRGBShade());
+            saveButton.setStyle("-fx-padding: 0px; -fx-background-color: " + getRGBShade());
+        }
     }
 
     /**
@@ -227,5 +249,17 @@ public class CardEditorCtrl {
                 currentCard.getDescription(), "");
         mainCtrl.closeCardEditor();
         this.cardCtrl.refresh(this.currentCard);
+    }
+
+    /**
+     * Gets a shade of RGB to add to panes and buttons
+     * @return string representing RGB colour
+     */
+    public String getRGBShade() {
+        Color color = Color.web(currentCard.getColour());
+        double newRed = color.getRed()*0.75*255;
+        double newGreen = color.getGreen()*0.75*255;
+        double newBlue = color.getBlue()*0.75*255;
+        return "rgb(" + newRed + "," + newGreen + "," + newBlue + ")";
     }
 }
