@@ -12,6 +12,7 @@ import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -30,6 +31,8 @@ public final class CardListCtrl {
     private VBox cards;
     @FXML
     private AnchorPane background;
+    @FXML
+    private Button removeListButton;
 
     private CardList cardList;
     private BoardOverviewCtrl boardOverviewCtrl;
@@ -94,6 +97,10 @@ public final class CardListCtrl {
                     " -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.7), 10, 0, 0, 0)");
             cards.setStyle("-fx-background-color: " + cardList.getColour() +"; -fx-spacing: 10" );
         }
+        listTitleField.setStyle("-fx-background-color: transparent;" +
+                " -fx-font-size: 25;" +
+                " -fx-text-fill: " + cardList.getTextColour());
+        removeListButton.setStyle(listTitleField.getStyle());
     }
 
     /**
@@ -118,7 +125,7 @@ public final class CardListCtrl {
         if (focused.getValue()) return; // If focuses then don't save yet
 
         this.server.editCardList(this.cardList.getId(), listTitleField.getText(),
-                this.cardList.getColour());
+                this.cardList.getColour(), this.cardList.getTextColour());
     }
 
     /**
@@ -177,5 +184,9 @@ public final class CardListCtrl {
      */
     public CardList getCardList() {
         return this.cardList;
+    }
+
+    public String getListBackgroundColour() {
+        return this.cardList.getColour();
     }
 }

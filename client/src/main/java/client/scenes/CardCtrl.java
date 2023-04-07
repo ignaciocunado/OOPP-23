@@ -110,15 +110,13 @@ public final class CardCtrl {
 
         }
         if(card.getColour().equals("")) {
-            cardPane.setStyle("-fx-background-color:  rgb(35,69,103)");
             insidePane.setStyle("-fx-background-color: #123456; -fx-background-radius: 10");
         }
         else {
             insidePane.setStyle("-fx-background-color: " + card.getColour() +
                     "; -fx-background-radius: 10");
         }
-        System.out.println(this.card.getNestedTaskList());
-        System.out.println(this.card.calculateProgress());
+        cardPane.setStyle("-fx-background-color: " + cardListCtrl.getListBackgroundColour());
         progress.setProgress(this.card.calculateProgress());
     }
 

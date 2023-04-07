@@ -134,7 +134,8 @@ public final class BoardSettingsCtrl {
     public void resetListColours() {
         for(CardList cardList : currentBoard.getLists()) {
             cardList.setColour("");
-            server.editCardList(cardList.getId(), cardList.getTitle(), cardList.getColour());
+            cardList.setTextColour("white");
+            server.editCardList(cardList.getId(), cardList.getTitle(), cardList.getColour(), cardList.getTextColour());
         }
         this.boardOverviewCtrl.refresh(currentBoard);
     }
@@ -143,17 +144,26 @@ public final class BoardSettingsCtrl {
      * Saves the colour chosen and applies it
      */
     public void saveListColours() {
-        Double redDouble =  backgroundColourList.getValue().getRed()*255;
-        Double greenDouble = backgroundColourList.getValue().getGreen()*255;
-        Double blueDouble =  backgroundColourList.getValue().getBlue()*255;
-        int red = redDouble.intValue();
-        int green = greenDouble.intValue();
-        int blue = blueDouble.intValue();
+        Double redDoubleBG =  backgroundColourList.getValue().getRed()*255;
+        Double greenDoubleBG = backgroundColourList.getValue().getGreen()*255;
+        Double blueDoubleBG =  backgroundColourList.getValue().getBlue()*255;
+        int redBG = redDoubleBG.intValue();
+        int greenBG = greenDoubleBG.intValue();
+        int blueBG = blueDoubleBG.intValue();
+        Double redDoubleT =  textColourList.getValue().getRed()*255;
+        Double greenDoubleT = textColourList.getValue().getGreen()*255;
+        Double blueDoubleT =  textColourList.getValue().getBlue()*255;
+        int redT = redDoubleT.intValue();
+        int greenT = greenDoubleT.intValue();
+        int blueT = blueDoubleT.intValue();
         for(CardList cardList : currentBoard.getLists()) {
-            cardList.setColour("rgb(" + red  + "," +
-                    green + ", " +
-                    blue + ")");
-            server.editCardList(cardList.getId(), cardList.getTitle(), cardList.getColour());
+            cardList.setColour("rgb(" + redBG  + "," +
+                    greenBG + ", " +
+                    blueBG + ")");
+            cardList.setTextColour("rgb(" + redT  + "," +
+                    greenT + ", " +
+                    blueT + ")");
+            server.editCardList(cardList.getId(), cardList.getTitle(), cardList.getColour(), cardList.getTextColour());
         }
         this.boardOverviewCtrl.refresh(currentBoard);
     }
