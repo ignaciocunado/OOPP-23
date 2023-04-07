@@ -107,7 +107,7 @@ public final class BoardSettingsCtrl {
         currentBoard.setColour("rgb(1,35,69)");
         server.editBoard(currentBoard.getId(), currentBoard);
 
-        this.boardOverviewCtrl.refresh(currentBoard);
+        this.boardOverviewCtrl.setRightColours();
     }
 
     /**
@@ -123,8 +123,8 @@ public final class BoardSettingsCtrl {
         currentBoard.setColour("rgb(" + red  + "," +
                green + ", " +
                 blue + ")");
-        server.editBoard(currentBoard.getId(), currentBoard);
-        this.boardOverviewCtrl.refresh(currentBoard);
+        currentBoard = server.editBoard(currentBoard.getId(), currentBoard);
+        this.boardOverviewCtrl.setRightColours();
 //        mainCtrl.closeBoardSettings();
     }
 
@@ -137,7 +137,7 @@ public final class BoardSettingsCtrl {
             cardList.setTextColour("white");
             server.editCardList(cardList.getId(), cardList.getTitle(), cardList.getColour(), cardList.getTextColour());
         }
-        this.boardOverviewCtrl.refresh(currentBoard);
+        this.boardOverviewCtrl.setRightColours();
     }
 
     /**
@@ -165,7 +165,7 @@ public final class BoardSettingsCtrl {
                     blueT + ")");
             server.editCardList(cardList.getId(), cardList.getTitle(), cardList.getColour(), cardList.getTextColour());
         }
-        this.boardOverviewCtrl.refresh(currentBoard);
+        this.boardOverviewCtrl.setRightColours();
     }
 
     /**
