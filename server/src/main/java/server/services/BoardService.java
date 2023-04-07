@@ -58,7 +58,8 @@ public final class BoardService {
                 )
         );
 
-        this.listeners.values().forEach(boardConsumer -> boardConsumer.accept(getAllBoardsEagerly()));
+        this.listeners.values().forEach(boardConsumer ->
+                boardConsumer.accept(getAllBoardsEagerly()));
         return board;
     }
 
@@ -237,7 +238,8 @@ public final class BoardService {
         final Board board = boardOpt.get();
         this.boardRepository.deleteById(board.getId());
 
-        this.listeners.values().forEach(boardConsumer -> boardConsumer.accept(getAllBoardsEagerly()));
+        this.listeners.values().forEach(boardConsumer ->
+                boardConsumer.accept(getAllBoardsEagerly()));
         return board;
     }
 

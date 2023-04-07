@@ -496,9 +496,12 @@ public class ServerUtils {
     }
 
     /**
-     * Gets all boards on this server
-     * @param password the password which has been entered by the use
-     * @return all the boars on this server
+     * Registers a listener to receive updates on all boards
+     * from the server using the specified password.
+     * This method will create a new thread to continuously listen for updates from the server.
+     *
+     * @param password the password which has been entered by the user
+     * @param boardsListener The listener to be called with a list of updated boards.
      */
     public void registerAllBoardsListener(String password, Consumer<List<Board>> boardsListener) {
         if (this.exec != null) this.exec.shutdownNow();
