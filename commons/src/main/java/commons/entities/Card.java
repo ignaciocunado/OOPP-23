@@ -40,7 +40,7 @@ public final class Card {
         this.description = description;
         this.nestedTaskList = new ArrayList<Task>();
         this.tags = new ArrayList<Tag>();
-        this.colour = "";
+        this.colour = "#123456";
     }
 
     /**

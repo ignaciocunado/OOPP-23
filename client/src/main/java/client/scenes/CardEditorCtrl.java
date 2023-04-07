@@ -110,7 +110,7 @@ public class CardEditorCtrl {
      * Sets colour of nodes
      */
     private void setRightColours() {
-        if(currentCard.getColour().equals("")) {
+        if(currentCard.getColour().equals("#123456")) {
             mainPane.setStyle("-fx-background-color:  rgb(35,69,103)");
             nestedTaskList.setStyle("-fx-background-color:  rgb(35,69,103)");
             resetButton.setStyle("-fx-padding: 0px; -fx-background-color:  #123456");
@@ -246,7 +246,7 @@ public class CardEditorCtrl {
      */
     public void resetColour() {
         serverUtils.editCard(currentCard.getId(), currentCard.getTitle(),
-                currentCard.getDescription(), "");
+                currentCard.getDescription(), "#123456");
         mainCtrl.closeCardEditor();
         this.cardCtrl.refresh(this.currentCard);
     }

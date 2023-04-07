@@ -109,13 +109,7 @@ public final class CardCtrl {
         catch (IOException e) {
 
         }
-        if(card.getColour().equals("")) {
-            insidePane.setStyle("-fx-background-color: #123456; -fx-background-radius: 10");
-        }
-        else {
-            insidePane.setStyle("-fx-background-color: " + card.getColour() +
-                    "; -fx-background-radius: 10");
-        }
+        insidePane.setStyle("-fx-background-color: " + card.getColour() + "; -fx-background-radius: 10");
         cardPane.setStyle("-fx-background-color: " + cardListCtrl.getListBackgroundColour());
         progress.setProgress(this.card.calculateProgress());
     }

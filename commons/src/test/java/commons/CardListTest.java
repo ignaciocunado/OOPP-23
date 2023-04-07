@@ -133,8 +133,9 @@ class CardListTest {
 
     @Test
     public void testNewConstructor() {
-        CardList newCardList = new CardList("name", "colour");
+        CardList newCardList = new CardList("name", "colour", "textColour");
         assertEquals("colour", newCardList.getColour());
+        assertEquals("textColour", newCardList.getTextColour());
     }
 
     @Test

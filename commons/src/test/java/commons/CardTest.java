@@ -134,7 +134,7 @@ class CardTest {
 
     @Test
     public void toStringTest() {
-        assertEquals(card.toString(), "<Card id=0 title=Card description=This is a card colour=>");
+        assertEquals(card.toString(), "<Card id=0 title=Card description=This is a card colour=#123456>");
     }
 
     @Test
@@ -195,7 +195,7 @@ class CardTest {
 
     @Test
     public void getColourTest() {
-        assertEquals("", card.getColour());
+        assertEquals("#123456", card.getColour());
     }
 
     @Test
