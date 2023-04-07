@@ -25,6 +25,8 @@ public class TagOverviewCtrl{
     private TextField newTitle;
     @FXML
     public VBox vbox;
+    @FXML
+    public Pane mainPane;
     private Board board;
     private TagEditorCtrl tagEditorCtrl;
 
@@ -195,5 +197,6 @@ public class TagOverviewCtrl{
         }
         catch (IOException e) {
         }
+        mainPane.requestFocus();
     }
 }
