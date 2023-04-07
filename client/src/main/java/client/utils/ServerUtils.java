@@ -157,7 +157,7 @@ public class ServerUtils {
     /**
      * Gets board from the given server by the given key
      *
-     * @param id    the board id
+     * @param id the board id
      * @param board the board data
      * @return the edited board, or null
      */
@@ -169,7 +169,7 @@ public class ServerUtils {
                     .accept(MediaType.APPLICATION_JSON)
                     .method(HttpMethod.PATCH,
                             Entity.json(new Board(board.getKey(),
-                                    board.getName(), board.getPassword())),
+                                    board.getName(), board.getPassword(), board.getColour())),
                             Board.class);
         } catch (NotFoundException e) {
             return null;
@@ -223,16 +223,19 @@ public class ServerUtils {
      *
      * @param id    the list id
      * @param title the new title
+     * @param colour the new colour
+     * @param textColour new text colour
      * @return the renamed list
      */
-    public CardList renameList(final int id, final String title) {
+    public CardList editCardList(final int id, final String title, final String colour,
+                                 final String textColour) {
         try {
             return client.target(this.server).path("api/list/{id}")
                     .resolveTemplate("id", id)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .method(HttpMethod.PATCH,
-                            Entity.json(new CardList(title)), CardList.class);
+                            Entity.json(new CardList(title, colour,textColour)), CardList.class);
         } catch (NotFoundException e) {
             return null;
         }
@@ -306,16 +309,18 @@ public class ServerUtils {
      * @param id          the card to edit
      * @param title       the new title
      * @param description the new description
+     * @param colour new colour
      * @return the edited card
      */
-    public Card editCard(final int id, final String title, final String description) {
+    public Card editCard(final int id, final String title, final String description,
+                         final String colour) {
         try {
             return client.target(this.server).path("api/card/{id}")
                     .resolveTemplate("id", id)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .method(HttpMethod.PATCH,
-                            Entity.json(new Card(title, description)), Card.class);
+                            Entity.json(new Card(title, description, colour)), Card.class);
         } catch (NotFoundException e) {
             return null;
         }

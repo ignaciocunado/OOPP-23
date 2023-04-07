@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.TextField?>
@@ -18,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #123456;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardSettingsCtrl">
+<AnchorPane fx:id="window" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: rgb(35,69,103);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardSettingsCtrl">
     <children>
       <StackPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -41,7 +36,7 @@
                      <children>
                         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="330.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Colours" textAlignment="CENTER" underline="true" wrappingWidth="330.0">
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Background Colours" textAlignment="CENTER" underline="true" wrappingWidth="330.0">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -55,14 +50,46 @@
                                     <Font size="18.0" />
                                  </font>
                               </Text>
-                              <ColorPicker AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="2.5" />
+                              <ColorPicker fx:id="textColourBoard" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="2.5" />
                               <Text fill="WHITE" layoutX="10.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Background Colour:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="40.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Text>
-                              <ColorPicker layoutX="10.0" layoutY="10.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="42.5" />
-                              <Button layoutX="242.0" layoutY="272.0" mnemonicParsing="false" style="-fx-background-color: #345678;" text="Reset" textFill="WHITE" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="242.0">
+                              <ColorPicker fx:id="backgroundColourBoard" layoutX="10.0" layoutY="10.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="42.5" />
+                              <Button fx:id="resetButton" layoutX="14.0" layoutY="272.0" mnemonicParsing="false" onAction="#resetListColours" style="-fx-background-color: #123456;" text="Reset" textFill="WHITE" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="14.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="saveButtonColour" layoutX="248.0" layoutY="272.0" mnemonicParsing="false" onAction="#saveListColours" style="-fx-background-color: #123456;" text="Save" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                              <Text fill="WHITE" layoutX="2.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List Colours" textAlignment="CENTER" underline="true" wrappingWidth="330.0">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Text>
+                              <Text fill="WHITE" layoutX="14.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text Colour:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text fill="WHITE" layoutX="14.0" layoutY="248.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Background Colour:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Text>
+                              <ColorPicker fx:id="textColourList" layoutX="188.0" layoutY="187.0" />
+                              <ColorPicker fx:id="backgroundColourList" layoutX="188.0" layoutY="228.0" />
+                              <Button fx:id="resetButton1" layoutX="10.0" layoutY="98.0" mnemonicParsing="false" onAction="#resetBoardColours" style="-fx-background-color: #123456;" text="Reset" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="saveButtonColour1" layoutX="244.0" layoutY="98.0" mnemonicParsing="false" onAction="#saveBoardColours" style="-fx-background-color: #123456;" text="Save" textFill="WHITE">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -102,7 +129,7 @@
                                  </font>
                               </Text>
                               <TextField layoutX="10.0" layoutY="10.0" promptText="Enter new password" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0" />
-                              <Button mnemonicParsing="false" style="-fx-background-color: #345678;" text="Save" textFill="WHITE" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
+                              <Button fx:id="saveButtonPassword" mnemonicParsing="false" style="-fx-background-color: #123456;" text="Save" textFill="WHITE" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>

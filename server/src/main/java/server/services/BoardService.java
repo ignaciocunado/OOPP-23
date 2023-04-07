@@ -183,6 +183,7 @@ public final class BoardService {
         final Board editedBoard = boardOpt.get();
         editedBoard.setPassword(board.getPassword());
         editedBoard.setName(board.getName());
+        editedBoard.setColour(board.getColour());
         return this.boardRepository.save(editedBoard);
     }
 

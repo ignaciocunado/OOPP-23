@@ -5,8 +5,10 @@ import commons.entities.Board;
 import commons.entities.Tag;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -27,6 +29,12 @@ public class TagOverviewCtrl{
     public VBox vbox;
     @FXML
     public Pane mainPane;
+    @FXML
+    private AnchorPane window;
+    @FXML
+    private Pane inputPane;
+    @FXML
+    private Button createTagButton;
     private Board board;
     private TagEditorCtrl tagEditorCtrl;
 
@@ -198,5 +206,33 @@ public class TagOverviewCtrl{
         catch (IOException e) {
         }
         mainPane.requestFocus();
+        setRightColours();
+    }
+
+    /**
+     * Sets the right colours
+     */
+    private void setRightColours() {
+        if(board.getColour().equals("rgb(1,35,69)")) {
+            window.setStyle("-fx-background-color:rgb(35,69,103)");
+        }
+        else {
+            window.setStyle("-fx-background-color: " + board.getColour());
+        }
+        inputPane.setStyle("-fx-background-color: " + getRGBShade() + ";" +
+                " -fx-background-radius: 5");
+        createTagButton.setStyle("-fx-background-color: " + board.getColour());
+    }
+
+    /**
+     * Gets a shade of RGB to add to panes and buttons
+     * @return string representing RGB colour
+     */
+    public String getRGBShade() {
+        Color color = Color.web(board.getColour());
+        double newRed = color.getRed()*0.75*255;
+        double newGreen = color.getGreen()*0.75*255;
+        double newBlue = color.getBlue()*0.75*255;
+        return "rgb(" + newRed + "," + newGreen + "," + newBlue + ")";
     }
 }

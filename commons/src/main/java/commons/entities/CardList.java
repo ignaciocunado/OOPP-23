@@ -2,6 +2,7 @@ package commons.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,6 +17,10 @@ public final class CardList {
     private String title;
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Card> cards;
+    @NotNull
+    private String colour;
+    @NotNull
+    private String textColour;
     /**
      * Empty constructor for JPA
      */
@@ -28,6 +33,52 @@ public final class CardList {
     public CardList(String title) {
         this.title = title;
         cards = new ArrayList<>();
+        this.colour = "";
+        this.textColour = "white";
+    }
+
+    /**
+     * Constructor for a new card list
+     * @param title title of a list
+     * @param colour colour
+     * @param textColour colour of the text
+     */
+    public CardList(String title, String colour, String textColour) {
+        this.title = title;
+        cards = new ArrayList<>();
+        this.colour = colour;
+        this.textColour = textColour;
+    }
+
+    /**
+     * Getter for text colour
+     * @return colour of the text
+     */
+    public String getTextColour() {
+        return textColour;
+    }
+
+    /**
+     * Setter for textColour
+     * @param newTextColour new colour for text
+     */
+    public void setTextColour(String newTextColour) {
+        this.textColour = newTextColour;
+    }
+    /**
+     * Gets the colour of the board
+     * @return colour
+     */
+    public String getColour() {
+        return colour;
+    }
+
+    /**
+     * Sets the colour of the board
+     * @param colour colour
+     */
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     /**

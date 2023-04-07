@@ -171,6 +171,36 @@ class BoardTest {
 
     @Test
     public void toStringTest() {
-        assertEquals(board.toString(), "<Board id=0 key=abc name=def password=ghi>");
+        assertEquals(board.toString(), "<Board id=0 key=abc name=def password=ghi colour=rgb(1,35,69)>");
     }
+
+    @Test
+    public void toStringTest2() {
+        board.setColour("333");
+        assertEquals(board.toString(), "<Board id=0 key=abc name=def password=ghi colour=333>");
+    }
+
+    @Test
+    public void getColourTest() {
+        assertEquals("rgb(1,35,69)", board.getColour());
+    }
+
+    @Test
+    public void getColourTest2() {
+        board.setColour("1");
+        assertEquals("1", board.getColour());
+    }
+
+    @Test
+    public void setColourTest() {
+        board.setColour("w333");
+        assertEquals("w333", board.getColour());
+    }
+
+    @Test
+    public void testNewConstructor() {
+        Board newboard = new Board("name", "password","password", "colour");
+        assertEquals("colour", newboard.getColour());
+    }
+
 }
