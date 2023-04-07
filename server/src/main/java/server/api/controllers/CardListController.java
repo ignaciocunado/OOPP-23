@@ -5,32 +5,28 @@ import commons.entities.CardList;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import server.database.CardRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.database.CardListRepository;
-import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
+import server.services.CardListService;
 
 @RestController
 @RequestMapping("/api/list")
 
 public class CardListController {
 
-    private final CardListRepository cardListRepo;
-    private final CardRepository cardRepo;
+    private final CardListService cardListService;
     private final SimpMessagingTemplate msgs;
 
     /** Controller for the CardList route
-     * @param cardListRepo  repository for card list
-     * @param cardRepo      repository for card
+     *
+     * @param cardListService the service with the main business logic
      * @param msgs          object to send messages to connected websockets
      */
-    public CardListController(final CardListRepository cardListRepo,
-                              final CardRepository cardRepo, final SimpMessagingTemplate msgs) {
-        this.cardListRepo = cardListRepo;
-        this.cardRepo = cardRepo;
+    public CardListController(final CardListService cardListService,
+                              final SimpMessagingTemplate msgs) {
+        this.cardListService = cardListService;
         this.msgs = msgs;
     }
     /**
@@ -48,16 +44,7 @@ public class CardListController {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        if(!this.cardListRepo.existsById(id)){
-            throw new EntityNotFoundException("No card list with id " + id);
-        }
-
-        final Card card = new Card(payload.getTitle(), payload.getDescription());
-        this.cardRepo.save(card);
-
-        final CardList cardList = this.cardListRepo.getById(id);
-        cardList.addCard(card);
-        this.cardListRepo.save(cardList);
+        CardList cardList = cardListService.createCard(id, payload);
         msgs.convertAndSend("/topic/cardlist", cardList);
         return new ResponseEntity<>(cardList, new HttpHeaders(), 200);
 
@@ -71,17 +58,7 @@ public class CardListController {
     @DeleteMapping("/{id}/card/{cardId}")
     public ResponseEntity<CardList> deleteCard(@PathVariable final Integer id,
                                                @PathVariable final Integer cardId) {
-        if(!this.cardListRepo.existsById((id))){
-            throw new EntityNotFoundException("No card list with id " + id);
-        }
-
-        final CardList cardList = this.cardListRepo.getById(id);
-        if(!cardList.removeCardById(cardId)) {
-            throw new EntityNotFoundException("Card list contains no card with id " + cardId);
-        }
-
-        this.cardRepo.deleteById(cardId);
-        cardListRepo.save(cardList);
+        CardList cardList = cardListService.deleteCard(id, cardId);
         msgs.convertAndSend("/topic/cardlist", cardList);
         return new ResponseEntity<>(cardList, new HttpHeaders(), 200);
     }
@@ -100,13 +77,7 @@ public class CardListController {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        if(!cardListRepo.existsById(id)) {
-            throw new EntityNotFoundException("No card list with id " + id);
-        }
-
-        final CardList editedCardList = this.cardListRepo.getById(id);
-        editedCardList.setTitle(cardList.getTitle());
-        cardListRepo.save(editedCardList);
+        CardList editedCardList = cardListService.editCardListTitle(id, cardList);
         msgs.convertAndSend("/topic/cardlist", editedCardList);
         return new ResponseEntity<>(editedCardList, new HttpHeaders(), 200);
     }

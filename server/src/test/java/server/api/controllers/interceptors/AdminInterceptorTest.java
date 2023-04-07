@@ -1,10 +1,11 @@
-package server.api.interceptors;
+package server.api.controllers.interceptors;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import server.api.interceptors.AdminInterceptor;
 import server.exceptions.UnauthorisedException;
 
 import static org.mockito.Mockito.mock;

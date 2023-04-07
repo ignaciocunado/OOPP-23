@@ -47,7 +47,7 @@ public final class BoardControllerTest {
         this.tagRepo = new TestTagRepository();
 
         final TagService tagService = new TagService(this.tagRepo, this.cardRepo);
-        final CardListService cardListService = new CardListService(this.cardListRepo);
+        final CardListService cardListService = new CardListService(this.cardRepo, this.cardListRepo);
         final BoardService boardService = new BoardService(this.textService,
                 tagService,
                 cardListService,
