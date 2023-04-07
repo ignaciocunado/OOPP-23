@@ -87,7 +87,7 @@ public final class CardListService {
      * @return The updated CardList
      * @throws EntityNotFoundException if the specified CardList does not exist
      */
-    public CardList editCardListTitle(final int id, final CardList cardList) {
+    public CardList editCardList(final int id, final CardList cardList) {
         final Optional<CardList> cardListOpt = this.cardListRepository.findById(id);
         if(cardListOpt.isEmpty()) {
             throw new EntityNotFoundException("No card list with id " + id);
@@ -95,6 +95,8 @@ public final class CardListService {
 
         final CardList editedCardList = cardListOpt.get();
         editedCardList.setTitle(cardList.getTitle());
+        editedCardList.setColour(cardList.getColour());
+        editedCardList.setTextColour(cardList.getTextColour());
         cardListRepository.save(editedCardList);
         return editedCardList;
     }

@@ -70,14 +70,14 @@ public class CardListController {
      * @return the card list with the changed new title
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<CardList> editCardListTitle(@PathVariable final int id,
+    public ResponseEntity<CardList> editCardList(@PathVariable final int id,
                                                       @Validated @RequestBody
                                                       final CardList cardList,
                                                       final BindingResult errors) {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        CardList editedCardList = cardListService.editCardListTitle(id, cardList);
+        CardList editedCardList = cardListService.editCardList(id, cardList);
         msgs.convertAndSend("/topic/cardlist", editedCardList);
         return new ResponseEntity<>(editedCardList, new HttpHeaders(), 200);
     }
