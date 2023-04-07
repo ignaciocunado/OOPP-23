@@ -135,7 +135,8 @@ public final class BoardSettingsCtrl {
         for(CardList cardList : currentBoard.getLists()) {
             cardList.setColour("");
             cardList.setTextColour("white");
-            server.editCardList(cardList.getId(), cardList.getTitle(), cardList.getColour(), cardList.getTextColour());
+            server.editCardList(cardList.getId(), cardList.getTitle(), cardList.getColour(),
+                    cardList.getTextColour());
         }
         this.boardOverviewCtrl.setRightColours();
     }
@@ -163,7 +164,8 @@ public final class BoardSettingsCtrl {
             cardList.setTextColour("rgb(" + redT  + "," +
                     greenT + ", " +
                     blueT + ")");
-            server.editCardList(cardList.getId(), cardList.getTitle(), cardList.getColour(), cardList.getTextColour());
+            server.editCardList(cardList.getId(), cardList.getTitle(), cardList.getColour(),
+                    cardList.getTextColour());
         }
         this.boardOverviewCtrl.setRightColours();
     }

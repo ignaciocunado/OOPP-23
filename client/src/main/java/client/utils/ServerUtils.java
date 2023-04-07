@@ -224,9 +224,11 @@ public class ServerUtils {
      * @param id    the list id
      * @param title the new title
      * @param colour the new colour
+     * @param textColour new text colour
      * @return the renamed list
      */
-    public CardList editCardList(final int id, final String title, final String colour, final String textColour) {
+    public CardList editCardList(final int id, final String title, final String colour,
+                                 final String textColour) {
         try {
             return client.target(this.server).path("api/list/{id}")
                     .resolveTemplate("id", id)

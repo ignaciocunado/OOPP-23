@@ -109,7 +109,8 @@ public final class CardCtrl {
         catch (IOException e) {
 
         }
-        insidePane.setStyle("-fx-background-color: " + card.getColour() + "; -fx-background-radius: 10");
+        insidePane.setStyle("-fx-background-color: " + card.getColour() + ";" +
+                " -fx-background-radius: 10");
         cardPane.setStyle("-fx-background-color: " + cardListCtrl.getListBackgroundColour());
         progress.setProgress(this.card.calculateProgress());
     }

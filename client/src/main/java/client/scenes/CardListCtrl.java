@@ -186,6 +186,10 @@ public final class CardListCtrl {
         return this.cardList;
     }
 
+    /**
+     * Returns background colour of this list to render cards properly
+     * @return string with background colour
+     */
     public String getListBackgroundColour() {
         return this.cardList.getColour();
     }
