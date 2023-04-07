@@ -179,8 +179,8 @@ public class MainCtrl {
      */
     public void showBoardOverview(final Board board) {
         primaryStage.setTitle("Talio: Task List Organiser");
-        primaryStage.setScene(this.boardOverview);
         boardOverviewCtrl.refresh(board);
+        primaryStage.setScene(this.boardOverview);
     }
 
     /**
@@ -242,7 +242,7 @@ public class MainCtrl {
      */
     public void showBoardSettings(Board currentBoard) {
         this.boardSettingsStage.setTitle("Talio: Task List Organiser (Settings)");
-        this.boardSettingsCtrl.refresh(currentBoard);
+        this.boardSettingsCtrl.refresh(currentBoard, boardOverviewCtrl);
         this.boardSettingsStage.showAndWait();
     }
 
