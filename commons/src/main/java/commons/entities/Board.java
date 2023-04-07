@@ -45,7 +45,7 @@ public final class Board {
         this.password = password;
         this.lists = new ArrayList<>();
         this.tags = new ArrayList<>();
-        this.colour = "";
+        this.colour = "rgb(1,35,69)";
     }
 
     /**

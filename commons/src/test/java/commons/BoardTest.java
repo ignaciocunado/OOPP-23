@@ -171,7 +171,7 @@ class BoardTest {
 
     @Test
     public void toStringTest() {
-        assertEquals(board.toString(), "<Board id=0 key=abc name=def password=ghi colour=>");
+        assertEquals(board.toString(), "<Board id=0 key=abc name=def password=ghi colour=rgb(1,35,69)>");
     }
 
     @Test
@@ -182,7 +182,7 @@ class BoardTest {
 
     @Test
     public void getColourTest() {
-        assertEquals("", board.getColour());
+        assertEquals("rgb(1,35,69)", board.getColour());
     }
 
     @Test

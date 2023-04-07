@@ -77,23 +77,17 @@ public final class BoardSettingsCtrl {
      * sets the correct colours
      */
     private void setRightColours() {
-        if(currentBoard.getColour().equals("")) {
+        if(currentBoard.getColour().equals("rgb(1,35,69)")) {
             window.setStyle("-fx-background-color: rgb(35,69,103)");
-            resetButton.setStyle("-fx-background-color:  #123456");
-            saveButtonColour.setStyle("-fx-background-color:  #123456");
-            saveButtonPassword.setStyle("-fx-background-color:  #123456");
-            saveButtonColour1.setStyle("-fx-background-color:  #123456");
-            resetButton1.setStyle("-fx-background-color:  #123456");
-
         }
         else {
             window.setStyle("-fx-background-color: " + currentBoard.getColour());
-            resetButton.setStyle("-fx-background-color: " + getRGBShade());
-            saveButtonPassword.setStyle("-fx-background-color: " + getRGBShade());
-            saveButtonColour.setStyle("-fx-background-color: " + getRGBShade());
-            saveButtonColour1.setStyle("-fx-background-color: " + getRGBShade());
-            resetButton1.setStyle("-fx-background-color: " + getRGBShade());
         }
+        resetButton.setStyle("-fx-background-color: " + getRGBShade());
+        saveButtonPassword.setStyle("-fx-background-color: " + getRGBShade());
+        saveButtonColour.setStyle("-fx-background-color: " + getRGBShade());
+        saveButtonColour1.setStyle("-fx-background-color: " + getRGBShade());
+        resetButton1.setStyle("-fx-background-color: " + getRGBShade());
     }
 
     /**
@@ -110,7 +104,7 @@ public final class BoardSettingsCtrl {
      * Resets the colour of the board to default
      */
     public void resetBoardColours() {
-        currentBoard.setColour("");
+        currentBoard.setColour("rgb(1,35,69)");
         server.editBoard(currentBoard.getId(), currentBoard);
 
         this.boardOverviewCtrl.refresh(currentBoard);

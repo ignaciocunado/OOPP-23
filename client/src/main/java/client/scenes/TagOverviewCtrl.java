@@ -203,18 +203,22 @@ public class TagOverviewCtrl{
         }
         catch (IOException e) {
         }
-        if(board.getColour().equals("")) {
-            window.setStyle("-fx-background-color: rgb(35,69,103)");
-            createTagButton.setStyle("-fx-background-color: rgb(35,69,103)");
-            inputPane.setStyle("-fx-background-color: #123456; -fx-background-radius: 5");
+        setRightColours();
+    }
+
+    /**
+     * Sets the right colours
+     */
+    private void setRightColours() {
+        if(board.getColour().equals("rgb(1,35,69)")) {
+            window.setStyle("-fx-background-color:rgb(35,69,103)");
         }
         else {
             window.setStyle("-fx-background-color: " + board.getColour());
-            inputPane.setStyle("-fx-background-color: " + getRGBShade() + ";" +
-                    " -fx-background-radius: 5");
-            createTagButton.setStyle("-fx-background-color: " + board.getColour());
         }
-
+        inputPane.setStyle("-fx-background-color: " + getRGBShade() + ";" +
+                " -fx-background-radius: 5");
+        createTagButton.setStyle("-fx-background-color: " + board.getColour());
     }
 
     /**
