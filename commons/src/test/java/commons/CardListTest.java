@@ -88,4 +88,65 @@ class CardListTest {
         CardList list2 = new CardList("newer");
         assertNotEquals(list1.hashCode(), list2.hashCode());
     }
+
+    @Test
+    public void getColourTest() {
+        CardList list = new CardList("new");
+        assertEquals("", list.getColour());
+    }
+
+    @Test
+    public void getColourTest2() {
+        CardList list = new CardList("new");
+        list.setColour("1");
+        assertEquals("1", list.getColour());
+    }
+
+    @Test
+    public void setColourTest() {
+        CardList list = new CardList("new");
+        list.setColour("w333");
+        assertEquals("w333", list.getColour());
+    }
+
+    @Test
+    public void setIdTest() {
+        CardList list = new CardList("new");
+        assertEquals(0, list.getId());
+        list.setId(69);
+        assertEquals(69, list.getId());
+    }
+
+    @Test
+    public void removeCardbyIdTest() {
+        CardList list = new CardList("new");
+        Card card = new Card("dd", "dd");
+        card.setId(999);
+        assertEquals(0, list.getCards().size());
+        list.addCard(card);
+        assertEquals(1, list.getCards().size());
+        list.removeCardById(0);
+        assertEquals(1, list.getCards().size());
+        list.removeCardById(999);
+        assertEquals(0, list.getCards().size());
+    }
+
+    @Test
+    public void testNewConstructor() {
+        CardList newCardList = new CardList("name", "colour", "textColour");
+        assertEquals("colour", newCardList.getColour());
+        assertEquals("textColour", newCardList.getTextColour());
+    }
+
+    @Test
+    public void getTextColourTest() {
+        assertEquals(new CardList("d").getTextColour(), "white");
+    }
+
+    @Test
+    public void setTextColourTest() {
+        CardList list = new CardList("d");
+        list.setTextColour("aaaaa");
+        assertEquals(list.getTextColour(), "aaaaa");
+    }
 }

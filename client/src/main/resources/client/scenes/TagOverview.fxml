@@ -11,13 +11,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="567.0" prefWidth="780.0" style="-fx-background-color: #123456;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagOverviewCtrl">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="567.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagOverviewCtrl">
    <children>
-      <AnchorPane fx:id="custo" prefHeight="567.0" prefWidth="780.0" style="-fx-background-color: rgb(35,69,103);">
+      <AnchorPane fx:id="window" prefHeight="567.0" prefWidth="780.0" style="-fx-background-color: rgb(35,69,103);">
          <children>
-            <Pane layoutX="507.0" layoutY="51.0" prefHeight="459.0" prefWidth="236.0" style="-fx-background-color: #123456;">
+            <Pane fx:id="inputPane" layoutX="507.0" layoutY="51.0" prefHeight="459.0" prefWidth="236.0" style="-fx-background-color: #123456; -fx-background-radius: 5;">
                <children>
-                  <TextField fx:id="newTitle" alignment="CENTER" layoutX="18.0" layoutY="14.0" prefHeight="7.0" prefWidth="200.0" style="-fx-background-color: #123456; -fx-font-size: 20; -fx-text-fill: #c6c6c6;" text="Title">
+                  <TextField fx:id="newTitle" alignment="CENTER" layoutX="18.0" layoutY="14.0" prefHeight="7.0" prefWidth="200.0" style="-fx-background-color: transparent; -fx-font-size: 20; -fx-text-fill: white;" text="Title">
                      <font>
                         <Font size="30.0" />
                      </font>
@@ -78,14 +78,14 @@
                      </value>
                   </ColorPicker>
                   <Circle fx:id="circle" layoutX="118.0" layoutY="349.0" radius="44.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Button alignment="CENTER" layoutX="50.0" layoutY="400.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#createTag" prefHeight="44.0" prefWidth="136.0" style="-fx-background-color: rgb(35,69,103);" text="+" textAlignment="CENTER" textFill="WHITE">
+                  <Button fx:id="createTagButton" alignment="CENTER" layoutX="50.0" layoutY="400.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#createTag" prefHeight="44.0" prefWidth="136.0" style="-fx-background-color: rgb(35,69,103);" text="+" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font size="25.0" />
                      </font>
                   </Button>
                </children>
             </Pane>
-            <VBox fx:id="vbox" alignment="CENTER" layoutX="56.0" layoutY="58.0" prefHeight="459.0" prefWidth="178.0" style="-fx-background-color: transparent;" />
+            <VBox fx:id="vbox" alignment="CENTER" layoutX="56.0" layoutY="58.0" prefHeight="459.0" prefWidth="178.0" />
          </children>
       </AnchorPane>
    </children>

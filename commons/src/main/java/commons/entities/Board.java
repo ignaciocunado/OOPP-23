@@ -24,6 +24,8 @@ public final class Board {
     private List<Tag> tags;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CardList> lists;
+    @NotNull
+    private String colour;
 
     /**
      * Empty constructor for JPA
@@ -43,6 +45,40 @@ public final class Board {
         this.password = password;
         this.lists = new ArrayList<>();
         this.tags = new ArrayList<>();
+        this.colour = "rgb(1,35,69)";
+    }
+
+    /**
+     * Optional Constructor for a new board
+     *
+     * @param key      to enter the board (view-only if board is secured with password)
+     * @param name
+     * @param password to enter and edit the board
+     * @param colour colour
+     */
+    public Board(String key, String name, String password, String colour) {
+        this.key = key;
+        this.name = name;
+        this.password = password;
+        this.lists = new ArrayList<>();
+        this.tags = new ArrayList<>();
+        this.colour = colour;
+    }
+
+    /**
+     * Gets the colour of the board
+     * @return colour
+     */
+    public String getColour() {
+        return colour;
+    }
+
+    /**
+     * Sets the colour of the board
+     * @param colour colour
+     */
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     /**
@@ -215,7 +251,8 @@ public final class Board {
      */
     @Override
     public String toString() {
-        return String.format("<Board id=%d key=%s name=%s password=%s>", this.id, this.key,
-                this.name, this.password);
+        return String.format("<Board id=%d key=%s name=%s password=%s colour=%s>",
+                this.id, this.key,
+                this.name, this.password, this.colour);
     }
 }

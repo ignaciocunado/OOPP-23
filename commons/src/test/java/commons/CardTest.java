@@ -1,6 +1,7 @@
 package commons;
 
 import commons.entities.Card;
+import commons.entities.CardList;
 import commons.entities.Tag;
 import commons.entities.Task;
 import org.junit.jupiter.api.BeforeEach;
@@ -133,7 +134,13 @@ class CardTest {
 
     @Test
     public void toStringTest() {
-        assertEquals(card.toString(), "<Card id=0 title=Card description=This is a card>");
+        assertEquals(card.toString(), "<Card id=0 title=Card description=This is a card colour=#123456>");
+    }
+
+    @Test
+    public void toStringTest2() {
+        card.setColour("222");
+        assertEquals(card.toString(), "<Card id=0 title=Card description=This is a card colour=222>");
     }
 
     @Test
@@ -184,5 +191,28 @@ class CardTest {
     public void removeTaskByIdNotFoundTest() {
         card.addTask(task);
         assertFalse(card.removeTaskById(task.getId() + 2));
+    }
+
+    @Test
+    public void getColourTest() {
+        assertEquals("#123456", card.getColour());
+    }
+
+    @Test
+    public void getColourTest2() {
+        card.setColour("1");
+        assertEquals("1", card.getColour());
+    }
+
+    @Test
+    public void setColourTest() {
+        card.setColour("w333");
+        assertEquals("w333", card.getColour());
+    }
+
+    @Test
+    public void testNewConstructor() {
+        Card newCard = new Card("name", "des", "colour");
+        assertEquals("colour", newCard.getColour());
     }
 }

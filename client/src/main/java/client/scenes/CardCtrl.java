@@ -42,6 +42,8 @@ public final class CardCtrl {
     @FXML
     private ProgressBar progress;
     private Card card;
+    @FXML
+    private Pane insidePane;
 
     /**
      * The wrapping controller for a card
@@ -107,8 +109,9 @@ public final class CardCtrl {
         catch (IOException e) {
 
         }
-        System.out.println(this.card.getNestedTaskList());
-        System.out.println(this.card.calculateProgress());
+        insidePane.setStyle("-fx-background-color: " + card.getColour() + ";" +
+                " -fx-background-radius: 10");
+        cardPane.setStyle("-fx-background-color: " + cardListCtrl.getListBackgroundColour());
         progress.setProgress(this.card.calculateProgress());
     }
 
@@ -169,9 +172,15 @@ public final class CardCtrl {
     public void mouseHover() {
         this.boardOverviewCtrl.setHoverCard(this.getCardPane());
         cardPane.setOpacity(0.75);
-        Pane childPane = (Pane) cardPane.getChildren().get(0);
-        childPane.setStyle("-fx-background-color: #123456; -fx-background-radius: 10;" +
-            "-fx-border-color: rgb(1,35,69); -fx-border-width: 3px");
+        if(card.getColour().equals("")) {
+            insidePane.setStyle("-fx-background-color: #123456;-fx-background-radius:10 ;" +
+                    " -fx-border-color: rgb(1,35,69); -fx-border-width: 3px");
+        }
+        else {
+            insidePane.setStyle("-fx-background-color: " + card.getColour() +
+                    ";-fx-background-radius:10 ; -fx-border-color: rgb(1,35,69);" +
+                    " -fx-border-width: 3px");
+        }
     }
 
     /**
@@ -179,9 +188,14 @@ public final class CardCtrl {
      */
     public void mouseStopHover() {
         cardPane.setOpacity(1);
-        Pane childPane = (Pane) cardPane.getChildren().get(0);
-        childPane.setStyle("-fx-background-color: #123456; " +
-            "-fx-background-radius: 10; -fx-border-width: 0px");
+        if(this.card.getColour().equals("")) {
+            insidePane.setStyle("-fx-background-color: #123456; " +
+                    "-fx-background-radius: 10; -fx-border-width: 0px");
+        }
+        else {
+            insidePane.setStyle("-fx-background-color: " + card.getColour() +
+                    ";-fx-background-radius: 10; -fx-border-width: 0px");
+        }
     }
 
     /**
@@ -208,6 +222,7 @@ public final class CardCtrl {
         if (!(observable instanceof ReadOnlyBooleanProperty)) return; // Doesn't happen
         final ReadOnlyBooleanProperty focused = (ReadOnlyBooleanProperty) observable;
         if (focused.getValue()) return; // If focuses then don't save yet
-        this.server.editCard(this.card.getId(), cardTitle.getText(), cardDescription.getText());
+        this.server.editCard(this.card.getId(), cardTitle.getText(), cardDescription.getText(),
+                this.card.getColour());
     }
 }

@@ -115,6 +115,7 @@ public class BoardOverviewCtrl implements Initializable {
             final CardListCtrl ctrl = pair.getKey();
             ctrl.refresh(list);
         }
+        setRightColours();
     }
 
     /**
@@ -328,5 +329,13 @@ public class BoardOverviewCtrl implements Initializable {
      */
     public CardCtrl getCardCtrl() {
         return this.cardCtrl;
+    }
+
+    /**
+     * Method to call instead of refresh
+     */
+    public void setRightColours() {
+        lists.setStyle("-fx-spacing: 20; -fx-background-color:" + currentBoard.getColour());
+        mainPane.setStyle("-fx-background-color:" + currentBoard.getColour());
     }
 }
