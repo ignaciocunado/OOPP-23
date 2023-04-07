@@ -28,6 +28,8 @@ public class TagOverviewCtrl{
     @FXML
     public VBox vbox;
     @FXML
+    public Pane mainPane;
+    @FXML
     private AnchorPane window;
     @FXML
     private Pane inputPane;
@@ -203,6 +205,7 @@ public class TagOverviewCtrl{
         }
         catch (IOException e) {
         }
+        mainPane.requestFocus();
         setRightColours();
     }
 
