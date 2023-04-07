@@ -12,6 +12,7 @@ import server.api.repositories.TestCardListRepository;
 import server.api.repositories.TestCardRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
+import server.services.CardListService;
 
 class CardListControllerTest {
 
@@ -21,13 +22,15 @@ class CardListControllerTest {
 
     private BindingResult hasErrorResult;
     private BindingResult noErrorResult;
+    private CardListService cardListService;
 
 
     @BeforeEach
     public void setup() {
         this.cardRepo = new TestCardRepository();
         this.cardListRepo = new TestCardListRepository();
-        this.cardListController = new CardListController(cardListRepo, cardRepo, Mockito.mock(SimpMessagingTemplate.class));
+        this.cardListService = new CardListService(cardRepo, cardListRepo);
+        this.cardListController = new CardListController(cardListService, Mockito.mock(SimpMessagingTemplate.class));
 
         this.hasErrorResult = Mockito.mock(BindingResult.class);
         this.noErrorResult = Mockito.mock(BindingResult.class);
