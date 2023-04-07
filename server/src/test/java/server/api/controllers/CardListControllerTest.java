@@ -92,10 +92,12 @@ class CardListControllerTest {
         final CardList cardList2 = new CardList("new title");
         cardList2.setId(1);
         cardList2.setColour("aaa");
+        cardList2.setTextColour("DN");
 
         Assertions.assertEquals(this.cardListRepo.findById(1).get(), cardList1);
         final CardList toCompare = new CardList("title");
         toCompare.setColour("aaa");
+        toCompare.setTextColour("DN");
         this.cardListController.editCardList(1, toCompare, noErrorResult);
         cardList1.setTitle("new title");
         cardListRepo.save(cardList1);

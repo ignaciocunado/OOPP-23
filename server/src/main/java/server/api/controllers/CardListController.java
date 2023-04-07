@@ -107,6 +107,7 @@ public class CardListController {
         final CardList editedCardList = this.cardListRepo.getById(id);
         editedCardList.setTitle(cardList.getTitle());
         editedCardList.setColour(cardList.getColour());
+        editedCardList.setTextColour(cardList.getTextColour());
         cardListRepo.save(editedCardList);
         msgs.convertAndSend("/topic/cardlist", editedCardList);
         return new ResponseEntity<>(editedCardList, new HttpHeaders(), 200);
