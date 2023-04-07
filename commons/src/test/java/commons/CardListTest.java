@@ -136,4 +136,16 @@ class CardListTest {
         CardList newCardList = new CardList("name", "colour");
         assertEquals("colour", newCardList.getColour());
     }
+
+    @Test
+    public void getTextColourTest() {
+        assertEquals(new CardList("d").getTextColour(), "white");
+    }
+
+    @Test
+    public void setTextColourTest() {
+        CardList list = new CardList("d");
+        list.setTextColour("aaaaa");
+        assertEquals(list.getTextColour(), "aaaaa");
+    }
 }
