@@ -82,7 +82,7 @@ public final class BoardService {
      *
      * @param id  the id of the board to add the tag to
      * @param tag the tag to add to the board
-     * @return the updated boardx
+     * @return the updated board
      * @throws EntityNotFoundException if no board with the specified id exists
      */
     public Board addTagToBoard(final int id, final Tag tag) {
