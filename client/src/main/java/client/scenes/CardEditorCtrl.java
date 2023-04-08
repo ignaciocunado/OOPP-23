@@ -122,6 +122,8 @@ public class CardEditorCtrl {
             resetButton.setStyle("-fx-padding: 0px; -fx-background-color: " + getRGBShade());
             saveButton.setStyle("-fx-padding: 0px; -fx-background-color: " + getRGBShade());
         }
+        Color cardColour  = Color.web(currentCard.getColour());
+        this.colour.setValue(cardColour);
     }
 
     /**
