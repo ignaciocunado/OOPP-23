@@ -39,6 +39,7 @@ public class CardEditorCtrl {
     @FXML
     private AnchorPane mainPane;
     private CardCtrl cardCtrl;
+
     private Card currentCard;
     @FXML
     private ComboBox<Tag> combo;
@@ -104,6 +105,13 @@ public class CardEditorCtrl {
             }
         });
         setEditCardMethods();
+    }
+
+    /** Getter for the current card
+     * @return card object
+     */
+    public Card getCurrentCard() {
+        return currentCard;
     }
 
     /**

@@ -37,17 +37,20 @@ public class TagOverviewCtrl{
     private Button createTagButton;
     private Board board;
     private TagEditorCtrl tagEditorCtrl;
+    private CardEditorCtrl cardEditorCtrl;
 
     /** Constructor to inject necessary classes into the controller
      * @param server serverUtils
      * @param mainCtrl mainCtrl of the server
      * @param vbox the vbox to display the tags in
+     * @param cardEditorCtrl cardEditor controller
      */
     @Inject
-    public TagOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, VBox vbox){
+    public TagOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, VBox vbox, CardEditorCtrl cardEditorCtrl){
         this.server = server;
         this.mainCtrl = mainCtrl;
         this.vbox = vbox;
+        this.cardEditorCtrl = cardEditorCtrl;
     }
 
     /** getter for color
@@ -106,8 +109,15 @@ public class TagOverviewCtrl{
      * @param id id of the tag
      */
     public void removeTag(int id){
-        vbox.getChildren().removeIf(pane -> Integer.parseInt(pane.getId()) == id);
-        server.deleteTag(board.getId(), id);
+        try {
+            vbox.getChildren().removeIf(pane -> Integer.parseInt(pane.getId()) == id);
+            server.deleteTag(board.getId(), id);
+        }
+        catch(Exception e){
+            if(cardEditorCtrl.getCurrentCard() != null) {
+                cardEditorCtrl.removeTag(id);
+            }
+        }
     }
 
     /**
