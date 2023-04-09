@@ -46,7 +46,8 @@ public class TagOverviewCtrl{
      * @param cardEditorCtrl cardEditor controller
      */
     @Inject
-    public TagOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, VBox vbox, CardEditorCtrl cardEditorCtrl){
+    public TagOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, VBox vbox,
+                           CardEditorCtrl cardEditorCtrl){
         this.server = server;
         this.mainCtrl = mainCtrl;
         this.vbox = vbox;
