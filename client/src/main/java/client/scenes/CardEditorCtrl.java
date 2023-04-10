@@ -39,6 +39,7 @@ public class CardEditorCtrl {
     @FXML
     private AnchorPane mainPane;
     private CardCtrl cardCtrl;
+
     private Card currentCard;
     @FXML
     private ComboBox<Tag> combo;
