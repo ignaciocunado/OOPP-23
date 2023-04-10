@@ -107,13 +107,6 @@ public class CardEditorCtrl {
         setEditCardMethods();
     }
 
-    /** Getter for the current card
-     * @return card object
-     */
-    public Card getCurrentCard() {
-        return currentCard;
-    }
-
     /**
      * Sets colour of nodes
      */
