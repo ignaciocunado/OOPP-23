@@ -24,17 +24,22 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 @Singleton
 public class ServerUtils {
 
     private Client client;
     private String server;
+    private ExecutorService exec;
 
     /**
      * Empty constructor
@@ -494,4 +499,40 @@ public class ServerUtils {
             return null;
         }
     }
+
+    /**
+     * Registers a listener to receive updates on all boards
+     * from the server using the specified password.
+     * This method will create a new thread to continuously listen for updates from the server.
+     *
+     * @param password the password which has been entered by the user
+     * @param boardsListener The listener to be called with a list of updated boards.
+     */
+    public void registerAllBoardsListener(String password, Consumer<List<Board>> boardsListener) {
+        if (this.exec != null) this.exec.shutdownNow();
+        this.exec = Executors.newSingleThreadExecutor();
+        this.exec.submit(() -> {
+            while (!Thread.interrupted()) {
+                final Response res = client.target(this.server).path("api/admin/board/all/updates")
+                        .request(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header("authorization", "Basic "+ Base64.getEncoder().
+                                encodeToString(("admin:"+password).getBytes()))
+                        .get(Response.class);
+                if (res.getStatus() == 204) continue;
+
+                final List<Board> boards = res.readEntity(new GenericType<>() {});
+                boardsListener.accept(boards);
+                res.close();
+            }
+        });
+    }
+
+    /**
+     * Stops current running background threads
+     */
+    public void stop() {
+        if (this.exec != null) this.exec.shutdownNow();
+    }
+
 }

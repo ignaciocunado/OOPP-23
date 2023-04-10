@@ -17,11 +17,16 @@ package server.api.controllers;
 
 import commons.entities.Board;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.services.BoardService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -46,6 +51,25 @@ public final class AdminController {
     @GetMapping("/board/all")
     public ResponseEntity<List<Board>> getAllBoards() {
         return new ResponseEntity<>(this.boardService.getAllBoards(), new HttpHeaders(), 200);
+    }
+
+    /**
+     * Handler for getting all boards
+     *
+     * @return the list boards
+     */
+    @GetMapping("/board/all/updates")
+    public DeferredResult<ResponseEntity<List<Board>>> getAllBoardsUpdates() {
+        final ResponseEntity<List<Board>> noContent =
+                new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        final DeferredResult<ResponseEntity<List<Board>>> res =
+                new DeferredResult<>(10000L, noContent);
+
+        final UUID runId = this.boardService.addAllBoardListener(boards -> {
+            res.setResult(new ResponseEntity<>(boards, new HttpHeaders(), 200));
+        });
+        res.onCompletion(() -> this.boardService.removeAllBoardListener(runId));
+        return res;
     }
 
 }
