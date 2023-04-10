@@ -25,6 +25,11 @@
         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="50.0" percentHeight="10.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowSpan="3">
+         <children>
+            <Line endX="100.0" startX="100.0" startY="-300.0" stroke="WHITE" />
+         </children>
+      </HBox>
         <AnchorPane maxHeight="1.7976931348623157E308" GridPane.columnSpan="2" GridPane.rowIndex="2">
             <children>
                 <Button mnemonicParsing="false" onAction="#openHistory" style="-fx-background-color: rgb(52,86,120);" text="History" textFill="WHITE" AnchorPane.bottomAnchor="12.5" AnchorPane.leftAnchor="15.0" />
@@ -94,10 +99,5 @@
                 </Text>
             </children>
         </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowSpan="3">
-         <children>
-            <Line endX="100.0" startX="100.0" startY="-300.0" stroke="WHITE" />
-         </children>
-      </HBox>
     </children>
 </GridPane>
