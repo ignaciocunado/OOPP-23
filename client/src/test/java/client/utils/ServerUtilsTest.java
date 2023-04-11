@@ -3,8 +3,7 @@ package client.utils;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,6 +20,11 @@ public final class ServerUtilsTest {
         wireMockServer.start();
 
         serverUtils = new ServerUtils(SERVER_URI);
+    }
+
+    @AfterAll
+    public void tearDown() {
+        wireMockServer.stop();
     }
 
     @Test
@@ -41,7 +45,6 @@ public final class ServerUtilsTest {
 
         Assertions.assertFalse(this.serverUtils.ping(SERVER_URI));
     }
-
     @Test
     public void getServerTest() {
         final ServerUtils utils = new ServerUtils("server");
