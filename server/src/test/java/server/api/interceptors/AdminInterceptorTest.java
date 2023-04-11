@@ -1,4 +1,4 @@
-package server.api.controllers.interceptors;
+package server.api.interceptors;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

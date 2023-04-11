@@ -79,7 +79,7 @@ public final class ServerOverviewCtrl {
         this.config.setCurrentWorkspace(this.connectionUriField.getText());
         this.serverUtils.setServer("http://" + this.connectionUriField.getText());
         this.websocketUtils.disconnect();
-        this.websocketUtils.connect("ws://" + this.connectionUriField.getText() + "websocket");
+        this.websocketUtils.connect("ws://" + this.connectionUriField.getText() + "/websocket");
         this.ctrl.showLandingOverview();
     }
 

@@ -19,17 +19,18 @@ import com.google.inject.Singleton;
 import commons.entities.*;
 import jakarta.ws.rs.HttpMethod;
 import jakarta.ws.rs.NotFoundException;
-import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
-import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.client.*;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.ClientProperties;
+import org.springframework.http.HttpStatus;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -86,16 +87,17 @@ public class ServerUtils {
      */
     public boolean ping(final String connectionUri) {
         try {
-            client.target(connectionUri)
-                    .request()
-                    .get()
-                    .close();
+            final WebTarget target = client.target(connectionUri + "/api/ping");
+            final Invocation.Builder builder = target.request();
+            builder.property(ClientProperties.CONNECT_TIMEOUT, 1000);
+            builder.property(ClientProperties.READ_TIMEOUT, 1000);
+            final Response response = builder.get();
+            if (response.getStatus() != HttpStatus.OK.value()) return false;
+            if (Objects.equals(response.getHeaderString("Server"), "Talio V1")) return true;
         } catch (final NotFoundException e) {
-            return true;
-        } catch (final Exception e) {
             return false;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -106,7 +108,7 @@ public class ServerUtils {
      * @return the newly created board
      */
     public Board createBoard(final String name, final String password) {
-        return client.target(this.server).path("api/board")
+        return client.target(this.server).path("/api/board")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .post(
@@ -122,7 +124,7 @@ public class ServerUtils {
      * @return all the boars on this server
      */
     public List<Board> getAllBoards(String password) {
-        return client.target(this.server).path("api/admin/board/all")
+        return client.target(this.server).path("/api/admin/board/all")
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("authorization", "Basic " + Base64.getEncoder().
@@ -137,7 +139,7 @@ public class ServerUtils {
      * @param key the key of the Board
      */
     public void deleteBoard(final String key) {
-        client.target(this.server).path("api/board/{key}")
+        client.target(this.server).path("/api/board/{key}")
                 .resolveTemplate("key", key)
                 .request(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
@@ -152,7 +154,7 @@ public class ServerUtils {
      */
     public Board getBoard(final String key) {
         try {
-            return client.target(this.server).path("api/board/{key}")
+            return client.target(this.server).path("/api/board/{key}")
                     .resolveTemplate("key", key)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
@@ -171,7 +173,7 @@ public class ServerUtils {
      */
     public Board editBoard(final int id, final Board board) {
         try {
-            return client.target(this.server).path("api/board/{id}")
+            return client.target(this.server).path("/api/board/{id}")
                     .resolveTemplate("id", id)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
@@ -194,7 +196,7 @@ public class ServerUtils {
      */
     public Board createList(final int id, final String title) {
         try {
-            return client.target(this.server).path("api/board/{id}/list")
+            return client.target(this.server).path("/api/board/{id}/list")
                     .resolveTemplate("id", id)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
@@ -216,7 +218,7 @@ public class ServerUtils {
      */
     public Board deleteList(final int id, final int listId) {
         try {
-            return client.target(this.server).path("api/board/{id}/list/{listId}")
+            return client.target(this.server).path("/api/board/{id}/list/{listId}")
                     .resolveTemplate("id", id)
                     .resolveTemplate("listId", listId)
                     .request(MediaType.APPLICATION_JSON)
@@ -239,7 +241,7 @@ public class ServerUtils {
     public CardList editCardList(final int id, final String title, final String colour,
                                  final String textColour) {
         try {
-            return client.target(this.server).path("api/list/{id}")
+            return client.target(this.server).path("/api/list/{id}")
                     .resolveTemplate("id", id)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
@@ -260,7 +262,7 @@ public class ServerUtils {
      */
     public CardList createCard(final int id, final String title, final String description) {
         try {
-            return client.target(this.server).path("api/list/{id}/card")
+            return client.target(this.server).path("/api/list/{id}/card")
                     .resolveTemplate("id", id)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
@@ -282,7 +284,7 @@ public class ServerUtils {
      */
     public CardList deleteCard(final int id, final int cardId) {
         try {
-            return client.target(this.server).path("api/list/{id}/card/{cardId}")
+            return client.target(this.server).path("/api/list/{id}/card/{cardId}")
                     .resolveTemplate("id", id)
                     .resolveTemplate("cardId", cardId)
                     .request(MediaType.APPLICATION_JSON)
@@ -302,7 +304,7 @@ public class ServerUtils {
      */
     public void moveCard(final int id, final int listId, final int position) {
         try {
-            client.target(this.server).path("api/card/{id}/move/{listId}/{position}")
+            client.target(this.server).path("/api/card/{id}/move/{listId}/{position}")
                     .resolveTemplate("id", id)
                     .resolveTemplate("listId", listId)
                     .resolveTemplate("position", position)
@@ -325,7 +327,7 @@ public class ServerUtils {
     public Card editCard(final int id, final String title, final String description,
                          final String colour) {
         try {
-            return client.target(this.server).path("api/card/{id}")
+            return client.target(this.server).path("/api/card/{id}")
                     .resolveTemplate("id", id)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
@@ -346,7 +348,7 @@ public class ServerUtils {
      */
     public Board createTag(int boardId, String name, int colour) {
         try {
-            return client.target(this.server).path("api/board/{id}/tag")
+            return client.target(this.server).path("/api/board/{id}/tag")
                     .resolveTemplate("id", boardId)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
@@ -367,7 +369,7 @@ public class ServerUtils {
      */
     public Board deleteTag(int boardId, int tagId) {
         try {
-            return client.target(this.server).path("api/board/{id}/tag/{tagid}")
+            return client.target(this.server).path("/api/board/{id}/tag/{tagid}")
                     .resolveTemplate("id", boardId)
                     .resolveTemplate("tagid", tagId)
                     .request(MediaType.APPLICATION_JSON)
@@ -389,7 +391,7 @@ public class ServerUtils {
      */
     public Card addTag(final int tagId, final int cardId, final Tag tag) {
         try {
-            return client.target(this.server).path("api/card/{cardId}/tag/{tagId}")
+            return client.target(this.server).path("/api/card/{cardId}/tag/{tagId}")
                     .resolveTemplate("cardId", cardId)
                     .resolveTemplate("tagId", tagId)
                     .request(MediaType.APPLICATION_JSON)
@@ -410,7 +412,7 @@ public class ServerUtils {
      */
     public Tag editTag(final int tagId, final String newName, final int newColour) {
         try {
-            return client.target(this.server).path("api/tag/{id}")
+            return client.target(this.server).path("/api/tag/{id}")
                     .resolveTemplate("id", tagId)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
@@ -430,7 +432,7 @@ public class ServerUtils {
      */
     public Card removeTagFromCard(final int cardId, final int tagId) {
         try {
-            return client.target(this.server).path("api/card/{cardId}/tag/{tagId}")
+            return client.target(this.server).path("/api/card/{cardId}/tag/{tagId}")
                     .resolveTemplate("cardId", cardId)
                     .resolveTemplate("tagId", tagId)
                     .request(MediaType.APPLICATION_JSON)
@@ -452,7 +454,7 @@ public class ServerUtils {
      */
     public Card addTaskToCard(final int cardId, final String name, final boolean completed) {
         try {
-            return client.target(this.server).path("api/card/{cardId}/task")
+            return client.target(this.server).path("/api/card/{cardId}/task")
                     .resolveTemplate("cardId", cardId)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
@@ -475,7 +477,7 @@ public class ServerUtils {
      */
     public Task editTask(final int id, final String name, final boolean completed) {
         try {
-            return client.target(this.server).path("api/task/{id}")
+            return client.target(this.server).path("/api/task/{id}")
                     .resolveTemplate("id", id)
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
@@ -495,7 +497,7 @@ public class ServerUtils {
      */
     public Card removeTaskFromCard(int taskId, int cardId) {
         try {
-            return client.target(this.server).path("api/card/{cardId}/task/{taskId}")
+            return client.target(this.server).path("/api/card/{cardId}/task/{taskId}")
                     .resolveTemplate("cardId", cardId)
                     .resolveTemplate("taskId", taskId)
                     .request(MediaType.APPLICATION_JSON)
@@ -514,7 +516,7 @@ public class ServerUtils {
      */
     public void moveTask(int taskId, String direction) {
         try {
-            client.target(this.server).path("api/task/{taskId}/move/{direction}")
+            client.target(this.server).path("/api/task/{taskId}/move/{direction}")
                     .resolveTemplate("taskId", taskId)
                     .resolveTemplate("direction", direction)
                     .request(MediaType.APPLICATION_JSON)
@@ -537,7 +539,7 @@ public class ServerUtils {
         this.exec = Executors.newSingleThreadExecutor();
         this.exec.submit(() -> {
             while (!Thread.interrupted()) {
-                final Response res = client.target(this.server).path("api/admin/board/all/updates")
+                final Response res = client.target(this.server).path("/api/admin/board/all/updates")
                         .request(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .header("authorization", "Basic " + Base64.getEncoder().
