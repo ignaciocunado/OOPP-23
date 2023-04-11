@@ -13,7 +13,7 @@
             <Font size="24.0" />
          </font>
       </Button>
-      <TextField fx:id="title" layoutX="55.0" prefHeight="35.0" style="-fx-background-color: transparent; -fx-font-size: 20; -fx-padding: 0; -fx-text-fill: white;" text="Title" />
+      <TextField fx:id="title" layoutX="55.0" prefHeight="35.0" style="-fx-background-color: transparent; -fx-font-size: 20; -fx-padding: 0; -fx-text-fill: white;" text="Title" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="30.0" />
       <CheckBox fx:id="completed" layoutY="-7.0" mnemonicParsing="false" scaleX="0.5" scaleY="0.5" style="-fx-background-color: rgb(35,69,103); -fx-padding: 0px; -fx-text-fill: #26ff00; -fx-border-width: 0px;" stylesheets="" textAlignment="CENTER" textFill="#26ff00">
          <font>
             <Font size="33.0" />
