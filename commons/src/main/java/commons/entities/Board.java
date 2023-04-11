@@ -26,6 +26,8 @@ public final class Board {
     private List<CardList> lists;
     @NotNull
     private String colour;
+    @NotNull
+    private String fontColour;
 
     /**
      * Empty constructor for JPA
@@ -46,6 +48,7 @@ public final class Board {
         this.lists = new ArrayList<>();
         this.tags = new ArrayList<>();
         this.colour = "rgb(1,35,69)";
+        this.fontColour = "white";
     }
 
     /**
@@ -55,14 +58,32 @@ public final class Board {
      * @param name
      * @param password to enter and edit the board
      * @param colour colour
+     * @param fontColour colour of the font
      */
-    public Board(String key, String name, String password, String colour) {
+    public Board(String key, String name, String password, String colour, String fontColour) {
         this.key = key;
         this.name = name;
         this.password = password;
         this.lists = new ArrayList<>();
         this.tags = new ArrayList<>();
         this.colour = colour;
+        this.fontColour = fontColour;
+    }
+
+    /**
+     * Getter for the font colour
+     * @return colour of the font
+     */
+    public String getFontColour() {
+        return fontColour;
+    }
+
+    /**
+     * Setter for the font colour
+     * @param fontColour new colour
+     */
+    public void setFontColour(String fontColour) {
+        this.fontColour = fontColour;
     }
 
     /**

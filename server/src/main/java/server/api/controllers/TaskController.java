@@ -104,7 +104,6 @@ public class TaskController {
         }
 
         msgs.convertAndSend("/topic/card", card);
-        msgs.convertAndSend("/topic/card", card);
         this.cardRepo.save(card);
     }
 
