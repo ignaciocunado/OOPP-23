@@ -160,7 +160,7 @@ public class BoardOverviewCtrl implements Initializable {
                 mainPane.getScene().setCursor(Cursor.DEFAULT);
             }
             else if (ke.getCode().equals(KeyCode.ENTER)) {
-                cardCtrl.handleEditCard();
+                mainCtrl.showCardEditor(this.cardCtrl);
             }
             else if (ke.getCode().equals(KeyCode.BACK_SPACE) ||
                 ke.getCode().equals(KeyCode.DELETE)) {
