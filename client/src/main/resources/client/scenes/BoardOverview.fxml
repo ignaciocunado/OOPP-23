@@ -54,7 +54,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" style="-fx-spacing: 250;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#showBoardSettings" prefWidth="100.0" style="-fx-padding: 0; -fx-background-color: transparent;" text="Settings" textAlignment="CENTER" textFill="WHITE">>
+                  <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#showBoardSettings" prefWidth="100.0" style="-fx-padding: 0; -fx-background-color: transparent;" styleClass="boardTextColour" text="Settings" textAlignment="CENTER" textFill="WHITE">>
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -67,7 +67,7 @@
                         <Font size="20.0" />
                      </font>
                   </TextField>
-                  <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#showTagOverview" prefWidth="100.0" style="-fx-padding: 0; -fx-background-color: transparent; -fx-spacing: 50;" text="Tags" textAlignment="CENTER" textFill="WHITE">>
+                  <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#showTagOverview" prefWidth="100.0" style="-fx-padding: 0; -fx-background-color: transparent; -fx-spacing: 50;" styleClass="boardTextColour" text="Tags" textAlignment="CENTER" textFill="WHITE">>
                      <font>
                         <Font size="20.0" />
                      </font>

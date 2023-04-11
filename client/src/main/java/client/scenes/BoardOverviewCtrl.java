@@ -27,6 +27,8 @@ import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -35,6 +37,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -342,5 +346,13 @@ public class BoardOverviewCtrl implements Initializable {
     public void setRightColours() {
         lists.setStyle("-fx-spacing: 20; -fx-background-color:" + currentBoard.getColour());
         mainPane.setStyle("-fx-background-color:" + currentBoard.getColour());
+        for(Node node : mainPane.lookupAll(".boardTextColour")) {
+            System.out.println(node);
+            ((Button) node).setTextFill(Color.web(currentBoard.getFontColour()));
+        }
+        title.setStyle("-fx-text-fill: " + currentBoard.getFontColour() +
+                ";-fx-background-color: transparent;" +
+                "-fx-border-color: transparent;" +
+                "-fx-padding:2.5");
     }
 }

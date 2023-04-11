@@ -10,7 +10,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -138,6 +137,7 @@ public final class BoardSettingsCtrl {
         currentBoard = server.editBoard(currentBoard.getId(), currentBoard);
         this.boardOverviewCtrl.setRightColours();
 //        mainCtrl.closeBoardSettings();
+        this.boardOverviewCtrl.setRightColours();
         setRightColours();
     }
 
