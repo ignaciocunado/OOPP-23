@@ -1,24 +1,50 @@
 package client.utils;
 
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public final class ServerUtilsTest {
 
-    // TODO: Maybe do integration testing here but probably not
+    private static final String SERVER_URI = "http://localhost:8080";
+    private static WireMockServer wireMockServer;
+    private static ServerUtils serverUtils;
 
-    //    @Test
-    //    public void createBoardTest() {
-    //        final ServerUtils utils = new ServerUtils("http://localhost:8080/");
-    //        System.out.println(utils.createBoard("test"));
-    //    }
+    @BeforeAll
+    static void setUp() {
+        wireMockServer = new WireMockServer(8080);
+        wireMockServer.start();
 
-    //    @Test
-    //    public void getBoardTest() {
-    //        final ServerUtils utils = new ServerUtils("http://localhost:8080/");
-    //        System.out.println(utils.getBoard("0Pzi3e8Hrm"));
-    //    }
+        serverUtils = new ServerUtils(SERVER_URI);
+    }
 
+    @AfterAll
+    static void tearDown() {
+        wireMockServer.stop();
+    }
+
+    @Test
+    void pingShouldReturnTrueIfServerIsUp() {
+        final ResponseDefinitionBuilder res = WireMock.aResponse().withStatus(200)
+                .withHeader("Server", "Talio V1");
+        WireMock.stubFor(WireMock.get(WireMock.urlEqualTo("/api/ping"))
+                .willReturn(res));
+
+        Assertions.assertTrue(this.serverUtils.ping(SERVER_URI));
+    }
+
+    @Test
+    void pingShouldReturnFalseIfServerIsWrong() {
+        final ResponseDefinitionBuilder res = WireMock.aResponse().withStatus(400);
+        WireMock.stubFor(WireMock.get(WireMock.urlEqualTo("/api/ping"))
+                .willReturn(res));
+
+        Assertions.assertFalse(this.serverUtils.ping(SERVER_URI));
+    }
     @Test
     public void getServerTest() {
         final ServerUtils utils = new ServerUtils("server");
