@@ -1,12 +1,9 @@
 package server.api.interceptors;
 
 import org.springframework.web.servlet.HandlerInterceptor;
-import server.exceptions.UnauthorisedException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 
 public class GeneralInterceptor implements HandlerInterceptor {
 
