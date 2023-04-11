@@ -1,5 +1,7 @@
 package client.scenes;
 
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
 import commons.entities.Task;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -10,6 +12,8 @@ import javafx.scene.control.TextField;
 
 public class TaskCtrl {
 
+    private ServerUtils server;
+
     @FXML
     private TextField title;
     @FXML
@@ -17,6 +21,11 @@ public class TaskCtrl {
     private int id;
     private CardEditorCtrl cardEditorCtrl;
     private Task task;
+
+    @Inject
+    public TaskCtrl(final ServerUtils server) {
+        this.server = server;
+    }
 
 
     /**
@@ -69,4 +78,15 @@ public class TaskCtrl {
         task.setName(title.getText());
         cardEditorCtrl.editTask(this.task.getId(), title.getText(), isTaskCompleted);
     }
+
+    @FXML
+    private void moveUp() {
+        this.server.moveTask(this.id, "up");
+    }
+
+    @FXML
+    private void moveDown() {
+        this.server.moveTask(this.id, "down");
+    }
+
 }

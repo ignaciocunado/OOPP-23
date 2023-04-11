@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.Main;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Card;
@@ -93,7 +94,7 @@ public class CardEditorCtrl {
             nestedTaskList.getChildren().clear();
             for (Task task : currentCard.getNestedTaskList()) {
                 FXMLLoader loader = new FXMLLoader();
-                Pane taskPane = loader.load(getClass().getResource("Task.fxml").openStream());
+                Pane taskPane = loader.load(getClass().getResource("TaskOverview.fxml").openStream());
                 taskPane.setId(Integer.toString(task.getId()));
                 TaskCtrl ctrl = loader.getController();
                 ctrl.editData(task);
@@ -194,10 +195,10 @@ public class CardEditorCtrl {
      *
      * @throws IOException
      */
-    public void addTask() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        Pane taskPane = loader.load(getClass().getResource("Task.fxml").openStream());
-        TaskCtrl ctrl = loader.getController();
+    public void addTask() {
+        var pair = Main.FXML.load(TaskCtrl.class, "client", "scenes", "TaskOverview.fxml");
+        Pane taskPane = (Pane) pair.getValue();
+        TaskCtrl ctrl = pair.getKey();
         currentCard = serverUtils.addTaskToCard(this.currentCard.getId(), this.newTaskName.getText(),
                 false);
         Task task = currentCard.getNestedTaskList().get(currentCard.getNestedTaskList().size() - 1);
