@@ -19,11 +19,11 @@
             <Font size="33.0" />
          </font>
       </CheckBox>
-      <Button fx:id="moveDown" layoutX="156.0" layoutY="6.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-padding: -10;" text="V" textAlignment="CENTER" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="6.0">
+      <Button fx:id="moveDown" layoutX="156.0" layoutY="6.0" mnemonicParsing="false" onAction="#moveDown" prefHeight="24.0" prefWidth="24.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-padding: -10;" text="V" textAlignment="CENTER" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="6.0">
          <font>
             <Font size="24.0" />
          </font></Button>
-      <Button fx:id="moveUp" layoutX="126.0" layoutY="7.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="24.0" style="-fx-rotate: 180; -fx-background-color: transparent; -fx-text-fill: white; -fx-padding: -10;" text="V" textAlignment="CENTER" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="6.0">
+      <Button fx:id="moveUp" layoutX="126.0" layoutY="7.0" mnemonicParsing="false" onAction="#moveUp" prefHeight="24.0" prefWidth="24.0" style="-fx-rotate: 180; -fx-background-color: transparent; -fx-text-fill: white; -fx-padding: -10;" text="V" textAlignment="CENTER" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="6.0">
          <font>
             <Font size="24.0" />
          </font></Button>

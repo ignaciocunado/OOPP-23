@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.BindingResult;
 import server.api.repositories.TestCardRepository;
@@ -26,7 +25,7 @@ class TaskControllerTest {
     public void setup() {
         this.cardRepo = new TestCardRepository();
         this.taskRepo = new TestTaskRepository();
-        this.taskController = new TaskController(taskRepo, Mockito.mock(SimpMessagingTemplate.class));
+        this.taskController = new TaskController(cardRepo, taskRepo, Mockito.mock(SimpMessagingTemplate.class));
 
         this.hasErrorResult = Mockito.mock(BindingResult.class);
         this.noErrorResult = Mockito.mock(BindingResult.class);
