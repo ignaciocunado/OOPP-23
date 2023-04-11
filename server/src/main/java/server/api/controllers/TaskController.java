@@ -81,7 +81,8 @@ public class TaskController {
         }
         final Card card = cardOpt.get();
 
-        final Task task = this.taskRepo.getById(id); // If card exists with tag then tag exists obviously
+        // If card exists with tag then tag exists obviously
+        final Task task = this.taskRepo.getById(id);
 
         final int currentPosition = card.getNestedTaskList().indexOf(task);
 
