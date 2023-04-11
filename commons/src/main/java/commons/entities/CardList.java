@@ -33,7 +33,7 @@ public final class CardList {
     public CardList(String title) {
         this.title = title;
         cards = new ArrayList<>();
-        this.colour = "";
+        this.colour = "rgb(35,69,103)";
         this.textColour = "white";
     }
 
