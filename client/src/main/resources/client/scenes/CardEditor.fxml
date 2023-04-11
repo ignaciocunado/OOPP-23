@@ -6,29 +6,69 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="mainPane" prefHeight="479.0" prefWidth="602.0" style="-fx-background-color: rgb(35,69,103);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardEditorCtrl">
    <children>
-      <AnchorPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints percentHeight="85.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="1.7976931348623157E308" percentHeight="15.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <TextField fx:id="title" promptText="Title" style="-fx-background-color: transparent; -fx-font-size: 40; -fx-text-fill: white; -fx-padding: 0;" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
-            <TextField fx:id="description" promptText="Description" style="-fx-background-color: transparent; -fx-font-size: 20; -fx-text-fill: white; -fx-padding: 0;" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0" />
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Tags:" wrappingWidth="29.58203125" AnchorPane.leftAnchor="12.5" AnchorPane.topAnchor="120.0" />
-            <Button layoutX="97.0" layoutY="117.0" mnemonicParsing="false" onAction="#addTag" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent; -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="113.5" />
-            <ComboBox fx:id="combo" prefWidth="150.0" promptText="Select" stylesheets="" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="115.0" />
-            <HBox fx:id="tags" minHeight="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0" />
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Tasks:" AnchorPane.leftAnchor="12.5" AnchorPane.topAnchor="210.0" />
-            <Button mnemonicParsing="false" onAction="#addTask" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent; -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="205.0" />
-            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" prefHeight="118.0" prefWidth="542.0" style="-fx-border-color: transparent; -fx-background-color: transparent; -fx-padding: 0px;" vbarPolicy="NEVER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="230.0">
-               <content>
-                  <VBox fx:id="nestedTaskList" prefHeight="113.0" prefWidth="542.0" style="-fx-background-color: rgb(35,69,103);" />
-               </content>
-            </ScrollPane>
-            <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <TextField fx:id="title" promptText="Title" style="-fx-background-color: transparent; -fx-font-size: 40; -fx-text-fill: white; -fx-padding: 0;" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                  <TextField fx:id="description" promptText="Description" style="-fx-background-color: transparent; -fx-font-size: 20; -fx-text-fill: white; -fx-padding: 0;" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="70.0" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Colour:" wrappingWidth="50.76287841796875" AnchorPane.leftAnchor="12.5" AnchorPane.topAnchor="120.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Text>
+                  <ColorPicker fx:id="colour" prefHeight="25.0" prefWidth="175.0" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="115.0" />
+                  <Button fx:id="resetButton" contentDisplay="CENTER" graphicTextGap="10.0" mnemonicParsing="false" onAction="#resetColour" prefHeight="16.0" prefWidth="107.0" style="-fx-background-color: #123456; -fx-padding: 0px;" text="Reset" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="150.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Text fill="WHITE" layoutX="13.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tags:" wrappingWidth="36.3330078125" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="200.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Text>
+                  <ComboBox fx:id="combo" prefWidth="150.0" promptText="Select" stylesheets="" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="195.0" />
+                  <HBox fx:id="tags" minHeight="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="235.0" />
+                  <Button mnemonicParsing="false" onAction="#addTag" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent; -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="192.5" />
+               </children>
+            </AnchorPane>
+            <AnchorPane GridPane.columnIndex="1">
+               <children>
+                  <Text fill="WHITE" layoutX="6.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tasks:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="120.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Text>
+                  <Button mnemonicParsing="false" onAction="#addTask" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent; -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="113.0" />
+                  <AnchorPane fx:id="tagListWrapper" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 10; -fx-border-width: 2;" styleClass="tagList" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="150.0">
+                     <children>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" style="-fx-border-color: transparent; -fx-background-color: transparent; -fx-padding: 0px;" styleClass="tagList" vbarPolicy="NEVER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
+                           <content>
+                              <VBox fx:id="nestedTaskList" style="-fx-background-color: rgb(35,69,103);" styleClass="tagList" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+                  <TextField fx:id="newTaskName" layoutX="60.0" layoutY="32.0" onAction="#addTask" promptText="New Nested Task Name" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="115.0" />
+               </children>
+            </AnchorPane>
+            <HBox alignment="CENTER" GridPane.columnSpan="2" GridPane.rowIndex="1">
                <children>
                   <Button fx:id="saveButton" contentDisplay="CENTER" graphicTextGap="10.0" mnemonicParsing="false" onAction="#save" prefHeight="24.0" prefWidth="200.0" style="-fx-background-color: #123456; -fx-padding: 0px;" text="Save" textAlignment="CENTER" textFill="WHITE">
                      <font>
@@ -37,14 +77,7 @@
                   </Button>
                </children>
             </HBox>
-            <Text fill="WHITE" layoutX="10.0" layoutY="374.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Colour:" wrappingWidth="50.76287841796875" />
-            <ColorPicker fx:id="colour" layoutX="130.0" layoutY="356.0" />
-            <Button fx:id="resetButton" contentDisplay="CENTER" graphicTextGap="10.0" layoutX="273.0" layoutY="359.0" mnemonicParsing="false" onAction="#resetColour" prefHeight="16.0" prefWidth="107.0" style="-fx-background-color: #123456; -fx-padding: 0px;" text="Reset" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Button>
          </children>
-      </AnchorPane>
+      </GridPane>
    </children>
 </AnchorPane>

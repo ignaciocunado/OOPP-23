@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.Main;
 import client.utils.ServerUtils;
 import client.utils.WebsocketUtils;
 import com.google.inject.Inject;
@@ -35,11 +36,15 @@ public class CardEditorCtrl {
     @FXML
     private TextField description;
     @FXML
+    private TextField newTaskName;
+    @FXML
     private HBox tags;
     @FXML
     private VBox nestedTaskList;
     @FXML
     private AnchorPane mainPane;
+    @FXML
+    private AnchorPane tagListWrapper;
     private CardCtrl cardCtrl;
 
     private Card currentCard;
@@ -54,7 +59,8 @@ public class CardEditorCtrl {
 
     /**
      * Constructor
-     * @param mainCtrl mainCtrl
+     *
+     * @param mainCtrl    mainCtrl
      * @param serverUtils serverUtils
      * @param websocket websocket setup
      */
@@ -76,9 +82,12 @@ public class CardEditorCtrl {
             cardCtrl.setCard(changedCard);
             Platform.runLater(() -> this.refresh(cardCtrl));
         });
+
+        setEditCardMethods();
     }
     /**
      * Refreshes card editor info
+     *
      * @param cardCtrl current Card
      */
     public void refresh(final CardCtrl cardCtrl) {
@@ -102,10 +111,10 @@ public class CardEditorCtrl {
 
             nestedTaskList.getChildren().clear();
             for (Task task : currentCard.getNestedTaskList()) {
-                FXMLLoader loader = new FXMLLoader();
-                Pane taskPane = loader.load(getClass().getResource("Task.fxml").openStream());
+                var pair = Main.FXML.load(TaskCtrl.class, "client", "scenes", "TaskOverview.fxml");
+                Pane taskPane = (Pane) pair.getValue();
                 taskPane.setId(Integer.toString(task.getId()));
-                TaskCtrl ctrl = loader.getController();
+                TaskCtrl ctrl = pair.getKey();
                 ctrl.editData(task);
                 taskPane.setId(Integer.toString(task.getId()));
                 ctrl.update(task.getId(), this, task);
@@ -120,26 +129,27 @@ public class CardEditorCtrl {
                 this.mainCtrl.closeCardEditor();
             }
         });
-        setEditCardMethods();
+        this.mainPane.requestFocus();
     }
 
     /**
      * Sets colour of nodes
      */
     private void setRightColours() {
-        if(currentCard.getColour().equals("#123456")) {
+        if (currentCard.getColour().equals("#123456")) {
             mainPane.setStyle("-fx-background-color:  rgb(35,69,103)");
             nestedTaskList.setStyle("-fx-background-color:  rgb(35,69,103)");
             resetButton.setStyle("-fx-padding: 0px; -fx-background-color:  #123456");
             saveButton.setStyle("-fx-padding: 0px; -fx-background-color:  #123456");
-        }
-        else {
+        } else {
             mainPane.setStyle("-fx-background-color: " + currentCard.getColour());
             nestedTaskList.setStyle("-fx-background-color: " + currentCard.getColour());
             resetButton.setStyle("-fx-padding: 0px; -fx-background-color: " + getRGBShade());
             saveButton.setStyle("-fx-padding: 0px; -fx-background-color: " + getRGBShade());
+            tagListWrapper.setStyle("-fx-border-radius: 10; " +
+                    "-fx-border-width: 2; -fx-border-color: " + getRGBShade());
         }
-        Color cardColour  = Color.web(currentCard.getColour());
+        Color cardColour = Color.web(currentCard.getColour());
         this.colour.setValue(cardColour);
     }
 
@@ -153,6 +163,7 @@ public class CardEditorCtrl {
 
     /**
      * Checks whether any of the fields lost focus and calls the editCard endpoint
+     *
      * @param observable lame ass parameter
      */
     private void titleOrDescriptionEdited(Observable observable) {
@@ -165,6 +176,7 @@ public class CardEditorCtrl {
 
     /**
      * Saves data from new Card
+     *
      * @return card
      */
     public Card save() {
@@ -182,30 +194,34 @@ public class CardEditorCtrl {
 
     /**
      * Converts Colour
+     *
      * @return a string rgb colour
      */
     public String getColourString() {
-        Double redDouble =  colour.getValue().getRed()*255;
-        Double greenDouble = colour.getValue().getGreen()*255;
-        Double blueDouble =  colour.getValue().getBlue()*255;
+        Double redDouble = colour.getValue().getRed() * 255;
+        Double greenDouble = colour.getValue().getGreen() * 255;
+        Double blueDouble = colour.getValue().getBlue() * 255;
         int red = redDouble.intValue();
         int green = greenDouble.intValue();
         int blue = blueDouble.intValue();
-        return  "rgb(" + red  + "," +
+        return "rgb(" + red + "," +
                 green + ", " +
                 blue + ")";
     }
 
     /**
      * Adds a task to a card
+     *
      * @throws IOException
      */
-    public void addTask() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        Pane taskPane = loader.load(getClass().getResource("Task.fxml").openStream());
-        TaskCtrl ctrl = loader.getController();
-        currentCard = serverUtils.addTaskToCard(this.currentCard.getId(),"Title",
-            false);
+    public void addTask() {
+        var pair = Main.FXML.load(TaskCtrl.class, "client", "scenes", "TaskOverview.fxml");
+        Pane taskPane = (Pane) pair.getValue();
+        TaskCtrl ctrl = pair.getKey();
+        currentCard = serverUtils.addTaskToCard(
+                this.currentCard.getId(),
+                this.newTaskName.getText(),
+                false);
         Task task = currentCard.getNestedTaskList().get(currentCard.getNestedTaskList().size() - 1);
         taskPane.setId(Integer.toString(task.getId()));
         ctrl.update(task.getId(), this, task);
@@ -214,11 +230,12 @@ public class CardEditorCtrl {
 
     /**
      * Adds a tag to a card
+     *
      * @throws IOException
      */
     public void addTag() throws IOException {
         Tag tag = (Tag) combo.getValue();
-        if(currentCard.getTags().contains(tag)) {
+        if (currentCard.getTags().contains(tag)) {
             return;
         }
         FXMLLoader loader = new FXMLLoader();
@@ -228,11 +245,12 @@ public class CardEditorCtrl {
         ctrl.update(tag.getId(), this);
         ctrl.editData(tag);
         tags.getChildren().add(tagPane);
-        this.currentCard = serverUtils.addTag(tag.getId(), this.currentCard.getId(),tag);
+        this.currentCard = serverUtils.addTag(tag.getId(), this.currentCard.getId(), tag);
     }
 
     /**
      * Removes rendered Tag with the specified id if it exists
+     *
      * @param id id of the tag to remove
      */
     public void removeTag(int id) {
@@ -242,6 +260,7 @@ public class CardEditorCtrl {
 
     /**
      * Removes rendered Task with the specified id if it exists
+     *
      * @param id id of the task to remove
      */
     public void removeTask(int id) {
@@ -251,13 +270,14 @@ public class CardEditorCtrl {
 
     /**
      * Handles Tasks edits
-     * @param taskId id of the task to edit
-     * @param title new title of the task
+     *
+     * @param taskId          id of the task to edit
+     * @param title           new title of the task
      * @param isTaskCompleted boolean representing completeness of the task
      */
     public void editTask(int taskId, String title, boolean isTaskCompleted) {
         this.serverUtils.editTask(taskId, title,
-            isTaskCompleted);
+                isTaskCompleted);
     }
 
     /**
@@ -272,13 +292,14 @@ public class CardEditorCtrl {
 
     /**
      * Gets a shade of RGB to add to panes and buttons
+     *
      * @return string representing RGB colour
      */
     public String getRGBShade() {
         Color color = Color.web(currentCard.getColour());
-        double newRed = color.getRed()*0.75*255;
-        double newGreen = color.getGreen()*0.75*255;
-        double newBlue = color.getBlue()*0.75*255;
+        double newRed = color.getRed() * 0.75 * 255;
+        double newGreen = color.getGreen() * 0.75 * 255;
+        double newBlue = color.getBlue() * 0.75 * 255;
         return "rgb(" + newRed + "," + newGreen + "," + newBlue + ")";
     }
 }

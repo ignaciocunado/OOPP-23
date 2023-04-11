@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -152,9 +153,11 @@ public final class CardCtrl {
 
     /**
      * Handler to edit a card
+     * @param event event for the mouse click
      */
     @FXML
-    public void handleEditCard() {
+    public void handleEditCard(final MouseEvent event) {
+        if (event.getClickCount() != 2) return;
         this.mainCtrl.showCardEditor(this);
     }
 

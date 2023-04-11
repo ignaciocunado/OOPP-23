@@ -117,28 +117,31 @@ public class ServerUtils {
 
     /**
      * Gets all boards on this server
+     *
      * @param password the password which has been entered by the use
      * @return all the boars on this server
      */
     public List<Board> getAllBoards(String password) {
         return client.target(this.server).path("api/admin/board/all")
-            .request(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .header("authorization", "Basic "+ Base64.getEncoder().
-                encodeToString(("admin:"+password).getBytes()))
-            .get(new GenericType<List<Board>>() {});
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("authorization", "Basic " + Base64.getEncoder().
+                        encodeToString(("admin:" + password).getBytes()))
+                .get(new GenericType<List<Board>>() {
+                });
     }
 
     /**
      * Creates a new board in the given server with the given password
+     *
      * @param key the key of the Board
      */
     public void deleteBoard(final String key) {
         client.target(this.server).path("api/board/{key}")
-            .resolveTemplate("key", key)
-            .request(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)
-            .delete().close();
+                .resolveTemplate("key", key)
+                .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .delete().close();
     }
 
     /**
@@ -162,7 +165,7 @@ public class ServerUtils {
     /**
      * Gets board from the given server by the given key
      *
-     * @param id the board id
+     * @param id    the board id
      * @param board the board data
      * @return the edited board, or null
      */
@@ -227,9 +230,9 @@ public class ServerUtils {
     /**
      * Sends a request to edit the list in the board
      *
-     * @param id    the list id
-     * @param title the new title
-     * @param colour the new colour
+     * @param id         the list id
+     * @param title      the new title
+     * @param colour     the new colour
      * @param textColour new text colour
      * @return the renamed list
      */
@@ -241,7 +244,7 @@ public class ServerUtils {
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .method(HttpMethod.PATCH,
-                            Entity.json(new CardList(title, colour,textColour)), CardList.class);
+                            Entity.json(new CardList(title, colour, textColour)), CardList.class);
         } catch (NotFoundException e) {
             return null;
         }
@@ -306,7 +309,8 @@ public class ServerUtils {
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .get().close();
-        } catch (NotFoundException e) {}
+        } catch (NotFoundException e) {
+        }
     }
 
     /**
@@ -315,7 +319,7 @@ public class ServerUtils {
      * @param id          the card to edit
      * @param title       the new title
      * @param description the new description
-     * @param colour new colour
+     * @param colour      new colour
      * @return the edited card
      */
     public Card editCard(final int id, final String title, final String description,
@@ -334,13 +338,14 @@ public class ServerUtils {
 
     /**
      * Creates a new tag
+     *
      * @param boardId id of the board to add the tag to
-     * @param name name of the tag
-     * @param colour colour of the tag
+     * @param name    name of the tag
+     * @param colour  colour of the tag
      * @return the board
      */
     public Board createTag(int boardId, String name, int colour) {
-        try{
+        try {
             return client.target(this.server).path("api/board/{id}/tag")
                     .resolveTemplate("id", boardId)
                     .request(MediaType.APPLICATION_JSON)
@@ -348,20 +353,20 @@ public class ServerUtils {
                     .post(
                             Entity.json(new Tag(name, colour)),
                             Board.class);
-        }
-        catch (NotFoundException e) {
+        } catch (NotFoundException e) {
             return null;
         }
     }
 
     /**
      * Deletes a tag
+     *
      * @param boardId id of the board where the tag is
-     * @param tagId id of the tag
+     * @param tagId   id of the tag
      * @return returns a board without the tag
      */
-    public Board deleteTag(int boardId,int tagId) {
-        try{
+    public Board deleteTag(int boardId, int tagId) {
+        try {
             return client.target(this.server).path("api/board/{id}/tag/{tagid}")
                     .resolveTemplate("id", boardId)
                     .resolveTemplate("tagid", tagId)
@@ -369,8 +374,7 @@ public class ServerUtils {
                     .accept(MediaType.APPLICATION_JSON)
                     .delete(
                             Board.class);
-        }
-        catch (NotFoundException e) {
+        } catch (NotFoundException e) {
             return null;
         }
     }
@@ -398,8 +402,9 @@ public class ServerUtils {
 
     /**
      * Edits a new tag
-     * @param tagId id of the tag
-     * @param newName name
+     *
+     * @param tagId     id of the tag
+     * @param newName   name
      * @param newColour colour
      * @return dn
      */
@@ -502,11 +507,29 @@ public class ServerUtils {
     }
 
     /**
+     * Moves a task
+     *
+     * @param taskId    id of the task to delete
+     * @param direction direction of movement
+     */
+    public void moveTask(int taskId, String direction) {
+        try {
+            client.target(this.server).path("api/task/{taskId}/move/{direction}")
+                    .resolveTemplate("taskId", taskId)
+                    .resolveTemplate("direction", direction)
+                    .request(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .get();
+        } catch (NotFoundException e) {
+        }
+    }
+
+    /**
      * Registers a listener to receive updates on all boards
      * from the server using the specified password.
      * This method will create a new thread to continuously listen for updates from the server.
      *
-     * @param password the password which has been entered by the user
+     * @param password       the password which has been entered by the user
      * @param boardsListener The listener to be called with a list of updated boards.
      */
     public void registerAllBoardsListener(String password, Consumer<List<Board>> boardsListener) {
@@ -517,12 +540,13 @@ public class ServerUtils {
                 final Response res = client.target(this.server).path("api/admin/board/all/updates")
                         .request(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .header("authorization", "Basic "+ Base64.getEncoder().
-                                encodeToString(("admin:"+password).getBytes()))
+                        .header("authorization", "Basic " + Base64.getEncoder().
+                                encodeToString(("admin:" + password).getBytes()))
                         .get(Response.class);
                 if (res.getStatus() == 204) continue;
 
-                final List<Board> boards = res.readEntity(new GenericType<>() {});
+                final List<Board> boards = res.readEntity(new GenericType<>() {
+                });
                 boardsListener.accept(boards);
                 res.close();
             }
