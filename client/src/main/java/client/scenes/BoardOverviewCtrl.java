@@ -20,7 +20,6 @@ import client.utils.ServerUtils;
 import client.utils.WebsocketUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
-import commons.entities.Card;
 import commons.entities.CardList;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -161,12 +160,7 @@ public class BoardOverviewCtrl implements Initializable {
             }
             else if (ke.getCode().equals(KeyCode.ENTER)) {
                 cardCtrl.handleEditCard();
-            }
-            else if (ke.getCode().equals(KeyCode.BACK_SPACE) ||
-                ke.getCode().equals(KeyCode.DELETE)) {
-                deleteCard();
-            }
-            else {
+            } else {
                 setArrows(ke);
             }
         });
@@ -231,18 +225,6 @@ public class BoardOverviewCtrl implements Initializable {
                 cardCtrl.mouseHover();
             }
         }
-    }
-
-    /**
-     * Deletes the highlighted card
-     */
-    public void deleteCard() {
-        CardListCtrl cardListCtrl = this.getCardCtrl().getCardListCtrl();
-        VBox parent = (VBox) this.getHoverCardPane().getParent();
-        int index = parent.getChildren().indexOf(this.getHoverCardPane());
-        Card card = cardListCtrl.getCardList().getCards().get(index);
-        //TODO:this still does not work
-//        cardListCtrl.removeCard(card.getId());
     }
 
     /**
