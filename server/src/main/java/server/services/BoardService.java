@@ -222,6 +222,7 @@ public final class BoardService {
         editedBoard.setPassword(board.getPassword());
         editedBoard.setName(board.getName());
         editedBoard.setColour(board.getColour());
+        editedBoard.setFontColour(board.getFontColour());
         return this.boardRepository.save(editedBoard);
     }
 
