@@ -259,6 +259,7 @@ public final class BoardControllerTest {
         final Board board2 = new Board("aaa", "aaa", "");
         board2.setId(1);
         board2.setColour("aa");
+        board2.setFontColour("aaa");
         assertEquals(board2, this.boardController.editBoard(1, board2, noErrorResult).getBody());
     }
 
