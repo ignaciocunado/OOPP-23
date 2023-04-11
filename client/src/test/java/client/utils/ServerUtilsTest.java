@@ -23,7 +23,7 @@ public final class ServerUtilsTest {
     }
 
     @AfterAll
-    public void tearDown() {
+    static void tearDown() {
         wireMockServer.stop();
     }
 
