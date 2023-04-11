@@ -20,7 +20,6 @@ import client.utils.ServerUtils;
 import client.utils.WebsocketUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
-import commons.entities.Card;
 import commons.entities.CardList;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyBooleanProperty;
