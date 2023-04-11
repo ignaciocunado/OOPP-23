@@ -62,7 +62,7 @@ public class CardEditorCtrl {
      *
      * @param mainCtrl    mainCtrl
      * @param serverUtils serverUtils
-     * @param websocket websocket setup
+     * @param websocket   websocket setup
      */
     @Inject
     public CardEditorCtrl(final WebsocketUtils websocket,
@@ -73,10 +73,10 @@ public class CardEditorCtrl {
     }
 
     /**
-     *  Initialisation method initialising FXML objects
+     * Initialisation method initialising FXML objects
      */
     @FXML
-    public void initialize(){
+    public void initialize() {
         this.websocket.addCardListener(changedCard -> {
             if (changedCard == null || changedCard.getId() != (currentCard.getId())) return;
             cardCtrl.setCard(changedCard);
@@ -85,6 +85,7 @@ public class CardEditorCtrl {
 
         setEditCardMethods();
     }
+
     /**
      * Refreshes card editor info
      *
@@ -136,19 +137,12 @@ public class CardEditorCtrl {
      * Sets colour of nodes
      */
     private void setRightColours() {
-        if (currentCard.getColour().equals("#123456")) {
-            mainPane.setStyle("-fx-background-color:  rgb(35,69,103)");
-            nestedTaskList.setStyle("-fx-background-color:  rgb(35,69,103)");
-            resetButton.setStyle("-fx-padding: 0px; -fx-background-color:  #123456");
-            saveButton.setStyle("-fx-padding: 0px; -fx-background-color:  #123456");
-        } else {
-            mainPane.setStyle("-fx-background-color: " + currentCard.getColour());
-            nestedTaskList.setStyle("-fx-background-color: " + currentCard.getColour());
-            resetButton.setStyle("-fx-padding: 0px; -fx-background-color: " + getRGBShade());
-            saveButton.setStyle("-fx-padding: 0px; -fx-background-color: " + getRGBShade());
-            tagListWrapper.setStyle("-fx-border-radius: 10; " +
-                    "-fx-border-width: 2; -fx-border-color: " + getRGBShade());
-        }
+        mainPane.setStyle("-fx-background-color: " + currentCard.getColour());
+        nestedTaskList.setStyle("-fx-background-color: " + currentCard.getColour());
+        resetButton.setStyle("-fx-padding: 0px; -fx-background-color: " + getRGBShade());
+        saveButton.setStyle("-fx-padding: 0px; -fx-background-color: " + getRGBShade());
+        tagListWrapper.setStyle("-fx-border-radius: 10; " +
+                "-fx-border-width: 2; -fx-border-color: " + getRGBShade());
         Color cardColour = Color.web(currentCard.getColour());
         this.colour.setValue(cardColour);
     }
