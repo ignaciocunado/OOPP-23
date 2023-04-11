@@ -87,7 +87,7 @@ public class ServerUtils {
      */
     public boolean ping(final String connectionUri) {
         try {
-            final WebTarget target = client.target(connectionUri + "/ping");
+            final WebTarget target = client.target(connectionUri + "/api/ping");
             final Invocation.Builder builder = target.request();
             builder.property(ClientProperties.CONNECT_TIMEOUT, 1000);
             builder.property(ClientProperties.READ_TIMEOUT, 1000);

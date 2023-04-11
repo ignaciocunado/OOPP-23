@@ -21,7 +21,6 @@ public class GeneralInterceptor implements HandlerInterceptor {
     public boolean preHandle(final HttpServletRequest request,
                              final HttpServletResponse response,
                              final Object handler) {
-        System.out.println("Test");
         response.setHeader("Server", "Talio V1");
         return true;
     }
