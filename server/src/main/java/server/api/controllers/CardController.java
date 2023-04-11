@@ -1,8 +1,6 @@
 package server.api.controllers;
 
 import commons.entities.Card;
-import commons.entities.Tag;
-import commons.entities.CardList;
 import commons.entities.Task;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -10,44 +8,26 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import server.database.CardRepository;
-import server.database.TagRepository;
-import server.database.TaskRepository;
-import server.database.*;
-import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
-
-import java.util.Optional;
+import server.services.CardService;
 
 
 @RestController
 @RequestMapping("/api/card")
 public class CardController {
 
+    private final CardService cardService;
     private final SimpMessagingTemplate msgs;
-    private final CardListRepository cardListRepository;
-    private final CardRepository cardRepository;
-    private final TagRepository tagRepository;
-    private final TaskRepository taskRepository;
 
-    /**
-     * Constructor
-     * @param cardListRepository cardlist DB
-     * @param cardRepository  card DB
-     * @param tagRepository   tag DB
-     * @param taskRepository  task DB
-     * @param msgs            object to send messages to connected websockets
+    /** Constructor for the cardService
+     * @param cardService the service for the bussiness logic
+     * @param msgs object to send messages to connected websockets
      */
-    public CardController(final CardListRepository cardListRepository,
-                          final CardRepository cardRepository,
-                          final TagRepository tagRepository,
-                          final TaskRepository taskRepository, final SimpMessagingTemplate msgs) {
-        this.cardListRepository = cardListRepository;
-        this.cardRepository = cardRepository;
-        this.tagRepository = tagRepository;
-        this.taskRepository = taskRepository;
+    public CardController(CardService cardService, SimpMessagingTemplate msgs) {
+        this.cardService = cardService;
         this.msgs = msgs;
     }
+
 
     /**
      * Edits a Card
@@ -63,15 +43,7 @@ public class CardController {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        if (!cardRepository.existsById(id)) {
-            throw new EntityNotFoundException("No card with id " + id);
-        }
-
-        Card toEdit = cardRepository.getById(id);
-        toEdit.setTitle(card.getTitle());
-        toEdit.setDescription(card.getDescription());
-        toEdit.setColour(card.getColour());
-        cardRepository.save(toEdit);
+        Card toEdit = cardService.editCard(id, card);
         msgs.convertAndSend("/topic/card", toEdit);
         return new ResponseEntity<>(toEdit, new HttpHeaders(), 200);
     }
@@ -87,19 +59,7 @@ public class CardController {
     public ResponseEntity<Card> assignTag(@PathVariable final int id,
                                           @PathVariable final int tagId) {
 
-        if (!cardRepository.existsById(id)) {
-            throw new EntityNotFoundException("No card with id " + id);
-        }
-        if(!tagRepository.existsById(tagId)) {
-            throw new EntityNotFoundException("No tag with id " + tagId);
-        }
-        Card card = cardRepository.getById(id);
-        Tag tag = tagRepository.getById(tagId);
-        if(card.getTags().contains(tag)) {
-            return ResponseEntity.badRequest().build();
-        }
-        card.addTag(tag);
-        cardRepository.save(card);
+        Card card = cardService.assignTag(id, tagId);
         msgs.convertAndSend("/topic/card", card);
         return new ResponseEntity<>(card, new HttpHeaders(),
             200);
@@ -114,17 +74,7 @@ public class CardController {
     @DeleteMapping("/{id}/tag/{tagId}")
     public ResponseEntity<Card> deleteTag(@PathVariable final int id,
                                           @PathVariable final int tagId) {
-        if (!cardRepository.existsById(id)) {
-            throw new EntityNotFoundException("No card with id " + id);
-        }
-        if(!tagRepository.existsById(tagId)) {
-            throw new EntityNotFoundException("No tag with id " + tagId);
-        }
-        Card deleteTagFrom = cardRepository.getById(id);
-        if (!deleteTagFrom.removeTagById(tagId)) {
-            throw new EntityNotFoundException("No tag with id " + tagId + " in card " + id);
-        }
-        cardRepository.save(deleteTagFrom);
+        Card deleteTagFrom = cardService.deleteTag(id, tagId);
         msgs.convertAndSend("/topic/card", deleteTagFrom);
         return new ResponseEntity<>(deleteTagFrom, new HttpHeaders(),
                 200);
@@ -144,15 +94,7 @@ public class CardController {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        if (!cardRepository.existsById(id)) {
-            throw new EntityNotFoundException("No card with id " + id);
-        }
-
-        taskRepository.save(task);
-
-        Card containsTask = cardRepository.getById(id);
-        containsTask.addTask(task);
-        cardRepository.save(containsTask);
+        Card containsTask = cardService.createTask(id, task);
         msgs.convertAndSend("/topic/card", containsTask);
         return new ResponseEntity<>(containsTask, new HttpHeaders(),
                 200);
@@ -167,15 +109,7 @@ public class CardController {
     @DeleteMapping("/{id}/task/{taskId}")
     public ResponseEntity<Card> deleteTask(@PathVariable final int id,
                                            @PathVariable final int taskId) {
-        if (!cardRepository.existsById(id)) {
-            throw new EntityNotFoundException("No card with id " + id);
-        }
-        Card deleteTaskFrom = cardRepository.getById(id);
-        if (!deleteTaskFrom.removeTaskById(taskId)) {
-            throw new EntityNotFoundException("No task with id in this card " + id);
-        }
-        taskRepository.deleteById(taskId);
-        cardRepository.save(deleteTaskFrom);
+        Card deleteTaskFrom = cardService.deleteTask(id, taskId);
         msgs.convertAndSend("/topic/card", deleteTaskFrom);
         return new ResponseEntity<>(deleteTaskFrom, new HttpHeaders(), 200);
     }
@@ -190,37 +124,9 @@ public class CardController {
     public void move(@PathVariable final Integer id,
                      @PathVariable final Integer listId,
                      @PathVariable Integer position) {
-        if(!this.cardRepository.existsById((id))){
-            throw new EntityNotFoundException("No card with id " + id);
-        }
-        final Card card = this.cardRepository.getById(id);
-        final Optional<CardList> srcOpt = this.cardListRepository.findByCardId(id);
-        final Optional<CardList> destOpt = this.cardListRepository.findById(listId);
-
-        if (srcOpt.isEmpty()) {
-            throw new EntityNotFoundException("No card list associated with card id " + id);
-        }
-
-        if (destOpt.isEmpty()){
-            throw new EntityNotFoundException("No card list with id " + listId);
-        }
-
-        final CardList src = srcOpt.get();
-        final CardList dest = destOpt.get();
-
-        position = Math.min(dest.getCards().size(), position);
-        if (src.getId() == dest.getId()) {
-            final int currentPosition = src.getCards().indexOf(card);
-            if (currentPosition < position) position--;
-        }
-
-        src.removeCard(card);
-        // Rounded to closest and can be maximum the amount of children already there.
-        dest.getCards().add(position, card);
-        msgs.convertAndSend("/topic/cardlist", src);
-        msgs.convertAndSend("/topic/cardlist", dest);
-        this.cardListRepository.save(src);
-        this.cardListRepository.save(dest);
+        var pair = cardService.move(id,listId,position);
+        msgs.convertAndSend("/topic/cardlist", pair.getKey());
+        msgs.convertAndSend("/topic/cardlist", pair.getValue());
     }
 
 
