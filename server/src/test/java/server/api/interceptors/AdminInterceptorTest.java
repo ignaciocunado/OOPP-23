@@ -7,8 +7,10 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import server.api.interceptors.AdminInterceptor;
 import server.exceptions.UnauthorisedException;
+import server.services.TextService;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class AdminInterceptorTest {
 
@@ -16,7 +18,9 @@ public class AdminInterceptorTest {
 
     @BeforeEach
     public void setup() {
-        adminInterceptor = new AdminInterceptor();
+        final TextService textService = mock(TextService.class);
+        when(textService.randomAlphanumericalString(10)).thenReturn("password");
+        adminInterceptor = new AdminInterceptor(textService);
     }
 
     @Test
