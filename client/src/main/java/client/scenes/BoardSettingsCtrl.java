@@ -95,6 +95,7 @@ public final class BoardSettingsCtrl {
         }
         backgroundColourBoard.setValue(Color.web(currentBoard.getColour()));
         textColourBoard.setValue(Color.web(currentBoard.getFontColour()));
+        backgroundColourList.setValue(Color.web(currentBoard.getLists().get(0).getColour()));
     }
 
     /**
