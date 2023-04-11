@@ -40,8 +40,9 @@ public final class CardListCtrl {
 
     /**
      * The wrapping controller for a card list
-     * @param server the server functions
-     * @param ctrl the board controller
+     *
+     * @param server    the server functions
+     * @param ctrl      the board controller
      * @param websocket
      */
     @Inject
@@ -67,6 +68,7 @@ public final class CardListCtrl {
 
     /**
      * Refreshes card list with the card list data provided
+     *
      * @param cardList the data
      */
     public void refresh(final CardList cardList) {
@@ -84,19 +86,11 @@ public final class CardListCtrl {
             ctrl.refresh(card);
         }
         this.cards.getChildren().add(addButton);
-        if(cardList.getColour().equals("")) {
-            background.setStyle("-fx-background-color:  rgb(35,69,103); -fx-border-radius: 15;" +
-                    " -fx-background-radius:15;" +
-                    " -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.7), 10, 0, 0, 0)");
-            cards.setStyle("-fx-background-color: rgb(35,69,103); -fx-spacing: 10" );
-        }
-        else {
-            background.setStyle("-fx-background-color: "+ cardList.getColour() + ";" +
-                    " -fx-border-radius: 15;" +
-                    " -fx-background-radius:15;" +
-                    " -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.7), 10, 0, 0, 0)");
-            cards.setStyle("-fx-background-color: " + cardList.getColour() +"; -fx-spacing: 10" );
-        }
+        background.setStyle("-fx-background-color: " + cardList.getColour() + ";" +
+                " -fx-border-radius: 15;" +
+                " -fx-background-radius:15;" +
+                " -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.7), 10, 0, 0, 0)");
+        cards.setStyle("-fx-background-color: " + cardList.getColour() + "; -fx-spacing: 10");
         listTitleField.setStyle("-fx-background-color: transparent;" +
                 " -fx-font-size: 25;" +
                 " -fx-text-fill: " + cardList.getTextColour());
@@ -130,6 +124,7 @@ public final class CardListCtrl {
 
     /**
      * Removes the card from the list based on the id
+     *
      * @param cardId the card id
      */
     public void removeCard(final int cardId) {
@@ -172,6 +167,7 @@ public final class CardListCtrl {
 
     /**
      * getter for board
+     *
      * @return board
      */
     public Board getBoard() {
@@ -180,6 +176,7 @@ public final class CardListCtrl {
 
     /**
      * Gets the cardList of this controller
+     *
      * @return the cardList
      */
     public CardList getCardList() {
@@ -188,6 +185,7 @@ public final class CardListCtrl {
 
     /**
      * Returns background colour of this list to render cards properly
+     *
      * @return string with background colour
      */
     public String getListBackgroundColour() {
