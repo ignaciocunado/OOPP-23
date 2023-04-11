@@ -225,4 +225,12 @@ public final class CardCtrl {
         this.server.editCard(this.card.getId(), cardTitle.getText(), cardDescription.getText(),
                 this.card.getColour());
     }
+
+    /**
+     * A method that sets a new card
+     * @param card a new card
+     */
+    public void setCard (Card card) {
+        this.card = card;
+    }
 }

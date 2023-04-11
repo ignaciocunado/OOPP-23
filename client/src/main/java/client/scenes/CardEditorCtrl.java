@@ -1,10 +1,12 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
+import client.utils.WebsocketUtils;
 import com.google.inject.Inject;
 import commons.entities.Card;
 import commons.entities.Tag;
 import commons.entities.Task;
+import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
@@ -27,7 +29,7 @@ import java.io.IOException;
 public class CardEditorCtrl {
     private ServerUtils serverUtils;
     private MainCtrl mainCtrl;
-
+    private WebsocketUtils websocket;
     @FXML
     private TextField title;
     @FXML
@@ -54,13 +56,26 @@ public class CardEditorCtrl {
      * Constructor
      * @param mainCtrl mainCtrl
      * @param serverUtils serverUtils
+     * @param websocket websocket setup
      */
     @Inject
-    public CardEditorCtrl(final ServerUtils serverUtils, final MainCtrl mainCtrl) {
+    public CardEditorCtrl(final WebsocketUtils websocket, final ServerUtils serverUtils, final MainCtrl mainCtrl) {
+        this.websocket = websocket;
         this.serverUtils = serverUtils;
         this.mainCtrl = mainCtrl;
     }
 
+    /**
+     *  Initialisation method initialising FXML objects
+     */
+    @FXML
+    public void initialize(){
+        this.websocket.addCardListener(changedCard -> {
+            if (changedCard == null || changedCard.getId() != (currentCard.getId())) return;
+            cardCtrl.setCard(changedCard);
+            Platform.runLater(() -> this.refresh(cardCtrl));
+        });
+    }
     /**
      * Refreshes card editor info
      * @param cardCtrl current Card
