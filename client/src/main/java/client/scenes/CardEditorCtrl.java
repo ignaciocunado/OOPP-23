@@ -59,7 +59,8 @@ public class CardEditorCtrl {
      * @param websocket websocket setup
      */
     @Inject
-    public CardEditorCtrl(final WebsocketUtils websocket, final ServerUtils serverUtils, final MainCtrl mainCtrl) {
+    public CardEditorCtrl(final WebsocketUtils websocket,
+                          final ServerUtils serverUtils, final MainCtrl mainCtrl) {
         this.websocket = websocket;
         this.serverUtils = serverUtils;
         this.mainCtrl = mainCtrl;
