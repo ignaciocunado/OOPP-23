@@ -73,8 +73,8 @@ public class TestCardRepository implements CardRepository {
 
     @Override
     public <S extends Card> S save(S entity) {
-        for(Card c : cards) {
-            if(c.getId() == entity.getId()) {
+        for (Card c : cards) {
+            if (c.getId() == entity.getId()) {
                 c.setTitle(entity.getTitle());
                 c.setDescription(entity.getDescription());
                 c.setNestedTaskList(entity.getNestedTaskList());
@@ -86,6 +86,8 @@ public class TestCardRepository implements CardRepository {
         final Card card = new Card(entity.getTitle(), entity.getDescription());
         nextInt++;
         card.setId(nextInt);
+        card.setNestedTaskList(entity.getNestedTaskList());
+
         entity.setId(nextInt);
         this.cards.add(card);
         return (S) card;
@@ -192,11 +194,18 @@ public class TestCardRepository implements CardRepository {
     @Override
     public List<Integer> selectCardsWithTag(int tagId) {
         List<Integer> result = new ArrayList<>();
-        for (Card card : cards){
-            if (tagId == card.getId()){
+        for (Card card : cards) {
+            if (tagId == card.getId()) {
                 result.add(card.getId());
             }
         }
         return result;
+    }
+
+    @Override
+    public Optional<Card> findByTaskId(int taskId) {
+        return this.cards.stream().filter(card ->
+                        card.getNestedTaskList().stream().anyMatch(task -> task.getId() == taskId))
+                .findAny();
     }
 }

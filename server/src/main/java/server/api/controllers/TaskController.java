@@ -29,7 +29,9 @@ public class TaskController {
      * @param taskRepo repository for task
      * @param msgs     object to send messages to connected websockets
      */
-    public TaskController(final CardRepository cardRepo, final TaskRepository taskRepo, SimpMessagingTemplate msgs) {
+    public TaskController(final CardRepository cardRepo,
+                          final TaskRepository taskRepo,
+                          SimpMessagingTemplate msgs) {
         this.msgs = msgs;
         this.taskRepo = taskRepo;
         this.cardRepo = cardRepo;
@@ -79,28 +81,25 @@ public class TaskController {
         }
         final Card card = cardOpt.get();
 
-        final Optional<Task> taskOpt = this.taskRepo.findById(id);
-        if (taskOpt.isEmpty()) {
-            throw new EntityNotFoundException("No task with id " + id);
-        }
-        final Task task = taskOpt.get();
+        final Task task = this.taskRepo.getById(id); // If card exists with tag then tag exists obviously
 
         final int currentPosition = card.getNestedTaskList().indexOf(task);
 
-        if (direction.equals("up")) {
-            if (currentPosition == 0) return;
+        switch (direction) {
+            case "up":
+                if (currentPosition == 0) return;
 
-            final Task oldTask = card.getNestedTaskList().get(currentPosition-1);
-            card.getNestedTaskList().set(currentPosition-1, task);
-            card.getNestedTaskList().set(currentPosition, oldTask);
-        }
+                final Task previousTask = card.getNestedTaskList().get(currentPosition - 1);
+                card.getNestedTaskList().set(currentPosition - 1, task);
+                card.getNestedTaskList().set(currentPosition, previousTask);
+                break;
+            case "down":
+                if (currentPosition == card.getNestedTaskList().size() - 1) return;
 
-        if (direction.equals("down")) {
-            if (currentPosition == card.getNestedTaskList().size()-1) return;
-
-            final Task oldTask = card.getNestedTaskList().get(currentPosition+1);
-            card.getNestedTaskList().set(currentPosition+1, task);
-            card.getNestedTaskList().set(currentPosition, oldTask);
+                final Task nextTask = card.getNestedTaskList().get(currentPosition + 1);
+                card.getNestedTaskList().set(currentPosition + 1, task);
+                card.getNestedTaskList().set(currentPosition, nextTask);
+                break;
         }
 
         msgs.convertAndSend("/topic/card", card);

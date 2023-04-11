@@ -511,7 +511,6 @@ public class ServerUtils {
      *
      * @param taskId    id of the task to delete
      * @param direction direction of movement
-     * @return the new card
      */
     public void moveTask(int taskId, String direction) {
         try {

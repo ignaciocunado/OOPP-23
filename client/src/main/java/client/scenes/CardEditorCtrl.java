@@ -146,7 +146,8 @@ public class CardEditorCtrl {
             nestedTaskList.setStyle("-fx-background-color: " + currentCard.getColour());
             resetButton.setStyle("-fx-padding: 0px; -fx-background-color: " + getRGBShade());
             saveButton.setStyle("-fx-padding: 0px; -fx-background-color: " + getRGBShade());
-            tagListWrapper.setStyle("-fx-border-radius: 10; -fx-border-width: 2; -fx-border-color: " + getRGBShade());
+            tagListWrapper.setStyle("-fx-border-radius: 10; " +
+                    "-fx-border-width: 2; -fx-border-color: " + getRGBShade());
         }
         Color cardColour = Color.web(currentCard.getColour());
         this.colour.setValue(cardColour);
@@ -217,7 +218,9 @@ public class CardEditorCtrl {
         var pair = Main.FXML.load(TaskCtrl.class, "client", "scenes", "TaskOverview.fxml");
         Pane taskPane = (Pane) pair.getValue();
         TaskCtrl ctrl = pair.getKey();
-        currentCard = serverUtils.addTaskToCard(this.currentCard.getId(), this.newTaskName.getText(),
+        currentCard = serverUtils.addTaskToCard(
+                this.currentCard.getId(),
+                this.newTaskName.getText(),
                 false);
         Task task = currentCard.getNestedTaskList().get(currentCard.getNestedTaskList().size() - 1);
         taskPane.setId(Integer.toString(task.getId()));

@@ -153,6 +153,7 @@ public final class CardCtrl {
 
     /**
      * Handler to edit a card
+     * @param event event for the mouse click
      */
     @FXML
     public void handleEditCard(final MouseEvent event) {

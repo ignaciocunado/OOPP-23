@@ -22,6 +22,10 @@ public class TaskCtrl {
     private CardEditorCtrl cardEditorCtrl;
     private Task task;
 
+    /**
+     * Constructor to inject server utils into the task
+     * @param server the server utils
+     */
     @Inject
     public TaskCtrl(final ServerUtils server) {
         this.server = server;
