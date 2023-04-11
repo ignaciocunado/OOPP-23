@@ -52,6 +52,7 @@ public class TaskCtrl {
         this.id = id;
         this.cardEditorCtrl = cardEditorCtrl;
         this.title.focusedProperty().addListener(this::titleEdited);
+        this.title.setText(task.getName());
         this.task = task;
         this.completed.setOnAction(event -> {
             boolean isTaskCompleted = !completed.isIndeterminate() && completed.isSelected();
