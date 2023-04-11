@@ -92,7 +92,7 @@ class CardListTest {
     @Test
     public void getColourTest() {
         CardList list = new CardList("new");
-        assertEquals("", list.getColour());
+        assertEquals("rgb(35,69,103)", list.getColour());
     }
 
     @Test
