@@ -10,20 +10,21 @@ import org.springframework.web.bind.annotation.*;
 import server.database.TaskRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
+import server.services.TaskService;
 
 @RestController
 @RequestMapping("/api/task")
 public class TaskController {
     private final SimpMessagingTemplate msgs;
-    private final TaskRepository taskRepo;
+    private final TaskService taskService;
 
     /** controller for the task route
-     * @param taskRepo repository for task
+     * @param taskService service for task
      * @param msgs     object to send messages to connected websockets
      */
-    public TaskController(final TaskRepository taskRepo, SimpMessagingTemplate msgs){
+    public TaskController(final TaskService taskService, SimpMessagingTemplate msgs){
         this.msgs = msgs;
-        this.taskRepo = taskRepo;
+        this.taskService = taskService;
     }
 
 
@@ -40,14 +41,7 @@ public class TaskController {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        if(!taskRepo.existsById(id)) {
-            throw new EntityNotFoundException("No tag with id " + id);
-        }
-
-        final Task editedTask = taskRepo.getById(id);
-        editedTask.setName(task.getName());
-        editedTask.setCompleted(task.isCompleted());
-        taskRepo.save(editedTask);
+        Task editedTask = taskService.editTask(id, task);
         msgs.convertAndSend("/topic/task", editedTask);
         return new ResponseEntity<>(editedTask, new HttpHeaders(), 200);
     }
