@@ -82,6 +82,8 @@ public class CardEditorCtrl {
             cardCtrl.setCard(changedCard);
             Platform.runLater(() -> this.refresh(cardCtrl));
         });
+
+        setEditCardMethods();
     }
     /**
      * Refreshes card editor info
@@ -109,10 +111,10 @@ public class CardEditorCtrl {
 
             nestedTaskList.getChildren().clear();
             for (Task task : currentCard.getNestedTaskList()) {
-                FXMLLoader loader = new FXMLLoader();
-                Pane taskPane = loader.load(getClass().getResource("TaskOverview.fxml").openStream());
+                var pair = Main.FXML.load(TaskCtrl.class, "client", "scenes", "TaskOverview.fxml");
+                Pane taskPane = (Pane) pair.getValue();
                 taskPane.setId(Integer.toString(task.getId()));
-                TaskCtrl ctrl = loader.getController();
+                TaskCtrl ctrl = pair.getKey();
                 ctrl.editData(task);
                 taskPane.setId(Integer.toString(task.getId()));
                 ctrl.update(task.getId(), this, task);
@@ -127,7 +129,7 @@ public class CardEditorCtrl {
                 this.mainCtrl.closeCardEditor();
             }
         });
-        setEditCardMethods();
+        this.mainPane.requestFocus();
     }
 
     /**
