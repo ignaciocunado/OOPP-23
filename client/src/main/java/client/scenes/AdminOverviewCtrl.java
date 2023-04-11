@@ -5,6 +5,7 @@ import client.config.Config;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -12,8 +13,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-
-import java.io.IOException;
 
 import static javafx.scene.paint.Color.WHITE;
 import static javafx.scene.paint.Color.rgb;
@@ -46,15 +45,22 @@ public class AdminOverviewCtrl {
     /**
      * Refreshes the board history view with old recent boards read from the config
      */
-    public void refresh() throws IOException {
+    public void refresh() {
         this.boards.getChildren().clear();
-
-
         if (this.server.getAllBoards(this.state.getPassword()) != null) {
             for (Board recent:this.server.getAllBoards(this.state.getPassword())) {
                 addTexts(recent);
             }
         }
+
+        this.server.registerAllBoardsListener(this.state.getPassword(), boards -> {
+            Platform.runLater(() -> {
+                this.boards.getChildren().clear();
+                for (Board recent:boards) {
+                    addTexts(recent);
+                }
+            });
+        });
     }
 
     /**
@@ -109,11 +115,6 @@ public class AdminOverviewCtrl {
         delete.setOnMouseClicked(event -> {
             this.server.deleteBoard(boardKey);
             config.getCurrentWorkspace().deleteBoard(boardKey);
-            try {
-                refresh();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         });
     }
 

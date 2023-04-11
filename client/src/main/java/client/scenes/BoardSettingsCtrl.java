@@ -6,10 +6,12 @@ import com.google.inject.Inject;
 import commons.entities.Board;
 import commons.entities.CardList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 public final class BoardSettingsCtrl {
     private final MainCtrl mainCtrl;
@@ -88,6 +90,11 @@ public final class BoardSettingsCtrl {
         saveButtonColour.setStyle("-fx-background-color: " + getRGBShade());
         saveButtonColour1.setStyle("-fx-background-color: " + getRGBShade());
         resetButton1.setStyle("-fx-background-color: " + getRGBShade());
+        for(Node node : window.lookupAll(".boardTextColour")) {
+            ((Text) node).setFill(Color.web(currentBoard.getFontColour()));
+        }
+        backgroundColourBoard.setValue(Color.web(currentBoard.getColour()));
+        textColourBoard.setValue(Color.web(currentBoard.getFontColour()));
     }
 
     /**
@@ -105,27 +112,33 @@ public final class BoardSettingsCtrl {
      */
     public void resetBoardColours() {
         currentBoard.setColour("rgb(1,35,69)");
+        currentBoard.setFontColour("white");
         server.editBoard(currentBoard.getId(), currentBoard);
-
         this.boardOverviewCtrl.setRightColours();
+        setRightColours();
     }
 
     /**
      * Saves the colour chosen and applies it
      */
     public void saveBoardColours() {
-        Double redDouble =  backgroundColourBoard.getValue().getRed()*255;
-        Double greenDouble = backgroundColourBoard.getValue().getGreen()*255;
-        Double blueDouble =  backgroundColourBoard.getValue().getBlue()*255;
-        int red = redDouble.intValue();
-        int green = greenDouble.intValue();
-        int blue = blueDouble.intValue();
-        currentBoard.setColour("rgb(" + red  + "," +
-               green + ", " +
-                blue + ")");
+        int redBG =  (int) (backgroundColourBoard.getValue().getRed()*255);
+        int greenBG =(int) (backgroundColourBoard.getValue().getGreen()*255);
+        int blueBG = (int) (backgroundColourBoard.getValue().getBlue()*255);
+        currentBoard.setColour("rgb(" + redBG  + "," +
+               greenBG + ", " +
+                blueBG + ")");
+        int redText =  (int) (textColourBoard.getValue().getRed()*255);
+        int greenText =(int) (textColourBoard.getValue().getGreen()*255);
+        int blueText = (int) (textColourBoard.getValue().getBlue()*255);
+        currentBoard.setFontColour("rgb(" + redText  + "," +
+                greenText + ", " +
+                blueText + ")");
         currentBoard = server.editBoard(currentBoard.getId(), currentBoard);
         this.boardOverviewCtrl.setRightColours();
 //        mainCtrl.closeBoardSettings();
+        this.boardOverviewCtrl.setRightColours();
+        setRightColours();
     }
 
     /**
@@ -145,18 +158,12 @@ public final class BoardSettingsCtrl {
      * Saves the colour chosen and applies it
      */
     public void saveListColours() {
-        Double redDoubleBG =  backgroundColourList.getValue().getRed()*255;
-        Double greenDoubleBG = backgroundColourList.getValue().getGreen()*255;
-        Double blueDoubleBG =  backgroundColourList.getValue().getBlue()*255;
-        int redBG = redDoubleBG.intValue();
-        int greenBG = greenDoubleBG.intValue();
-        int blueBG = blueDoubleBG.intValue();
-        Double redDoubleT =  textColourList.getValue().getRed()*255;
-        Double greenDoubleT = textColourList.getValue().getGreen()*255;
-        Double blueDoubleT =  textColourList.getValue().getBlue()*255;
-        int redT = redDoubleT.intValue();
-        int greenT = greenDoubleT.intValue();
-        int blueT = blueDoubleT.intValue();
+        int redBG =  (int) (backgroundColourList.getValue().getRed()*255);
+        int greenBG = (int) (backgroundColourList.getValue().getGreen()*255);
+        int blueBG =  (int) (backgroundColourList.getValue().getBlue()*255);
+        int redT = (int) (textColourList.getValue().getRed()*255);
+        int greenT = (int) (textColourList.getValue().getGreen()*255);
+        int blueT = (int) (textColourList.getValue().getBlue()*255);
         for(CardList cardList : currentBoard.getLists()) {
             cardList.setColour("rgb(" + redBG  + "," +
                     greenBG + ", " +

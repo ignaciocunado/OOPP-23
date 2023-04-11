@@ -199,8 +199,16 @@ class BoardTest {
 
     @Test
     public void testNewConstructor() {
-        Board newboard = new Board("name", "password","password", "colour");
+        Board newboard = new Board("name", "password","password", "colour", "green");
         assertEquals("colour", newboard.getColour());
+        assertEquals("green", newboard.getFontColour());
+    }
+
+    @Test
+    public void testFontColour() {
+        assertEquals("white", board.getFontColour());
+        board.setFontColour("green");
+        assertEquals("green", board.getFontColour());
     }
 
 }

@@ -15,16 +15,18 @@
  */
 package client;
 
-import static com.google.inject.Guice.createInjector;
-import java.io.IOException;
-
 import client.config.Config;
 import client.scenes.*;
+import client.utils.ServerUtils;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+
+import java.io.IOException;
+
+import static com.google.inject.Guice.createInjector;
 
 public class Main extends Application {
 
@@ -99,6 +101,8 @@ public class Main extends Application {
     public void stop() throws IOException {
         final Config config = INJECTOR.getInstance(Config.class);
         config.saveConfig();
+        final ServerUtils utils = INJECTOR.getInstance(ServerUtils.class);
+        utils.stop();
     }
 
 }

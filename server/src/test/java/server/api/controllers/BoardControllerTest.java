@@ -47,7 +47,7 @@ public final class BoardControllerTest {
         this.tagRepo = new TestTagRepository();
 
         final TagService tagService = new TagService(this.tagRepo, this.cardRepo);
-        final CardListService cardListService = new CardListService(this.cardListRepo);
+        final CardListService cardListService = new CardListService(this.cardRepo, this.cardListRepo);
         final BoardService boardService = new BoardService(this.textService,
                 tagService,
                 cardListService,
@@ -259,6 +259,7 @@ public final class BoardControllerTest {
         final Board board2 = new Board("aaa", "aaa", "");
         board2.setId(1);
         board2.setColour("aa");
+        board2.setFontColour("aaa");
         assertEquals(board2, this.boardController.editBoard(1, board2, noErrorResult).getBody());
     }
 

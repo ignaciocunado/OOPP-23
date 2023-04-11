@@ -112,7 +112,7 @@ public class BoardController {
     public ResponseEntity<Board> deleteTag(@PathVariable final int id,
                                            @PathVariable final int tagId) {
         final Board deletedTagFromBoard = this.boardService.deleteTagFromBoard(id, tagId);
-        msgs.convertAndSend("/topic/board");
+        msgs.convertAndSend("/topic/board", deletedTagFromBoard);
         return new ResponseEntity<>(deletedTagFromBoard,
                 new HttpHeaders(), 200);
     }

@@ -171,7 +171,8 @@ public final class CardCtrl {
      */
     public void mouseHover() {
         this.boardOverviewCtrl.setHoverCard(this.getCardPane());
-        cardPane.setOpacity(0.75);
+        cardPane.setOpacity(0.70);
+        this.insidePane = (Pane) cardPane.getChildren().get(0);
         if(card.getColour().equals("")) {
             insidePane.setStyle("-fx-background-color: #123456;-fx-background-radius:10 ;" +
                     " -fx-border-color: rgb(1,35,69); -fx-border-width: 3px");
@@ -224,5 +225,13 @@ public final class CardCtrl {
         if (focused.getValue()) return; // If focuses then don't save yet
         this.server.editCard(this.card.getId(), cardTitle.getText(), cardDescription.getText(),
                 this.card.getColour());
+    }
+
+    /**
+     * A method that sets a new card
+     * @param card a new card
+     */
+    public void setCard (Card card) {
+        this.card = card;
     }
 }
