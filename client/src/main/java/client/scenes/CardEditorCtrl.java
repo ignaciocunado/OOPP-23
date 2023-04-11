@@ -40,6 +40,8 @@ public class CardEditorCtrl {
     private VBox nestedTaskList;
     @FXML
     private AnchorPane mainPane;
+    @FXML
+    private AnchorPane tagListWrapper;
     private CardCtrl cardCtrl;
 
     private Card currentCard;
@@ -125,6 +127,7 @@ public class CardEditorCtrl {
             nestedTaskList.setStyle("-fx-background-color: " + currentCard.getColour());
             resetButton.setStyle("-fx-padding: 0px; -fx-background-color: " + getRGBShade());
             saveButton.setStyle("-fx-padding: 0px; -fx-background-color: " + getRGBShade());
+            tagListWrapper.setStyle("-fx-border-radius: 10; -fx-border-width: 2; -fx-border-color: " + getRGBShade());
         }
         Color cardColour = Color.web(currentCard.getColour());
         this.colour.setValue(cardColour);
