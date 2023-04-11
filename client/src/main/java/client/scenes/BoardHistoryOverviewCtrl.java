@@ -50,8 +50,14 @@ public class BoardHistoryOverviewCtrl {
      */
     public void refresh() {
         this.servers.getChildren().clear();
-        for (RecentBoard recent:config.getCurrentWorkspace().getBoards()) {
-            addTexts(getBoard(recent.getKey()));
+        for (int i = 0; i < config.getCurrentWorkspace().getBoards().size(); i++) {
+            RecentBoard recent = config.getCurrentWorkspace().getBoards().get(i);
+            if (recent.getKey() != null && getBoard(recent.getKey()) != null) {
+                addTexts(getBoard(recent.getKey()));
+            }
+            else if (recent.getKey() != null){
+                config.getCurrentWorkspace().deleteBoard(recent.getKey());
+            }
         }
     }
 
