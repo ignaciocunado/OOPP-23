@@ -32,4 +32,6 @@ dependencies {
 	implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
     implementation 'org.jetbrains:annotations:20.1.0'
 	implementation 'org.jetbrains:annotations:20.1.0'
+
+	testImplementation "com.github.tomakehurst:wiremock-jre8:2.35.0"
 }
