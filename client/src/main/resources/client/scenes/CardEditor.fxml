@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="mainPane" prefHeight="479.0" prefWidth="602.0" style="-fx-background-color: rgb(35,69,103);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardEditorCtrl">
+<AnchorPane fx:id="mainPane" prefHeight="479.0" prefWidth="602.0" style="-fx-background-color: rgb(1,35,69);" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardEditorCtrl">
    <children>
       <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -56,11 +56,15 @@
                         <Font size="14.0" />
                      </font></Text>
                   <Button mnemonicParsing="false" onAction="#addTask" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: transparent; -fx-font-size: 20; -fx-padding: 0;" text="+" textFill="WHITE" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="113.0" />
-                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" style="-fx-border-color: transparent; -fx-background-color: transparent; -fx-padding: 0px;" vbarPolicy="NEVER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="165.0">
-                     <content>
-                        <VBox fx:id="nestedTaskList" style="-fx-background-color: rgb(35,69,103);" />
-                     </content>
-                  </ScrollPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgb(35,69,103); -fx-background-radius: 10;" styleClass="tagList" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="150.0">
+                     <children>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" style="-fx-border-color: transparent; -fx-background-color: transparent; -fx-padding: 0px;" styleClass="tagList" vbarPolicy="NEVER" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
+                           <content>
+                              <VBox fx:id="nestedTaskList" style="-fx-background-color: rgb(35,69,103);" styleClass="tagList" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
                   <TextField fx:id="newTaskName" layoutX="60.0" layoutY="32.0" onAction="#addTask" promptText="New Nested Task Name" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="115.0" />
                </children>
             </AnchorPane>
