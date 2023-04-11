@@ -173,8 +173,9 @@ public class ServerUtils {
                     .request(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .method(HttpMethod.PATCH,
-                            Entity.json(new Board(board.getKey(),
-                                    board.getName(), board.getPassword(), board.getColour(), board.getFontColour())),
+                            Entity.json(new Board(board.getKey(), board.getName(),
+                                    board.getPassword(), board.getColour(),
+                                    board.getFontColour())),
                             Board.class);
         } catch (NotFoundException e) {
             return null;
