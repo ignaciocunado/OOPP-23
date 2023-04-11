@@ -41,7 +41,7 @@ public final class RecentBoard {
     }
 
     /**
-     * Hashchode method, nobody ever uses it but its here
+     * Hashcode method, nobody ever uses it but its here
      * @return idk a number lol
      */
     @Override

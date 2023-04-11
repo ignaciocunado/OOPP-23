@@ -330,7 +330,6 @@ public class BoardOverviewCtrl implements Initializable {
         lists.setStyle("-fx-spacing: 20; -fx-background-color:" + currentBoard.getColour());
         mainPane.setStyle("-fx-background-color:" + currentBoard.getColour());
         for(Node node : mainPane.lookupAll(".boardTextColour")) {
-            System.out.println(node);
             ((Button) node).setTextFill(Color.web(currentBoard.getFontColour()));
         }
         title.setStyle("-fx-text-fill: " + currentBoard.getFontColour() +
