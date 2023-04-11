@@ -6,7 +6,6 @@ import commons.entities.Tag;
 import commons.entities.Task;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import server.database.CardListRepository;
 import server.database.CardRepository;
@@ -24,6 +23,12 @@ public class CardService {
     private final TagRepository tagRepository;
     private final TaskRepository taskRepository;
 
+    /** constructor for cardService
+     * @param cardListRepository repository for cardlist
+     * @param cardRepository repository for card
+     * @param tagRepository repository for tag
+     * @param taskRepository repository for task
+     */
     public CardService(CardListRepository cardListRepository,
                        CardRepository cardRepository, TagRepository tagRepository,
                        TaskRepository taskRepository) {
@@ -33,6 +38,12 @@ public class CardService {
         this.taskRepository = taskRepository;
     }
 
+    /**
+     * Edits a Card
+     * @param id   id of the Card to edit
+     * @param card new Card to take the info from
+     * @return the card for the controller
+     */
     public Card editCard(int id, Card card){
         if (!cardRepository.existsById(id)) {
             throw new EntityNotFoundException("No card with id " + id);
@@ -45,6 +56,12 @@ public class CardService {
         cardRepository.save(toEdit);
         return toEdit;
     }
+    /**
+     * creates a Tag and stores it in a Card
+     * @param id id of the Card in which to store the Tag
+     * @param tagId the id of the tag that is assigned to the board and card
+     * @return the card with the newly assigned tag
+     */
     public Card assignTag(int id, int tagId){
         if (!cardRepository.existsById(id)) {
             throw new EntityNotFoundException("No card with id " + id);
@@ -61,6 +78,12 @@ public class CardService {
         cardRepository.save(card);
         return card;
     }
+    /**
+     * deletes a Tag iff it exists
+     * @param id    id of the Card
+     * @param tagId id of the Tag
+     * @return the card without the tag that was deleted
+     */
     public Card deleteTag(int id, int tagId){
         if (!cardRepository.existsById(id)) {
             throw new EntityNotFoundException("No card with id " + id);
@@ -75,6 +98,12 @@ public class CardService {
         cardRepository.save(deleteTagFrom);
         return deleteTagFrom;
     }
+    /**
+     * creates a Task and stores it in a Card
+     * @param id   id of the Card in which to store the Task
+     * @param task the Task to create and add
+     * @return the card with the new task
+     */
     public Card createTask(int id, Task task){
         if (!cardRepository.existsById(id)) {
             throw new EntityNotFoundException("No card with id " + id);
@@ -87,6 +116,12 @@ public class CardService {
         cardRepository.save(containsTask);
         return containsTask;
     }
+    /**
+     * Deletes a Task iff it exists
+     * @param id     id of the Card
+     * @param taskId id of the Task
+     * @return the card with the deleted task
+     */
     public Card deleteTask(int id, int taskId){
         if (!cardRepository.existsById(id)) {
             throw new EntityNotFoundException("No card with id " + id);
@@ -99,6 +134,13 @@ public class CardService {
         cardRepository.save(deleteTaskFrom);
         return deleteTaskFrom;
     }
+    /**
+     * endpoint for changing the list to which a card is assigned to based on its id
+     * @param id integer representing the id of the card
+     * @param listId integer representing the list to which the card will be added
+     * @param position the position in the children of the list to which the card will be added
+     * @return returns the source and destination needed for the websockets
+     */
     public Pair<CardList, CardList> move(Integer id, Integer listId, Integer position) {
         if (!this.cardRepository.existsById((id))) {
             throw new EntityNotFoundException("No card with id " + id);

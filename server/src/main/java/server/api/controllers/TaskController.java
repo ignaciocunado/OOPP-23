@@ -8,13 +8,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import server.database.CardRepository;
-import server.database.TaskRepository;
-import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
 import server.services.TaskService;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/task")

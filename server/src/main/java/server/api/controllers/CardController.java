@@ -1,8 +1,6 @@
 package server.api.controllers;
 
 import commons.entities.Card;
-import commons.entities.Tag;
-import commons.entities.CardList;
 import commons.entities.Task;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -10,16 +8,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import server.database.CardRepository;
-import server.database.TagRepository;
-import server.database.TaskRepository;
-import server.database.*;
-import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
-import server.services.CardListService;
 import server.services.CardService;
-
-import java.util.Optional;
 
 
 @RestController
@@ -29,6 +19,10 @@ public class CardController {
     private final CardService cardService;
     private final SimpMessagingTemplate msgs;
 
+    /** Constructor for the cardService
+     * @param cardService the service for the bussiness logic
+     * @param msgs object to send messages to connected websockets
+     */
     public CardController(CardService cardService, SimpMessagingTemplate msgs) {
         this.cardService = cardService;
         this.msgs = msgs;

@@ -14,10 +14,20 @@ public class TaskService {
     private final TaskRepository taskRepo;
     private final CardRepository cardRepo;
 
+    /** constructor for taskService
+     * @param taskRepo repository for task
+     * @param cardRepo repository for card
+     */
     public TaskService(TaskRepository taskRepo, CardRepository cardRepo) {
         this.taskRepo = taskRepo;
         this.cardRepo = cardRepo;
     }
+
+    /** method to edit a task
+     * @param id it of the task
+     * @param task the task that will be edited
+     * @return the edited task
+     */
     public Task editTask(int id, Task  task){
         if (!taskRepo.existsById(id)) {
             throw new EntityNotFoundException("No tag with id " + id);
@@ -29,6 +39,13 @@ public class TaskService {
         taskRepo.save(editedTask);
         return editedTask;
     }
+    /**
+     * endpoint for changing the order of tasks
+     *
+     * @param id        integer representing the id of the task
+     * @param direction the direction to move the tag in
+     * @return returns the card needed for the websockets
+     */
     public Card move(Integer id, String direction){
         final Optional<Card> cardOpt = this.cardRepo.findByTaskId(id);
         if (cardOpt.isEmpty()) {
