@@ -13,6 +13,7 @@ import server.api.repositories.TestCardRepository;
 import server.api.repositories.TestTaskRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
+import server.services.TaskService;
 
 import java.util.Arrays;
 
@@ -24,12 +25,14 @@ class TaskControllerTest {
 
     private BindingResult hasErrorResult;
     private BindingResult noErrorResult;
+    private TaskService taskService;
 
     @BeforeEach
     public void setup() {
         this.cardRepo = new TestCardRepository();
         this.taskRepo = new TestTaskRepository();
-        this.taskController = new TaskController(cardRepo, taskRepo, Mockito.mock(SimpMessagingTemplate.class));
+        this.taskService = new TaskService(taskRepo, cardRepo);
+        this.taskController = new TaskController(taskService, Mockito.mock(SimpMessagingTemplate.class));
 
         this.hasErrorResult = Mockito.mock(BindingResult.class);
         this.noErrorResult = Mockito.mock(BindingResult.class);

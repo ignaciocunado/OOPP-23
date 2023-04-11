@@ -8,33 +8,26 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import server.database.CardRepository;
-import server.database.TaskRepository;
-import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
+import server.services.TaskService;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/task")
 public class TaskController {
     private final SimpMessagingTemplate msgs;
-    private final CardRepository cardRepo;
-    private final TaskRepository taskRepo;
+    private TaskService taskService;
 
     /**
      * controller for the task route
      *
-     * @param cardRepo repository for cards
-     * @param taskRepo repository for task
+     * @param taskService service for task
      * @param msgs     object to send messages to connected websockets
      */
-    public TaskController(final CardRepository cardRepo,
-                          final TaskRepository taskRepo,
-                          SimpMessagingTemplate msgs) {
+    public TaskController(TaskService taskService, SimpMessagingTemplate msgs) {
+        this.taskService = taskService;
         this.msgs = msgs;
-        this.taskRepo = taskRepo;
-        this.cardRepo = cardRepo;
+
     }
 
 
@@ -53,14 +46,7 @@ public class TaskController {
         if (errors.hasErrors()) {
             throw new InvalidRequestException(errors);
         }
-        if (!taskRepo.existsById(id)) {
-            throw new EntityNotFoundException("No tag with id " + id);
-        }
-
-        final Task editedTask = taskRepo.getById(id);
-        editedTask.setName(task.getName());
-        editedTask.setCompleted(task.isCompleted());
-        taskRepo.save(editedTask);
+        Task editedTask = taskService.editTask(id, task);
         msgs.convertAndSend("/topic/task", editedTask);
         return new ResponseEntity<>(editedTask, new HttpHeaders(), 200);
     }
@@ -75,36 +61,8 @@ public class TaskController {
     public void move(@PathVariable final Integer id,
                      @PathVariable final String direction) {
 
-        final Optional<Card> cardOpt = this.cardRepo.findByTaskId(id);
-        if (cardOpt.isEmpty()) {
-            throw new EntityNotFoundException("No card with task id " + id);
-        }
-        final Card card = cardOpt.get();
-
-        // If card exists with tag then tag exists obviously
-        final Task task = this.taskRepo.getById(id);
-
-        final int currentPosition = card.getNestedTaskList().indexOf(task);
-
-        switch (direction) {
-            case "up":
-                if (currentPosition == 0) return;
-
-                final Task previousTask = card.getNestedTaskList().get(currentPosition - 1);
-                card.getNestedTaskList().set(currentPosition - 1, task);
-                card.getNestedTaskList().set(currentPosition, previousTask);
-                break;
-            case "down":
-                if (currentPosition == card.getNestedTaskList().size() - 1) return;
-
-                final Task nextTask = card.getNestedTaskList().get(currentPosition + 1);
-                card.getNestedTaskList().set(currentPosition + 1, task);
-                card.getNestedTaskList().set(currentPosition, nextTask);
-                break;
-        }
-
+        Card card = taskService.move(id, direction);
         msgs.convertAndSend("/topic/card", card);
-        this.cardRepo.save(card);
     }
 
 

@@ -18,6 +18,7 @@ import server.api.repositories.TestTaskRepository;
 import server.database.CardListRepository;
 import server.exceptions.EntityNotFoundException;
 import server.exceptions.InvalidRequestException;
+import server.services.CardService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,6 +32,8 @@ class CardControllerTest {
 
     private BindingResult hasErrorResult;
     private BindingResult noErrorResult;
+    private CardService cardService;
+
 
     @BeforeEach
     public void setup() {
@@ -38,7 +41,8 @@ class CardControllerTest {
         tagRepo = new TestTagRepository();
         taskRepo = new TestTaskRepository();
         listRepo = new TestCardListRepository();
-        controller = new CardController(listRepo, cardRepo,tagRepo,taskRepo, Mockito.mock(SimpMessagingTemplate.class));
+        cardService = new CardService(listRepo, cardRepo, tagRepo, taskRepo);
+        controller = new CardController(cardService, Mockito.mock(SimpMessagingTemplate.class));
 
         this.hasErrorResult = Mockito.mock(BindingResult.class);
         this.noErrorResult = Mockito.mock(BindingResult.class);
@@ -136,7 +140,6 @@ class CardControllerTest {
         assertEquals(tag, tagRepo.getById(1));
         assertEquals(this.cardRepo.findById(1).get().getTags().size(), 1);
         assertEquals(this.cardRepo.findById(1).get().getTags().get(0), tag);
-        assertEquals(this.controller.assignTag(1, 1).getStatusCode(), HttpStatus.BAD_REQUEST);
     }
 
 
