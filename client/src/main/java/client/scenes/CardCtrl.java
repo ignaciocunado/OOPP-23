@@ -5,22 +5,21 @@ import client.utils.WebsocketUtils;
 import com.google.inject.Inject;
 import commons.entities.Board;
 import commons.entities.Card;
-import javafx.application.Platform;
 import commons.entities.Tag;
+import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 
 import java.io.IOException;
 
